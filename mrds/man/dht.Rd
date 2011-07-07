@@ -1,0 +1,195 @@
+\name{dht}
+\alias{dht}
+\title{Computes density and abundance estimates and variances based on...}
+\usage{dht(model, region.table, sample.table, obs.table, subset,
+    se=TRUE, bootstrap=FALSE, options=list())}
+
+\description{
+  Computes density and abundance estimates and variances
+  based on Horvitz-Thompson-like estimator Density and
+  abundance within the sampled region is computed based on
+  a Horvitz-Thomspon-like estimator for groups and
+  individuals (if a clustered population) and this is
+  extrapolated to the entire survey region based on any
+  defined regional stratification.  The variance is based
+  on replicate samples within any regional stratification.
+  For clustered populations, E(s) and its standard error
+  are also output.
+}
+
+\details{
+  Abundance is estimated with a Horvitz-Thompson-like
+  estimator (Huggins 1989,1991; Borchers et al 1998;
+  Borchers and Burnham 2004).  The abundance in the sampled
+  region is simply 1/p_1 + 1/p_2 + ... + 1/p_n where p_i is
+  the estimated detection probability for the ith detection
+  of n total observations. It is not strictly a
+  Horvitz-Thompson estimator because the p_i are estimated
+  and not known. For animals observed in tight clusters,
+  that estimator gives the abundance of groups
+  (\code{group=TRUE} in \code{options}) and the abundance
+  of individuals is estimated as s_1/p_1 + s_2/p_2 + ... +
+  s_n/p_n, where s_i is the size (e.g., number of animals
+  in the group) of each observation(\code{group=FALSE} in
+  \code{options}).
+
+  Extrapolation and estimation of abundance to the entire
+  survey region is based on either a random sampling design
+  or a stratified random sampling design.  Replicate
+  samples(lines)(\code{sample.table} are specified within
+  regional strata \code{region.table}, if any.  If there is
+  no stratification, \code{region.table} should contain
+  only a single record with the \code{Area} for the entire
+  survey region.  The \code{sample.table} is linked to the
+  \code{region.table} with the \code{Region.Label}.  The
+  \code{obs.table} is linked to the \code{sample.table}
+  with the \code{Sample.Label} and \code{Region.Label}.
+  Abundance can be restricted to a subset (e.g., for a
+  particular species) of the population by limiting the
+  list the observations in \code{obs.table} to those in the
+  desired subset. Alternatively, if \code{Sample.Label} and
+  \code{Region.Label} are in the dataframe used to fit the
+  model, then a \code{subset} argument can be given in
+  place of the \code{obs.table}. To use the \code{subset}
+  argument but include all of the observations, use
+  \code{subset=1==1} to avoid creating an \code{obs.table}.
+
+  In extrapolating to the entire survey region it is
+  important that the unit measurements be consistent or
+  converted for consistency.  A conversion factor can be
+  specified with the \code{convert.units} variable in the
+  \code{options} list.  The values of \code{Area} in
+  \code{region.table}, must be made consistent with the
+  units for \code{Effort} in \code{sample.table} and the
+  units of \code{distance} in the dataframe that was
+  analyzed.  It is easiest to do if the units of
+  \code{Area} is the square of the units of \code{Effort}
+  and then it is only necessary to convert the units of
+  \code{distance} to the units of \code{Effort}. For
+  example, if \code{Effort} was entered in kilometers and
+  \code{Area} in square kilometers and \code{distance} in
+  meters then using
+  \code{options=list(convert.units=0.001)} would convert
+  meters to kilometers, density would be expressed in
+  square kilometers which would then be consistent with
+  units for \code{Area}.  However, they can all be in
+  different units as long as the appropriate composite
+  value for \code{convert.units} is chosen.  Abundance for
+  a survey region can be expressed as: \code{A*N/a} where
+  \code{A} is \code{Area} for the survey region, \code{N}
+  is the abundance in the covered (sampled) region, and
+  \code{a} is the area of the sampled region and is in
+  units of \code{Effort * distance}.  The sampled region
+  \code{a} is multiplied by \code{convert.units}, so it
+  should be chosen such that the result is in the same
+  units of \code{Area}.  For example, if \code{Effort} was
+  entered in kilometers, \code{Area} in hectares (100m x
+  100m) and \code{distance} in meters, then using
+  \code{options=list(convert.units=10)} will convert
+  \code{a} to units of hectares (100 to convert meters t0
+  100 meters for distance and .1 to convert km to 100m
+  units).
+
+  If the argument \code{se} is set to \code{TRUE}, a
+  standard error for density and abundance is computed and
+  the coefficient of variation and log-normal confidence
+  intervals are constructed using a Satterthwaite
+  approximation for degrees of freedom (Buckland et al.
+  2001 pg 90).  The function \code{\link{dht.se}} computes
+  the variance and interval estimates. The variance has two
+  components: 1) variation due to uncertanity from
+  estimation of the detection function and 2) variation in
+  abundance due to random sample selection.  The first
+  component is computed using a delta method estimate of
+  variance (\code{\link{DeltaMethod}} (Huggins 1989, 1991,
+  Borchers et al. 1998) in which the first derivatives of
+  the abundance estimator with respect to the parameters in
+  the detection function are computed numerically.  The
+  second component can be computed in one of three ways as
+  set by the option \code{varflag} with values 0,1,2. A
+  value of 0 is to use a binomial variance for the number
+  of observations and it is only useful if the sampled
+  region is the survey region and the objects are not
+  clustered which will not occur very often.  A value of 1
+  uses the standard variance for the encounter rate
+  (Buckland et al. 2001 pg 78-79, although the actual
+  encounter rate formula used by default is now estimator
+  R2 from Fewster et al. (2009) - see \link{varn} for
+  details).  If the population is clustered the mean group
+  size and standard error is also included.  This variance
+  estimator is not appropriate if \code{size} or a
+  derivative of \code{size} is used in the any of the
+  detection function models. In general if any covariates
+  are used in the models, the default option 2 is
+  preferable.  It uses the variance estimator suggested by
+  Innes et al (2002) which used the formula for the
+  variance ecounter rate but replaces the number of
+  observations per sample with the estimated abundance per
+  sample. This latter variance is also given in Marques and
+  Buckland (2004).
+
+  The argument \code{options} is a list of variable=value
+  pairs that set options for the analysis. All but one of
+  these has been described so far. The remaining variable
+  \code{pdelta} should not need to be changed but was
+  included for completeness.  It controls the precision of
+  the first derivative calculation for the delta method
+  variance.
+}
+\value{list object of class "dht" \item{summary}{table of statistics
+summarized by region} \item{N}{table of estimates for abundance}
+\item{D}{table of estimates for density} \item{cormat}{correlation matrix
+of regional abundance/density estimates and total (if more than one
+region)}}
+\author{Jeff Laake}
+\seealso{\code{\link{print.dht}},\code{\link{dht.se}}}
+\references{Borchers, D.L., S.T. Buckland, P.W. Goedhart, E.D. Clarke, and S.L. Hedley.
+1998.  Horvitz-Thompson estimators for double-platform line transect
+surveys.  Biometrics 54: 1221-1237.
+
+Borchers, D.L. and K.P. Burnham. General formulation for distance sampling
+pp 10-11 In: Advanced Distance Sampling, eds. S.T. Buckland, D.R.Anderson,
+K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford University
+Press.
+
+Buckland, S.T., D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and
+L. Thomas. 2001.  Introduction to Distance Sampling: Estimating Abundance
+of Biological Populations. Oxford University Press.
+
+Fewster, R.M., S.T. Buckland, K.P. Burnham, D.L. Borchers, P.E. Jupp, J.L.
+Laake and L. Thomas. 2009.  Estimating the encounter rate variance in
+distance sampling. Biometrics 65: 225-236.
+
+Huggins, R.M. 1989.  On the statistical analysis of capture experiments.
+Biometrika 76:133-140.
+
+Huggins, R.M. 1991. Some practical aspects of a conditional likelihood
+approach to capture experiments.  Biometrics 47: 725-732.
+
+Innes, S.  M.P. Heide-Jorgensen, J.L. Laake, K.L. Laidre, H.J. Cleator, P.
+Richard, and R.E.A. Stewart.  2002. Surveys of belugas and narwhals in the
+Canadian High Arctic in 1996.  NAMMCO Scientific Publications 4: 169-190.
+
+Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
+function. In: Advanced Distance Sampling, eds. S.T. Buckland,
+D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
+Oxford University Press.}
+\keyword{utility}
+\arguments{
+  \item{model}{ddf model object}
+  \item{region.table}{dataframe of region records - Region.Label and Area}
+  \item{sample.table}{dataframe of sample records - Region.Label,
+Sample.Label, Effort}
+  \item{obs.table}{dataframe of observation records with fields object,
+Region.Label, and Sample.Label which give links to sample.table,
+region.table and the data records used in \code{model}}
+  \item{subset}{subset statement to create obs.table if NULL}
+  \item{se}{if TRUE computes std errors, cv and confidence interval based on
+log-normal}
+  \item{bootstrap}{if TRUE uses bootstrap approach (currently not implemented)}
+  \item{options}{a list of options that can be set: 1) pdelta: delta value for
+computing numerical first derivatives (Default: 0.001), 2) varflag - 0,1,2
+(see below) (Default: 2), 3) convert.units - multiplier for width to
+convert to units of length (Default: 1) 4) ervar - encounter rate variance
+type - see type argument to \link{varn} (Default: R2}
+}

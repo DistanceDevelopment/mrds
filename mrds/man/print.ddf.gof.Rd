@@ -1,0 +1,19 @@
+\name{print.ddf.gof}
+\alias{print.ddf.gof}
+\title{Outputs results of goodness of fit tests for detection functions...}
+\usage{\method{print}{ddf.gof} (x, ...)}
+
+\description{
+  Outputs results of goodness of fit tests for detection
+  functions Provides formatted output for results of
+  goodness of fit tests: chi-square, Kolmogorv-Smirnov and
+  Cramer-von-Mises test as approrpriate.
+}
+\value{None}
+\author{Jeff Laake}
+\seealso{\code{\link{ddf.gof}}}
+\keyword{utility}
+\arguments{
+  \item{x}{result of call to \code{\link{ddf.gof}}}
+  \item{\dots}{unused unspecified arguments for generic print}
+}

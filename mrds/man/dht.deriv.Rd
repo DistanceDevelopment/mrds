@@ -1,0 +1,26 @@
+\name{dht.deriv}
+\alias{dht.deriv}
+\title{Computes abundance estimates at specified parameter values using...}
+\usage{dht.deriv(par, model, obs, samples, options=list())}
+
+\description{
+  Computes abundance estimates at specified parameter
+  values using Horvitz-Thompson-like estimator Computes
+  abundance at specified values of parameters for numerical
+  computation of first derivative with respect to
+  parameters in detection function.  An internal function
+  called by DeltaMethod which is invoked by dht.se
+}
+\value{vector of abundance estimates at values of parameters specified in
+par}
+\note{Internal function; not intended to be called by user}
+\author{Jeff Laake}
+\seealso{\code{\link{dht}}, \code{\link{dht.se}}, \code{\link{DeltaMethod}}}
+\keyword{utility}
+\arguments{
+  \item{par}{detection function parameter values}
+  \item{model}{ddf model object}
+  \item{obs}{observations table}
+  \item{samples}{samples table}
+  \item{options}{list of options as specified in \code{\link{dht}}}
+}

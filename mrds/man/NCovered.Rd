@@ -1,0 +1,28 @@
+\name{NCovered}
+\title{Compute estimated abundance in covered (sampled) region...}
+\usage{NCovered(par, model, group=TRUE)}
+
+\description{
+  Compute estimated abundance in covered (sampled) region
+  :generic function that computes abundance within the
+  covered region.  It calls method (class) specific
+  functions for the computation.
+}
+\alias{NCovered}
+\alias{NCovered.ds}
+\alias{NCovered.io}
+\alias{NCovered.io.fi}
+\alias{NCovered.trial}
+\alias{NCovered.trial.fi}
+\alias{NCovered.rem}
+\alias{NCovered.rem.fi}
+\value{abundance estimate}
+\author{Jeff Laake}
+\keyword{utility}
+\arguments{
+  \item{par}{parameter values (used when computing derivatives wrt parameter
+uncertainty); if NULL parameter values in \code{model} are used}
+  \item{model}{ddf model object}
+  \item{group}{if TRUE computes group abundance and if FALSE individual
+abundance}
+}

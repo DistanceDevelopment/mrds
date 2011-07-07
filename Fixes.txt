@@ -1,0 +1,223 @@
+
+Fixes: May-June 05
+
+1) Fixed error in binned data analysis; create.model.frame was changing binned to numeric 0/1
+instead of T/F because it was thrown into a matrix.  This caused indexing errors in 
+accessing data and it screwed up fitting for binned data with covariates.
+
+2) Ordering of partials and v-c matrix of exponent and scale parameters in hazard rate
+didn't agree which created incorrect variance estimation for hazard rate.
+
+3) If distance was not included in mrmodel for method=io.fi or trial.fi, the results 
+were incorrect because the analytical integral for the logistic was not correct.
+
+4) Made changes to gof, qqplot and plot routines to handle left truncation properly.
+
+
+Changes: May-June 05
+1) Prevent use of "observer" in model for trial data.
+
+2) plot and gof functions now all contain a breaks= field and use it if provided.
+
+3) predict functions now all contain compute and newdata argument and use them as
+specified.
+
+4) if an object is not detected by either observer an error is issued and the analysis stops
+
+5) if fields other than observer or detected are different between observers a warning
+is issued that it may cause analysis to fail.
+
+6) bins used for an analysis are automatically used in plot and gof without
+specifying in the arguments. A binned analysis is easily created with a
+call to make.bins prior to the analysis.
+
+
+Change: Aug 05
+1) modified ddf.ds to restrict exponent of haz rate to be >1
+2) modified gstdint and tablecgf to use a standardized set of grid points (exponentially spaced 
+   with more points closest to 0) for computing integrals to create a spline for interpolation. 
+   Calls to tablecgf in integratedetfct and flt.lnl were modfied. 
+3) ddf.ds and flt were also changed such that the option showit now has 3 levels:
+   0 - no messages; 1- basic messages about refitting; 2 - all iterations are shown
+4) Also in ddf.ds the parscale command in optim is used to resolve problems with scaling
+   continuous covariates - need to test this more but appeared to be working well.  It uses the  
+   max value of each column in the design matrix as the scalar for the parameter. This puts each
+   parameter on the same footing in the optimization.
+5) added functions model.table, collect.models and collect.model.names;  these are presently not documented
+   and aren't complete for all model types but does work for method="ds".  It collects sets of results and
+   builds a table for model selection.  
+6) dht.se was modified to return the component v-c matrices (vc1 for detection prob and vc2 for er).
+   dht was modified to pass vc,vc1 and vc2 as a list in its return arguments. The list elements under
+   vc are named total, detection and er.  Also it computes the average detection probability and passes it 
+   back as average.p 
+
+Change: Aug 05
+1) Added a better handling for errors and warnings through errors()
+2) Major changes to the structure of the program, detfct is now a function itself which calls key functions
+   and adjustment functions. getpar() is now a lot more general.
+3) Adjustment terms (in the form key(1+series) as detailed in Buckland et al 1993) implemented. They should 
+   work fine, however the K-S and C-vM tests are not producing the right results yet. Adjustment terms are
+   also relatively untested.
+
+Fixes: Jan 06
+1) Error fixes to ddf.ds, flt.lnl, gstdint, detfct, plot.ds; each is documented in code
+2) Collapsed collect.model.names and model.table into collect.models
+3) Made numerous changes such that data in the model is the dataframe and not the name of the dataframe
+   I did not document each of those changes as they were too numerous.  This now allows call within
+   a function (eg for a bootstrap)
+4) in dht.deriv, I had made a change for io.fi and trial.fi back in Jan 05 to not use the integrate
+   argument for predict.  That was incorrect and was causing bogus se for var1 in dht.se;  I've changed
+   back to using integrate;  would only not want to use integrate if not assuming 1/w. That will change 
+   std errors for method="io.fi" and "trial.fi" in bookexamples.
+
+Changes: Jan 06
+1) changed each summary function to return and object and created a print.summary for each method
+   default for argument se for summary is now TRUE, so no longer needs to be set.
+2) deleted summary.dht and created print.dht in its place as dht is really a summary operation
+3) Modified dht and accompanying routines to give encounter rate and its se,
+   mean group size and its se and to give summary of both cluster and individual
+   density/abundance if popn is in clusters.  No need to have 2 calls to dht and
+   group argument is dropped. Also gives E(s) and its std error.
+4) added std errors for estimates of p, p(0), and f(0) (for ds) in various summary fcts.  In doing so, I created 
+   3 more functions: prob.deriv, prob.se and covn(inside varn.R file). Also I modified DeltaMethod to pass
+   back a list with elements variance and partial.  It use to only return variance.  The partials are used
+   for covariance estimates (eg see summary.io) Currently the code for f(0) is commented out.  We
+   need to understand this further. If the scale fct is constant (ie cds) then the cv of p and f(0) are
+   the same; but if it is mcds then typically cv(f(0)) > cv(p) and sometimes substantially.  I haven't
+   fully mentally reconciled this difference.
+5) modified print.summary functions to output estimates of p, p(0), N etc in a table format
+6) renamed summary.ddf.gof to print.ddf.gof
+7) modified default parscale to be initialvalues which works much better than previous code.  Also allowed for 
+   user defined parscale entries.
+8) if hessian from flt.var is singular, it uses the hessian from optim.
+9) modified flt.lnl code for binned data.  needed to add <= in check to make sure that intend>intbegin, otherwise
+   (intend-intbegin) could be zero and an infinite lnl would result.
+
+Change: Mar 06
+1) dht did not work if only a single region. var.er always had 2 elements even if only a single region. Added if statement
+
+
+v1.2.5 Mar 06
+1) Modified dht such that if Area = 0 for all regions, it uses area of covered region (in strips)
+   but only outputs D and not N.
+2) Modified ddf.ds to use only unique detections if given data from 2 observers as in io dataset.
+   It uses the data from the first observer and sets all detected = 1.
+3) observer and detected fields are not needed in data file for ddf.ds.  detected is added if not there
+   for the time being. Right now other pieces of code assume it is there.
+4) object on the other hand is required.  an error message is not given if it is missing and if
+   they are non-unique for ddf.ds (after filtering for unique detections).
+
+v1.2.6 Apr 06
+1) Modified spline smoother in plot.cond to use all knots if no covariates.  Need to revisit this code to
+average plots by each covariate value using population proportions as DLB has suggested and is done with unconditional
+plots.
+2) Modified summary.trial.fi and print.summary.trial.fi to give summary of all capture history data like
+done for method="io" and "io.fi"
+3) In computing se(EXpected value of S), if all cluster sizes were 1, the se failed because it was trying to take the sqrt of a -1e-16 on occasion, so it was approrpiately set to zero in this version.
+
+
+v1.2.7 June 06
+1) made modifications in prob.deriv, prob.se, summary.trial.fi and dht to accomodate situation with a single region
+in computation of average p, p(0) etc and it's se which was associated with changes in Jan 06.
+
+
+v1.2.8 Sept 06
+1) Made fixes to ddf.ds and detfct.fit.opt to make setupper and setlower work as they did prior
+to restructuring changes.
+2) Fix to create.model.frame so it works correctly when there is truncation (LJT)
+
+v1.2.9 Dec 06
+1) fix to ddf.ds to assign breaks to misc.options so it would get passed through to model
+object for plotting.
+
+V1.3.0 May 07
+1) added code to test.breaks to make sure the breaks are in order. If not, prints error message and stops
+2) removed dataname field from objects because somewhere along the line instead of the name of the data
+being stored the data was being stored which was duplicative with the data object. This involved
+changes to process.data and each of the ddf routines.
+3) Now collect.models compares the actual data which is more accurate anyhow.
+4) dht would get an error if the region.table included fields other than area and label.  The code was changed
+to extract those fields and ignore any others.  Same done for sample.table.
+5) modified merge in tables.dht within dht so it doesn't sort because that didn't work when the Region labels were numeric and exceeded 9.
+
+Changes : July 2007 (dlm)
+
+1) Added in some of the glue code for foptim (the Fortran optimisation based on the IMSL routine DNCONG.) Everything should work as it did before if you are not interested in foptim. Else "engine" needs to be specified in meta.data. There are more options from there documented in foptim itself.
+
+ 
+V1.3.1 Aug 07
+1) Made a fix to collect.models in check for mix of data sets in models
+2) Added code to create.varstructure so it checks to make sure there are no duplicate line labels within
+any region/stratum.
+3) Modified dht so that E(s) and its variance are set to 0 if there are no observations. Previously this was NAN which messed up the values for the total.
+
+V1.3.2 Jan 08
+1) Made a fix to create.model.frame which inadvertently dropped factor designation if there was only
+one variable in the formula.  I added drop=F to prevent conversion to vector and subsequently from factor 
+to numeric.
+
+2) Fixed numerous glitches in help files with mismatched braces.
+
+V1.3.3 Feb 08
+1) Included fix for computing inverse of hessian when it fits a completely flat detection function.  It now uses a function solvecov copied from the package fpc.  It arbirtrarily assigns a large value to the hessian to make it invertible which gives a 0 se for p from the ds portion of the fit.
+2) Added k (number of samples) and cv er in the summary statistics.
+
+V1.3.4 May 08
+1) Comments in setcov and its help file were corrected.  It incorrectly stated that it removed columns that summed to
+zero.  Originally the code worked that way but that was changed such that unused factor levels were identified by NA's from a glm fit to the data.  They unneeded colmns are removed in ddf.ds.
+2) A bug was fixed for predict.ds. When the newdata for prediction had empty factor levels that differed than the original fitted data, the code would fail.  Now it selects the same columns that were fitted with the original data.  However, it is still necessary for factor variables to have the same defined levels as the original data but which ones actually have
+data can differ between the newdata and original data, except obviously that you can't use data for a level in newdata that didn't exist in the original data because it has no estimate for the level that was missing in the original data.
+3) Bug fix for create.varstructure that was occasionaly sorting during merge which left obs 2 as the first record. Code
+was setup such that it used the data for the observer in the first record.  When the sort made observer =2 the first record the wrong data were extracted when trial method was used.  Adding sort=F did not fix the problem, so the data has been hard-coded to use observer=1 as the 
+primary observer.
+
+V1.3.4 Dec 08
+Did not change version number.  These changes not intended for release at present until further testing.
+1) Changes were made to dht, dht.se and varn to incorporate encounter rate variance estimators of Fewster et al (2008).  This included adding the
+element ervar to options.  It can take values "R2","R3","R4", "S1", "S2", "O1", "02","O3".  The previous version of varn is equivalent to "R3".  The
+default is now "R2" which was shown to be better by Fewster et al.  varn was completely re-written and uses code contributed by Rachel Fewster.  Also a
+function compute.df to compute degrees of freedom was added to dht.se.
+2) In addition some changes were made to dht and dht.se to replace use of by with tapply in counting numbers of transects.  This was to avoid problems
+when the code is used within R directly and the dataframe was constructed with a tapply.  The column of the dataframe can be a 1-d array and by does not work properly 
+in that context any longer in the recent R versions.
+3) Work left to do includes a) tying code with DISTANCE interface to set/pass option for er variance and implementing mechanism for systematic and overlap variance 
+estimators, b) testing code for all of the variance estimators, 3) changing function covn (varn.R) which is used to get var(E(S)) -- currently it uses a modified version
+of R3; may want to revisit how var(E(s)) is computed.
+
+V1.3.5 April 09
+Maybe version should change.
+1) I changed average p in summary.trial.fi to use n1/Nhat instead of errant n/Nhat.
+2) fixed bug in predict.ds which didn't use newdata to determine size of result for intercept model
+
+V1.3.6 July 09
+1) Updated plotting routines (JRB) - note several function arguments changed
+2) Updated help files for variance estimation (Eric Rexstad)
+
+V1.3.7 July 09
+1) Minor fixes to plotting routines (JRB)
+
+V1.3.8 July 09
+1) Scaling of histograms for plotting ds model objects was incorrect. [July 23rd,
+Charles Paxton; fixed JRBB July 24th]
+2) Error message returned due to data selection problems when plotting detection
+functions fit to interval data. [July 09, JRBB; fixed JRBB July 27th]
+
+V1.3.9 Oct 09  Compiled under R 2.9.2
+1) Fixes to variance calculations by JLL
+2) Fixes to plot routines by JRB.
+3) Changed use of custom invlogit() to the more robust, built-in plogis() function
+4) Various changes to ddf and related mcds functions by DLM
+5) Added CV to expected school size output from print.dht
+6) Brushed up documentation for various functions, including dht and varn
+
+v2.0.0
+This file is not updated for changes in v2.0.0.  Many changes made in v2.0.0 to accomodate
+gamma detection function and use of formulas for the shape parameter. Also R files
+now contain roxygen code to automatically create documentation files. I'll add more 
+as time allows.
+
+v2.0.1
+Made change to DeltaMethod and flt.var to handle case in which parameter value was exactly 0 which
+occurs
+Switched to optimx
+

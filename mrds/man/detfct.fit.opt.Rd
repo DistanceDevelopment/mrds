@@ -1,0 +1,54 @@
+\name{detfct.fit.opt}
+\title{Fit detection function to observed distances...}
+\usage{detfct.fit.opt(ddfobj, optim.options, bounds, misc.options,
+    fitting="all")}
+
+\description{
+  Fit detection function to observed distances using the
+  key-adjustment function approach.  If adjustment
+  functions are included it will alternate between fitting
+  parameters of key and adjustment functions and then all
+  parameters much like the approach in the CDS and MCDS
+  Distance FORTRAN code. This function is called by the
+  driver functioin \code{detfct.fit}.  This function does
+  the calls the R optim function which does not allow
+  non-linear constraints so inclusion of adjustments does
+  allow the detection function to be non-monotone.
+}
+\alias{detfct.fit.opt}
+\value{fitted detection function model object with the following list
+structure \item{par}{final parameter vector} \item{value}{final negative
+log likelihood value} \item{counts}{number of function evaluations}
+\item{convergence}{see codes in optim} \item{message}{string about
+convergence} \item{hessian}{hessian evaluated at final parameter values}
+\item{aux}{ a list with 21 elements \itemize{ \item maxit: maximum number
+of iterations allowed for optimization \item lower: lower bound values for
+parameters \item upper: upper bound values for parameters \item setlower:
+TRUE if they are user set bounds \item setupper: TRUE if they are user set
+bounds \item point: TRUE if point counts and FALSE if line transect \item
+int.range: integration range values \item showit: integer value that
+determines information printed during iteration \item doeachint: if TRUE
+each integral is computed numerically rather using tabled values \item
+integral.numeric if TRUE compute logistic integrals numerically \item
+breaks: breaks in distance for defined fixed bins for analysis \item
+maxiter: maximum iterations used \item refit: if TRUE, detection function
+will be fitted more than once if parameters are at a boundary or when
+convergence is not achieved \item nrefits: number of refittings \item
+parscale: parameter scale values \item fdebug: not sure what this means
+\item nonmono: logical as to whether montonicity should be enforced \item
+strict: if TRUE, then strict monotonicity is enforced; otherwise weak
+\item width: radius of point count or half-width of strip \item
+standardize: if TRUE, detection function is scaled so g(0)=1 \item ddfobj:
+distance detection function object; see \code{\link{create.ddfobj}} \item
+bounded: TRUE if parameters ended up a boundary (I think) \item model:
+list of formulas for detection function model (probably can remove this)
+}}}
+\author{Dave Miller; Jeff Laake}
+\arguments{
+  \item{ddfobj}{detection function object}
+  \item{optim.options}{control options for optim}
+  \item{bounds}{bounds for the parameters}
+  \item{misc.options}{miscellaneous options}
+  \item{fitting}{character string with values "all","key","adjust" to
+determine which parameters are allowed to vary in the fitting}
+}

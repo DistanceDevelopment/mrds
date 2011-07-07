@@ -1,0 +1,79 @@
+
+#' Print summary of distance detection function model object
+#' :provides a brief summary of data and fitted detection probability model
+#' parameters, model selection criterion, and optionally abundance in the
+#' covered (sampled) region and its standard error. What is printed depends
+#' on the corresponding call to summary.
+#' 
+#' @S3method print summary.ds
+#' @aliases print.summary.ds
+#' @method print summary.ds
+#' @param x a summary of \code{ddf} model object
+#' @param \dots unspecified and unused arguments for S3 consistency
+#' @return NULL
+#' @author Jeff Laake
+#' @seealso \code{\link{summary.ds}}
+#' @keywords utility
+
+print.summary.ds <- 
+function (x,...)
+#
+# print.summary.ds
+#  Print summary data for a ds object.
+# 
+# Argument
+#  x	- object returned from summary.ds
+#
+# Value
+#  Prints summary information
+#
+# dlm 03-Sep-05	Initial work started
+#
+{
+  cat("\nSummary for ds object \n")
+    
+  cat("Number of observations : ", x$n,"\n")
+  cat("Distance range         : ", x$left, " - ",x$width,"\n")
+  cat("AIC                    : ", x$aic, "\n")
+  cat("\nDetection function parameters", "\n")
+  cat("Scale Coefficients: ", "\n")
+  print(x$coeff$key.scale)
+  if(x$key %in% c("gamma","hr")) {
+    cat("\nShape parameters: ", "\n")
+    print(x$coeff$key.shape)
+  }
+  if (!is.null(x$coeff$adj.parm)) {
+     cat("\nAdjustment term parameter(s): ", "\n")
+     print(x$coeff$adj.parm)
+  }
+  cat("\n")
+  if(!is.null(x$Nhat))
+  {
+#      parameters=data.frame(Estimate=c(x$average.p,x$average.f0,x$Nhat))
+#      row.names(parameters)=c("Average p","Average f(0)", "N in covered region")
+      parameters=data.frame(Estimate=c(x$average.p,x$Nhat))
+      row.names(parameters)=c("Average p", "N in covered region")
+      if(!is.null(x$average.p.se))
+      {
+#          parameters$SE=c(x$average.p.se,x$average.f0.se,x$Nhat.se)
+          parameters$SE=c(x$average.p.se,x$Nhat.se)
+          parameters$CV=parameters$SE/parameters$Estimate
+      }
+  }
+  else
+  {
+#      parameters=data.frame(Estimate=c(x$average.p,x$average.f0))
+#      row.names(parameters)=c("Average p","Average f(0)")
+      parameters=data.frame(Estimate=c(x$average.p))
+      row.names(parameters)=c("Average p")
+      if(!is.null(x$average.p.se))
+      {
+#          parameters$SE=c(x$average.p.se,x$average.f0.se)
+          parameters$SE=c(x$average.p.se)
+          parameters$CV=parameters$SE/parameters$Estimate
+      }
+  }
+  print(parameters)
+invisible()
+}
+

@@ -1,0 +1,276 @@
+
+
+#' Grizzly bear aerial survey observations
+#' Observation data from fixed wing aerial survey of grizzly bears in Alaska.
+#' Independent dual observers were used with different viewing through flat
+#' windows. Good example of the gamma detection function.
+#' 
+#' These data are in the standard format for analysis with mrds.
+#' 
+#' @name bears
+#' @docType data
+#' @format A data frame with 306 observations on the following 5 variables.
+#'   \describe{ \item{list("object")}{observation number; same number used for
+#'   each observer to create pairs} \item{list("observer")}{1 and 2 for primary
+#'   and secondary observer; 2 records for each observation}
+#'   \item{list("detected")}{0/1 if missed/detected by the observer}
+#'   \item{list("size")}{number of bears in the cluster(group)}
+#'   \item{list("distance")}{distance from trackline to the center of the bear
+#'   group} }
+#' @references Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection
+#'   function for line transect surveys with mark-recapture and covariate data.
+#'   Journal of Agricultural Biological and Environmental Statistics
+#'   14:207-223.
+#' @source Data provided courtesy of Earl Becker, Alaska Department of Fish and
+#'   Game.
+#' @keywords datasets
+NULL
+
+
+#' Golf tee data used in chapter 6 of Advanced Distance Sampling examples
+#' Double platform data collected in a line transect survey of golf tees by 2
+#' observers at St. Andrews. Field sex was actually colour of the golf tee: 0 -
+#' green; 1 - yellow. Exposure was either low (0) or high(1) depending on
+#' height of tee above the ground. size was the number of tees in an observed
+#' cluster.
+#' 
+#' 
+#' @name book.tee.data
+#' @docType data
+#' @format The format is: List of 4 $ book.tee.dataframe:'data.frame': 324 obs.
+#'   of 7 variables: ..$ object : num [1:324] 1 1 2 2 3 3 4 4 5 5 ...  ..$
+#'   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
+#'   detected: num [1:324] 1 0 1 0 1 0 1 0 1 0 ...  ..$ distance: num [1:324]
+#'   2.68 2.68 3.33 3.33 0.34 0.34 2.53 2.53 1.46 1.46 ...  ..$ size : num
+#'   [1:324] 2 2 2 2 1 1 2 2 2 2 ...  ..$ sex : num [1:324] 1 1 1 1 0 0 1 1 1 1
+#'   ...  ..$ exposure: num [1:324] 1 1 0 0 0 0 1 1 0 0 ...  $ book.tee.region
+#'   :'data.frame': 2 obs. of 2 variables: ..$ Region.Label: Factor w/ 2 levels
+#'   "1","2": 1 2 ..$ Area : num [1:2] 1040 640 $ book.tee.samples
+#'   :'data.frame': 11 obs. of 3 variables: ..$ Sample.Label: num [1:11] 1 2 3
+#'   4 5 6 7 8 9 10 ...  ..$ Region.Label: Factor w/ 2 levels "1","2": 1 1 1 1
+#'   1 1 2 2 2 2 ...  ..$ Effort : num [1:11] 10 30 30 27 21 12 23 23 15 12 ...
+#'   $ book.tee.obs :'data.frame': 162 obs. of 3 variables: ..$ object : int
+#'   [1:162] 1 2 3 21 22 23 24 59 60 61 ...  ..$ Region.Label: int [1:162] 1 1
+#'   1 1 1 1 1 1 1 1 ...  ..$ Sample.Label: int [1:162] 1 1 1 1 1 1 1 1 1 1 ...
+#' @references Need to add this
+#' @source Need to add this
+#' @keywords datasets
+NULL
+
+
+
+
+#' Pronghorn aerial survey data from Wyoming
+#' Detections of pronghorn from fixed-wing aerial surveys in Southeastern
+#' Wyoming using four angular bins defined by strut marks. Illustrates data
+#' where altitude above ground level (AGL) varies during the survey.
+#' 
+#' Each record is an observed cluster of pronghorn.  The data provide the
+#' stratum for the observation, the direction of travel, the AGL at the time of
+#' the observation, the angular bin which contained the center of the pronghorn
+#' cluster(group), and the number of pronghorn in the group. The angular bins
+#' were defined by a combination of two window and five wing strut marks to
+#' define bin cutpoints for perpendicular ground distances of 0-65, 65-90,
+#' 90-115, 115-165 and 165-265 meters when the plane is 300' (91.4 meters)
+#' above ground level. The inner band is considered a blind region due to
+#' obstruction of view beneath the plane; thus th the line is offset 65 meters
+#' from underneath the plane.
+#' 
+#' @name pronghorn
+#' @docType data
+#' @format A data frame with 660 observations on the following 5 variables.
+#'   \describe{ \item{list("STRATUM")}{a numeric vector}
+#'   \item{list("direction")}{a factor with levels \code{N} \code{S}
+#'   representing the survey direction} \item{list("AGL")}{height above ground
+#'   level} \item{list("Band")}{a factor with levels \code{A} \code{B} \code{C}
+#'   \code{D} which represent angular bands between breaks at
+#'   35.42,44.56,51.52,61.02,70.97 degrees.  These angles were set based on
+#'   selected distance bins based on the target AGL.}
+#'   \item{list("cluster")}{number of pronghorn in the observed cluster} }
+#' @references Laake, J., R. J. Guenzel, J. L. Bengtson, P. Boveng, M. Cameron,
+#'   and M. B. Hanson. 2008.  Coping with variation in aerial survey protocol
+#'   for line-transect sampling. Wildlife Research 35:289-298.
+#' @source Data provided courtesy of Rich Guenzel of Wyoming Game and Fish.
+#' @keywords datasets
+NULL
+
+
+#' Wooden stake data from 1977 survey
+#' Multiple surveys by different observers of a single 1km transect containing
+#' 150 wooden stakes placed randomly throughout a 40 m strip (20m on either
+#' side).
+#' 
+#' 
+#' @name stake77
+#' @docType data
+#' @format A data frame with 150 observations on the following 10 variables.
+#'   \describe{ \item{list("StakeNo")}{unique number for each stake 1-150}
+#'   \item{list("PD")}{perpendicular distance at which the stake was placed
+#'   from the line} \item{list("Obs1")}{0/1 whether missed/seen by observer 1}
+#'   \item{list("Obs2")}{0/1 whether missed/seen by observer 2}
+#'   \item{list("Obs3")}{0/1 whether missed/seen by observer 3}
+#'   \item{list("Obs4")}{0/1 whether missed/seen by observer 4}
+#'   \item{list("Obs5")}{0/1 whether missed/seen by observer 5}
+#'   \item{list("Obs6")}{0/1 whether missed/seen by observer 6}
+#'   \item{list("Obs7")}{0/1 whether missed/seen by observer 7}
+#'   \item{list("Obs8")}{0/1 whether missed/seen by observer 8} }
+#' @references Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.
+#'   Estimation of Density from Line Transect Sampling of Biological
+#'   Populations. Wildlife Monographs:7-202.
+#' @source Laake, J. 1978. Line transect estimators robust to animal movement.
+#'   M.S. Thesis. Utah State University, Logan, Utah. 55p.
+#' @keywords datasets
+#' @examples
+#' 
+#' data(stake77)
+#' # Functions to extract stake data and put in the mrds format for model fitting.
+#' extract.stake=function(stake,obs)
+#' {
+#'   extract.obs=function(obs)
+#'   {
+#'      example=subset(stake,eval(parse(text=paste("Obs",obs,"==1",sep=""))),select="PD")
+#'      example$distance=example$PD
+#'      example$object=1:nrow(example)
+#'      example$PD=NULL
+#'      return(example)
+#'  }
+#'  if(obs!="all")
+#' 	 return(extract.obs(obs=obs))
+#'  else
+#'  {
+#' 	 example=NULL
+#'      for(i in 1:(ncol(stake)-2))
+#' 	 {
+#' 		 df=extract.obs(obs=i)
+#' 		 df$person=i
+#' 		 example=rbind(example,df)
+#' 	 }		 
+#' 	 example$person=factor(example$person)
+#' 	 example$object=1:nrow(example)
+#' 	 return(example)
+#'  }   
+#' }
+#' extract.stake.pairs=function(stake,obs1,obs2,removal=FALSE)
+#' {
+#'   obs1=paste("Obs",obs1,sep="")
+#'   obs2=paste("Obs",obs2,sep="")
+#'   example=subset(stake,eval(parse(text=paste(obs1,"==1 |",obs2,"==1 ",sep=""))),select=c("PD",obs1,obs2))
+#'   names(example)=c("distance","obs1","obs2")
+#'   detected=c(example$obs1,example$obs2)
+#'   example=data.frame(object=rep(1:nrow(example),2),distance=rep(example$distance,2),detected=detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
+#'   if(removal)example$detected[example$observer==2]=1
+#'   return(example)
+#' }
+#' # extract data for observer 1 and fit a single observer model
+#' stakes=extract.stake(stake77,1)
+#' ds.model=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = stakes, method = "ds", meta.data = list(width = 20))
+#' plot(ds.model,breaks=seq(0,20,2),showpoints=TRUE)
+#' ddf.gof(ds.model)
+#' # extract data from observers 1 and 3 and fit an io model
+#' stkpairs=extract.stake.pairs(stake77,1,3,removal=FALSE)
+#' io.model=ddf(dsmodel = ~mcds(key = "hn", formula=~1), mrmodel=~glm(formula=~distance),data = stkpairs, method = "io")
+#' summary(io.model)
+#' plot(io.model,breaks=seq(0,20,2),showpoints=TRUE)
+#' ddf.gof(io.model)
+#' 
+NULL
+
+
+#' Wooden stake data from 1978 survey
+#' Multiple surveys by different observers of a single 1km transect containing
+#' 150 wooden stakes placed based on expected uniform distribution throughout a
+#' 40 m strip (20m on either side).
+#' 
+#' The 1997 survey was based on a single realization of a uniform distribution.
+#' Because it was a single transect and there was no randomization of the
+#' distances for each survey, we repeated the experiment and used distances
+#' that provided a uniform distribution but randomly sorted the positions along
+#' the line so there was no pattern obvious to the observer.
+#' 
+#' @name stake78
+#' @docType data
+#' @format A data frame with 150 observations on the following 13 variables.
+#'   \describe{ \item{list("StakeNo")}{unique number for each stake 1-150}
+#'   \item{list("PD")}{perpendicular distance at which the stake was placed
+#'   from the line} \item{list("Obs1")}{0/1 whether missed/seen by observer 1}
+#'   \item{list("Obs2")}{0/1 whether missed/seen by observer 2}
+#'   \item{list("Obs3")}{0/1 whether missed/seen by observer 3}
+#'   \item{list("Obs4")}{0/1 whether missed/seen by observer 4}
+#'   \item{list("Obs5")}{0/1 whether missed/seen by observer 5}
+#'   \item{list("Obs6")}{0/1 whether missed/seen by observer 6}
+#'   \item{list("Obs7")}{0/1 whether missed/seen by observer 7}
+#'   \item{list("Obs8")}{0/1 whether missed/seen by observer 8}
+#'   \item{list("Obs9")}{0/1 whether missed/seen by observer 9}
+#'   \item{list("Obs10")}{0/1 whether missed/seen by observer 10}
+#'   \item{list("Obs11")}{0/1 whether missed/seen by observer 11} }
+#' @references Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.
+#'   Estimation of Density from Line Transect Sampling of Biological
+#'   Populations. Wildlife Monographs:7-202.
+#' @source Laake, J. 1978. Line transect estimators robust to animal movement.
+#'   M.S. Thesis. Utah State University, Logan, Utah. 55p.
+#' @keywords datasets
+#' @examples
+#' 
+#' data(stake78)
+#' data(stake77)
+#' # compare distribution of distances for all stakes
+#' hist(stake77$PD)
+#' dev.new()
+#' hist(stake78$PD)
+#' # Functions to extract stake data and put in the mrds format for model fitting.
+#' extract.stake=function(stake,obs)
+#' {
+#'   extract.obs=function(obs)
+#'   {
+#'      example=subset(stake,eval(parse(text=paste("Obs",obs,"==1",sep=""))),select="PD")
+#'      example$distance=example$PD
+#'      example$object=1:nrow(example)
+#'      example$PD=NULL
+#'      return(example)
+#'  }
+#'  if(obs!="all")
+#' 	 return(extract.obs(obs=obs))
+#'  else
+#'  {
+#' 	 example=NULL
+#'      for(i in 1:(ncol(stake)-2))
+#' 	 {
+#' 		 df=extract.obs(obs=i)
+#' 		 df$person=i
+#' 		 example=rbind(example,df)
+#' 	 }		 
+#' 	 example$person=factor(example$person)
+#' 	 example$object=1:nrow(example)
+#' 	 return(example)
+#'  }   
+#' }
+#' extract.stake.pairs=function(stake,obs1,obs2,removal=FALSE)
+#' {
+#'   obs1=paste("Obs",obs1,sep="")
+#'   obs2=paste("Obs",obs2,sep="")
+#'   example=subset(stake,eval(parse(text=paste(obs1,"==1 |",obs2,"==1 ",sep=""))),select=c("PD",obs1,obs2))
+#'   names(example)=c("distance","obs1","obs2")
+#'   detected=c(example$obs1,example$obs2)
+#'   example=data.frame(object=rep(1:nrow(example),2),distance=rep(example$distance,2),detected=detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
+#'   if(removal)example$detected[example$observer==2]=1
+#'   return(example)
+#' }
+#' # extract data for observer 10 and fit a single observer model
+#' stakes=extract.stake(stake78,10)
+#' ds.model=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = stakes, method = "ds", meta.data = list(width = 20))
+#' plot(ds.model,breaks=seq(0,20,2),showpoints=TRUE)
+#' ddf.gof(ds.model)
+#' # extract data from observers 5 and 7 and fit an io model
+#' stkpairs=extract.stake.pairs(stake78,5,7,removal=FALSE)
+#' io.model=ddf(dsmodel = ~mcds(key = "hn", formula=~1), mrmodel=~glm(formula=~distance),data = stkpairs, method = "io")
+#' summary(io.model)
+#' plot(io.model,breaks=seq(0,20,2),showpoints=TRUE)
+#' ddf.gof(io.model)
+#' 
+#' 
+NULL
+
+
+
+
+

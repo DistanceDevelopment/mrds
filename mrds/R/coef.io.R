@@ -1,0 +1,27 @@
+coef.io <-
+function(object,...)
+#
+# coef.io
+#
+# Provides a summary of parameters and estimates from the output of io object
+#
+# Arguments:
+#
+# model      - object from ddf.io
+#
+# Value: list of coefficient data frames (scale and exponent (if hazard))
+#
+{
+   par=coef(object$mr)
+   row.names(par)=paste("mr      :",row.names(coef(object$mr)))
+   if(!is.null(coef(object$ds)$exponent))
+   {
+      rn=row.names(par)
+      par=rbind(par,coef(object$ds)$exponent)
+      row.names(par)=c(rn, paste("ds expon:",row.names(coef(object$ds)$exponent)))
+   }
+   rn=row.names(par)
+   par=rbind(par,coef(object$ds)$scale)
+   row.names(par)=c(rn,paste("ds scale:",row.names(coef(object$ds)$scale)))
+   return(par)
+}
