@@ -127,7 +127,7 @@ function(object,newdata=NULL,compute=FALSE,int.range=NULL,esw=FALSE,...)
 		  zdim=ncol(ddfobj$shape$dm)
 		  znames=colnames(ddfobj$shape$dm)
 		  ddfobj$shape$dm <- setcov(newdata, as.formula(ddfobj$shape$formula))$cov
-		  if(zdim != ncol(ddfobj$scale$dm) | !all(znames==colnames(ddfobj$shape$dm)))
+		  if(zdim != ncol(ddfobj$shape$dm) | !all(znames==colnames(ddfobj$shape$dm)))
 			  stop("fields or factor levels in newdata do not match data used in estimation model for shape model\n")
 	  }
     }
