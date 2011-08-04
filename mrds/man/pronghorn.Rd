@@ -1,15 +1,26 @@
+\docType{data}
 \name{pronghorn}
 \alias{pronghorn}
-\title{Pronghorn aerial survey data from Wyoming...}
-
-\description{
-  Pronghorn aerial survey data from Wyoming Detections of
-  pronghorn from fixed-wing aerial surveys in Southeastern
-  Wyoming using four angular bins defined by strut marks.
-  Illustrates data where altitude above ground level (AGL)
-  varies during the survey.
+\title{Pronghorn aerial survey data from Wyoming}
+\format{A data frame with 660 observations on the following 5 variables.
+\describe{ \item{STRATUM}{a numeric vector}
+\item{direction}{a factor with levels \code{N} \code{S}
+representing the survey direction} \item{AGL}{height above ground
+level} \item{Band}{a factor with levels \code{A} \code{B} \code{C}
+\code{D} which represent angular bands between breaks at
+35.42,44.56,51.52,61.02,70.97 degrees.  These angles were set based on
+selected distance bins based on the target AGL.}
+\item{cluster}{number of pronghorn in the observed cluster} }}
+\source{
+  Data provided courtesy of Rich Guenzel of Wyoming Game
+  and Fish.
 }
-
+\description{
+  Detections of pronghorn from fixed-wing aerial surveys in
+  Southeastern Wyoming using four angular bins defined by
+  strut marks. Illustrates data where altitude above ground
+  level (AGL) varies during the survey.
+}
 \details{
   Each record is an observed cluster of pronghorn.  The
   data provide the stratum for the observation, the
@@ -25,8 +36,11 @@
   obstruction of view beneath the plane; thus th the line
   is offset 65 meters from underneath the plane.
 }
-\docType{data}
-\references{Laake, J., R. J. Guenzel, J. L. Bengtson, P. Boveng, M. Cameron,
-and M. B. Hanson. 2008.  Coping with variation in aerial survey protocol
-for line-transect sampling. Wildlife Research 35:289-298.}
+\references{
+  Laake, J., R. J. Guenzel, J. L. Bengtson, P. Boveng, M.
+  Cameron, and M. B. Hanson. 2008.  Coping with variation
+  in aerial survey protocol for line-transect sampling.
+  Wildlife Research 35:289-298.
+}
 \keyword{datasets}
+

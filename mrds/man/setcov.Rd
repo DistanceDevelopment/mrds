@@ -1,13 +1,21 @@
 \name{setcov}
 \alias{setcov}
-\title{Creates design matrix for covariates in detection function...}
-\usage{setcov(dmat, model)}
+\title{Creates design matrix for covariates in detection function}
+\usage{
+  setcov(dmat, model)
+}
+\arguments{
+  \item{dmat}{data matrix}
 
+  \item{model}{model formula}
+}
+\value{
+  a design matrix for the specified data and model
+}
 \description{
-  Creates design matrix for covariates in detection
-  function This function creates a design matrix for the
-  g(0) or scale covariates using the input model formula.
-  It returns a list which contains 2 elements: 1) dim: the
+  This function creates a design matrix for the g(0) or
+  scale covariates using the input model formula. It
+  returns a list which contains 2 elements: 1) dim: the
   dimension (number of columns) of the design matrix, and
   2) cov: the constructed design matrix. This function is
   relatively simple because it uses the built-in function
@@ -20,10 +28,8 @@
   matrix are all 0's the column is removed.  This occurs
   when there is no data for a particular factor.
 }
-\value{a design matrix for the specified data and model}
-\author{Jeff Laake}
-\keyword{utility}
-\arguments{
-  \item{dmat}{data matrix}
-  \item{model}{model formula}
+\author{
+  Jeff Laake
 }
+\keyword{utility}
+

@@ -1,6 +1,5 @@
-
-
 #' Distance Sampling Functions
+#' 
 #' Placeholder -- Not functional ----
 #' 
 #' @param model model object

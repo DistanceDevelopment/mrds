@@ -1,6 +1,5 @@
-
-
 #' Distance Detection Function Fitting
+#' 
 #' Generic function for fitting detection functions for distance sampling with
 #' single and double observer configurations. Independent observer, trial and
 #' dependent observer (removal) configurations are included. This is a generic

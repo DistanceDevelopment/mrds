@@ -1,33 +1,5 @@
-
-
-#' Grizzly bear aerial survey observations
-#' Observation data from fixed wing aerial survey of grizzly bears in Alaska.
-#' Independent dual observers were used with different viewing through flat
-#' windows. Good example of the gamma detection function.
-#' 
-#' These data are in the standard format for analysis with mrds.
-#' 
-#' @name bears
-#' @docType data
-#' @format A data frame with 306 observations on the following 5 variables.
-#'   \describe{ \item{list("object")}{observation number; same number used for
-#'   each observer to create pairs} \item{list("observer")}{1 and 2 for primary
-#'   and secondary observer; 2 records for each observation}
-#'   \item{list("detected")}{0/1 if missed/detected by the observer}
-#'   \item{list("size")}{number of bears in the cluster(group)}
-#'   \item{list("distance")}{distance from trackline to the center of the bear
-#'   group} }
-#' @references Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection
-#'   function for line transect surveys with mark-recapture and covariate data.
-#'   Journal of Agricultural Biological and Environmental Statistics
-#'   14:207-223.
-#' @source Data provided courtesy of Earl Becker, Alaska Department of Fish and
-#'   Game.
-#' @keywords datasets
-NULL
-
-
 #' Golf tee data used in chapter 6 of Advanced Distance Sampling examples
+#' 
 #' Double platform data collected in a line transect survey of golf tees by 2
 #' observers at St. Andrews. Field sex was actually colour of the golf tee: 0 -
 #' green; 1 - yellow. Exposure was either low (0) or high(1) depending on
@@ -61,6 +33,7 @@ NULL
 
 
 #' Pronghorn aerial survey data from Wyoming
+#' 
 #' Detections of pronghorn from fixed-wing aerial surveys in Southeastern
 #' Wyoming using four angular bins defined by strut marks. Illustrates data
 #' where altitude above ground level (AGL) varies during the survey.
@@ -79,14 +52,14 @@ NULL
 #' @name pronghorn
 #' @docType data
 #' @format A data frame with 660 observations on the following 5 variables.
-#'   \describe{ \item{list("STRATUM")}{a numeric vector}
-#'   \item{list("direction")}{a factor with levels \code{N} \code{S}
-#'   representing the survey direction} \item{list("AGL")}{height above ground
-#'   level} \item{list("Band")}{a factor with levels \code{A} \code{B} \code{C}
+#'   \describe{ \item{STRATUM}{a numeric vector}
+#'   \item{direction}{a factor with levels \code{N} \code{S}
+#'   representing the survey direction} \item{AGL}{height above ground
+#'   level} \item{Band}{a factor with levels \code{A} \code{B} \code{C}
 #'   \code{D} which represent angular bands between breaks at
 #'   35.42,44.56,51.52,61.02,70.97 degrees.  These angles were set based on
 #'   selected distance bins based on the target AGL.}
-#'   \item{list("cluster")}{number of pronghorn in the observed cluster} }
+#'   \item{cluster}{number of pronghorn in the observed cluster} }
 #' @references Laake, J., R. J. Guenzel, J. L. Bengtson, P. Boveng, M. Cameron,
 #'   and M. B. Hanson. 2008.  Coping with variation in aerial survey protocol
 #'   for line-transect sampling. Wildlife Research 35:289-298.
@@ -96,6 +69,7 @@ NULL
 
 
 #' Wooden stake data from 1977 survey
+#' 
 #' Multiple surveys by different observers of a single 1km transect containing
 #' 150 wooden stakes placed randomly throughout a 40 m strip (20m on either
 #' side).
@@ -104,16 +78,16 @@ NULL
 #' @name stake77
 #' @docType data
 #' @format A data frame with 150 observations on the following 10 variables.
-#'   \describe{ \item{list("StakeNo")}{unique number for each stake 1-150}
-#'   \item{list("PD")}{perpendicular distance at which the stake was placed
-#'   from the line} \item{list("Obs1")}{0/1 whether missed/seen by observer 1}
-#'   \item{list("Obs2")}{0/1 whether missed/seen by observer 2}
-#'   \item{list("Obs3")}{0/1 whether missed/seen by observer 3}
-#'   \item{list("Obs4")}{0/1 whether missed/seen by observer 4}
-#'   \item{list("Obs5")}{0/1 whether missed/seen by observer 5}
-#'   \item{list("Obs6")}{0/1 whether missed/seen by observer 6}
-#'   \item{list("Obs7")}{0/1 whether missed/seen by observer 7}
-#'   \item{list("Obs8")}{0/1 whether missed/seen by observer 8} }
+#'   \describe{ \item{StakeNo}{unique number for each stake 1-150}
+#'   \item{PD}{perpendicular distance at which the stake was placed
+#'   from the line} \item{Obs1}{0/1 whether missed/seen by observer 1}
+#'   \item{Obs2}{0/1 whether missed/seen by observer 2}
+#'   \item{Obs3}{0/1 whether missed/seen by observer 3}
+#'   \item{Obs4}{0/1 whether missed/seen by observer 4}
+#'   \item{Obs5}{0/1 whether missed/seen by observer 5}
+#'   \item{Obs6}{0/1 whether missed/seen by observer 6}
+#'   \item{Obs7}{0/1 whether missed/seen by observer 7}
+#'   \item{Obs8}{0/1 whether missed/seen by observer 8} }
 #' @references Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.
 #'   Estimation of Density from Line Transect Sampling of Biological
 #'   Populations. Wildlife Monographs:7-202.
@@ -177,6 +151,7 @@ NULL
 
 
 #' Wooden stake data from 1978 survey
+#' 
 #' Multiple surveys by different observers of a single 1km transect containing
 #' 150 wooden stakes placed based on expected uniform distribution throughout a
 #' 40 m strip (20m on either side).
@@ -190,19 +165,19 @@ NULL
 #' @name stake78
 #' @docType data
 #' @format A data frame with 150 observations on the following 13 variables.
-#'   \describe{ \item{list("StakeNo")}{unique number for each stake 1-150}
-#'   \item{list("PD")}{perpendicular distance at which the stake was placed
-#'   from the line} \item{list("Obs1")}{0/1 whether missed/seen by observer 1}
-#'   \item{list("Obs2")}{0/1 whether missed/seen by observer 2}
-#'   \item{list("Obs3")}{0/1 whether missed/seen by observer 3}
-#'   \item{list("Obs4")}{0/1 whether missed/seen by observer 4}
-#'   \item{list("Obs5")}{0/1 whether missed/seen by observer 5}
-#'   \item{list("Obs6")}{0/1 whether missed/seen by observer 6}
-#'   \item{list("Obs7")}{0/1 whether missed/seen by observer 7}
-#'   \item{list("Obs8")}{0/1 whether missed/seen by observer 8}
-#'   \item{list("Obs9")}{0/1 whether missed/seen by observer 9}
-#'   \item{list("Obs10")}{0/1 whether missed/seen by observer 10}
-#'   \item{list("Obs11")}{0/1 whether missed/seen by observer 11} }
+#'   \describe{ \item{StakeNo}{unique number for each stake 1-150}
+#'   \item{PD}{perpendicular distance at which the stake was placed
+#'   from the line} \item{Obs1}{0/1 whether missed/seen by observer 1}
+#'   \item{Obs2}{0/1 whether missed/seen by observer 2}
+#'   \item{Obs3}{0/1 whether missed/seen by observer 3}
+#'   \item{Obs4}{0/1 whether missed/seen by observer 4}
+#'   \item{Obs5}{0/1 whether missed/seen by observer 5}
+#'   \item{Obs6}{0/1 whether missed/seen by observer 6}
+#'   \item{Obs7}{0/1 whether missed/seen by observer 7}
+#'   \item{Obs8}{0/1 whether missed/seen by observer 8}
+#'   \item{Obs9}{0/1 whether missed/seen by observer 9}
+#'   \item{Obs10}{0/1 whether missed/seen by observer 10}
+#'   \item{Obs11}{0/1 whether missed/seen by observer 11} }
 #' @references Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.
 #'   Estimation of Density from Line Transect Sampling of Biological
 #'   Populations. Wildlife Monographs:7-202.

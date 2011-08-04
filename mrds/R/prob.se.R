@@ -1,7 +1,6 @@
-
-
 #' Average p and average p(0) variance
-#' :computes components of variance for average p=n/N and average p(0) with
+#' 
+#' Computes components of variance for average p=n/N and average p(0) with
 #' weights based on empirical covariate distribution, if it contains covariates.
 #' 
 #' Need to add equations here as I do not think they exist in any of the texts.

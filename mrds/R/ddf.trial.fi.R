@@ -1,7 +1,8 @@
-
-
+#' Mark-Recapture Analysis of Trial Configuration - FI
+#' 
 #' Mark-Recapture Analysis of Trial Observer Configuration with Full
 #' Independence
+#' 
 #' The mark-recapture data derived from a trial observer distance sampling
 #' survey can be used to derive a conditional detection function (p_1(y)) for
 #' observer 1 based on trials (observations) from observer 2. It is a
@@ -24,7 +25,7 @@
 #' arguments \code{control},\code{meta.data},and \code{method} are defined the
 #' same as in \code{ddf}.
 #' 
-#' @method ddf trial.fi
+#' @S3method ddf trial.fi
 #' @param model mark-recapture model specification
 #' @param data analysis dataframe
 #' @param meta.data list containing settings controlling data structure
@@ -32,7 +33,6 @@
 #' @param call original function call used to call \code{ddf}
 #' @param method analysis method; only needed if this function called from
 #'   \code{ddf.trial}
-#' @export
 #' @return result: a trial.fi model object
 #' @author Jeff Laake
 #' @seealso

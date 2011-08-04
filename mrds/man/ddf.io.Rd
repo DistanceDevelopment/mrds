@@ -1,12 +1,37 @@
 \name{ddf.io}
 \alias{ddf.io}
-\title{Mark-Recapture Distance Sampling (MRDS) Analysis of Independent Observer...}
-\usage{\method{ddf}{io} (dsmodel, mrmodel, data, meta.data=list(),
-    control=list(), call="")}
+\title{Mark-Recapture Distance Sampling (MRDS) IO - PI}
+\usage{
+  ddf.io(dsmodel, mrmodel, data, meta.data = list(),
+  control = list(), call = "")
+}
+\arguments{
+  \item{dsmodel}{distance sampling model specification;
+  model list with key function and scale formula if any}
 
+  \item{mrmodel}{mark-recapture model specfication; model
+  list with formula and link}
+
+  \item{data}{analysis dataframe}
+
+  \item{meta.data}{list containing settings controlling
+  data structure}
+
+  \item{control}{list containing settings controlling model
+  fitting}
+
+  \item{call}{original function call used to call
+  \code{ddf}}
+}
+\value{
+  result: an io model object which is composed of io.fi and
+  ds model objects
+}
 \description{
   Mark-Recapture Distance Sampling (MRDS) Analysis of
   Independent Observer Configuration and Point Independence
+}
+\details{
   MRDS analysis based on point independence involves two
   separate and independent analyses of the mark-recapture
   data and the distance sampling data.  For the independent
@@ -27,9 +52,7 @@
   Borchers 2004) from which predictions are made.
   \code{ddf.io} is not called directly by the user and is
   called from \code{\link{ddf}} with \code{method="io"}.
-}
 
-\details{
   For a complete description of each of the calling
   arguments, see \code{\link{ddf}}.  The argument
   \code{dataname} is the name of the dataframe specified by
@@ -37,25 +60,21 @@
   \code{dsmodel}, \code{mrmodel}, \code{control} and
   \code{meta.data} are defined the same as in \code{ddf}.
 }
-\value{result: an io model object which is composed of io.fi and ds model
-objects}
-\author{Jeff Laake}
-\seealso{\code{\link{ddf.io.fi}},
-\code{\link{ddf.ds}},\code{\link{summary.io}},\code{\link{coef.io}},\code{\link{plot.io}},
-\code{\link{gof.io}}}
-\references{Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
-detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
-Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
-Thomas. Oxford University Press.}
-\keyword{Statistical}
-\keyword{Models}
-\arguments{
-  \item{dsmodel}{distance sampling model specification; model list with key
-function and scale formula if any}
-  \item{mrmodel}{mark-recapture model specfication; model list with formula
-and link}
-  \item{data}{analysis dataframe}
-  \item{meta.data}{list containing settings controlling data structure}
-  \item{control}{list containing settings controlling model fitting}
-  \item{call}{original function call used to call \code{ddf}}
+\author{
+  Jeff Laake
 }
+\references{
+  Laake, J.L. and D.L. Borchers. 2004. Methods for
+  incomplete detection at distance zero. In: Advanced
+  Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
+  Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  University Press.
+}
+\seealso{
+  \code{\link{ddf.io.fi}},
+  \code{\link{ddf.ds}},\code{\link{summary.io}},\code{\link{coef.io}},\code{\link{plot.io}},
+  \code{\link{gof.io}}
+}
+\keyword{Models}
+\keyword{Statistical}
+

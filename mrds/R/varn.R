@@ -1,6 +1,5 @@
-
-
 #' Computes empirical variance of encounter rate
+#' 
 #' Computes one of a series of possible variance estimates for the observed
 #' encounter rate for a set of sample measurements (e.g., line lengths) and
 #' number of observations per sample.
@@ -28,6 +27,7 @@
 #' given in the \code{lengths} and \code{groups} vectors.
 #' 
 #' @usage   varn(lvec,nvec,type)
+#' 
 #'          covn(lvec, groups1, groups2, type)
 #' @aliases varn covn
 #' @param lvec vector of sample measurements (e.g., line lengths)

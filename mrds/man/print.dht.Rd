@@ -1,23 +1,39 @@
 \name{print.dht}
 \alias{print.dht}
-\title{Print density and abundance estimates based on Horvitz-Thompson-like...}
-\usage{\method{print}{dht} (x, cor=FALSE, bysample=FALSE,
-    vcmatrices=FALSE, ...)}
-
-\description{
-  Print density and abundance estimates based on
-  Horvitz-Thompson-like estimator Outputs summary
-  statistics, abundance and density by region (if any) and
-  optionally a correlation matrix if more than one region.
+\title{Prints density and abundance estimates based on Horvitz-Thompson-like
+estimator}
+\usage{
+  \method{print}{dht} (x, cor = FALSE, bysample = FALSE,
+  vcmatrices = FALSE, ...)
 }
-\value{None}
-\author{Jeff Laake}
-\seealso{\code{\link{dht}}}
-\keyword{utility}
 \arguments{
-  \item{x}{dht object that results from call to dht for a specific ddf object}
-  \item{cor}{if TRUE outputs correlation matrix of estimates}
+  \item{x}{dht object that results from call to dht for a
+  specific ddf object}
+
+  \item{cor}{if TRUE outputs correlation matrix of
+  estimates}
+
   \item{bysample}{if TRUE, prints results for each sample}
-  \item{vcmatrices}{if TRUE, prints variance-covariance matrices}
-  \item{\dots}{unspecified and unused arguments for S3 consistency}
+
+  \item{vcmatrices}{if TRUE, prints variance-covariance
+  matrices}
+
+  \item{\dots}{unspecified and unused arguments for S3
+  consistency}
 }
+\value{
+  None
+}
+\description{
+  Outputs summary statistics, abundance and density by
+  region (if any) and optionally a correlation matrix if
+  more than one region.
+}
+\author{
+  Jeff Laake
+}
+\seealso{
+  \code{\link{dht}}
+}
+\keyword{utility}
+

@@ -1,7 +1,8 @@
-
-
+#' Density and abundance estimates and variances 
+#' 
 #' Computes density and abundance estimates and variances based on
 #' Horvitz-Thompson-like estimator
+#' 
 #' Density and abundance within the sampled region is computed based on a
 #' Horvitz-Thomspon-like estimator for groups and individuals (if a clustered
 #' population) and this is extrapolated to the entire survey region based on
@@ -160,32 +161,6 @@ function(model,region.table,sample.table, obs.table=NULL, subset=NULL, se=TRUE, 
 #
 # dht - computes density and abundance estimates and variances based on H-T estimator
 #
-#  Arguments:
-#
-#  model        - ddf model object
-#  region.table - table of region values
-#  sample.table - table of sample values
-#  obs.table    - table of object #'s and links to sample and region tables
-#  subset       - subset statement to create obs.table if NULL
-#  se           - if TRUE computes std errors, cv and confidence interval based on log-normal
-#  bootstrap    - if TRUE uses bootstrap approach (currently not implemented)
-#  options      - list of options that can be set
-#                     pdelta        - delta value for computing numerical first derivatives
-#                     varflag       - 0,1,2 (see below)
-#                     convert.units - multiplier for width to convert to units of length
-#                     er.var - character var specifying how to calculate the encounter rate variance
-#                        choice of R2, R3, R4, S1, S2, O1, O2, O3
-#                        see varn.R for details
-#
-#  Value:
-#
-#  A list with the following elements
-#
-#  summary - table of statistics summarized by region
-#  N       - table of estimates for abundance
-#  D       - table of estimates for density
-#  cormat  - correlation matrix of regional abundance/density estimates and total (if more than one region)  
-#
 # Functions Used:  assign.default.values, create.varstructure, covered.region.dht, survey.region.dht, 
 #                  	dht.se, varn, covn(in varn.R), solvecov (in coef.ds.R).
 #
@@ -211,10 +186,11 @@ tables.dht=function(group)
     width= model$meta.data$width * options$convert.units
     Nhat.by.sample = survey.region.dht(Nhat.by.sample, samples,width)
     Nhat.by.sample = Nhat.by.sample[order(Nhat.by.sample$Region.Label,Nhat.by.sample$Sample.Label),]
-    bysample.table=with(Nhat.by.sample,
-         data.frame(Region=Region.Label,Sample=Sample.Label,Effort=Effort.x,
-                    Sample.Area=Effort.x*2*width,n=n,Nhat=Nhat,Dhat=Nhat/(Effort.x*2*width)))
-    Nhat.by.region = by(Nhat.by.sample$Nhat, Nhat.by.sample$Region.Label,
+	bysample.table = with(Nhat.by.sample, data.frame(Region = Region.Label, 
+					Sample = Sample.Label, Effort = Effort.x, Sample.Area = Effort.x * 
+							2 * width,Area=Area, n = n, Nhat = Nhat,Nchat = Nhat*CoveredArea/Area))
+	bysample.table$Dhat = bysample.table$Nchat/bysample.table$Sample.Area
+	Nhat.by.region = by(Nhat.by.sample$Nhat, Nhat.by.sample$Region.Label,
         sum)
 #
 #  Create estimate table

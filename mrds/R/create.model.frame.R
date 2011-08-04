@@ -1,6 +1,5 @@
-
-
 #' Create a model frame for ddf fitting
+#' 
 #' Creates a model.frame for distance detection function fitting. It includes
 #' some pre-specified and computed variables with those included in the model
 #' specified by user (formula)

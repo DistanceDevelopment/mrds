@@ -1,7 +1,8 @@
-
-
+#' Mark-Recapture Distance Sampling (MRDS) Trial Configuration - PI 
+#' 
 #' Mark-Recapture Distance Sampling (MRDS) Analysis of Trial Observer
 #' Configuration and Point Independence
+#' 
 #' MRDS analysis based on point independence involves two separate and
 #' independent analyses of the mark-recapture data and the distance sampling
 #' data.  For the trial configuration, the mark-recapture data are analysed
@@ -23,7 +24,7 @@
 #' \code{dsmodel}, \code{mrmodel}, \code{control} and \code{meta.data} are
 #' defined the same as in \code{ddf}.
 #' 
-#' @method ddf trial
+#' @S3method ddf trial
 #' @param dsmodel distance sampling model specification; model list with key
 #'   function and scale formula if any
 #' @param mrmodel mark-recapture model specfication; model list with formula
@@ -32,7 +33,6 @@
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
-#' @export
 #' @return result: a trial model object which is composed of trial.fi and ds
 #'   model objects
 #' @author Jeff Laake

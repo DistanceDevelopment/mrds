@@ -1,27 +1,58 @@
 \name{plot.trial}
-\title{Plot fit of detection functions and histograms of data from distance...}
-\usage{\method{plot}{trial} (x, which=c(2, 3, 4), byvar="",
-    breaks, nc, winht=4, winwd=6, jitter.v=rep(0, 3),
-    showpoints=TRUE, showlines=TRUE, pl.col=c("black",
-    "blue"), bw.col=c(grey(0), grey(0.4)),
-    black.white=FALSE, pl.den=rep(20, 2), pl.ang=rep(-45,
-    2), ...)}
+\alias{plot.trial}
+\title{Plot fit of detection functions and histograms of data from distance
+sampling model}
+\arguments{
+  \item{x}{fitted model from \code{ddf}}
 
-\description{
-  Plot fit of detection functions and histograms of data
-  from distance sampling model Plots the fitted detection
-  functions for a distance sampling model and histograms of
-  the distances (for unconditional detection functions) or
-  proportion of observations detected within distance
-  intervals (for conditional detection functions) to
-  compare visually the fitted model and data.  The
-  structure of the histogram can be controlled by the
-  user-defined arguments \code{nc} or \code{breaks}.  The
-  observation specific detection probabilities along with
-  the line representing the fitted average detection
-  probability.
+  \item{which}{index to specify which plots should be
+  produced. 1: uncond det fct, 2:cond det fct}
+
+  \item{breaks}{user define breakpoints}
+
+  \item{nc}{number of equal-width bins for histogram}
+
+  \item{showpoints}{logical variable; if TRUE plots
+  predicted value for each observation}
+
+  \item{showlines}{logical variable; if TRUE a line
+  representing the average detection probability is
+  plotted}
+
+  \item{ylim}{range of y axis; defaults to (0,1)}
+
+  \item{angle}{shading angle for hatching}
+
+  \item{density}{shading density for hatching}
+
+  \item{col}{plotting colour}
+
+  \item{jitter}{scaling option for plotting points.  Jitter
+  is applied to points by multiplying the fitted value by a
+  random draw from a normal distribution with mean 1 and sd
+  jitter.}
+
+  \item{divisions}{number of divisions for averaging line
+  values; default = 25}
+
+  \item{\dots}{other graphical parameters, passed to the
+  plotting functions (plot, hist, lines, points, etc)}
 }
-
+\value{
+  NULL
+}
+\description{
+  Plots the fitted detection functions for a distance
+  sampling model and histograms of the distances (for
+  unconditional detection functions) or proportion of
+  observations detected within distance intervals (for
+  conditional detection functions) to compare visually the
+  fitted model and data.  The structure of the histogram
+  can be controlled by the user-defined arguments \code{nc}
+  or \code{breaks}.  The observation specific detection
+  probabilities along with the line representing the fitted
+  average detection probability.
+}
 \details{
   In earlier versions of this package the plot routines
   other than \code{plot.ds} (\code{plot.io} etc) used
@@ -105,37 +136,8 @@
   model averaged over population covariate vales and dots
   for each estimated detection probability. \cr }
 }
-\alias{plot.trial}
-\value{NULL}
-\author{Jeff Laake, Jon Bishop, David Borchers}
-\keyword{plot}
-\arguments{
-  \item{x}{fitted model from \code{ddf}}
-  \item{which}{index to specify which plots should be produced. See
-\code{details.}}
-  \item{byvar}{name of variable to be used to color points - not currently
-implemented.}
-  \item{breaks}{user define breakpoints}
-  \item{nc}{number of equal-width bins for histogram}
-  \item{winht}{plot window height (not currently implemented)}
-  \item{winwd}{plot window width (not currently implemented)}
-  \item{jitter.v}{scaling option for plotting points.  Jitter is applied to
-points by multiplying the fitted value by a random draw from a normal
-distribution with mean 1 and sd jitter.v[j].  Where j=1,2 corresponds to
-observer j and j=3 corresponds to pooled/duplicate detections.}
-  \item{showpoints}{logical variable; if TRUE plots predicted value for each
-observation}
-  \item{showlines}{logical variable; if TRUE a line representing the average
-detection probability is plotted}
-  \item{pl.col}{colours plotting colours for obs 1, obs 2 detections}
-  \item{bw.col}{grayscale plotting colours for obs 1, obs 2 detections}
-  \item{black.white}{logical variable; if TRUE plots are grayscale}
-  \item{pl.den}{shading density for plots of obs 1, obs 2 detections}
-  \item{pl.ang}{shading angle for plots of obs 1, obs 2 detections}
-  \item{\dots}{other graphical parameters, passed to the plotting functions
-(plot, hist, lines, points, etc)}
-}
-\examples{data(book.tee.data)
+\examples{
+data(book.tee.data)
 region<<-book.tee.data$book.tee.region
 egdata<<-book.tee.data$book.tee.dataframe
 samples<<-book.tee.data$book.tee.samples
@@ -143,4 +145,10 @@ obs<<-book.tee.data$book.tee.obs
 xx=ddf(dsmodel = ~mcds(key = "hn", formula = ~sex), data = egdata[egdata$observer==1, ], method = "ds", meta.data = list(width = 4))
 plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
 plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
-plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)}
+plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
+}
+\author{
+  Jeff Laake, Jon Bishop, David Borchers
+}
+\keyword{plot}
+

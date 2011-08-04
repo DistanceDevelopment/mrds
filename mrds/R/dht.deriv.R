@@ -1,7 +1,6 @@
-
-
 #' Computes abundance estimates at specified parameter values using
 #' Horvitz-Thompson-like estimator
+#' 
 #' Computes abundance at specified values of parameters for numerical
 #' computation of first derivative with respect to parameters in detection
 #' function.  An internal function called by DeltaMethod which is invoked by

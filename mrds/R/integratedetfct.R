@@ -1,6 +1,5 @@
-
-
 #' Numerically integrate distance detection function over specified range
+#' 
 #' Computes integral of detection function over x for each observation.  The
 #' method of computation depends on argument switches set and the type of
 #' detection function.

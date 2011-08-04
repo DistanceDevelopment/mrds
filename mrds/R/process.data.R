@@ -1,6 +1,5 @@
-
-
 #' Process data for fitting distance sampling detection function
+#' 
 #' Sets up dataframe and does some basic error checking. Adds needed fields to
 #' dataframe and to \code{meta.data}.
 #' 

@@ -1,7 +1,5 @@
-
-
-#' Computes variance and intervals for density and abundance estimates based on
-#' Horvitz-Thompson-like estimator
+#' Variance and confidence intervals for density and abundance estimates 
+#' 
 #' Computes standard error, cv, and log-normal confidence intervals for
 #' abundance and density within each region (if any) and for the total of all
 #' the regions.  It also produces the correlation matrix for regional and total

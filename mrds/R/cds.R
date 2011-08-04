@@ -1,9 +1,7 @@
-
-
 #' CDS function definition
+#' 
 #' Creates model formula list for conventional distance sampling using values
 #' supplied in call to \code{\link{ddf}}
-#' 
 #' 
 #' @param key string identifying key function (currently either "hn"
 #'   (half-normal),"hr" (hazard-rate), "unif" (uniform) or "gamma" (gamma

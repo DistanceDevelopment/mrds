@@ -1,6 +1,5 @@
-
-
 #' Creates design matrix for covariates in detection function
+#' 
 #' This function creates a design matrix for the g(0) or scale covariates using
 #' the input model formula. It returns a list which contains 2 elements: 1)
 #' dim: the dimension (number of columns) of the design matrix, and 2) cov: the

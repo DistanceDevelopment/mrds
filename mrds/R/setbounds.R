@@ -1,6 +1,5 @@
-
-
 #' Set parameter bounds
+#' 
 #' Set values of lower and upper bounds and check lengths of any user-specified
 #' values
 #' 

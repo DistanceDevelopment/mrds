@@ -1,7 +1,6 @@
-
-
 #' CDS/MCDS Distance Detection Function Fitting
-#' fits a conventional distance sampling (CDS) (likelihood eq 6.6 in Laake and
+#' 
+#' Fits a conventional distance sampling (CDS) (likelihood eq 6.6 in Laake and
 #' Borchers 2004) or multi-covariate distance sampling (MCDS)(likelihood eq
 #' 6.14 in Laake and Borchers 2004) model for the detection function of
 #' observed distance data.  It only uses key functions and does not incorporate
@@ -17,8 +16,7 @@
 #' arguments \code{control},\code{meta.data},and \code{method} are defined the
 #' same as in \code{ddf}.
 #' 
-#' @export
-#' @method ddf ds
+#' @S3method ddf ds
 #' @param model model list with key function and scale formula if any
 #' @param data analysis dataframe
 #' @param meta.data list containing settings controlling data structure
@@ -61,8 +59,8 @@
 #'     1, ], method = "ds", meta.data = list(width = 4))
 #' summary(result,se=TRUE)
 #' plot(result,main="cds - observer 1")
-#' summary(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),se=TRUE))
-#' summary(ddf.gof(result))
+#' print(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),se=TRUE))
+#' print(ddf.gof(result))
 #' 
 #' 
 ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds")

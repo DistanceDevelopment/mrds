@@ -1,17 +1,32 @@
 \name{create.varstructure}
 \alias{create.varstructure}
-\title{Creates structures needed to compute abundance and variance...}
-\usage{create.varstructure(model, region, sample, obs)}
-
-\description{
-  Creates structures needed to compute abundance and
-  variance Creates samples and obs dataframes used to
-  compute abundance and its variance based on a structure
-  of geographic regions and samples within each region.
-  The intent is to generalize this routine to work with
-  other sampling structures.
+\title{Creates structures needed to compute abundance and variance}
+\usage{
+  create.varstructure(model, region, sample, obs)
 }
+\arguments{
+  \item{model}{fitted ddf object}
 
+  \item{region}{region table}
+
+  \item{sample}{sample table}
+
+  \item{obs}{table of object #'s and links to sample and
+  region table}
+}
+\value{
+  List with 2 elements: \item{samples }{merged dataframe
+  containing region and sample info - one record per
+  sample} \item{obs}{merged observation data and links to
+  region and samples}
+}
+\description{
+  Creates samples and obs dataframes used to compute
+  abundance and its variance based on a structure of
+  geographic regions and samples within each region.  The
+  intent is to generalize this routine to work with other
+  sampling structures.
+}
 \details{
   The function performs the following tasks: 1)tests to
   make sure that region labels are unique, 2) merges sample
@@ -28,15 +43,11 @@
   data that is appropriate for the fitted detection
   function.
 }
-\value{List with 2 elements: \item{samples }{merged dataframe containing
-region and sample info - one record per sample} \item{obs}{merged
-observation data and links to region and samples}}
-\note{Internal function called by \code{\link{dht}}}
-\author{Jeff Laake}
-\keyword{utility}
-\arguments{
-  \item{model}{fitted ddf object}
-  \item{region}{region table}
-  \item{sample}{sample table}
-  \item{obs}{table of object #'s and links to sample and region table}
+\note{
+  Internal function called by \code{\link{dht}}
 }
+\author{
+  Jeff Laake
+}
+\keyword{utility}
+

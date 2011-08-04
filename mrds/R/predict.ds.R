@@ -1,7 +1,6 @@
-
-
 #' Predictions from distance sampling ds models
-#' to predict detection probabilities (or esw) values from a fitted
+#' 
+#' Predict detection probabilities (or esw) values from a fitted
 #' distance sampling model using either the original data or a new dataframe.
 #' 
 #' The first 4 arguments are the same in each predict function.  The latter 2

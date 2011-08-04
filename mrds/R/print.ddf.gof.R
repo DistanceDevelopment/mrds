@@ -1,6 +1,5 @@
-
-
-#' Outputs results of goodness of fit tests for detection functions
+#' Prints results of goodness of fit tests for detection functions
+#' 
 #' Provides formatted output for results of goodness of fit tests: chi-square,
 #' Kolmogorv-Smirnov and Cramer-von-Mises test as approrpriate.
 #' 

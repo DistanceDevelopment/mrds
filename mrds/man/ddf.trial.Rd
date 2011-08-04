@@ -1,13 +1,38 @@
 \name{ddf.trial}
 \alias{ddf.trial}
-\title{Mark-Recapture Distance Sampling (MRDS) Analysis of Trial Observer...}
-\usage{\method{ddf}{trial} (dsmodel, mrmodel, data,
-    meta.data=list(), control=list(), call="")}
+\title{Mark-Recapture Distance Sampling (MRDS) Trial Configuration - PI}
+\usage{
+  ddf.trial(dsmodel, mrmodel, data, meta.data = list(),
+  control = list(), call = "")
+}
+\arguments{
+  \item{dsmodel}{distance sampling model specification;
+  model list with key function and scale formula if any}
 
+  \item{mrmodel}{mark-recapture model specfication; model
+  list with formula and link}
+
+  \item{data}{analysis dataframe}
+
+  \item{meta.data}{list containing settings controlling
+  data structure}
+
+  \item{control}{list containing settings controlling model
+  fitting}
+
+  \item{call}{original function call used to call
+  \code{ddf}}
+}
+\value{
+  result: a trial model object which is composed of
+  trial.fi and ds model objects
+}
 \description{
   Mark-Recapture Distance Sampling (MRDS) Analysis of Trial
-  Observer Configuration and Point Independence MRDS
-  analysis based on point independence involves two
+  Observer Configuration and Point Independence
+}
+\details{
+  MRDS analysis based on point independence involves two
   separate and independent analyses of the mark-recapture
   data and the distance sampling data.  For the trial
   configuration, the mark-recapture data are analysed with
@@ -26,9 +51,7 @@
   from which predictions are made. \code{ddf.trial} is not
   called directly by the user and is called from
   \code{\link{ddf}} with \code{method="trial"}.
-}
 
-\details{
   For a complete description of each of the calling
   arguments, see \code{\link{ddf}}.  The argument
   \code{dataname} is the name of the dataframe specified by
@@ -36,25 +59,21 @@
   \code{dsmodel}, \code{mrmodel}, \code{control} and
   \code{meta.data} are defined the same as in \code{ddf}.
 }
-\value{result: a trial model object which is composed of trial.fi and ds
-model objects}
-\author{Jeff Laake}
-\seealso{\code{\link{ddf.trial.fi}},
-\code{\link{ddf.ds}},\code{\link{summary.trial}},\code{\link{coef.trial}},\code{\link{plot.trial}},
-\code{\link{gof.trial}}}
-\references{Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
-detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
-Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
-Thomas. Oxford University Press.}
-\keyword{Statistical}
-\keyword{Models}
-\arguments{
-  \item{dsmodel}{distance sampling model specification; model list with key
-function and scale formula if any}
-  \item{mrmodel}{mark-recapture model specfication; model list with formula
-and link}
-  \item{data}{analysis dataframe}
-  \item{meta.data}{list containing settings controlling data structure}
-  \item{control}{list containing settings controlling model fitting}
-  \item{call}{original function call used to call \code{ddf}}
+\author{
+  Jeff Laake
 }
+\references{
+  Laake, J.L. and D.L. Borchers. 2004. Methods for
+  incomplete detection at distance zero. In: Advanced
+  Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
+  Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  University Press.
+}
+\seealso{
+  \code{\link{ddf.trial.fi}},
+  \code{\link{ddf.ds}},\code{\link{summary.trial}},\code{\link{coef.trial}},\code{\link{plot.trial}},
+  \code{\link{gof.trial}}
+}
+\keyword{Models}
+\keyword{Statistical}
+

@@ -1,8 +1,5 @@
-
-
 #' Extrapolate Horvitz-Thompson abundance estimates to entire surveyed region
-#' :
-#' 
+#'  
 #' 
 #' @param Nhat.by.sample dataframe of abundance by sample
 #' @param samples samples table

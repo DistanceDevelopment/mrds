@@ -1,6 +1,5 @@
-
-
 #' Error function
+#' 
 #' Writes error messages for various errors that can occur
 #' 
 #' 

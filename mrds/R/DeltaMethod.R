@@ -1,9 +1,10 @@
-
-
 #' Numeric Delta Method approximation for the variance-covariance matrix
+#' 
 #' Computes delta method variance-covariance matrix of results of any generic
 #' function \code{fct} that computes a vector of estimates as a function of a
-#' set of estimated parameters \code{par}. The delta method (aka propogation of
+#' set of estimated parameters \code{par}. 
+#' 
+#' The delta method (aka propogation of
 #' errors is based on Taylor series approximation - see Seber's book on
 #' Estimation of Animal Abundance).  It uses the first derivative of \code{fct}
 #' with respect to \code{par} which is computed in this function numerically
@@ -24,6 +25,7 @@
 #' @param delta proportional change in parameters used to numerically estimate
 #'   first derivative with central-difference formula
 #' @param \dots any additional arguments needed by \code{fct}
+#' @export
 #' @return a list with values \item{variance}{estimated variance-covariance
 #'   matrix of estimates derived by \code{fct}} \item{partial}{ matrix (or
 #'   vector) of partial derivatives of \code{fct} with respect to the
@@ -34,23 +36,6 @@
 #' @author Jeff Laake
 #' @keywords utility
 DeltaMethod <- function(par, fct, vcov, delta, ...){
-#
-# DeltaMethod  - computes delta method v-c matrix of results of function fct at values of par
-#                using var-cov matrix (vcov) of parameters and numerical first derivatives 
-#                of fct with respect to par.  
-#
-# Arguments:
-#
-# par - parameter estimates 
-# fct - function that produces estimate
-# vcov - var-cov matrix of par
-# delta - relative change in par to compute central difference first derivative
-# ...   - any remaining additional arguments needed for fct
-#
-# Value:
-#
-# variance-cov matrix of estimates 
-#
 #
 #   Construct theta call to fct
 #

@@ -1,7 +1,8 @@
-
-
+#' Mark-Recapture Distance Sampling (MRDS) IO - PI
+#' 
 #' Mark-Recapture Distance Sampling (MRDS) Analysis of Independent Observer
 #' Configuration and Point Independence
+#' 
 #' MRDS analysis based on point independence involves two separate and
 #' independent analyses of the mark-recapture data and the distance sampling
 #' data.  For the independent observer configuration, the mark-recapture data
@@ -24,7 +25,7 @@
 #' \code{dsmodel}, \code{mrmodel}, \code{control} and \code{meta.data} are
 #' defined the same as in \code{ddf}.
 #' 
-#' @method ddf io
+#' @S3method ddf io
 #' @param dsmodel distance sampling model specification; model list with key
 #'   function and scale formula if any
 #' @param mrmodel mark-recapture model specfication; model list with formula
@@ -35,7 +36,6 @@
 #' @param call original function call used to call \code{ddf}
 #' @return result: an io model object which is composed of io.fi and ds model
 #'   objects
-#' @export
 #' @author Jeff Laake
 #' @seealso \code{\link{ddf.io.fi}},
 #'   \code{\link{ddf.ds}},\code{\link{summary.io}},\code{\link{coef.io}},\code{\link{plot.io}},

@@ -1,6 +1,5 @@
-
-
 #' Logit function
+#' 
 #' Computes logit transformation.
 #' 
 #' 

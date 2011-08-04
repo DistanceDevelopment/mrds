@@ -1,7 +1,5 @@
-
-
-
 #' Iterative offset model fitting of mark-recapture with removal model
+#' 
 #' Detection function fitting from mark-recapture data with a removal
 #' configuration in which a secondary observer knows what the primary observer
 #' detects and detects objects missed by the primary observer.  The iterative

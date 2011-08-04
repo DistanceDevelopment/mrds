@@ -1,6 +1,5 @@
-
-
 #' Test validity for histogram breaks(cutpoints)
+#' 
 #' Determines whether user specified breaks for histograms are properly ordered
 #' and match the left and right truncation.
 #' 

@@ -1,16 +1,31 @@
 \name{create.model.frame}
 \alias{create.model.frame}
-\title{Create a model frame for ddf fitting...}
-\usage{create.model.frame(xmat, scale.formula, meta.data,
-    shape.formula)}
-
-\description{
-  Create a model frame for ddf fitting Creates a
-  model.frame for distance detection function fitting. It
-  includes some pre-specified and computed variables with
-  those included in the model specified by user (formula)
+\title{Create a model frame for ddf fitting}
+\usage{
+  create.model.frame(xmat, scale.formula, meta.data,
+  shape.formula = NULL)
 }
+\arguments{
+  \item{xmat}{dataframe for ddf}
 
+  \item{scale.formula}{user specified formula for scale of
+  distance detection function}
+
+  \item{meta.data}{user-specified meta.data (see
+  \code{\link{ddf}}}
+
+  \item{shape.formula}{user specified formula for shape
+  parameter of distance detection function}
+}
+\value{
+  model frame for analysis
+}
+\description{
+  Creates a model.frame for distance detection function
+  fitting. It includes some pre-specified and computed
+  variables with those included in the model specified by
+  user (formula)
+}
 \details{
   The following fields are always included: detected,
   observer, binned, and optionally distance (unless null),
@@ -21,15 +36,11 @@
   glm, if used.  Beyond these fields only fields used in
   the model formula are included.
 }
-\value{model frame for analysis}
-\note{Internal function and not called by user}
-\author{Jeff Laake}
-\keyword{utility}
-\arguments{
-  \item{xmat}{dataframe for ddf}
-  \item{scale.formula}{user specified formula for scale of distance detection
-function}
-  \item{meta.data}{user-specified meta.data (see \code{\link{ddf}}}
-  \item{shape.formula}{user specified formula for shape parameter of distance
-detection function}
+\note{
+  Internal function and not called by user
 }
+\author{
+  Jeff Laake
+}
+\keyword{utility}
+

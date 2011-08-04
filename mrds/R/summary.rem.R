@@ -1,7 +1,6 @@
-
-
 #' Summary of distance detection function model object
-#' :provides a brief summary of data and fitted detection probability model
+#' 
+#' Provides a brief summary of data and fitted detection probability model
 #' parameters, model selection criterion, and optionally abundance in the
 #' covered (sampled) region and its standard error.
 #' 

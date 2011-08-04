@@ -1,7 +1,8 @@
-
-
+#' Mark-Recapture Distance Sampling (MRDS) Removal - PI
+#' 
 #' Mark-Recapture Distance Sampling (MRDS) Analysis of Removal Observer
 #' Configuration and Point Independence
+#' 
 #' MRDS analysis based on point independence involves two separate and
 #' independent analyses of the mark-recapture data and the distance sampling
 #' data.  For the removal observer configuration, the mark-recapture data are
@@ -24,7 +25,7 @@
 #' \code{mrmodel}, \code{control} and \code{meta.data} are defined the same as
 #' in \code{ddf}.
 #' 
-#' @method ddf rem
+#' @S3method ddf rem
 #' @param dsmodel distance sampling model specification; model list with key
 #'   function and scale formula if any
 #' @param mrmodel mark-recapture model specfication; model list with formula
@@ -33,7 +34,6 @@
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
-#' @export
 #' @return result: an rem model object which is composed of rem.fi and ds model
 #'   objects
 #' @author Jeff Laake
@@ -107,7 +107,10 @@ function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call="")
 #  didn't handle truncation correctly - error reported by Sharon Hedley  
 #
     unique.data=data[data$observer==1&data$detected==1,]
-	unique.data=rbind(unique.data,data[data$observer==2,][data$observer==1&data$detected==0,])
+	obs2=data[data$observer==2,]
+	obs1=data[data$observer==1,]
+	missed=data$detected[data$observer==1]==0
+	unique.data=rbind(unique.data,obs2[obs1$detected==0,])
 	unique.data$observer=1
     unique.data = process.data(unique.data, meta.data,check=FALSE)$xmat
     result$ds=ddf.ds(model=dsmodel,unique.data,meta.data,control,call)

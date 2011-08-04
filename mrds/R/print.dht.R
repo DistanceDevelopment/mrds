@@ -1,7 +1,6 @@
-
-
-#' Print density and abundance estimates based on Horvitz-Thompson-like
+#' Prints density and abundance estimates based on Horvitz-Thompson-like
 #' estimator
+#' 
 #' Outputs summary statistics, abundance and density by region (if any) and
 #' optionally a correlation matrix if more than one region.
 #' 

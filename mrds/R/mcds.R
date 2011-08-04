@@ -1,7 +1,5 @@
-
-
-
 #' MCDS function definition
+#' 
 #' Creates model formula list for multiple covariate distance sampling using
 #' values supplied in call to \code{\link{ddf}}
 #' 

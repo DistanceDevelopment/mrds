@@ -1,23 +1,64 @@
 \name{dht}
 \alias{dht}
-\title{Computes density and abundance estimates and variances based on...}
-\usage{dht(model, region.table, sample.table, obs.table, subset,
-    se=TRUE, bootstrap=FALSE, options=list())}
+\title{Density and abundance estimates and variances}
+\usage{
+  dht(model, region.table, sample.table, obs.table = NULL,
+  subset = NULL, se = TRUE, bootstrap = FALSE, options =
+  list())
+}
+\arguments{
+  \item{model}{ddf model object}
 
+  \item{region.table}{dataframe of region records -
+  Region.Label and Area}
+
+  \item{sample.table}{dataframe of sample records -
+  Region.Label, Sample.Label, Effort}
+
+  \item{obs.table}{dataframe of observation records with
+  fields object, Region.Label, and Sample.Label which give
+  links to sample.table, region.table and the data records
+  used in \code{model}}
+
+  \item{subset}{subset statement to create obs.table if
+  NULL}
+
+  \item{se}{if TRUE computes std errors, cv and confidence
+  interval based on log-normal}
+
+  \item{bootstrap}{if TRUE uses bootstrap approach
+  (currently not implemented)}
+
+  \item{options}{a list of options that can be set: 1)
+  pdelta: delta value for computing numerical first
+  derivatives (Default: 0.001), 2) varflag - 0,1,2 (see
+  below) (Default: 2), 3) convert.units - multiplier for
+  width to convert to units of length (Default: 1) 4) ervar
+  - encounter rate variance type - see type argument to
+  \link{varn} (Default: R2}
+}
+\value{
+  list object of class "dht" \item{summary}{table of
+  statistics summarized by region} \item{N}{table of
+  estimates for abundance} \item{D}{table of estimates for
+  density} \item{cormat}{correlation matrix of regional
+  abundance/density estimates and total (if more than one
+  region)}
+}
 \description{
   Computes density and abundance estimates and variances
-  based on Horvitz-Thompson-like estimator Density and
-  abundance within the sampled region is computed based on
-  a Horvitz-Thomspon-like estimator for groups and
-  individuals (if a clustered population) and this is
-  extrapolated to the entire survey region based on any
-  defined regional stratification.  The variance is based
-  on replicate samples within any regional stratification.
-  For clustered populations, E(s) and its standard error
-  are also output.
+  based on Horvitz-Thompson-like estimator
 }
-
 \details{
+  Density and abundance within the sampled region is
+  computed based on a Horvitz-Thomspon-like estimator for
+  groups and individuals (if a clustered population) and
+  this is extrapolated to the entire survey region based on
+  any defined regional stratification.  The variance is
+  based on replicate samples within any regional
+  stratification.  For clustered populations, E(s) and its
+  standard error are also output.
+
   Abundance is estimated with a Horvitz-Thompson-like
   estimator (Huggins 1989,1991; Borchers et al 1998;
   Borchers and Burnham 2004).  The abundance in the sampled
@@ -136,60 +177,52 @@
   the first derivative calculation for the delta method
   variance.
 }
-\value{list object of class "dht" \item{summary}{table of statistics
-summarized by region} \item{N}{table of estimates for abundance}
-\item{D}{table of estimates for density} \item{cormat}{correlation matrix
-of regional abundance/density estimates and total (if more than one
-region)}}
-\author{Jeff Laake}
-\seealso{\code{\link{print.dht}},\code{\link{dht.se}}}
-\references{Borchers, D.L., S.T. Buckland, P.W. Goedhart, E.D. Clarke, and S.L. Hedley.
-1998.  Horvitz-Thompson estimators for double-platform line transect
-surveys.  Biometrics 54: 1221-1237.
-
-Borchers, D.L. and K.P. Burnham. General formulation for distance sampling
-pp 10-11 In: Advanced Distance Sampling, eds. S.T. Buckland, D.R.Anderson,
-K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford University
-Press.
-
-Buckland, S.T., D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and
-L. Thomas. 2001.  Introduction to Distance Sampling: Estimating Abundance
-of Biological Populations. Oxford University Press.
-
-Fewster, R.M., S.T. Buckland, K.P. Burnham, D.L. Borchers, P.E. Jupp, J.L.
-Laake and L. Thomas. 2009.  Estimating the encounter rate variance in
-distance sampling. Biometrics 65: 225-236.
-
-Huggins, R.M. 1989.  On the statistical analysis of capture experiments.
-Biometrika 76:133-140.
-
-Huggins, R.M. 1991. Some practical aspects of a conditional likelihood
-approach to capture experiments.  Biometrics 47: 725-732.
-
-Innes, S.  M.P. Heide-Jorgensen, J.L. Laake, K.L. Laidre, H.J. Cleator, P.
-Richard, and R.E.A. Stewart.  2002. Surveys of belugas and narwhals in the
-Canadian High Arctic in 1996.  NAMMCO Scientific Publications 4: 169-190.
-
-Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
-function. In: Advanced Distance Sampling, eds. S.T. Buckland,
-D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
-Oxford University Press.}
-\keyword{utility}
-\arguments{
-  \item{model}{ddf model object}
-  \item{region.table}{dataframe of region records - Region.Label and Area}
-  \item{sample.table}{dataframe of sample records - Region.Label,
-Sample.Label, Effort}
-  \item{obs.table}{dataframe of observation records with fields object,
-Region.Label, and Sample.Label which give links to sample.table,
-region.table and the data records used in \code{model}}
-  \item{subset}{subset statement to create obs.table if NULL}
-  \item{se}{if TRUE computes std errors, cv and confidence interval based on
-log-normal}
-  \item{bootstrap}{if TRUE uses bootstrap approach (currently not implemented)}
-  \item{options}{a list of options that can be set: 1) pdelta: delta value for
-computing numerical first derivatives (Default: 0.001), 2) varflag - 0,1,2
-(see below) (Default: 2), 3) convert.units - multiplier for width to
-convert to units of length (Default: 1) 4) ervar - encounter rate variance
-type - see type argument to \link{varn} (Default: R2}
+\author{
+  Jeff Laake
 }
+\references{
+  Borchers, D.L., S.T. Buckland, P.W. Goedhart, E.D.
+  Clarke, and S.L. Hedley. 1998.  Horvitz-Thompson
+  estimators for double-platform line transect surveys.
+  Biometrics 54: 1221-1237.
+
+  Borchers, D.L. and K.P. Burnham. General formulation for
+  distance sampling pp 10-11 In: Advanced Distance
+  Sampling, eds. S.T. Buckland, D.R.Anderson, K.P. Burnham,
+  J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  University Press.
+
+  Buckland, S.T., D.R.Anderson, K.P. Burnham, J.L. Laake,
+  D.L. Borchers, and L. Thomas. 2001.  Introduction to
+  Distance Sampling: Estimating Abundance of Biological
+  Populations. Oxford University Press.
+
+  Fewster, R.M., S.T. Buckland, K.P. Burnham, D.L.
+  Borchers, P.E. Jupp, J.L. Laake and L. Thomas. 2009.
+  Estimating the encounter rate variance in distance
+  sampling. Biometrics 65: 225-236.
+
+  Huggins, R.M. 1989.  On the statistical analysis of
+  capture experiments. Biometrika 76:133-140.
+
+  Huggins, R.M. 1991. Some practical aspects of a
+  conditional likelihood approach to capture experiments.
+  Biometrics 47: 725-732.
+
+  Innes, S.  M.P. Heide-Jorgensen, J.L. Laake, K.L. Laidre,
+  H.J. Cleator, P. Richard, and R.E.A. Stewart.  2002.
+  Surveys of belugas and narwhals in the Canadian High
+  Arctic in 1996.  NAMMCO Scientific Publications 4:
+  169-190.
+
+  Marques, F.F.C. and S.T. Buckland. 2004. Covariate models
+  for the detection function. In: Advanced Distance
+  Sampling, eds. S.T. Buckland, D.R.Anderson, K.P. Burnham,
+  J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  University Press.
+}
+\seealso{
+  \code{\link{print.dht}},\code{\link{dht.se}}
+}
+\keyword{utility}
+

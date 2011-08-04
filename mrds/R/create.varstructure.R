@@ -1,6 +1,5 @@
-
-
 #' Creates structures needed to compute abundance and variance
+#' 
 #' Creates samples and obs dataframes used to compute abundance and its
 #' variance based on a structure of geographic regions and samples within each
 #' region.  The intent is to generalize this routine to work with other

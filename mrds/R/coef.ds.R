@@ -1,7 +1,6 @@
-
-
 #' Extract coefficients 
-#' and provide a summary of parameters and estimates from the output of
+#' 
+#' Extract coefficients and provide a summary of parameters and estimates from the output of
 #' \code{\link{ddf}} model objects.
 #' 
 #' @aliases coefficients coef.ds coef.io coef.io.fi coef.trial coef.trial.fi

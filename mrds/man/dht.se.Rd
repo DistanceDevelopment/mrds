@@ -1,19 +1,40 @@
 \name{dht.se}
 \alias{dht.se}
-\title{Computes variance and intervals for density and abundance estimates based on...}
-\usage{dht.se(model, region.table, samples, obs, options,
-    numRegions, estimate.table, Nhat.by.sample)}
+\title{Variance and confidence intervals for density and abundance estimates}
+\usage{
+  dht.se(model, region.table, samples, obs, options,
+  numRegions, estimate.table, Nhat.by.sample)
+}
+\arguments{
+  \item{model}{ddf model object}
 
+  \item{region.table}{table of region values}
+
+  \item{samples}{table of samples(replicates)}
+
+  \item{obs}{table of observations}
+
+  \item{options}{list of options that can be set (see
+  \code{\link{dht}})}
+
+  \item{numRegions}{number of regions}
+
+  \item{estimate.table}{table of estimate values}
+
+  \item{Nhat.by.sample}{estimated abundances by sample}
+}
+\value{
+  List with 2 elements: \item{estimate.table}{completed
+  table with se, cv and confidence limits} \item{vc
+  }{correlation matrix of estimates}
+}
 \description{
-  Computes variance and intervals for density and abundance
-  estimates based on Horvitz-Thompson-like estimator
   Computes standard error, cv, and log-normal confidence
   intervals for abundance and density within each region
   (if any) and for the total of all the regions.  It also
   produces the correlation matrix for regional and total
   estimates.
 }
-
 \details{
   The variance has two components: 1) variation due to
   uncertanity from estimation of the detection function and
@@ -80,23 +101,21 @@
   value list.  It is only needed if subtotals of regional
   estimates are needed.
 }
-\value{List with 2 elements: \item{estimate.table}{completed table with se,
-cv and confidence limits} \item{vc }{correlation matrix of estimates}}
-\note{This function is called by \code{dht} and it is not expected that the
-user will call this function directly but it is documented here for
-completeness and for anyone expanding the code or using this function in
-their own code}
-\author{Jeff Laake}
-\seealso{\code{\link{dht}}, \code{\link{print.dht}}}
-\references{see \code{\link{dht}}}
-\keyword{utility}
-\arguments{
-  \item{model}{ddf model object}
-  \item{region.table}{table of region values}
-  \item{samples}{table of samples(replicates)}
-  \item{obs}{table of observations}
-  \item{options}{list of options that can be set (see \code{\link{dht}})}
-  \item{numRegions}{number of regions}
-  \item{estimate.table}{table of estimate values}
-  \item{Nhat.by.sample}{estimated abundances by sample}
+\note{
+  This function is called by \code{dht} and it is not
+  expected that the user will call this function directly
+  but it is documented here for completeness and for anyone
+  expanding the code or using this function in their own
+  code
 }
+\author{
+  Jeff Laake
+}
+\references{
+  see \code{\link{dht}}
+}
+\seealso{
+  \code{\link{dht}}, \code{\link{print.dht}}
+}
+\keyword{utility}
+

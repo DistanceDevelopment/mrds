@@ -1,6 +1,5 @@
-
-
 #' Integral of standardized (scale=1) detection function
+#' 
 #' Computes the integral of a standardized (scale=1) detection function for a
 #' specified range
 #' 

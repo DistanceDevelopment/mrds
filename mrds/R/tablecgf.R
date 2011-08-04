@@ -1,6 +1,5 @@
-
-
 #' Spline approximation to scale dependent integration of detection function
+#' 
 #' Computes spline approximation to cumulative detection function for
 #' interpolation of scale dependent integrations of the detection function.
 #' 

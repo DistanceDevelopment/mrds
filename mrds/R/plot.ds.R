@@ -1,7 +1,6 @@
-
-
 #' Plot fit of detection functions and histograms of data from distance
 #' sampling model
+#' 
 #' Plots the fitted detection functions for a distance sampling model and
 #' histograms of the distances (for unconditional detection functions) or
 #' proportion of observations detected within distance intervals (for
@@ -74,8 +73,9 @@
 #' detection probability. \cr }
 #' 
 #' @aliases plot.ds
-#' @method plot ds
 #' @S3method plot ds
+#' @method plot ds
+#' @export
 #' @param x fitted model from \code{ddf}
 #' @param which index to specify which plots should be produced. See
 #'   \code{details.}

@@ -1,7 +1,8 @@
-
-
 #'  Detection functions
-#' 	: multi-covariate detection functions (MCDS) are represented by a function \eqn{g(x,w,\theta)} where x is distance,
+#' 
+#'  Various functions used to specify key and adjustment functions for detection functions
+#' 
+#' 	Multi-covariate detection functions (MCDS) are represented by a function \eqn{g(x,w,\theta)} where x is distance,
 #'	z is a set of covariates and \eqn{\theta} is the parameter vector.  The functions are defined such that \eqn{g(0,w,\theta)=1} and
 #'	the covariates modify the scale \eqn{(x/\sigma)} where a log link is used to relate \eqn{\sigma} to the covariates,
 #'	\eqn{\sigma=exp(\theta*w)}. A CDS function is obtained with a constant \eqn{\sigma} which is equivalent to an intercept 
@@ -16,16 +17,28 @@
 #'		\code{scalevalue} for either detection function it computes the scale with the log link using the parameters and the covariate design matrix
 #'		\code{fx,fr} non-normalized probability density for line transects and point counts respectively
 #' 
+#' @aliases detfct adjfct.cos adjfct.herm hermite.poly adjfct.poly keyfct.hn keyfct.hz 
+#'  keyfct.gamma apex.gamma scalevalue g0 fx fr 
 #' @usage 	detfct(distance, ddfobj, select=NULL, index=NULL, width=NULL, standardize = TRUE, stdint=FALSE)
+#' 
 #'	adjfct.cos(distance, scaling = 1, adj.order, adj.parm = NULL)
+#' 
 #'	adjfct.poly(distance, scaling = 1, adj.order, adj.parm = NULL)
+#' 
 #'	adjfct.herm(distance, scaling = 1, adj.order, adj.parm = NULL)
+#' 
 #'	scalevalue(key.scale, z)
+#' 
 #'  keyfct.hn(distance, key.scale)
+#' 
 #'	keyfct.hz(distance, key.scale, key.shape)
+#' 
 #'	keyfct.gamma(distance, key.scale, key.shape)
+#' 
 #'	apex.gamma(key.scale, key.shape)
+#' 
 #'	fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
+#' 
 #'	fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 #' 
 #' @param distance  vector of distances 
@@ -52,8 +65,6 @@
 #' @references 	Marques and Buckland 2004
 #'	Laake and Borchers 2004. in Buckland et al 2004.
 #'	Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection function for line transect surveys with mark-recapture and covariate data. Journal of Agricultural Biological and Environmental Statistics 14:207-223.
-#' @aliases detfct adjfct.cos adjfct.herm hermite.poly adjfct.poly keyfct.hn keyfct.hz 
-#'  keyfct.gamma apex.gamma scalevalue g0 fx fr 
 fx <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 	return(detfct(distance,ddfobj,select,index,width,standardize,stdint)/width)
 fr <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)

@@ -1,6 +1,5 @@
-
-
 #' Alternate detection function fitting code
+#' 
 #' A wrapper function for foptim.dll -- the Fortran optimisation routine. Most
 #' of the code juggles the data before making the call to ensure Fortran
 #' doesn't fail.

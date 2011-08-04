@@ -1,6 +1,5 @@
-
-
 #' Double-platform detection probability
+#' 
 #' Computes detection probability for detection function computed from
 #' mark-recapture data with possibly different link functions.
 #' 

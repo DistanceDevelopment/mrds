@@ -1,7 +1,6 @@
-
-
 #' Compute estimated abundance in covered (sampled) region
-#' :generic function that computes abundance within the covered region.  It
+#' 
+#' Generic function that computes abundance within the covered region.  It
 #' calls method (class) specific functions for the computation.
 #' 
 #' 

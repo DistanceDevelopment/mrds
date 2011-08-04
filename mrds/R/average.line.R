@@ -1,12 +1,10 @@
-
-
 #' Average detection function line for plotting
+#' 
 #' For models with covariates the detection probability for each observation
 #' can vary.  This function computes an average value for a set of distances to
 #' plot an average line to graphically represent the fitted model in plots that
 #' compare histograms and the scatter of individual estimated detection
 #' probabilities.
-#' 
 #' 
 #' @param finebr set of fine breaks in distance over which detection function
 #'   values are averaged and plotted
@@ -52,7 +50,10 @@ function(finebr,obs,model)
       newdat=process.data(model$data,model$meta.data)$xmat
       newdat=newdat[newdat$observer==obs & newdat$detected==1,]
     }else
-      newdat=model$mr$data
+	  if(model$method=="rem.fi")
+	    newdat=model$data
+	  else
+        newdat=model$mr$data
   newdat$offsetvalue=rep(0,dim(newdat)[1])      
 #
 #  Also, depending on the type of model, get det fct predicted values

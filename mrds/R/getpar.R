@@ -1,7 +1,6 @@
-
-
 #' Extraction and assignment of parameters to vector
-#' : Extracts parameters of a particular type (scale,
+#' 
+#' Extracts parameters of a particular type (scale,
 #' shape, adjustments or g0 (p(0))) from the vector of parameters in
 #' \code{ddfobj}. All of the parameters are kept in a single vector for
 #' optimization even though they have very different uses.  \code{assign.par}

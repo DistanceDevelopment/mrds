@@ -1,7 +1,5 @@
-
-
-
 #' Q-Q plot, KS and CVM goodness of fit tests for distance detection functions
+#' 
 #' Constructs a Q-Q plot for fitted model as a graphical picture of goodness of
 #' fit and computes K-S and Cramer-VonMises goodness of fit tests for distance
 #' sampling models based on single observer survey and double observer survey
@@ -13,10 +11,13 @@
 #' \code{qqplot.ddf} and need not be called by user. \code{qqplot.ddf} is
 #' called from \code{ddf.gof} to evaluate model goodness of fit.
 #' 
-#' @usage qqplot.ddf(model,...)
-#'        pcramer(q, eps = 1e-05) 
-#'        pks(Dn,n)
 #' @aliases qqplot.ddf pks pcramer
+#' @usage qqplot.ddf(model,...)
+#' 
+#'        pcramer(q, eps = 1e-05) 
+#' 
+#'        pks(Dn,n)
+#' 
 #' @param model fitted distance detection function model object
 #' @param n sample size
 #' @param Dn K-S statistic

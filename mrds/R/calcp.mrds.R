@@ -1,14 +1,11 @@
-
-
-
 #' Average detection probability calculation
+#' 
 #' Detection probability at a distance can vary depending on the other
 #' ancillary covariates collected for an observation.  To plot a single
 #' detection line, it is necessary to compute the expected probability value at
 #' distance across the estimated proportions of the covariates in the
 #' population.  This function does that calculation by observer, for duplicates
 #' and cummulative for both observers.
-#' 
 #' 
 #' @param dpformula valid formula for binary regression model detection
 #'   function

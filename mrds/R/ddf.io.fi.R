@@ -1,13 +1,16 @@
-
-
+#' Mark-Recapture Distance Sampling (MRDS) IO - FI
+#' 
 #' Mark-Recapture Analysis of Independent Observer Configuration with Full
 #' Independence
+#' 
 #' The mark-recapture data derived from an independent observer distance
 #' sampling survey can be used to derive conditional detection functions
 #' (p_j(y)) for both observers (j=1,2).  They are conditional detection
 #' functions because detection probability for observer j is based on seeing or
 #' not seeing observations made by observer 3-j. Thus, p_1(y) is estimated by
-#' p_1|2(y).  If detections by the observers are independent (full
+#' p_1|2(y).  
+#' 
+#' If detections by the observers are independent (full
 #' independence) then p_1(y)=p_1|2(y),p_2(y)=p_2|1(y) and for the union, full
 #' independence means that p(y)=p_1(y) + p_2(y) - p_1(y)*p_2(y) for each
 #' distance y.  In fitting the detection functions the likelihood given by eq
@@ -25,7 +28,7 @@
 #' arguments \code{control},\code{meta.data},and \code{method} are defined the
 #' same as in \code{ddf}.
 #' 
-#' @method ddf io.fi
+#' @S3method ddf io.fi
 #' @param model mark-recapture model specification
 #' @param data analysis dataframe
 #' @param meta.data list containing settings controlling data structure
@@ -34,7 +37,6 @@
 #' @param method analysis method; only needed if this function called from
 #'   \code{ddf.io}
 #' @return result: an io.fi model object
-#' @export
 #' @author Jeff Laake
 #' @seealso
 #'   \code{\link{ddf.io}},\code{\link{summary.io.fi}},\code{\link{coef.io.fi}},\code{\link{plot.io.fi}},
@@ -149,6 +151,13 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 #
    xmat$offsetvalue <- rep(0,dim(xmat)[1])
    model.formula=paste("detected",modelvalues$formula)
+   p.formula=as.formula(model.formula)
+   xmat2=xmat[xmat$observer==2,]
+   xmat1=xmat[xmat$observer==1,]
+   npar=ncol(model.matrix(p.formula,xmat1))
+   fit=optim(par=rep(0,npar),lnl.io,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula),
+		   hessian=FALSE,control=list(maxit=5000))
+   fit$hessian=hessian(lnl.removal,x=fit$par,method="Richardson",x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
    GAM=FALSE
    if(modelvalues$fct=="gam") 
    {
@@ -159,8 +168,10 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 #
 #  Fit the conditional detection functions using io.glm 
 #
-   result$mr <- io.glm (xmat,model.formula,GAM=GAM)
+   suppressWarnings(result$mr <- io.glm (xmat,model.formula,GAM=GAM))
    if(GAM)result$mr$data=xmat
+   result$mr$mr$coefficients=fit$par   
+   result$hessian=fit$hessian	
 #
 #  Compute the L_omega portion of the likelihood value, AIC and hessian
 #
@@ -174,10 +185,10 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 		   p2^result$mr$data$detected[result$mr$data$observer==2]*
 		   (1-p2)^(1-result$mr$data$detected[result$mr$data$observer==2]) 
    result$lnl <- sum(log(p.c.omega)) - sum(log(cond.det$fitted))      
-   if(GAM) 
-      result$hessian <- result$mr$Vp
-   else
-      result$hessian <- solve(summary(result$mr)$cov.unscaled) 
+#   if(GAM) 
+#      result$hessian <- result$mr$Vp
+#   else
+#      result$hessian <- solve(summary(result$mr)$cov.unscaled) 
 
 #
 #  If this is method=io.fi then compute lnl for L_y and add to L_omega before
@@ -206,3 +217,59 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 #
    return(result)
 }
+io.p01=function(xmat1,xmat2,beta)
+{
+	p1=plogis(xmat1%*%beta)
+	p2=plogis(xmat2%*%beta)
+	return(p2*(1-p1))
+}
+io.p10=function(xmat1,xmat2,beta)
+{
+	p1=plogis(xmat1%*%beta)
+	p2=plogis(xmat2%*%beta)
+	return(p1*(1-p2))
+}
+
+io.p11=function(xmat1,xmat2,beta)
+{
+	p1=plogis(xmat1%*%beta)
+	p2=plogis(xmat2%*%beta)
+	return(p1*p2)
+}
+
+io.pdot=function(xmat1,xmat2,beta)
+{
+	p1=plogis(xmat1%*%beta)
+	p2=plogis(xmat2%*%beta)
+	return(p1+p2-p1*p2)
+}
+p.io <- function(par,x1,x2,models)
+{
+# create design matrix for p1,p2 and delta
+	xmat1=model.matrix(models$p.formula,x1)
+	xmat2=model.matrix(models$p.formula,x2)
+# extract parameter vectors: beta for detection and gamma for delta
+	xmat1=model.matrix(models$p.formula,x1)
+	xmat2=model.matrix(models$p.formula,x2)
+	p01=io.p01(xmat1,xmat2,beta=par)
+	p10=io.p10(xmat1,xmat2,beta=par)
+	p11=io.p11(xmat1,xmat2,beta=par)
+	pdot=io.pdot(xmat1,xmat2,beta=par)
+	return(list(p11=as.vector(p11),p01=as.vector(p01),p10=as.vector(p10),pdot=as.vector(pdot)))
+}
+
+lnl.io <-function(par,x1,x2,models)
+{
+# Compute probabilities 
+	p.list=p.io(par,x1,x2,models)
+	p11=p.list$p11
+	p01=p.list$p01
+	p10=p.list$p10
+	p01[p01==0]=1e-6
+	p10[p10==0]=1e-6
+# Compute log-likelihood value
+	lnl=sum((1-x1$detected)*x2$detected*log(p01))+ sum((1-x2$detected)*x1$detected*log(p10))+
+			sum(x1$detected*x2$detected*log(p11)) - sum(log(p.list$pdot))
+	return(-lnl)
+}
+

@@ -1,15 +1,26 @@
 \name{process.data}
 \alias{process.data}
-\title{Process data for fitting distance sampling detection function...}
-\usage{process.data(data, meta.data=list(), check=TRUE)}
-
-\description{
-  Process data for fitting distance sampling detection
-  function Sets up dataframe and does some basic error
-  checking. Adds needed fields to dataframe and to
-  \code{meta.data}.
+\title{Process data for fitting distance sampling detection function}
+\usage{
+  process.data(data, meta.data = list(), check = TRUE)
 }
+\arguments{
+  \item{data}{dataframe object}
 
+  \item{meta.data}{meta.data options; see \code{\link{ddf}}
+  for a description}
+
+  \item{check}{if TRUE check data for errors in the mrds
+  structure; for \code{method="ds" check=FALSE}}
+}
+\value{
+  \item{xmat}{processed dataframe with added fields}
+  \item{meta.data}{meta.data list}
+}
+\description{
+  Sets up dataframe and does some basic error checking.
+  Adds needed fields to dataframe and to \code{meta.data}.
+}
 \details{
   The function does a number of error checking tasks,
   creating fields and adding to \code{meta.data} including:
@@ -55,13 +66,8 @@
   7) If the restrictions placed on the data, eliminated all
   of the data, the function stops with an error message
 }
-\value{\item{xmat}{processed dataframe with added fields}
-\item{meta.data}{meta.data list}}
-\author{Jeff Laake}
-\keyword{utility}
-\arguments{
-  \item{data}{dataframe object}
-  \item{meta.data}{meta.data options; see \code{\link{ddf}} for a description}
-  \item{check}{if TRUE check data for errors in the mrds structure; for
-\code{method="ds" check=FALSE}}
+\author{
+  Jeff Laake
 }
+\keyword{utility}
+

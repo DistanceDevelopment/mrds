@@ -221,3 +221,19 @@ Made change to DeltaMethod and flt.var to handle case in which parameter value w
 occurs
 Switched to optimx
 
+v2.0.2
+Made change to dht to fix D values in sample table. Added Nchat which is estimated number in sample (covered region).
+D_i=Nchat_i/a_i where a_i is area of the ith sample. We need to add in documentation that Nhat=Nchat*A/a where 
+A is area of stratum and a is the area of all samples in the stratum. 
+
+Made some more documentation changes for roxygen usage.
+
+Fixed plot error that L.Burt found and re-wrote plot routines so they use plot_cond
+and plot_uncond again.  Added plot.rem and plot.rem.fi. Also added det.tables and plot.det.tables.
+Documentation to follow.
+
+Added code for likelihood computation of rem.fi and io.fi models because the variance estimates from the 
+offset glm approach were not correct.  At present, the code is kludgy because it is still running the glm code
+and I'm simply replacing the coefficients and hessian into the glm object structure.  That way none of the
+other code had to change at present.
+

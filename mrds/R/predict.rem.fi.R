@@ -1,8 +1,7 @@
-
-
 #' Predictions from distance sampling rem.fi models
-#' to predict detection probabilities values from a fitted
-#' distance sampling model using either the original data or a new dataframe.
+#' 
+#' Predict detection probabilities values from a fitted
+#' distance sampling rem.fi model using either the original data or a new dataframe.
 #' 
 #' The first 4 arguments are the same in each predict function.  The latter 2
 #' are specific to certain functions. The effective strip half-width (esw) is
@@ -81,7 +80,7 @@ function(object,newdata=NULL,compute=FALSE, int.range=NULL,integrate=FALSE,...)
 	if(is.null(newdata))
     {
        newdata=model$data
-       newdata=newdata[newdata$object %in% as.numeric(names(model$mr$fitted)),]
+       newdata=newdata[newdata$object %in% as.numeric(model$data$object),]
     }
     newdata$offsetvalue=0
 	newdata2=newdata[newdata$observer==2,]

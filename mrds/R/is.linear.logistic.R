@@ -1,4 +1,5 @@
 #' Collection of functions for logistic detection functions
+#' 
 #' These functions are used to test whether a logistic detection function is a
 #' linear function of distance (\code{is.linear.logistic}) or is constant
 #' (varies by distance but no other covariates) \code{is.logistic.constant}).

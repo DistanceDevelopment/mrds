@@ -1,34 +1,51 @@
 \name{create.ddfobj}
 \alias{create.ddfobj}
-\title{Create detection function object...}
-\usage{create.ddfobj(model, xmat, meta.data, initial)}
-
-\description{
-  Create detection function object Creates and populates a
-  specific list structure to define a detection function
-  object and its data. The \code{ddfobj} is used throughout
-  the package as a calling argument to various functions.
+\title{Create detection function object}
+\usage{
+  create.ddfobj(model, xmat, meta.data, initial)
 }
-\value{Distance sampling function object list with elements that all can be
-null except type: \item{type}{type of detection function
-hn,hr,gamma,unif,logistic} \item{xmat}{model data frame}
-\item{intercept.only}{TRUE if scale = ~1 and no shape parameter}
-\item{cgftab}{table of standardized integral values for half-normal}
-\item{scale}{sublist with elements (can be NULL i.e., unif key):formula,
-parameters, design matrix (dm)} \item{shape}{sublist with elements (power
-of hazard rate or gamma) (can be NULL i.e., unif or hn key):formula,
-parameters, design matrix (dm)} \item{adjustment}{sublist with elements
-(is NULL if no adjustments used):series,order,scale,parameters}
-\item{g0}{sublist with elements (not used at present):formula,parameters,
-design matrix(dm), link}}
-\note{Internal function not meant to be called by user}
-\author{Jeff Laake}
-\seealso{\code{\link{detfct}}, \code{\link{ddf}}}
 \arguments{
-  \item{model}{model list with key function and possibly adjustment functions,
-scale formula, and shape formula}
+  \item{model}{model list with key function and possibly
+  adjustment functions, scale formula, and shape formula}
+
   \item{xmat}{model data frame}
-  \item{meta.data}{list of options describing data like width, etc}
-  \item{initial}{vector of initial values for parameters of the detection
-function}
+
+  \item{meta.data}{list of options describing data like
+  width, etc}
+
+  \item{initial}{vector of initial values for parameters of
+  the detection function}
 }
+\value{
+  Distance sampling function object list with elements that
+  all can be null except type: \item{type}{type of
+  detection function hn,hr,gamma,unif,logistic}
+  \item{xmat}{model data frame} \item{intercept.only}{TRUE
+  if scale = ~1 and no shape parameter} \item{cgftab}{table
+  of standardized integral values for half-normal}
+  \item{scale}{sublist with elements (can be NULL i.e.,
+  unif key):formula, parameters, design matrix (dm)}
+  \item{shape}{sublist with elements (power of hazard rate
+  or gamma) (can be NULL i.e., unif or hn key):formula,
+  parameters, design matrix (dm)} \item{adjustment}{sublist
+  with elements (is NULL if no adjustments
+  used):series,order,scale,parameters} \item{g0}{sublist
+  with elements (not used at present):formula,parameters,
+  design matrix(dm), link}
+}
+\description{
+  Creates and populates a specific list structure to define
+  a detection function object and its data. The
+  \code{ddfobj} is used throughout the package as a calling
+  argument to various functions.
+}
+\note{
+  Internal function not meant to be called by user
+}
+\author{
+  Jeff Laake
+}
+\seealso{
+  \code{\link{detfct}}, \code{\link{ddf}}
+}
+

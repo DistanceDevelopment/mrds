@@ -1,6 +1,5 @@
-
-
 #' Covered region estimate of abundance from Horvitz-Thompson-like estimator
+#' 
 #' Computes H-T abundance within covered region by sample.
 #' 
 #' 

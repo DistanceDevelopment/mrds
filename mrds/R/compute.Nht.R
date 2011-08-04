@@ -1,6 +1,5 @@
-
-
 #' Horvitz-Thompson estimates 1/p_i or s_i/p_i
+#' 
 #' Compute individual components of Horvitz-Thompson abundance estimate in
 #' covered region for a particular subset of the data depending on value of
 #' group = TRUE (do group abundance); FALSE(do individual abundance)

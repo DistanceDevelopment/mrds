@@ -1,20 +1,38 @@
 \name{ddf}
 \alias{ddf}
-\title{Distance Detection Function Fitting...}
-\usage{ddf(dsmodel=call(), mrmodel=call(), data, method="ds",
-    meta.data=list(), control=list())}
-
-\description{
-  Distance Detection Function Fitting Generic function for
-  fitting detection functions for distance sampling with
-  single and double observer configurations. Independent
-  observer, trial and dependent observer (removal)
-  configurations are included. This is a generic function
-  which does little other than to validate the calling
-  arguments and methods and then calls the appropriate
-  \code{method} specific function to do the analysis.
+\title{Distance Detection Function Fitting}
+\usage{
+  ddf(dsmodel = call(), mrmodel = call(), data, method =
+  "ds", meta.data = list(), control = list())
 }
+\arguments{
+  \item{dsmodel}{distance sampling model specification}
 
+  \item{mrmodel}{mark-recapture model specification}
+
+  \item{data}{dataframe containing data to be analyzed}
+
+  \item{method}{analysis method}
+
+  \item{meta.data}{list containing settings controlling
+  data structure}
+
+  \item{control}{list containing settings controlling model
+  fitting}
+}
+\value{
+  model object of class=(method, "ddf")
+}
+\description{
+  Generic function for fitting detection functions for
+  distance sampling with single and double observer
+  configurations. Independent observer, trial and dependent
+  observer (removal) configurations are included. This is a
+  generic function which does little other than to validate
+  the calling arguments and methods and then calls the
+  appropriate \code{method} specific function to do the
+  analysis.
+}
 \details{
   The fitting code has certain expectations about
   \code{data}.  It should be a dataframe with at least the
@@ -190,34 +208,36 @@
   \code{limit} \tab if TRUE restrict analysis to
   observations with \code{detected}=1 \cr }
 }
-\value{model object of class=(method, "ddf")}
-\author{Jeff Laake}
-\seealso{\code{\link{ddf.ds}},
-\code{\link{ddf.io}},\code{\link{ddf.io.fi}},\code{\link{ddf.trial}},\code{\link{ddf.trial.fi}},\code{\link{ddf.rem}},\code{\link{ddf.rem.fi}}}
-\references{Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
-detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
-Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
-Thomas. Oxford University Press.
-
-Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
-function. In: Advanced Distance Sampling, eds. S.T. Buckland,
-D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
-Oxford University Press.}
-\keyword{~Statistical}
-\keyword{Models}
-\arguments{
-  \item{dsmodel}{distance sampling model specification}
-  \item{mrmodel}{mark-recapture model specification}
-  \item{data}{dataframe containing data to be analyzed}
-  \item{method}{analysis method}
-  \item{meta.data}{list containing settings controlling data structure}
-  \item{control}{list containing settings controlling model fitting}
-}
-\examples{data(book.tee.data)
+\examples{
+data(book.tee.data)
 region<<-book.tee.data$book.tee.region
 egdata<<-book.tee.data$book.tee.dataframe
 samples<<-book.tee.data$book.tee.samples
 obs<<-book.tee.data$book.tee.obs
 result=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = egdata, method = "ds", meta.data = list(width = 4))
 result=ddf(mrmodel = ~glm(~distance), data = egdata, method = "io.fi", meta.data = list(width = 4))
-result=ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance), data = egdata, method = "io", meta.data = list(width = 4))}
+result=ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance), data = egdata, method = "io", meta.data = list(width = 4))
+}
+\author{
+  Jeff Laake
+}
+\references{
+  Laake, J.L. and D.L. Borchers. 2004. Methods for
+  incomplete detection at distance zero. In: Advanced
+  Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
+  Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  University Press.
+
+  Marques, F.F.C. and S.T. Buckland. 2004. Covariate models
+  for the detection function. In: Advanced Distance
+  Sampling, eds. S.T. Buckland, D.R.Anderson, K.P. Burnham,
+  J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  University Press.
+}
+\seealso{
+  \code{\link{ddf.ds}},
+  \code{\link{ddf.io}},\code{\link{ddf.io.fi}},\code{\link{ddf.trial}},\code{\link{ddf.trial.fi}},\code{\link{ddf.rem}},\code{\link{ddf.rem.fi}}
+}
+\keyword{~Statistical}
+\keyword{Models}
+

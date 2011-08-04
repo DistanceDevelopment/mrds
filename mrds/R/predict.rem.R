@@ -1,8 +1,7 @@
-
-
 #' Predictions from distance sampling rem models
-#' to predict detection probabilities values from a fitted
-#' distance sampling model using either the original data or a new dataframe.
+#' 
+#' Predict detection probabilities values from a fitted
+#' distance sampling rem model using either the original data or a new dataframe.
 #' 
 #' The first 4 arguments are the same in each predict function.  The latter 2
 #' are specific to certain functions. The effective strip half-width (esw) is

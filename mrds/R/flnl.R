@@ -1,11 +1,12 @@
-
-
 #' Log-likelihood computation for distance sampling data
+#' 
 #' For a specific set of parameter values, it computes and returns the negative
 #' log-likelihood for the distance sampling likelihood for distances that are
 #' unbinned, binned and a mixture of both.  The function \code{flnl} is the
 #' function minimized using \code{\link{optim}} from within
-#' \code{\link{ddf.ds}}.  Most of the computation is in \code{flt.lnl} for line
+#' \code{\link{ddf.ds}}.  
+#' 
+#' Most of the computation is in \code{flt.lnl} for line
 #' transect data and \code{fpt.lnl} for point count data in which the negative
 #' log-likelihood is computed for each observation. \code{flnl} is a wrapper
 #' that optionally outputs intermediate results and sums the individual

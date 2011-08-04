@@ -1,7 +1,5 @@
-
-
-
 #' Hessian computation for fitted distance detection function model parameters
+#' 
 #' Computes hessian to be used for variance-covariance matrix.  The hessian is
 #' the outer product of the vector of first partials (see pg 62 of Buckland et
 #' al 2002).

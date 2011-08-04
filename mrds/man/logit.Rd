@@ -1,14 +1,20 @@
 \name{logit}
 \alias{logit}
-\title{Logit function...}
-\usage{logit(p)}
-
-\description{
-  Logit function Computes logit transformation.
+\title{Logit function}
+\usage{
+  logit(p)
 }
-\value{\code{ logit(p)} returns [log(p/(1-p)]}
-\author{Jeff Laake}
-\keyword{utility}
 \arguments{
   \item{p}{probability}
 }
+\value{
+  \code{ logit(p)} returns [log(p/(1-p)]
+}
+\description{
+  Computes logit transformation.
+}
+\author{
+  Jeff Laake
+}
+\keyword{utility}
+

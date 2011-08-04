@@ -1,19 +1,30 @@
+\docType{data}
 \name{stake77}
 \alias{stake77}
-\title{Wooden stake data from 1977 survey...}
-
-\description{
-  Wooden stake data from 1977 survey Multiple surveys by
-  different observers of a single 1km transect containing
-  150 wooden stakes placed randomly throughout a 40 m strip
-  (20m on either side).
+\title{Wooden stake data from 1977 survey}
+\format{A data frame with 150 observations on the following 10 variables.
+\describe{ \item{StakeNo}{unique number for each stake 1-150}
+\item{PD}{perpendicular distance at which the stake was placed
+from the line} \item{Obs1}{0/1 whether missed/seen by observer 1}
+\item{Obs2}{0/1 whether missed/seen by observer 2}
+\item{Obs3}{0/1 whether missed/seen by observer 3}
+\item{Obs4}{0/1 whether missed/seen by observer 4}
+\item{Obs5}{0/1 whether missed/seen by observer 5}
+\item{Obs6}{0/1 whether missed/seen by observer 6}
+\item{Obs7}{0/1 whether missed/seen by observer 7}
+\item{Obs8}{0/1 whether missed/seen by observer 8} }}
+\source{
+  Laake, J. 1978. Line transect estimators robust to animal
+  movement. M.S. Thesis. Utah State University, Logan,
+  Utah. 55p.
 }
-\docType{data}
-\references{Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.
-Estimation of Density from Line Transect Sampling of Biological
-Populations. Wildlife Monographs:7-202.}
-\keyword{datasets}
-\examples{data(stake77)
+\description{
+  Multiple surveys by different observers of a single 1km
+  transect containing 150 wooden stakes placed randomly
+  throughout a 40 m strip (20m on either side).
+}
+\examples{
+data(stake77)
 # Functions to extract stake data and put in the mrds format for model fitting.
 extract.stake=function(stake,obs)
 {
@@ -35,11 +46,11 @@ for(i in 1:(ncol(stake)-2))
 df=extract.obs(obs=i)
 df$person=i
 example=rbind(example,df)
-}		 
+}
 example$person=factor(example$person)
 example$object=1:nrow(example)
 return(example)
-}   
+}
 }
 extract.stake.pairs=function(stake,obs1,obs2,removal=FALSE)
 {
@@ -62,4 +73,12 @@ stkpairs=extract.stake.pairs(stake77,1,3,removal=FALSE)
 io.model=ddf(dsmodel = ~mcds(key = "hn", formula=~1), mrmodel=~glm(formula=~distance),data = stkpairs, method = "io")
 summary(io.model)
 plot(io.model,breaks=seq(0,20,2),showpoints=TRUE)
-ddf.gof(io.model)}
+ddf.gof(io.model)
+}
+\references{
+  Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.
+  Estimation of Density from Line Transect Sampling of
+  Biological Populations. Wildlife Monographs:7-202.
+}
+\keyword{datasets}
+

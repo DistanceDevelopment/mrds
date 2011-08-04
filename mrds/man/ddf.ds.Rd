@@ -1,24 +1,45 @@
 \name{ddf.ds}
 \alias{ddf.ds}
-\title{CDS/MCDS Distance Detection Function Fitting...}
-\usage{\method{ddf}{ds} (model, data, meta.data=list(),
-    control=list(), call, method="ds")}
-
-\description{
-  CDS/MCDS Distance Detection Function Fitting fits a
-  conventional distance sampling (CDS) (likelihood eq 6.6
-  in Laake and Borchers 2004) or multi-covariate distance
-  sampling (MCDS)(likelihood eq 6.14 in Laake and Borchers
-  2004) model for the detection function of observed
-  distance data.  It only uses key functions and does not
-  incorporate adjustment functions as in CDS/MCDS analysis
-  engines in DISTANCE (Marques and Buckland 2004). Distance
-  can be grouped (binned), ungrouped (unbinned) or mixture
-  of the two.  This function is not called directly by the
-  user and is called from \code{ddf},\code{ddf.io}, or
-  \code{ddf.trial}.
+\title{CDS/MCDS Distance Detection Function Fitting}
+\usage{
+  ddf.ds(model, data, meta.data = list(), control = list(),
+  call, method = "ds")
 }
+\arguments{
+  \item{model}{model list with key function and scale
+  formula if any}
 
+  \item{data}{analysis dataframe}
+
+  \item{meta.data}{list containing settings controlling
+  data structure}
+
+  \item{control}{list containing settings controlling model
+  fitting}
+
+  \item{call}{original function call if this function not
+  called directly from \code{ddf} (e.g., called via
+  \code{ddf.io}}
+
+  \item{method}{analysis method; only needed if this
+  function called from \code{ddf.io} or \code{ddf.trial}}
+}
+\value{
+  result: a ds model object
+}
+\description{
+  Fits a conventional distance sampling (CDS) (likelihood
+  eq 6.6 in Laake and Borchers 2004) or multi-covariate
+  distance sampling (MCDS)(likelihood eq 6.14 in Laake and
+  Borchers 2004) model for the detection function of
+  observed distance data.  It only uses key functions and
+  does not incorporate adjustment functions as in CDS/MCDS
+  analysis engines in DISTANCE (Marques and Buckland 2004).
+  Distance can be grouped (binned), ungrouped (unbinned) or
+  mixture of the two.  This function is not called directly
+  by the user and is called from \code{ddf},\code{ddf.io},
+  or \code{ddf.trial}.
+}
 \details{
   For a complete description of each of the calling
   arguments, see \code{\link{ddf}}.  The argument
@@ -29,38 +50,18 @@
   \code{control},\code{meta.data},and \code{method} are
   defined the same as in \code{ddf}.
 }
-\value{result: a ds model object}
-\note{If mixture of binned and unbinned distance, width must be set to be >=
-largest interval endpoint; this could be changed with a more complicated
-analysis; likewise, if all binned and bins overlap, the above must also
-hold; if bins don't overlap, width must be one of the interval endpoints;
-same holds for left truncation Although the mixture analysis works in
-principle it has not been tested via simulation.}
-\author{Jeff Laake}
-\seealso{\code{\link{flnl}},
-\code{\link{summary.ds}},\code{\link{coef.ds}},\code{\link{plot.ds}},\code{\link{gof.ds}}}
-\references{Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
-detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
-Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
-Thomas. Oxford University Press.
-
-Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
-function. In: Advanced Distance Sampling, eds. S.T. Buckland,
-D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
-Oxford University Press.}
-\keyword{Statistical}
-\keyword{Models}
-\arguments{
-  \item{model}{model list with key function and scale formula if any}
-  \item{data}{analysis dataframe}
-  \item{meta.data}{list containing settings controlling data structure}
-  \item{control}{list containing settings controlling model fitting}
-  \item{call}{original function call if this function not called directly from
-\code{ddf} (e.g., called via \code{ddf.io}}
-  \item{method}{analysis method; only needed if this function called from
-\code{ddf.io} or \code{ddf.trial}}
+\note{
+  If mixture of binned and unbinned distance, width must be
+  set to be >= largest interval endpoint; this could be
+  changed with a more complicated analysis; likewise, if
+  all binned and bins overlap, the above must also hold; if
+  bins don't overlap, width must be one of the interval
+  endpoints; same holds for left truncation Although the
+  mixture analysis works in principle it has not been
+  tested via simulation.
 }
-\examples{#
+\examples{
+#
 # ddf.ds is called in the following example when ddf is called and method="ds"
 #
 data(book.tee.data)
@@ -68,9 +69,33 @@ region<<-book.tee.data$book.tee.region
 egdata<<-book.tee.data$book.tee.dataframe
 samples<<-book.tee.data$book.tee.samples
 obs<<-book.tee.data$book.tee.obs
-result=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = egdata[egdata$observer == 
+result=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = egdata[egdata$observer ==
 1, ], method = "ds", meta.data = list(width = 4))
 summary(result,se=TRUE)
 plot(result,main="cds - observer 1")
-summary(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),se=TRUE))
-summary(ddf.gof(result))}
+print(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),se=TRUE))
+print(ddf.gof(result))
+}
+\author{
+  Jeff Laake
+}
+\references{
+  Laake, J.L. and D.L. Borchers. 2004. Methods for
+  incomplete detection at distance zero. In: Advanced
+  Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
+  Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  University Press.
+
+  Marques, F.F.C. and S.T. Buckland. 2004. Covariate models
+  for the detection function. In: Advanced Distance
+  Sampling, eds. S.T. Buckland, D.R.Anderson, K.P. Burnham,
+  J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  University Press.
+}
+\seealso{
+  \code{\link{flnl}},
+  \code{\link{summary.ds}},\code{\link{coef.ds}},\code{\link{plot.ds}},\code{\link{gof.ds}}
+}
+\keyword{Models}
+\keyword{Statistical}
+

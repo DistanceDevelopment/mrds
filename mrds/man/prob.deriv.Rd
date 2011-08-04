@@ -1,30 +1,43 @@
 \name{prob.deriv}
 \alias{prob.deriv}
-\title{Derivatives for variance of average p and average p(0) variance...}
-\usage{prob.deriv(par, model, parfct, observer, fittedmodel)}
-
-\description{
-  Derivatives for variance of average p and average p(0)
-  variance : used in call to DeltaMethod from prob.se to
-  get first derivatives
+\title{Derivatives for variance of average p and average p(0) variance}
+\usage{
+  prob.deriv(par, model, parfct, observer = NULL,
+  fittedmodel = NULL)
 }
+\arguments{
+  \item{par}{detection function parameter values}
 
+  \item{model}{ddf model object}
+
+  \item{parfct}{function of detection probabilities;
+  currently only average (over covariates) detection
+  probability p integrated over distance or average (over
+  covariates) detection probability at distance 0; p(0)}
+
+  \item{observer}{1,2,3 for primary, secondary, or
+  duplicates for average p(0); passed to fct}
+
+  \item{fittedmodel}{full fitted ddf model when
+  \code{trial.fi} or \code{io.fi} is called from
+  \code{trial} or \code{io} respectively}
+}
+\value{
+  Vector of values from fct at specified parameter values
+}
+\description{
+  Used in call to DeltaMethod from prob.se to get first
+  derivatives
+}
 \details{
   Need to add equations here as I do not think they exist
   in any of the texts. These should probably be checked
   with simulation.
 }
-\value{Vector of values from fct at specified parameter values}
-\seealso{prob.se}
-\author{Jeff Laake}
-\arguments{
-  \item{par}{detection function parameter values}
-  \item{model}{ddf model object}
-  \item{parfct}{function of detection probabilities; currently only
-average (over covariates) detection probability p integrated over distance
-or average (over covariates) detection probability at distance 0; p(0)}
-  \item{observer}{1,2,3 for primary, secondary, or duplicates for average
-p(0); passed to fct}
-  \item{fittedmodel}{full fitted ddf model when \code{trial.fi} or
-\code{io.fi} is called from \code{trial} or \code{io} respectively}
+\author{
+  Jeff Laake
 }
+\seealso{
+  prob.se
+}
+

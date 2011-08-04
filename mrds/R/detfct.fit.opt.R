@@ -1,5 +1,5 @@
-
-
+#' Fit detection function using key-adjustment functions
+#' 
 #' Fit detection function to observed distances
 #' using the key-adjustment
 #' function approach.  If adjustment functions are included it will alternate

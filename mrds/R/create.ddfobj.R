@@ -1,6 +1,5 @@
-
-
 #' Create detection function object
+#' 
 #' Creates and populates a specific list structure to define a detection
 #' function object and its data. The \code{ddfobj} is used throughout the
 #' package as a calling argument to various functions.

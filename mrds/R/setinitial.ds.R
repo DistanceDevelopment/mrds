@@ -1,6 +1,5 @@
-
-
 #' Set initial values for detection function based on distance sampling
+#' 
 #' For a given detection function, it computes the initial values for the
 #' parameters including scale and shape parameters and adjustment function
 #' parameters if any.  If there are user-defined initial values only the

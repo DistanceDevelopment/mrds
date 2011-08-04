@@ -1,7 +1,5 @@
-
-
-
 #' Plot histogram line
+#' 
 #' Takes bar heights (height) and cutbpoints (breaks), and constructs a
 #' line-only histogram from them using the function plot() (if lineonly==FALSE)
 #' or lines() (if lineonly==TRUE).

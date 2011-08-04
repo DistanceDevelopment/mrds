@@ -1,6 +1,5 @@
-
-
 #' Iterative offset GLM/GAM for fitting detection function
+#' 
 #' Provides an iterative algorithm for finding the MLEs of detection (capture)
 #' probabilities for a two-occasion (double observer) mark-recapture experiment
 #' using standard algorithms GLM/GAM and an offset to compensate for

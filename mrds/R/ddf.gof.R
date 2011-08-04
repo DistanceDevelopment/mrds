@@ -1,7 +1,6 @@
-
-
 #' Goodness of fit tests for distance sampling models
-#' :generic function that computes chi-square goodness of fit test for ddf
+#' 
+#' Generic function that computes chi-square goodness of fit test for ddf
 #' models
 #' 
 #' 
