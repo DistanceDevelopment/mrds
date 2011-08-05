@@ -27,7 +27,8 @@ Depends:
     R (>= 2.0.0)
 Imports:
     optimx,
-    mgcv
+    mgcv,
+    numDeriv
 LazyLoad: yes
 License: GPL version 2 or later
 Collate:

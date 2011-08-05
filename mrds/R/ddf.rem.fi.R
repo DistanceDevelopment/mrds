@@ -30,6 +30,7 @@
 #' same as in \code{ddf}.
 #' 
 #' @S3method ddf rem.fi
+#' @import numDeriv
 #' @param model mark-recapture model specification
 #' @param data analysis dataframe
 #' @param meta.data list containing settings controlling data structure
