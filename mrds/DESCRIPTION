@@ -1,6 +1,6 @@
 Package: mrds
 Version: 2.0.2
-Date: 2011-8-5
+Date: 2011-8-22
 Title: Mark-Recapture Distance Sampling (mrds)
 Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers
     <dlb@mcs.st-and.ac.uk>, Len Thomas
@@ -27,8 +27,7 @@ Depends:
     R (>= 2.0.0)
 Imports:
     optimx,
-    mgcv,
-    numDeriv
+    mgcv
 LazyLoad: yes
 License: GPL version 2 or later
 Collate:
@@ -108,7 +107,6 @@ Collate:
     'logisticdupbyx.R'
     'logit.R'
     'mcds.R'
-    'mrds-package.R'
     'NCovered.ds.R'
     'NCovered.io.fi.R'
     'NCovered.io.R'
@@ -139,6 +137,7 @@ Collate:
     'predict.trial.fi.R'
     'predict.trial.R'
     'print.ddf.gof.R'
+    'print.det.tables.R'
     'print.dht.R'
     'print.summary.ds.R'
     'print.summary.io.fi.R'
@@ -169,3 +168,4 @@ Collate:
     'test.breaks.R'
     'varn.R'
     'zzz.R'
+    'mrds-package.R'

@@ -41,7 +41,7 @@ data(stake78)
 data(stake77)
 # compare distribution of distances for all stakes
 hist(stake77$PD)
-dev.new()
+if(.Platform$GUI=="Rgui")dev.new()
 hist(stake78$PD)
 # Functions to extract stake data and put in the mrds format for model fitting.
 extract.stake=function(stake,obs)

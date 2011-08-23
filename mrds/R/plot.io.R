@@ -161,7 +161,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
 #
   if(is.element(1,which))
   {
-	  if(new)dev.new()
+	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  plot_uncond(model,1,xmat,gxvalues=p1/delta,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
 			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,...)
   }
@@ -170,7 +170,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
 #
   if(is.element(2,which))
   {
-	  if(new)dev.new()
+	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  plot_uncond(model,2,xmat,gxvalues=p2/delta,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
 			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,...)
   }
@@ -179,7 +179,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
 #
   if(is.element(3,which))
   {
-	  if(new)dev.new()
+	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  plot_uncond(model,3,xmat,gxvalues=(p1+p2-p1*p2)/delta,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
 			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,...)
   }
@@ -188,7 +188,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
 #
   if(is.element(4,which))
   {
-	  if(new)dev.new()
+	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  plot_uncond(model,4,xmat,gxvalues=p1*p2/delta,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
 			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,...)
   }
@@ -198,10 +198,10 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
   data=model$mr$mr$data
   data$offsetvalue=0
   est<-calcp.mrds(model$mr$mr$formula,model$mr$mr$family$link,model$mr$mr$coefficients,data,vname="distance",
-		  lower=left,upper=width,divisions=divisions,type="line",objname="object",obsname="observer")
+		  lower=left,upper=width,divisions=divisions,type=model$meta.data$point,objname="object",obsname="observer")
   if(is.element(5,which))
   {
-	  if(new)dev.new()
+	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  gxvalues <-p1[xmat$detected[xmat$observer==2]==1] 
 	  plot_cond(1,data,gxvalues,list(x=est$x,p=est$p1),nc,breaks,showpoints,showlines,
 			  maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,...)
@@ -211,7 +211,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
 #
   if(is.element(6,which))
   {
-	  if(new)dev.new()
+	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  gxvalues <-p2[xmat$detected[xmat$observer==1]==1] 
 	  plot_cond(2,data,gxvalues,list(x=est$x,p=est$p2),nc,breaks,showpoints,showlines,
 			  maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,...)

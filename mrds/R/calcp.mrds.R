@@ -31,7 +31,7 @@
 #' @author Who wrote this?
 #' @references See Laake and Borchers (2004) chapter 6 in Advanced Distance
 #'   Sampling by Buckland et al.
-calcp.mrds<-function(dpformula,dplink,dppars,dpdata,vname,lower=0,upper,divisions=30,type="line",objname="sighting",obsname="plat")
+calcp.mrds<-function(dpformula,dplink,dppars,dpdata,vname,lower=0,upper,divisions=30,type=TRUE,objname="sighting",obsname="plat")
 {
 #  dpformula	valid formula for binary regression model detection function
 #  dplink	link function
@@ -106,6 +106,7 @@ calcp.mrds<-function(dpformula,dplink,dppars,dpdata,vname,lower=0,upper,division
 		return(ind)
 	}
 	
+ type=ifelse(type,"line","point")
  if(type!="line" & type!="point") stop("type must be line or point")
 
  w=upper-lower

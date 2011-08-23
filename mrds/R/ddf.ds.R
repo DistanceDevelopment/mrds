@@ -192,11 +192,16 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 			 strict=meta.data$strict, binned=meta.data$binned,width=meta.data$width, standardize=control$standardize)
 # Note there is a difference between maxit (which is what optim() uses) and
 # maxiter (which is what detfct.fit uses.)
-  optim.options <- list(maxit=300)
+   optim.options <- list(maxit=300)
 
-# foptim doesn't support
-  if(meta.data$engine=="foptim"){
-    if(any(xmat$binned)){
+# foptim not supported
+   if(meta.data$engine=="foptim"){
+		errors("foptim not support in this version: switching to optim!")
+		meta.data$engine<-"optim"
+	}
+
+   if(meta.data$engine=="foptim"){
+   if(any(xmat$binned)){
       errors("Only un-binned data is supported: switching to optim!")
       engine<-"optim"
     }

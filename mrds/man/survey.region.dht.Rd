@@ -2,7 +2,7 @@
 \alias{survey.region.dht}
 \title{Extrapolate Horvitz-Thompson abundance estimates to entire surveyed region}
 \usage{
-  survey.region.dht(Nhat.by.sample, samples, width)
+  survey.region.dht(Nhat.by.sample, samples, width, point)
 }
 \arguments{
   \item{Nhat.by.sample}{dataframe of abundance by sample}
@@ -10,6 +10,8 @@
   \item{samples}{samples table}
 
   \item{width}{transect width}
+
+  \item{point}{if TRUE point count otherwise line transect}
 }
 \value{
   Revised Nhat.by.sample dataframe containing estimates

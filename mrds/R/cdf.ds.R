@@ -52,6 +52,7 @@ function(model,newdata=NULL)
   ftype <- ddfobj$type
   intercept.only <- ddfobj$intercept.only
   cgftab <- ddfobj$cgftab
+  point <- model$meta.data$point
 #
 # Set up integration range
 #
@@ -75,7 +76,7 @@ function(model,newdata=NULL)
 
   if(any(is.null(ddfobj$adjustment$order))){
 	  int1 <- integratedetfct(ddfobj=ddfobj,select=rep(TRUE,nrow(x)),width=width,int.range=int.range,
-			  doeachint=TRUE,standardize=ltmodel$aux$misc.options$standardize,point=FALSE)
+			  doeachint=TRUE,standardize=ltmodel$aux$misc.options$standardize,point=point)
 	  
 #    int1=integratedetfct(cgftab,ftype,width, int.range, z, NULL, fpar,fpar,intercept.only, FALSE,
 #                         adj.series=adj.series,adj.order=adj.order,adj.scale=adj.scale)

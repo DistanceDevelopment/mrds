@@ -154,7 +154,7 @@
 #
     if(is.element(1,which))
 	{
-	   dev.new()  
+		if(Platform$GUI=="Rgui")dev.new()
 	   plot_uncond(model,1,xmat,gxvalues,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
 			 maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,...)
    }
@@ -163,11 +163,11 @@
 #
     if(is.element(2,which))
 	{
-	   dev.new()
+		if(.Platform$GUI=="Rgui")dev.new()
 	   xmat<- data[data$observer==2&data$detected==1,]
 	   gxvalues <- predict(model,newdata=xmat,type="response",integrate=FALSE)$fitted  
 	   est<-calcp.mrds(model$mr$formula,model$mr$family$link,model$mr$coefficients,model$data,vname="distance",
-			        lower=left,upper=width,divisions=divisions,type="line",objname="object",obsname="observer")
+			        lower=left,upper=width,divisions=divisions,type=model$meta.data$point,objname="object",obsname="observer")
 	   plot_cond(1,data,gxvalues,list(x=est$x,p=est$p1),nc,breaks,showpoints,showlines,
 			maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,...)
     }

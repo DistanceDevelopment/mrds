@@ -3,8 +3,8 @@
 \title{Average detection probability calculation}
 \usage{
   calcp.mrds(dpformula, dplink, dppars, dpdata, vname,
-  lower = 0, upper, divisions = 30, type = "line", objname
-  = "sighting", obsname = "plat")
+  lower = 0, upper, divisions = 30, type = TRUE, objname =
+  "sighting", obsname = "plat")
 }
 \arguments{
   \item{dpformula}{valid formula for binary regression

@@ -30,7 +30,6 @@
 #' same as in \code{ddf}.
 #' 
 #' @S3method ddf rem.fi
-#' @import numDeriv
 #' @param model mark-recapture model specification
 #' @param data analysis dataframe
 #' @param meta.data list containing settings controlling data structure
@@ -163,9 +162,13 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
   xmat1=xmat[xmat$observer==1,]
   p.formula=as.formula(model.formula)
   npar=ncol(model.matrix(p.formula,xmat1))
-  fit=optim(par=rep(0,npar),lnl.removal,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula),
-		  hessian=FALSE,control=list(maxit=5000))
-  fit$hessian=hessian(lnl.removal,x=fit$par,method="Richardson",x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
+  fit <- optimx(rep(0,npar),lnl.removal, method="nlminb", control=control,
+		  hessian=TRUE,  x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
+  fit <-attr(fit,"details")[[1]]
+  fit$hessian<-fit$nhatend  
+#  fit=optim(par=rep(0,npar),lnl.removal,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula),
+#		  hessian=TRUE,control=list(maxit=5000))
+#  fit$hessian=hessian(lnl.removal,x=fit$par,method="Richardson",x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
   GAM=FALSE
   if(modelvalues$fct=="gam") 
   {

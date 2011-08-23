@@ -184,11 +184,12 @@ tables.dht=function(group)
 #  Change jll 19-Jan-05 - sort Nhat.by.sample by Region.Label and Sample.Label
 #
     width= model$meta.data$width * options$convert.units
-    Nhat.by.sample = survey.region.dht(Nhat.by.sample, samples,width)
+    Nhat.by.sample = survey.region.dht(Nhat.by.sample, samples,width,point)
     Nhat.by.sample = Nhat.by.sample[order(Nhat.by.sample$Region.Label,Nhat.by.sample$Sample.Label),]
+	s.area=ifelse(point,Nhat.by.sample$Effort.x*pi*width^2,Nhat.by.sample$Effort.x*2*width)
 	bysample.table = with(Nhat.by.sample, data.frame(Region = Region.Label, 
-					Sample = Sample.Label, Effort = Effort.x, Sample.Area = Effort.x * 
-							2 * width,Area=Area, n = n, Nhat = Nhat,Nchat = Nhat*CoveredArea/Area))
+					Sample = Sample.Label, Effort = Effort.x, Sample.Area = s.area,
+					Area=Area, n = n, Nhat = Nhat,Nchat = Nhat*CoveredArea/Area))
 	bysample.table$Dhat = bysample.table$Nchat/bysample.table$Sample.Area
 	Nhat.by.region = by(Nhat.by.sample$Nhat, Nhat.by.sample$Region.Label,
         sum)
@@ -331,6 +332,7 @@ tables.dht=function(group)
 # obs.table from model data rather than creating obs.table separately. This only works if the data contain
 # the Sample.Label and Region.Label fields. 
 #
+    point=model$meta.data$point
     objects=as.numeric(names(model$fitted))
     if(is.null(obs.table))
     {
@@ -384,7 +386,7 @@ tables.dht=function(group)
 #      cat("Warning: Area for regions is zero. They have been set to area of covered region(strips), \nso N is for covered region.",
 #          "However, standard errors will not match \nprevious covered region SE because it includes spatial variation\n")
       Effort.by.region = by(sample.table$Effort, sample.table$Region.Label,sum)
-      region.table$Area = 2 * as.vector(Effort.by.region) * width
+      region.table$Area = ifelse(point, pi*as.vector(Effort.by.region) * width^2, 2 * as.vector(Effort.by.region) * width)
    }
 #
 #  Create obs/samples structures

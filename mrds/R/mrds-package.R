@@ -190,7 +190,7 @@ NULL
 #' data(stake77)
 #' # compare distribution of distances for all stakes
 #' hist(stake77$PD)
-#' dev.new()
+#' if(.Platform$GUI=="Rgui")dev.new()
 #' hist(stake78$PD)
 #' # Functions to extract stake data and put in the mrds format for model fitting.
 #' extract.stake=function(stake,obs)
@@ -245,7 +245,87 @@ NULL
 #' 
 NULL
 
+#' Single observer point count data example from Distance
+#' 
+#' Single observer point count data example from Distance
+#' 
+#' 
+#' @name ptdata.distance
+#' @docType data
+#' @format The format is 144 obs of 6 variables: ..$ distance: numeric distance from center $ 
+#'   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
+#'   detected: numeric 0/1  $ object: sequential object number $Sample.Label: point label $ Region.Label: single region label
+#' @keywords datasets
+#' @examples
+#' 
+#' data(ptdata.distance)
+#' xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.distance, method = "ds", meta.data = list(point=TRUE))
+#' summary(xx)
+#' plot(xx,main="Distance point count data")
+#' ddf.gof(xx)
+#' Regions=data.frame(Region.Label=1,Area=1)
+#' Samples=data.frame(Sample.Label=1:30,Region.Label=rep(1,30),Effort=rep(1,30))
+#' print(dht(xx,sample.table=Samples,region.table=Regions))
+NULL
 
 
 
+#' Simulated single observer point count data
+#' 
+#' Simulated single observer point count data with detection p(0)=1; hn sigma=30; w=100
+#' 
+#' 
+#' @name ptdata.single
+#' @docType data
+#' @format The format is 341 obs of 4 variables: ..$ distance: numeric distance from center $ 
+#'   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
+#'   detected: numeric 0/1  $ object : sequential object number
+#' @keywords datasets
+#' @examples
+#' 
+#' data(ptdata.single)
+#' xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.single, method = "ds", meta.data = list(point=TRUE))
+#' summary(xx)
+#' plot(xx,main="Simulated point count data")
+NULL
 
+#' Simulated dual observer point count data
+#' 
+#' Simulated dual observer point count data with detection p(0)=0.8; hn sigma=30; w=100
+#' for both observers with dependency y>0, gamma=0.1
+#' 
+#' @name ptdata.dual
+#' @docType data
+#' @format The format is 420 obs of 6 variables: ..$ distance: numeric distance from center $ 
+#'   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
+#'   detected: numeric 0/1  $ person: Factor with 2 levels A,B $ pair: Factor with 2 levels "AB" BA" $
+#'   object : sequential object number
+#' @keywords datasets
+#' @examples
+#' 
+#' data(ptdata.dual)
+#' xx=ddf(mrmodel=~glm(formula=~distance), dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.dual, method = "io", meta.data = list(point=TRUE))
+#' summary(xx)
+#' plot(xx,main="Simulated point count data")
+NULL
+
+
+#' Simulated removal observer point count data
+#' 
+#' Simulated removal observer point count data with detection p(0)=0.8; hn sigma=30; w=100
+#' for both observers with dependency y>0, gamma=0.1
+#' 
+#' @name ptdata.removal
+#' @docType data
+#' @format The format is 408 obs of 6 variables: ..$ distance: numeric distance from center $ 
+#'   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
+#'   detected: numeric 0/1  $ person: Factor with 2 levels A,B $ pair: Factor with 2 levels "AB" BA" $
+#'   object : sequential object number
+#' @keywords datasets
+#' @examples
+#' 
+#' data(ptdata.removal)
+#' xx=ddf(mrmodel=~glm(formula=~distance), dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.removal, method = "rem", meta.data = list(point=TRUE))
+#' summary(xx)
+#' plot(xx,main="Simulated point count data")
+NULL
