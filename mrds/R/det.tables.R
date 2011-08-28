@@ -27,6 +27,10 @@
 #' plot(tabs,new=FALSE,which=c(1,2,5,6))
 det.tables=function(model,nc=NULL,breaks=NULL)
 {
+  if(model$method=="ds")
+	  cat("This function does not work with single observer data.\n")
+      return(NULL)
+  }
   xmat<- process.data(model$data,model$meta.data)$xmat
   xmat$Detected=factor(xmat$detected,labels=c("Missed","Detected"))
   left=model$meta.data$left

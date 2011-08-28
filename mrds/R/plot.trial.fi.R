@@ -154,7 +154,7 @@
 #
     if(is.element(1,which))
 	{
-		if(Platform$GUI=="Rgui")dev.new()
+		if(.Platform$GUI=="Rgui")dev.new()
 	   plot_uncond(model,1,xmat,gxvalues,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
 			 maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,...)
    }
