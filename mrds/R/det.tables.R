@@ -70,7 +70,7 @@ det.tables=function(model,nc=NULL,breaks=NULL)
    xmat2=xmat[xmat$observer==2,]
    obs1=with(xmat1,table(cut(distance,breaks),Detected))
    obs2=with(xmat2,table(cut(distance,breaks),Detected))
-   obs3=with(xmat1[xmat$timesdetected==2,],table(cut(distance,breaks)))
+   obs3=with(xmat1[xmat1$timesdetected==2,],table(cut(distance,breaks)))
    obs4=with(xmat1,table(cut(distance,breaks)))
 #
 #  Produce tables for conditional detection for each observer

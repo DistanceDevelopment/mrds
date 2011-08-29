@@ -155,8 +155,7 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
    xmat2=xmat[xmat$observer==2,]
    xmat1=xmat[xmat$observer==1,]
    npar=ncol(model.matrix(p.formula,xmat1))
-   fit <- optimx(rep(0,npar),lnl.io, method="nlminb", control=control,
-		   hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
+   fit <- optimx(rep(0,npar),lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
    fit <-attr(fit,"details")[[1]]
    fit$hessian<-fit$nhatend  
 #   fit=optim(par=rep(0,npar),lnl.io,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula),
