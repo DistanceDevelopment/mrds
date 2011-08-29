@@ -28,6 +28,7 @@
 det.tables=function(model,nc=NULL,breaks=NULL)
 {
   if(model$method=="ds")
+  {
 	  cat("This function does not work with single observer data.\n")
       return(NULL)
   }
