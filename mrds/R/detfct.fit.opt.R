@@ -118,9 +118,9 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 	  lt$hessian<-lt$nhatend
 #      lt$shapemodel=misc.options$shapemodel
       if(showit==3)
-        errors(paste("Converge = ",lt$converge,"\nlnl = ",lt$value,"\nFinal values = ",paste(lt$par,collapse=", ")))
+        errors(paste("Converge = ",lt$conv,"\nlnl = ",lt$value,"\nFinal values = ",paste(lt$par,collapse=", ")))
 # If we do have convergence what do we do
-      if(lt$converge==0|!refit){
+      if(lt$conv==0|!refit){
         itconverged<-TRUE 
 
         lt$aux <- c(optim.options,bounds,misc.options)
@@ -134,10 +134,11 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
           if(showit>=1)
             errors("No convergence. Refitting ...")
           
-          if(lt$converge==1)
+          if(lt$conv==1)
             initialvalues<-lt$par
           else
             initialvalues<-lt$par*(runif(length(initialvalues))+.5)
+		    initialvalues[is.na(initialvalues)]=0
         }else{
           itconverged<-TRUE
         }
@@ -186,7 +187,7 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
           if(refit.count>nrefits){ 
             bounded<- FALSE
             lt$message<-"FALSE CONVERGENCE"
-            lt$converge<-1
+            lt$conv<-1
         }
     }
 #
@@ -215,7 +216,8 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
     }
   }
   lt$model <- list(scalemodel=misc.options$scalemodel) 
-
+  lt$converge<-lt$conv
+  lt$conv<-NULL
 
   return(lt)
 
