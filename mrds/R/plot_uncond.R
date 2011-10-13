@@ -83,7 +83,7 @@ function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,showlines,maintitle
      selmat <- xmat[xmat$observer==1,]
      det.detected <- selmat$timesdetected==2
   }
-  hist.obj<-hist(selmat$distance[det.detected], breaks=breaks, plot = F)
+  hist.obj<-hist(selmat$distance[det.detected], breaks=breaks, plot = FALSE)
   if(!point)
 	  expected.counts<-((breaks[2:(nc+1)]-breaks[1:nc])*(model$Nhat/breaks[nc+1] ))
   else
@@ -91,7 +91,7 @@ function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,showlines,maintitle
   hist.obj$density<-hist.obj$counts/(expected.counts)
   hist.obj$intensities<-hist.obj$density
   freq<-hist.obj$density
-  hist.obj$equidist<-F
+  hist.obj$equidist<-FALSE
   line=average.line(finebr,obs,model)
   linevalues <- line$values
   xgrid <- line$xgrid
