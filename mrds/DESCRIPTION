@@ -29,6 +29,8 @@ Imports:
     optimx,
     mgcv,
     Rsolnp
+Suggests:
+    testthat
 LazyLoad: yes
 License: GPL version 2 or later
 Collate:
