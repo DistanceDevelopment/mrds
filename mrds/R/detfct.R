@@ -151,14 +151,14 @@ function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdi
 	key.vals <- rep(1/width,length(distance))
   }else if(key == "gamma"){
 	key.vals <- keyfct.gamma(distance, key.scale, key.shape)
-}
+  }
 
   # If we are using adjustment terms.
   if(!is.null(ddfobj$adjustment)){
     adj.series=ddfobj$adjustment$series
-	adj.scale=ddfobj$adjustment$scale
-	adj.order=ddfobj$adjustment$order
-	adj.parm=ddfobj$adjustment$parameters
+	 adj.scale=ddfobj$adjustment$scale
+	 adj.order=ddfobj$adjustment$order
+	 adj.parm=ddfobj$adjustment$parameters
 		
     # Find out if we are scaling by width or by key scale
     if(adj.scale == "width")
@@ -191,9 +191,9 @@ function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdi
         key.val.0 <- keyfct.hn(rep(0,length(distance)), key.scale)
       }else if(key == "hr"){
         key.val.0 <- keyfct.hz(rep(0,length(distance)), key.scale, key.shape)
-	  }else if(key == "gamma"){
-		key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
-   	  }else if(key == "unif"){
+      }else if(key == "gamma"){
+        key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
+      }else if(key == "unif"){
         key.val.0 <- rep(1,length(distance))
       }
 

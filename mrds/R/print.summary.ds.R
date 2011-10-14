@@ -74,6 +74,14 @@ function (x,...)
       }
   }
   print(parameters)
+
+  # Remind the user that monotonicity constraints were enforced
+  if(x$mono & x$mono.strict){
+    cat("\nStrict monotonicity constraints were enforced.\n")
+  }else if(x$mono){
+    cat("\nMonotonicity constraints were enforced.\n")
+  }
+
 invisible()
 }
 

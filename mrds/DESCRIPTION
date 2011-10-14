@@ -24,10 +24,11 @@ Description: This package implements mark-recapture
     double-observer distance sampling surveys". 2006.
     Biometrics 62:372-378.)
 Depends:
-    R (>= 2.0.0)
+    R (>= 2.0.0),optimx,Rsolnp
 Imports:
     optimx,
-    mgcv
+    mgcv,
+    Rsolnp
 LazyLoad: yes
 License: GPL version 2 or later
 Collate:
@@ -66,6 +67,7 @@ Collate:
     'DeltaMethod.R'
     'det.tables.R'
     'detfct.fit.opt.R'
+    'detfct.fit.mono.R'
     'detfct.fit.R'
     'detfct.R'
     'dht.deriv.R'
@@ -76,7 +78,6 @@ Collate:
     'flnl.R'
     'flt.lnl.R'
     'flt.var.R'
-    'foptim.R'
     'fpt.lnl.r'
     'g0.R'
     'getpar.R'

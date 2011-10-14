@@ -66,6 +66,10 @@ avgp=function(model,pdot,...)
      ans$average.p.se=sqrt(var.pbar)
      ans$Nhat.se=sqrt(Nhatvar)
   }
+
+  ans$mono<-model$ds$aux$mono
+  ans$mono.strict<-model$ds$aux$mono.strict
+
   class(ans)="summary.rem"
   return(ans)
 }

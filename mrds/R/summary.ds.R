@@ -56,6 +56,12 @@ avgp=function(model,pdot,...)
 {return(pdot)}
 
   ans <- list()
+
+# was monotonicity enforced?
+  ans$mono<-model$ds$aux$mono
+# strict monotonicity?
+  ans$mono.strict<-model$ds$aux$mono.strict
+
 # Number of observations
   ans$n <- length(model$ds$aux$ddfobj$xmat$distance)
 # Average detection prob for mcds

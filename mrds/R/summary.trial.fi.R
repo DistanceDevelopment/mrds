@@ -128,5 +128,9 @@ avgp=function(model,pdot,...)
      ans$average.p0.1.se=sqrt(var.pbar)
   }
   class(ans)="summary.trial.fi"
+
+  ans$mono<-model$ds$aux$mono
+  ans$mono.strict<-model$ds$aux$mono.strict
+
   return(ans)
 }
