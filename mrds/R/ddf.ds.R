@@ -203,8 +203,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
                      mono.tol=control$mono.tol,
                      mono.delta=control$mono.delta)
 
-# Note there is a difference between maxit (which is what optim() uses) and
-# maxiter (which is what detfct.fit uses.)
+# Note there is a difference between maxit (the maximum numbr of iterations
+# for optimx() uses) and maxiter (which is what detfct.fit uses.)
    optim.options <- list(maxit=300)
 
 #
