@@ -65,46 +65,61 @@ function(model,newdata=NULL)
     else
       int.range=cbind(rep(int.range[1],dim(x)[1]+1),c(width,x$distance))
   }
+
+#
+# If there are no adjustments
+#
+  if(any(is.null(ddfobj$adjustment$order))){
 #
 #      Do integration of g(x) from inner (0 or left) to x
 #
-#  dlm 11/07/2005 Commented out logistic stuff
-#
-#       if(ftype=="logistic")
-#          int1=integratedetfct.logistic (x,ltmodel$model$scalemodel,width,int.range,theta1,ltmodel$aux$integral.numeric,z)
-#       else
-
-  if(any(is.null(ddfobj$adjustment$order))){
-	  int1 <- integratedetfct(ddfobj=ddfobj,select=rep(TRUE,nrow(x)),width=width,int.range=int.range,
-			  doeachint=TRUE,standardize=ltmodel$aux$misc.options$standardize,point=point)
+	 int1<-integratedetfct(ddfobj=ddfobj,select=rep(TRUE,nrow(x)),width=width,
+                          int.range=int.range, doeachint=TRUE,
+                          standardize=ltmodel$aux$misc.options$standardize,
+                          point=point)
 	  
-#    int1=integratedetfct(cgftab,ftype,width, int.range, z, NULL, fpar,fpar,intercept.only, FALSE,
-#                         adj.series=adj.series,adj.order=adj.order,adj.scale=adj.scale)
-#
-#   Divide by integral of g(x) over entire integration range (e.g., 0 to W); thus providing
-#   integral of f(x) from inner to x.
-#
+#   integral of g(x) over entire integration range (e.g., 0 to W)
     int2=predict(model,integrate=TRUE,esw=FALSE,compute=TRUE)$fitted
 		
-# dlm 29-Aug-05	Trying a different method...
-
-#  int2=integratedetfct(cgftab,ftype,width, int.range=c(0,width), z, NULL,fpar,fpar,
-#                              intercept.only,FALSE,adj.series=adj.series,adj.order=adj.order,
-#                              adj.scale=adj.scale,standardize=FALSE)
-
+#
+# If there are adjustments...
+#
   }else{
 
     left <- int.range[2:dim(int.range)[1],1]
     right <- int.range[2:dim(int.range)[1],2]
 
-    int1 <- integrate(detfct,select=rep(TRUE,nrow(x)),lower=left,upper=right,ddfobj=ddfobj,
-                      width=width)$value
+# dlm Oct-11 this doesn't work with Jeff's new detfct...
+#    int1<-integrate(detfct,select=rep(TRUE,nrow(x)),lower=left,upper=right,
+#                    ddfobj=ddfobj,width=width)$value
+#
+#    int2<-integrate(detfct,select=rep(TRUE,nrow(x)),lower=0,upper=width,
+#                    ddfobj=ddfobj,width=width)$value
 
-	int2 <- integrate(detfct,select=rep(TRUE,nrow(x)),lower=0,upper=width,ddfobj=ddfobj,
-					  width=width)$value
+    # have to build this bit-by-bit
+
+    int1<-int2<-double(nrow(x))
+    sel<-rep(FALSE,nrow(x))
+
+    for(i in 1:length(x$distance)){
+
+      this.select<-sel
+      this.select[i]<-TRUE
+
+      int1[i]<-integrate(detfct,select=this.select,
+                         lower=left[i],upper=right[i],
+                         ddfobj=ddfobj,width=width)$value
+      int2[i]<-integrate(detfct,select=this.select,
+                         lower=0,upper=width,
+                         ddfobj=ddfobj,width=width)$value
+    }
 
   }
 
+#
+#   Divide by integral of g(x) over entire integration range (e.g., 0 to W); 
+#   thus providing integral of f(x) from inner to x.
+#
   fitted=int1/int2
 
   return(list(fitted=fitted))
