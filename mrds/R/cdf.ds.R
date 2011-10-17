@@ -98,21 +98,45 @@ function(model,newdata=NULL)
 
     # have to build this bit-by-bit
 
-    int1<-int2<-double(nrow(x))
-    sel<-rep(FALSE,nrow(x))
+# Jeff doesn't like this
+#    int1<-int2<-double(nrow(x))
+#    sel<-rep(FALSE,nrow(x))
+#
+#    for(i in 1:length(x$distance)){
+#
+#      this.select<-sel
+#      this.select[i]<-TRUE
+#
+#      int1[i]<-integrate(detfct,select=this.select,
+#                         lower=left[i],upper=right[i],
+#                         ddfobj=ddfobj,width=width)$value
+#      int2[i]<-integrate(detfct,select=this.select,
+#                         lower=0,upper=width,
+#                         ddfobj=ddfobj,width=width)$value
+#    }
 
-    for(i in 1:length(x$distance)){
+   # this might be better?
+   n<-length(x$distance)
 
-      this.select<-sel
-      this.select[i]<-TRUE
-
-      int1[i]<-integrate(detfct,select=this.select,
-                         lower=left[i],upper=right[i],
-                         ddfobj=ddfobj,width=width)$value
-      int2[i]<-integrate(detfct,select=this.select,
-                         lower=0,upper=width,
-                         ddfobj=ddfobj,width=width)$value
-    }
+   # create a matrix to apply()
+   # left limit, right limit, index (for select), number of entries
+   lrdata<-cbind(left,right,1:n,rep(n,n))
+   
+   # integration function
+   intf<-function(lrdata,width,ddfobj){
+      sel<-rep(FALSE,lrdata[4])
+      sel[lrdata[3]]<-TRUE
+      integrate(detfct,select=sel,
+                lower=lrdata[1],upper=lrdata[2],
+                ddfobj=ddfobj,width=width)$value
+   }
+   
+   # apply number 1
+   int1<-apply(lrdata,1,intf,width=width,ddfobj=ddfobj)
+   # modify the data so it's just integration over (0,width)
+   lrdata<-cbind(rep(0,n),rep(width,n),1:n,rep(n,n))
+   # do the integration 
+   int2<-apply(lrdata,1,intf,width=width,ddfobj=ddfobj)
 
   }
 
