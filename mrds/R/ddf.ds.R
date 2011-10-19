@@ -234,7 +234,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 # jll 28-10-2010    Changed from length(getpar) - getpar is a function; must have been
 #                   late when you made that change Dave.
   if(length(lt$par)>1){
-    if(class(try(solve(result$hessian)))=="try-error"){
+    if(class(try(solve(result$hessian),silent=TRUE))=="try-error"){
       cat("First partial hessian is singular; using second-partial hessian\n")
       result$hessian=lt$hessian
     }
