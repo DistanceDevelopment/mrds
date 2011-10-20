@@ -147,6 +147,11 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 #
 #  Issue warning if any of the parameters are at their bounds
     bounded <- FALSE
+	if(any(is.na(lt$par)))
+	{
+		errors("Problems with fitting data. Did not converge")
+		stop()
+	}
 # fix jll 17-Aug-05 allows for constrained power parameter in hazard rate
     if(ddfobj$type=="hr"){
       if(any(abs(lt$par[2:length(lt$par)]-lowerbounds[2:length(lt$par)])<0.000001)){
