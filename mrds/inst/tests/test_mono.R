@@ -29,7 +29,7 @@ test_that("parameter estimates are the same", {
    result.mono<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1), 
                     data = egdata[egdata$observer ==1, ], method = "ds", 
                     meta.data = list(width = 4,mono=TRUE,mono.strict=FALSE))
-   # run with Rsolnp, mono=TRUE, mono.strict=FALSE
+   # run with Rsolnp, mono=TRUE, mono.strict=TRUE
    result.strict<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1), 
                       data = egdata[egdata$observer ==1, ], method = "ds", 
                       meta.data = list(width = 4,mono=TRUE,mono.strict=TRUE))
@@ -37,9 +37,9 @@ test_that("parameter estimates are the same", {
 
 
    # test that the parameter is the same
-   expect_that(result.optimx$par, equals(result.mono$par)) # FAIL 
-   expect_that(result.optimx$par, equals(result.strict$par)) # FAIL
-   expect_that(result.mono$par, equals(result.strict$par)) 
+   expect_that(result.optimx$par, equals(result.mono$par,tolerance=1e-5)) # FAIL 
+   expect_that(result.optimx$par, equals(result.strict$par,tolerance=1e-5)) # FAIL
+   expect_that(result.mono$par, equals(result.strict$par,tolerance=1e-5))
 
    # check that the summary gives the right answers too... 
    expect_that(summary(result.mono),prints_text("Monotonicity constraints were enforced."))

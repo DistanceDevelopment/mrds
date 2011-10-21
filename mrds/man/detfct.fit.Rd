@@ -21,7 +21,7 @@
   \item{convergence}{see codes in optim}
   \item{message}{string about convergence}
   \item{hessian}{hessian evaluated at final parameter
-  values} \item{aux}{ a list with 21 elements \itemize{
+  values} \item{aux}{ a list with 20 elements \itemize{
   \item maxit: maximum number of iterations allowed for
   optimization \item lower: lower bound values for
   parameters \item upper: upper bound values for parameters
@@ -39,13 +39,12 @@
   fitted more than once if parameters are at a boundary or
   when convergence is not achieved \item nrefits: number of
   refittings \item parscale: parameter scale values \item
-  fdebug: not sure what this means \item nonmono: logical
-  as to whether montonicity should be enforced \item
-  strict: if TRUE, then strict monotonicity is enforced;
-  otherwise weak \item width: radius of point count or
-  half-width of strip \item standardize: if TRUE, detection
-  function is scaled so g(0)=1 \item ddfobj: distance
-  detection function object; see
+  mono: if TRUE montonicity will be enforced \item
+  mono.strict: if TRUE, then strict monotonicity is
+  enforced; otherwise weak \item width: radius of point
+  count or half-width of strip \item standardize: if TRUE,
+  detection function is scaled so g(0)=1 \item ddfobj:
+  distance detection function object; see
   \code{\link{create.ddfobj}} \item bounded: TRUE if
   parameters ended up a boundary (I think) \item model:
   list of formulas for detection function model (probably
