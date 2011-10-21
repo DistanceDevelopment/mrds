@@ -136,7 +136,7 @@
 	if(is.null(nc))
 		nc<-round( sqrt(min(length(xmat$distance[xmat$observer==1&xmat$detected==1]),
 								length(xmat$distance[xmat$observer==1&xmat$timesdetected==2]) )),0)
-	hascov <- T
+	hascov <- TRUE
 #
 #  Set up default break points unless specified
 #

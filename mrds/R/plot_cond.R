@@ -44,14 +44,14 @@
 {
    selection <-xmat$detected[xmat$observer!=obs]==1
    selmat <- (xmat[xmat$observer==obs,])[selection,]
-   shist<-hist(xmat$distance[xmat$observer!= obs & xmat$detected==1], breaks=breaks, plot = F)
-   mhist<-hist(xmat$distance[xmat$timesdetected== 2 & xmat$observer==obs], breaks=breaks, plot = F)
+   shist<-hist(xmat$distance[xmat$observer!= obs & xmat$detected==1], breaks=breaks, plot = FALSE)
+   mhist<-hist(xmat$distance[xmat$timesdetected== 2 & xmat$observer==obs], breaks=breaks, plot = FALSE)
    if(length(mhist$counts) < length(shist$counts)) 
      prop <- c(mhist$counts/shist$counts[1:length(mhist$counts)],rep(0, (length(shist$counts) - length(mhist$counts))))
    else 
      prop <- mhist$counts/shist$counts
    mhist$density<-prop
-   mhist$equidist<-F
+   mhist$equidist<-FALSE
    mhist$intensities<-mhist$density
    histline(mhist$density,breaks=breaks,lineonly=FALSE,ylab="Detection probability",xlab="Distance",ylim=ylim,
 		     fill=TRUE,angle=angle,density=density,col=col,det.plot=TRUE,...) 

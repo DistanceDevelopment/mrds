@@ -6,8 +6,8 @@
 #' between fitting parameters of key and adjustment functions and then all
 #' parameters much like the approach in the CDS and MCDS Distance FORTRAN code.
 #' This function is called by the driver functioin \code{detfct.fit}.  This function does
-#' the calls the R optim function
-#' which does not allow non-linear constraints so inclusion of adjustments does
+#' the calls the optimx() function (from the package optimx).
+#' SAY SOMETHING HERE ABOUT LORENZO's CODE!! which does not allow non-linear constraints so inclusion of adjustments does
 #' allow the detection function to be non-monotone.
 #' 
 #' 
@@ -24,7 +24,7 @@
 #'   log likelihood value} \item{counts}{number of function evaluations}
 #'   \item{convergence}{see codes in optim} \item{message}{string about
 #'   convergence} \item{hessian}{hessian evaluated at final parameter values}
-#'   \item{aux}{ a list with 21 elements \itemize{ \item maxit: maximum number
+#'   \item{aux}{ a list with 20 elements \itemize{ \item maxit: maximum number
 #'   of iterations allowed for optimization \item lower: lower bound values for
 #'   parameters \item upper: upper bound values for parameters \item setlower:
 #'   TRUE if they are user set bounds \item setupper: TRUE if they are user set
@@ -37,16 +37,16 @@
 #'   maxiter: maximum iterations used \item refit: if TRUE, detection function
 #'   will be fitted more than once if parameters are at a boundary or when
 #'   convergence is not achieved \item nrefits: number of refittings \item
-#'   parscale: parameter scale values \item fdebug: not sure what this means
-#'   \item nonmono: logical as to whether montonicity should be enforced \item
-#'   strict: if TRUE, then strict monotonicity is enforced; otherwise weak
+#'   parscale: parameter scale values 
+#'   \item mono: if TRUE, montonicity will be enforced \item
+#'   mono.strict: if TRUE, then strict monotonicity is enforced; otherwise weak
 #'   \item width: radius of point count or half-width of strip \item
 #'   standardize: if TRUE, detection function is scaled so g(0)=1 \item ddfobj:
 #'   distance detection function object; see \code{\link{create.ddfobj}} \item
 #'   bounded: TRUE if parameters ended up a boundary (I think) \item model:
 #'   list of formulas for detection function model (probably can remove this)
 #'   }}
-#' @author Dave Miller; Jeff Laake
+#' @author Dave Miller; Jeff Laake; Lorenzo Milazzo
 detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all")
 {
 #
@@ -108,17 +108,57 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 #    Call optimization routine to find constrained mles; upon completion add the user specified 
 #    models and return the list.
 #
-#    change 17-Aug-05 added parscale and maxit controls in call to optim
-#                     added conditions here and below that control printing based on showit
+      # dlm Oct-11  Lorenzo's code for monotonicity doesn't
+      #             support covariates, so switch to optimx()
+      #             and warn!
+      if(ddfobj$scale$formula!="~1" & misc.options$mono){
+         warning("Covariate models cannot be constrained for monotonicity.\n  Switching to optimx().")
+         misc.options$mono<-FALSE
+         misc.options$mono.strict<-FALSE
+      }
 
-      lt <- optimx(initialvalues, flnl, method="nlminb", control=c(optim.options),
-		hessian=TRUE, lower = lowerbounds, upper = upperbounds,  
-		ddfobj=ddfobj, fitting=fitting,misc.options=misc.options,TCI= FALSE)
-      lt <-attr(lt,"details")[[1]]
-	  lt$hessian<-lt$nhatend
+      # if we want monotonicity, use Lorenzo's code...
+      if(misc.options$mono){
+        
+        # lower and upper bounds of the inequality constraints
+        lowerbounds.ic<- rep(0,2*misc.options$mono.points)
+        upperbounds.ic<- rep(1.0^6,2*misc.options$mono.points)
+
+        lt<-solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+                  ineqfun=flnl.constr, 
+                  ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                  LB=lowerbounds, UB=upperbounds, 
+                  ddfobj=ddfobj, TCI=FALSE, misc.options=misc.options,
+                  control=list(trace=as.integer(showit),
+                               tol=misc.options$mono.tol,
+                               delta=misc.options$mono.delta))
+### Ignoring the extra pars at the moment...
+#                  control=list(delta=nlo_delta_)
+
+        # re-jig some stuff so that this looks like an optim result...
+        lt$conv<-lt$convergence
+        lt$par<-lt$pars
+        lt$value<-lt$values[length(lt$values)]
+        lt$message<-""
+
+      }else{
+      # use Jeff's!
+#    change 17-Aug-05 added parscale and maxit controls in call to optim
+#                     added conditions here and below that control printing 
+#                     based on showit
+        lt <- optimx(initialvalues, flnl, method="nlminb", 
+                     control=c(optim.options),hessian=TRUE, lower = lowerbounds,
+                     upper = upperbounds,ddfobj=ddfobj, fitting=fitting,
+                     misc.options=misc.options,TCI= FALSE)
+        lt <-attr(lt,"details")[[1]]
+   	  lt$hessian<-lt$nhatend
+      }
+
+
 #      lt$shapemodel=misc.options$shapemodel
       if(showit==3)
         errors(paste("Converge = ",lt$conv,"\nlnl = ",lt$value,"\nFinal values = ",paste(lt$par,collapse=", ")))
+
 # If we do have convergence what do we do
       if(lt$conv==0|!refit){
         itconverged<-TRUE 

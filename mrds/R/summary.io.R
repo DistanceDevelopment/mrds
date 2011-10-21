@@ -49,7 +49,8 @@ avgp=function(model,pdot,...)
   ans=list(mr.summary=summary(model$mr,se=se,N=FALSE,model,ddfobj),
            ds.summary=summary(model$ds,se=se, N=FALSE),
            Nhat=model$Nhat,AIC=model$criterion,
-           average.p=n/model$Nhat)
+           average.p=n/model$Nhat,
+           mono=model$ds$aux$mono,mono.strict=model$ds$aux$mono.strict)
 #
 # 26 Jan 06 jll; added code for se of average p
 #

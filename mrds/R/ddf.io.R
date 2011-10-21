@@ -75,13 +75,14 @@ function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call="")
 #
 # Set up meta data values
 #
-	meta.data=assign.default.values(meta.data, left=0, width=NA, binned=FALSE, int.range=NA, strict=TRUE,
-			nonmono=FALSE,fdebug=0,engine="optim",point=FALSE)
+	meta.data=assign.default.values(meta.data, left=0, width=NA, binned=FALSE, 
+                                   int.range=NA, mono=FALSE, mono.strict=TRUE,
+                                   point=FALSE)
 #
 # Set up control values
 #
    control=assign.default.values(control,showit = FALSE, doeachint=FALSE, estimate=TRUE,refit=TRUE,nrefits=25,
-                                       initial = NA, lowerbounds = NA, upperbounds = NA)
+                                       initial = NA, lowerbounds = NA, upperbounds = NA, mono.points=20)
 #
 #  Process data  
 #

@@ -56,8 +56,10 @@ function(fpar, ddfobj,TCI,misc.options)
 #
 #   Compute log-likelihood for unbinned data
 #
+# dlm 13-Oct-11 setting standardize=FALSE here
+#               if not then we get divide by zero errors...
   if(!all(x$binned)){
-    p1 <- fr(x$distance[!x$binned],ddfobj=ddfobj,select=!x$binned,width=width,standardize=misc.options$standardize)
+    p1 <- fr(x$distance[!x$binned],ddfobj=ddfobj,select=!x$binned,width=width,standardize=FALSE)
     p1[p1<1.0e-15]<-1.0e-15
     p1[is.nan(p1)]<-1.0e-15
     int1 <- integratedetfct(ddfobj,select=!x$binned,width=width,int.range=int.range,

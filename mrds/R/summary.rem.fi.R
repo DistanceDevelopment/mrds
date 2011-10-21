@@ -126,6 +126,10 @@ avgp=function(model,pdot,...)
                                      -2*covar/(average.p0.1*Nhat))
      ans$average.p0.1.se=sqrt(var.pbar)
   }
+
+  ans$mono<-model$ds$aux$mono
+  ans$mono.strict<-model$ds$aux$mono.strict
+
   class(ans)="summary.rem.fi"
   return(ans)
 }

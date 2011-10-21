@@ -149,6 +149,10 @@ else
      ans$average.p0.se=sqrt(var.pbar)
 
   }
+
+  ans$mono<-model$ds$aux$mono
+  ans$mono.strict<-model$ds$aux$mono.strict
+
   class(ans)="summary.io.fi"
   return(ans)
 }

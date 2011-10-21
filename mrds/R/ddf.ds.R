@@ -90,7 +90,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #
 # Functions Used: 
 #        assign.default.values, process.data, create.ddfobj, setbounds, detfct.fit, flt.var, 
-#        predict(predict.ds), NCovered(NCovered.ds), foptim
+#        predict(predict.ds), NCovered(NCovered.ds)
 #
 #
 #   Code structure for optimization with optim
@@ -111,20 +111,26 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #  dlm 31-May-06 started taking the optimisation stuff out to detfct.fit
 #  dlm 9-July-07 added glue code and extras for Fortran optimisation with foptim
 #  jll Aug-10    completely revamped code; foptim currently will not work without changes for ddfobj
+#  dlm Oct-11 removing foptim, putting in Lorenzo's code...
 
 #
 # Set up meta data values
 #
   setdoeachint=FALSE
   if(!is.null(meta.data$doeachint)) setdoeachint=TRUE
-  meta.data=assign.default.values(meta.data, left=0, width=NA, binned=FALSE, int.range=NA, strict=TRUE,
-				  nonmono=FALSE,fdebug=0,engine="optim", point=FALSE)
+
+  meta.data<-assign.default.values(meta.data, left=0, width=NA, binned=FALSE, 
+                                   int.range=NA, mono=FALSE, mono.strict=TRUE,
+                                   point=FALSE)
 #
 # Set up control values
 #
-  control=assign.default.values(control,showit = 0,doeachint=FALSE,estimate=TRUE,refit=TRUE,nrefits=25,
-                                initial = NA, lowerbounds = NA, upperbounds = NA, limit=TRUE,
-                                parscale=NA, maxiter=12, standardize=TRUE )
+  control=assign.default.values(control,showit=0,doeachint=FALSE,estimate=TRUE,
+                                refit=TRUE,nrefits=25, initial=NA, 
+                                lowerbounds=NA, upperbounds=NA, limit=TRUE,
+                                parscale=NA, maxiter=12, standardize=TRUE, 
+                                mono.points=20, mono.tol=1e-8, mono.delta=1e-7)
+
 #
 #  Save current user options and then set design contrasts to treatment style
 #
@@ -185,40 +191,27 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
   if(!setdoeachint & !is.null(ddfobj$shape))control$doeachint=TRUE
   initialvalues=c(ddfobj$shape$parameters,ddfobj$scale$parameters,ddfobj$adjustment$parameters)
   bounds=setbounds(control$lowerbounds,control$upperbounds,initialvalues,ddfobj)
-  misc.options <- list(point=meta.data$point,int.range=meta.data$int.range,showit=control$showit,
-			 doeachint=control$doeachint,integral.numeric=control$integral.numeric, breaks=breaks,
-             maxiter=control$maxiter,refit=control$refit,nrefits=control$nrefits,
-			 parscale=control$parscale,fdebug=control$fdebug,nonmono=meta.data$nonmono,
-			 strict=meta.data$strict, binned=meta.data$binned,width=meta.data$width, standardize=control$standardize)
-# Note there is a difference between maxit (which is what optim() uses) and
-# maxiter (which is what detfct.fit uses.)
+  misc.options<-list(point=meta.data$point, int.range=meta.data$int.range,
+                     showit=control$showit, doeachint=control$doeachint,
+                     integral.numeric=control$integral.numeric, breaks=breaks,
+                     maxiter=control$maxiter, refit=control$refit,
+                     nrefits=control$nrefits, parscale=control$parscale,
+                     mono=meta.data$mono, mono.strict=meta.data$mono.strict,
+                     binned=meta.data$binned, width=meta.data$width, 
+                     standardize=control$standardize,
+                     mono.points=control$mono.points,
+                     mono.tol=control$mono.tol,
+                     mono.delta=control$mono.delta)
+
+# Note there is a difference between maxit (the maximum numbr of iterations
+# for optimx() uses) and maxiter (which is what detfct.fit uses.)
    optim.options <- list(maxit=300)
 
-# foptim not supported
-   if(meta.data$engine=="foptim"){
-		errors("foptim not support in this version: switching to optim!")
-		meta.data$engine<-"optim"
-	}
+#
+# Actually do the optimisation!
+#
+   lt <- detfct.fit(ddfobj,optim.options,bounds,misc.options)
 
-   if(meta.data$engine=="foptim"){
-   if(any(xmat$binned)){
-      errors("Only un-binned data is supported: switching to optim!")
-      engine<-"optim"
-    }
-  }
-
-  # Which optimisation engine should we use?
-  if(meta.data$engine=="foptim"){
-    if(.Platform$OS.type=="windows"){
-      # Use the Fortran code and IMSL
-      lt<-foptim(initialvalues,bounds,ddfobj,misc.options)
-    }else{
-      stop("You can only use the foptim engine on Windows!")
-    }
-  }else{
-    # Use the R code and optim() (by default)
-    lt <- detfct.fit(ddfobj,optim.options,bounds,misc.options)
-  }
 #
 # add call and others to return values
 #
