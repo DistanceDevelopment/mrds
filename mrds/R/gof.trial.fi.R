@@ -46,7 +46,7 @@ function(model,breaks=NULL,nc=NULL)
     p.omega=data.frame(object=rep(1:n,2),omega=c(rep(1,n),rep(2,n)),distance=rep(xmat$distance,2),prob=rep(0,2*n))
     p.omega$prob[p.omega$omega==1]=(1-p1)
     p.omega$prob[p.omega$omega==2]=p1
-    expected.2=by(p.omega$prob,list(as.factor(p.omega$omega),cut(p.omega$distance,breaks)),sum,na.rm=TRUE)
+    expected.2=by(p.omega$prob,list(as.factor(p.omega$omega),cut(p.omega$distance,breaks,include.lowest=TRUE)),sum,na.rm=TRUE)
 #
 #   Get predicted values for ds component
 #
@@ -61,7 +61,7 @@ function(model,breaks=NULL,nc=NULL)
 #   Compute observed values of distance bins
 #
 	distances=model$data$distance[model$data$observer==1&model$data$object %in% as.numeric(names(model$fitted))]
-	observed.count.1=table(cut(distances,breaks))
+	observed.count.1=table(cut(distances,breaks,include.lowest=TRUE))
     observed.count.2=table(as.factor(xmat$omega),cut(xmat$distance,breaks,include.lowest=TRUE))
     chisq.1=sum((observed.count.1-expected.1)^2/expected.1,na.rm=TRUE)
     chisq.2=sum((observed.count.2-expected.2)^2/expected.2,na.rm=TRUE)
