@@ -68,15 +68,15 @@ det.tables=function(model,nc=NULL,breaks=NULL)
 #
    xmat1=xmat[xmat$observer==1,]
    xmat2=xmat[xmat$observer==2,]
-   obs1=with(xmat1,table(cut(distance,breaks),Detected))
-   obs2=with(xmat2,table(cut(distance,breaks),Detected))
-   obs3=with(xmat1[xmat1$timesdetected==2,],table(cut(distance,breaks)))
-   obs4=with(xmat1,table(cut(distance,breaks)))
+   obs1=with(xmat1,table(cut(distance,breaks,include.lowest=TRUE),Detected))
+   obs2=with(xmat2,table(cut(distance,breaks,include.lowest=TRUE),Detected))
+   obs3=with(xmat1[xmat1$timesdetected==2,],table(cut(distance,breaks,include.lowest=TRUE)))
+   obs4=with(xmat1,table(cut(distance,breaks,include.lowest=TRUE)))
 #
 #  Produce tables for conditional detection for each observer
 #
-   obs1_2=as.matrix(with(xmat1[xmat2$detected==1,],table(cut(distance,breaks),Detected)))   
-   obs2_1=as.matrix(with(xmat2[xmat1$detected==1,],table(cut(distance,breaks),Detected)))
+   obs1_2=as.matrix(with(xmat1[xmat2$detected==1,],table(cut(distance,breaks,include.lowest=TRUE),Detected)))   
+   obs2_1=as.matrix(with(xmat2[xmat1$detected==1,],table(cut(distance,breaks,include.lowest=TRUE),Detected)))
    obs1_2=cbind(obs1_2,obs1_2[,2]/(obs1_2[,1]+obs1_2[,2]))
    obs2_1=cbind(obs2_1,obs2_1[,2]/(obs2_1[,1]+obs2_1[,2]))
    colnames(obs1_2)[3]="Prop. detected"
