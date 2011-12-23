@@ -3,7 +3,7 @@
 \title{Mark-Recapture Distance Sampling (MRDS) Trial Configuration - PI}
 \usage{
   ddf.trial(dsmodel, mrmodel, data, meta.data = list(),
-  control = list(), call = "")
+    control = list(), call = "")
 }
 \arguments{
   \item{dsmodel}{distance sampling model specification;
@@ -65,9 +65,9 @@
 \references{
   Laake, J.L. and D.L. Borchers. 2004. Methods for
   incomplete detection at distance zero. In: Advanced
-  Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
-  Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
-  University Press.
+  Distance Sampling, eds. S.T.  Buckland, D.R.Anderson,
+  K.P. Burnham, J.L. Laake, D.L. Borchers, and L.  Thomas.
+  Oxford University Press.
 }
 \seealso{
   \code{\link{ddf.trial.fi}},

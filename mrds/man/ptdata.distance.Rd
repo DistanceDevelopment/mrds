@@ -3,8 +3,8 @@
 \alias{ptdata.distance}
 \title{Single observer point count data example from Distance}
 \format{The format is 144 obs of 6 variables: ..$ distance: numeric distance from center $
-observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
-detected: numeric 0/1  $ object: sequential object number $Sample.Label: point label $ Region.Label: single region label}
+  observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
+  detected: numeric 0/1  $ object: sequential object number $Sample.Label: point label $ Region.Label: single region label}
 \description{
   Single observer point count data example from Distance
 }
@@ -18,5 +18,6 @@ Regions=data.frame(Region.Label=1,Area=1)
 Samples=data.frame(Sample.Label=1:30,Region.Label=rep(1,30),Effort=rep(1,30))
 print(dht(xx,sample.table=Samples,region.table=Regions))
 }
+\keyword{dataset}
 \keyword{datasets}
 

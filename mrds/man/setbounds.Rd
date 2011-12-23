@@ -3,7 +3,7 @@
 \title{Set parameter bounds}
 \usage{
   setbounds(lowerbounds, upperbounds, initialvalues,
-  ddfobj)
+    ddfobj)
 }
 \arguments{
   \item{lowerbounds}{vector of lower bounds}

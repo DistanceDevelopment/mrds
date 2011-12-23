@@ -3,8 +3,8 @@
 \alias{predict.ds}
 \title{Predictions from distance sampling ds models}
 \usage{
-  \method{predict}{ds} (object, newdata = NULL, compute =
-  FALSE, int.range = NULL, esw = FALSE, ...)
+  \method{predict}{ds} (object, newdata = NULL,
+    compute = FALSE, int.range = NULL, esw = FALSE, ...)
 }
 \arguments{
   \item{object}{\code{ddf} model object}

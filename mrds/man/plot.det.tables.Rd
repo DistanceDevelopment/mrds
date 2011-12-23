@@ -3,8 +3,8 @@
 \title{Observation detection tables}
 \usage{
   \method{plot}{det.tables} (x, which = 5:6, angle = -45,
-  density = 20, col1 = "black", col2 = "blue", new = TRUE,
-  ...)
+    density = 20, col1 = "black", col2 = "blue",
+    new = TRUE, ...)
 }
 \arguments{
   \item{x}{object of class det.tables}

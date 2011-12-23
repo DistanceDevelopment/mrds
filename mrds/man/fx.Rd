@@ -15,16 +15,16 @@
 \title{Detection functions}
 \usage{
   detfct(distance, ddfobj, select=NULL, index=NULL,
-  width=NULL, standardize = TRUE, stdint=FALSE)
+    width=NULL, standardize = TRUE, stdint=FALSE)
 
   adjfct.cos(distance, scaling = 1, adj.order, adj.parm =
-  NULL)
+    NULL)
 
   adjfct.poly(distance, scaling = 1, adj.order, adj.parm =
-  NULL)
+    NULL)
 
   adjfct.herm(distance, scaling = 1, adj.order, adj.parm =
-  NULL)
+    NULL)
 
   scalevalue(key.scale, z)
 
@@ -73,13 +73,13 @@
 }
 \value{
   For \code{detfct}, the value is a vector of detection
-  probabilities for the input set of x and z. For
+  probabilities for the input set of x and z.  For
   \code{keyfct.hn, keyfct.hz}, vector of detection
-  probability for that key function at x. For
+  probability for that key function at x.  For
   \code{adjfct.cos, adjfct.poly, adjfct.herm}, vector of
-  the value of the adjustment term at x. For
+  the value of the adjustment term at x.  For
   \code{scalevalue}, the value is a vector of the computed
-  scales for the design matrix z. For \code{apex.gamma},
+  scales for the design matrix z.  For \code{apex.gamma},
   the value is the distance at which the gamma peaks
 }
 \description{
@@ -96,13 +96,13 @@
   \eqn{\sigma} to the covariates,
   \eqn{\sigma=exp(\theta*w)}. A CDS function is obtained
   with a constant \eqn{\sigma} which is equivalent to an
-  intercept design matrix, z. \code{detfct} will call
+  intercept design matrix, z.  \code{detfct} will call
   either a gamma, half-normal, hazard-rate or uniform
   function only returning the probability of detection at
-  that distance. In addition to the simple model above, we
+  that distance.  In addition to the simple model above, we
   may specify adjustment terms to fit the data better.
   These adjustments are either Cosine, Hermite and simple
-  polynomials. These are specified as arguments to
+  polynomials.  These are specified as arguments to
   \code{detfct}, as detailed below.
 
   \code{detfct} meta function which calls the others and
@@ -124,8 +124,8 @@
 }
 \references{
   Marques and Buckland 2004 Laake and Borchers 2004. in
-  Buckland et al 2004. Becker, E. F. and P. X. Quang. 2009.
-  A gamma-shaped detection function for line transect
+  Buckland et al 2004.  Becker, E. F. and P. X. Quang.
+  2009. A gamma-shaped detection function for line transect
   surveys with mark-recapture and covariate data. Journal
   of Agricultural Biological and Environmental Statistics
   14:207-223.

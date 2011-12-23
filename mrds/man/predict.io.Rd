@@ -2,8 +2,8 @@
 \alias{predict.io}
 \title{Predictions from distance sampling io models}
 \usage{
-  \method{predict}{io} (object, newdata = NULL, compute =
-  FALSE, int.range = NULL, ...)
+  \method{predict}{io} (object, newdata = NULL,
+    compute = FALSE, int.range = NULL, ...)
 }
 \arguments{
   \item{object}{\code{ddf} model object}

@@ -2,8 +2,8 @@
 \alias{rem.glm}
 \title{Iterative offset model fitting of mark-recapture with removal model}
 \usage{
-  rem.glm(datavec, fitformula, eps = 1e-05, iterlimit =
-  500, GAM = FALSE, gamplot = TRUE, datavec2)
+  rem.glm(datavec, fitformula, eps = 1e-05,
+    iterlimit = 500, GAM = FALSE, gamplot = TRUE, datavec2)
 }
 \arguments{
   \item{datavec}{dataframe containing records seen by
@@ -59,15 +59,15 @@
 }
 \references{
   Buckland, S.T., J.M. breiwick, K.L. Cattanach, and J.L.
-  Laake. 1993. Estimated population size of the California
+  Laake.  1993. Estimated population size of the California
   gray whale.  Marine Mammal Science, 9:235-249.
 
   Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers,
   T.A. Marques, J.R.B. Bishop, and L. Thomas. 2004.
-  Further topics in distance sampling. pp: 360-363. In:
+  Further topics in distance sampling.  pp: 360-363. In:
   Advanced Distance Sampling, eds. S.T. Buckland,
   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers,
-  and L. Thomas. Oxford University Press.
+  and L. Thomas.  Oxford University Press.
 }
 \keyword{Models}
 \keyword{Statistical}

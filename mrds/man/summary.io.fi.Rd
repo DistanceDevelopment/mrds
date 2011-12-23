@@ -3,7 +3,7 @@
 \title{Summary of distance detection function model object}
 \usage{
   \method{summary}{io.fi} (object, se = TRUE, N = TRUE,
-  fittedmodel = NULL, ddfobj = NULL, ...)
+    fittedmodel = NULL, ddfobj = NULL, ...)
 }
 \arguments{
   \item{object}{a \code{ddf} model object}

@@ -3,7 +3,7 @@
 \title{Numerically integrate distance detection function over specified range}
 \usage{
   integratedetfct(ddfobj, select, width, int.range,
-  doeachint = FALSE, standardize = TRUE, point = FALSE)
+    doeachint = FALSE, standardize = TRUE, point = FALSE)
 }
 \arguments{
   \item{ddfobj}{distance detection function specification}
