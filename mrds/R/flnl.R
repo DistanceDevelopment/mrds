@@ -78,33 +78,50 @@ flnl <- function(fpar, ddfobj, TCI, misc.options, fitting="all")
 #   17-Aug-05 jll changed value of showit here and below
 #   dlm 05-June-2006 Added an extra level of showit.
   if(misc.options$showit==3)
-    cat("par = ", fpar,"\n")
+    cat("\npar = ", fpar,"\n")
 
-# dlm 27-May-2006 (or some time around then...)
-# During the optimisation we want to make sure that we are keeping the right things
-# constant, so lets do that...
+  # dlm 27-May-2006 (or some time around then...)
+  # During the optimisation we want to make sure that we are keeping the right things
+  # constant, so lets do that...
 
-# Note we do this backwards so that optim doesn't get confused.
-	if(fitting=="key" | fitting=="all")
-		if(!is.null(ddfobj$adjustment))ddfobj$adjustment$parameters=rep(NA,length(ddfobj$adjustment$parameters)) 
-	if(fitting=="adjust"| fitting=="all")
-	{
-		if(!is.null(ddfobj$shape))ddfobj$shape$parameters=rep(NA,length(ddfobj$shape$parameters))
-		if(!is.null(ddfobj$scale))ddfobj$scale$parameters=rep(NA,length(ddfobj$scale$parameters))
-	} 		
-	pars=getpar(ddfobj)
-    pars[which(is.na(pars))]<-fpar[which(is.na(pars))]
-    fpar<-pars
+  # Note we do this backwards so that optim doesn't get confused.
+  if(fitting=="key"){
+    if(!is.null(ddfobj$adjustment)){
+      save.adj<-ddfobj$adjustment$parameters
+      ddfobj$adjustment$parameters=rep(NA,length(ddfobj$adjustment$parameters))
+      pars=getpar(ddfobj)
+      fpar[which(is.na(pars))]<-save.adj
+    }
+  }else if(fitting=="adjust"){
+    if(!is.null(ddfobj$shape)){
+      save.shape<-ddfobj$shape$parameters
+      ddfobj$shape$parameters=rep(NA,length(ddfobj$shape$parameters))
+      pars=getpar(ddfobj)
+      fpar[which(is.na(pars))]<-save.shape
+    }
 
-# dlm 22-Aug-05 Allowed for adjustment terms to be specified
-  if(misc.options$point)
-	  lnl<-sum(fpt.lnl(fpar, ddfobj, TCI, misc.options))
-  else
-	  lnl<-sum(flt.lnl(fpar, ddfobj, TCI, misc.options))
-#   If iteration results are printed, output log-likelihood
+    if(!is.null(ddfobj$scale)){
+      save.scale<-ddfobj$scale$parameters
+      ddfobj$scale$parameters=rep(NA,length(ddfobj$scale$parameters))
+
+      pars=getpar(ddfobj)
+      fpar[which(is.na(pars))]<-save.scale
+    }
+  } 		
+
+  #pars=getpar(ddfobj)
+  #pars[which(is.na(pars))]<-fpar[which(is.na(pars))]
+  #fpar<-pars
+
+  if(misc.options$point){
+    lnl<-sum(fpt.lnl(fpar, ddfobj, TCI, misc.options))
+  }else{
+    lnl<-sum(flt.lnl(fpar, ddfobj, TCI, misc.options))
+  }
+
+  # If iteration results are printed, output log-likelihood
   if(misc.options$showit==3)
     cat("lt lnl = ", lnl,   "\n")    
   
   return(lnl)
-
 }

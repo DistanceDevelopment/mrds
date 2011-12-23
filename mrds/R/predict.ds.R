@@ -92,7 +92,7 @@ function(object,newdata=NULL,compute=FALSE,int.range=NULL,esw=FALSE,...)
 #      for variances, the model parameters are perturbed and may not be at
 #      mle values after fitting.
 #
-    fpar<-model$par
+   fpar<-model$par
 	ddfobj<-ltmodel$aux$ddfobj
 	ddfobj=assign.par(ddfobj,fpar)
 	doeachint<-ltmodel$aux$doeachint
@@ -129,7 +129,13 @@ function(object,newdata=NULL,compute=FALSE,int.range=NULL,esw=FALSE,...)
 		  if(zdim != ncol(ddfobj$shape$dm) | !all(znames==colnames(ddfobj$shape$dm)))
 			  stop("fields or factor levels in newdata do not match data used in estimation model for shape model\n")
 	  }
+
+     # update xmat too
+     datalist<-process.data(newdata,object$meta.data,check=FALSE)
+     ddfobj$xmat<-datalist$xmat
     }
+
+
 #
 #      Compute integral of fitted detection function using either logistic or
 #      non-logistic detection function.  Note that "logistic" is not currently

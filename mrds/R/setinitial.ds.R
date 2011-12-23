@@ -36,6 +36,8 @@ setinitial.ds <- function(ddfobj,width,initial,point)
 	dmat=ddfobj$xmat
 	if(point)dmat$distance=sqrt(dmat$distance)
 	point=FALSE
+
+
 # Set shape parameters for special case of cds hazard function
 	if(ftype == "hr")
 	{
@@ -52,12 +54,14 @@ setinitial.ds <- function(ddfobj,width,initial,point)
 			initialvalues=list(scale=lm(eval(parse(text=paste("log(distance+width/1000)",ddfobj$scale$formula))),
 							data=dmat[dmat$detected==1,])$coeff)
 #   Set shape parameter values in a very cheesey way...
-		if(!is.null(ddfobj$shape))
-			initialvalues$shape=c(log(2),rep(0,ncol(ddfobj$shape$dm)-1))
+      if(!is.null(ddfobj$shape))
+        initialvalues$shape=c(log(2),rep(0,ncol(ddfobj$shape$dm)-1))
 	}
+
 #   Set initial values for the adjustment term parameters
 	if(!is.null(ddfobj$adjustment))
 		initialvalues$adjustment=rep(0,length(ddfobj$adjustment$order)) 
+
 	if(!any(is.na(initial)))
 	{
 		if(!is.list(initial))stop("\ninitial values must be specified as a list with possible elements scale,shape,adjustments")

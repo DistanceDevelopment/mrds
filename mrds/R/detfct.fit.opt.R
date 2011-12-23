@@ -56,11 +56,11 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 #
 # Arguments:
 #
-#  ddfobj      		    - distance sampling object for the detection function
-#  control.options 		- control options for optim
-#  bounds				- bounds for the function
-#  misc.options			- things that wouldn't fit in elsewhere
-#  fitting				- "all","key","adjust"
+#  ddfobj            - distance sampling object for the detection function
+#  control.options   - control options for optim
+#  bounds            - bounds for the function
+#  misc.options      - things that wouldn't fit in elsewhere
+#  fitting           - "all","key","adjust"
 #
 # Value:
 #
@@ -69,8 +69,11 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 # Functions Used:
 #
 #  assign.par, detfct.fit.opt, errors, get.par 
-	
-  initialvalues=getpar(ddfobj)
+
+  # grab the initial values
+  initialvalues<-getpar(ddfobj)
+  initialvalues.set<-initialvalues # store for later
+
 # dlm 31-May-2006 Initial work started.
 # dlm 05-June-2006 Added an extra level of showit for this level.
   bounded<-TRUE
@@ -97,6 +100,9 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
      }
   }
 
+# last value of the lnl
+lnl.last<-Inf
+
 
 #    while parameters are bounded continue refitting and adjusting bounds
   while(bounded){
@@ -112,13 +118,14 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
       #             support covariates, so switch to optimx()
       #             and warn!
       if(ddfobj$scale$formula!="~1" & misc.options$mono){
-         warning("Covariate models cannot be constrained for monotonicity.\n  Switching to optimx().")
+         warning("Covariate models cannot be constrained for monotonicity.\n  Switching to unconstrained optimisation.")
          misc.options$mono<-FALSE
          misc.options$mono.strict<-FALSE
       }
 
       # if we want monotonicity, use Lorenzo's code...
-      if(misc.options$mono){
+      # don't use this unless we have adjustment terms
+      if(misc.options$mono & !is.null(ddfobj$adjustment)){
         
         # lower and upper bounds of the inequality constraints
         lowerbounds.ic<- rep(0,2*misc.options$mono.points)
@@ -132,8 +139,6 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
                   control=list(trace=as.integer(showit),
                                tol=misc.options$mono.tol,
                                delta=misc.options$mono.delta))
-### Ignoring the extra pars at the moment...
-#                  control=list(delta=nlo_delta_)
 
         # re-jig some stuff so that this looks like an optim result...
         lt$conv<-lt$convergence
@@ -143,29 +148,29 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 
       }else{
       # use Jeff's!
-#    change 17-Aug-05 added parscale and maxit controls in call to optim
-#                     added conditions here and below that control printing 
-#                     based on showit
         lt <- optimx(initialvalues, flnl, method="nlminb", 
-                     control=c(optim.options),hessian=TRUE, lower = lowerbounds,
-                     upper = upperbounds,ddfobj=ddfobj, fitting=fitting,
-                     misc.options=misc.options,TCI= FALSE)
+                     control=c(optim.options),hessian=TRUE, lower=lowerbounds,
+                     upper=upperbounds,ddfobj=ddfobj, fitting=fitting,
+                     misc.options=misc.options,TCI=FALSE)
         lt <-attr(lt,"details")[[1]]
    	  lt$hessian<-lt$nhatend
       }
 
 
 #      lt$shapemodel=misc.options$shapemodel
-      if(showit==3)
-        errors(paste("Converge = ",lt$conv,"\nlnl = ",lt$value,"\nFinal values = ",paste(lt$par,collapse=", ")))
+      if(showit==3){
+        errors(paste("Converge = ",lt$conv,
+                     "\nlnl = ",lt$value,
+                     "\nparameters = ",paste(lt$par,collapse=", ")))
+      }
 
 # If we do have convergence what do we do
       if(lt$conv==0|!refit){
         itconverged<-TRUE 
 
         lt$aux <- c(optim.options,bounds,misc.options)
-		ddfobj=assign.par(ddfobj,lt$par)
-		lt$aux$ddfobj=ddfobj
+        ddfobj=assign.par(ddfobj,lt$par)
+        lt$aux$ddfobj=ddfobj
       }else{
 # If we don't have converenge what do we do
         refit.count<-refit.count+1
@@ -174,24 +179,40 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
           if(showit>=1)
             errors("No convergence. Refitting ...")
           
-          if(lt$conv==1)
-            initialvalues<-lt$par
-          else
-            initialvalues<-lt$par*(runif(length(initialvalues))+.5)
-		    initialvalues[is.na(initialvalues)]=0
+          # use the new pars only if they gave a better lnl than last time
+          if(lt$value<=lnl.last){
+            if(lt$conv==1){
+              initialvalues<-lt$par
+            }else{
+              initialvalues<-lt$par*(runif(length(initialvalues))+.5)
+              # monotonicity constraints, reset the adjustments to zero
+              # otherwise we end up with an infeasible problem
+              if(misc.options$mono & !is.null(ddfobj$adjustment)){
+                initialvalues[(length(initialvalues)-
+                              length(ddfobj$adjustment$parameters)+1):
+                              length(initialvalues)]<-0
+              }
+          
+            }
+          lnl.last<-lt$value
+          }
+
+          # DLM - if we just replace NAs with 0s then sometimes these are 
+          #       out of bounds so replace with the values we started with
+          initialvalues[is.na(initialvalues)]<-initialvalues.set[is.na(initialvalues)]
         }else{
           itconverged<-TRUE
         }
       }
     }   
-#
+
 #  Issue warning if any of the parameters are at their bounds
     bounded <- FALSE
-	if(any(is.na(lt$par)))
-	{
-		errors("Problems with fitting data. Did not converge")
-		stop()
-	}
+    if(any(is.na(lt$par)) | lt$conv!=0)
+    {
+      errors("Problems with fitting data. Did not converge")
+      stop()
+    }
 # fix jll 17-Aug-05 allows for constrained power parameter in hazard rate
     if(ddfobj$type=="hr"){
       if(any(abs(lt$par[2:length(lt$par)]-lowerbounds[2:length(lt$par)])<0.000001)){
@@ -264,8 +285,11 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
   lt$converge<-lt$conv
   lt$conv<-NULL
 
+  # save the bounds
+  bounds$lower<-lowerbounds
+  bounds$upper<-upperbounds
+  lt$bounds<-bounds
+
   return(lt)
-
-
 }
 

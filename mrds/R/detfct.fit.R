@@ -82,35 +82,39 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
   # OR if we have uniform detection function
   # OR if we're enforcing monotonicity
   if(is.null(ddfobj$adjustment)|ddfobj$type=="unif"|misc.options$mono){
-    lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options)
+
+      if(misc.options$mono){
+      
+        # get best key pars first
+        save.mono<-misc.options$mono
+        save.mono.strict<-misc.options$mono.strict
+
+        misc.options$mono<-FALSE
+        misc.options$mono.strict<-FALSE
+        lt <- detfct.fit.opt(ddfobj,optim.options,bounds,
+                             misc.options,fitting="key")
+        misc.options$mono<-save.mono
+        misc.options$mono.strict<-save.mono.strict
+
+        ddfobj<-assign.par(ddfobj,lt$par)
+
+        lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options)
+      }else{
+        lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options)
+      }
   }
   else
   {
   # Otherwise we need to play around...
 
-    # We have a value for sigma from setinitialvalues(), this gives us the 
-    # mle at this point, so lets look at the adjustment term(s).
-
-    if(showit>=2)
-      errors("keeping key terms constant, optimising adjustment term")
-
+    # think this needs to live elsewhere, but let's leave it here for
+    # the moment
     if(!is.null(ddfobj$adjustment) && ddfobj$adjustment$series=="herm")
       ddfobj$adjustment$parameters<-rep(1,length(ddfobj$adjustment$order))
 
-    # Do the optimisation (adjustment terms)
     initialvalues=getpar(ddfobj)
-    lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options,
-                         fitting="adjust")
-
-	 if(showit==3)
-      errors(paste("first iteration:\nConverge = ",lt$converge,"\nlnl = ",lt$value,"\nFinal values = ",paste(lt$par,collapse=", ")))
-
     # This holds the previous values, to test for convergence
     lastvalues <- initialvalues
-
-    # Now update the values in initialvalues
-    ddfobj=assign.par(ddfobj,lt$par)
-	 initialvalues=getpar(ddfobj)
 
     # Now start to alternate between adjustment and key
     if(showit>=2)
@@ -120,68 +124,104 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
     firstrun<-TRUE
 
     while((iter < misc.options$maxiter) && 
-           (all((abs(initialvalues-lastvalues)/(epsilon+abs(lastvalues))) < (epsilon/sqrt(nrow(ddfobj$xmat))))|
+           (all((abs(initialvalues-lastvalues)/(epsilon+abs(lastvalues))) < 
+               (epsilon/sqrt(nrow(ddfobj$xmat)))) |
           		firstrun))
 	 {
 
-    # Variable to count sub iterations... :)
-    metaiter<-0
-    while((all((abs(initialvalues-lastvalues)/(epsilon+abs(lastvalues))) < (epsilon/sqrt(nrow(ddfobj$xmat))))|
-        	     firstrun))
-    {
+      # Variable to count sub iterations... :)
+      metaiter<-0
       firstrun<-FALSE
-			
+	   	
       if(showit==3)
-        errors(paste("iteration ",iter,".",metaiter, " initial values = ",initialvalues))
+        errors(paste("iteration ",iter,".",metaiter, 
+                     " initial values = ",paste(initialvalues,collapse=", ")))
 
-      # Fit the key, keeping the adjustments constant
-      lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options,
-                           fitting="key")
-      metaiter<-metaiter+1
-
-      if(showit==3)
-        errors(paste("iteration ",iter,".",metaiter,":\nConverge = ",lt$converge,"\nlnl = ",lt$value,"\nFinal values = ",paste(lt$par,collapse=", ")))
-
-      # Rebuild initialvalues and opt.options
-      ddfobj=assign.par(ddfobj,lt$par)
-      initialvalues=getpar(ddfobj)
-		
       # Fit the adjustment
 	   if(showit==3)
-        errors(paste("iteration ",iter,".",metaiter," initial values = ",initialvalues))
+        errors(paste("iteration ",iter,".",metaiter,
+                     " initial values = ",paste(initialvalues,collapse=", ")))
     	
-      lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options,
-                           fitting="adjust")
+      lt <-try(detfct.fit.opt(ddfobj,optim.options,bounds,misc.options,
+                           fitting="adjust"))
       metaiter<-metaiter+1
 
-      if(showit==3)  
-        errors(paste("iteration ",iter,".",metaiter,":\nConverge = ",lt$converge,"\nlnl = ",lt$value,"\nFinal values = ",paste(lt$par,collapse=", ")))
+      # if fitting the adjustments alone exploded, ignore
+      if(all(class(lt)=="try-error")){
+        if(showit==3){ 
+          errors(paste("iteration ",iter," adjustment-only fitting failed.\n"))
+        }
+      }else{
+        # update bounds 
+        bounds<-lt$bounds
 
-      # Rebuild initialvalues again
+        if(showit==3){ 
+          errors(paste("iteration ",iter,".",metaiter,
+                       ":\nConverge = ",lt$converge,
+                       "\nlnl = ",lt$value,
+                       "\nparameters = ",paste(lt$par,collapse=", ")))
+        }
+
+        # Rebuild initialvalues again
+        ddfobj=assign.par(ddfobj,lt$par)
+        initialvalues=getpar(ddfobj)
+      }
+      # Fit the key, keeping the adjustments constant
+      lt <- try(detfct.fit.opt(ddfobj,optim.options,bounds,misc.options,
+                           fitting="key"))
+      metaiter<-metaiter+1
+
+      if(all(class(lt)=="try-error")){
+        if(showit==3){ 
+          errors(paste("iteration ",iter," key-only fitting failed.\n"))
+        }
+      }else{
+        # update bounds 
+        bounds<-lt$bounds
+
+        if(showit==3)
+          errors(paste("iteration ",iter,".",metaiter,
+                       ":\nConverge = ",lt$converge,
+                       "\nlnl = ",lt$value,
+                       "\nFinal values = ",paste(lt$par,collapse=", ")))
+
+        # Rebuild initialvalues and opt.options
+        ddfobj=assign.par(ddfobj,lt$par)
+        initialvalues=getpar(ddfobj)
+      }
+		
+
+      # Fit both key and adjustments
+      if(showit>=2)
+        errors("Now fitting key+adjustments")
+
+      lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options)
+      
+      # update bounds
+      bounds<-lt$bounds
+
+      if(showit==3){
+        errors(paste("iteration ",iter,".",metaiter,"\nConverge = ",lt$converge,
+                     "\nlnl = ",lt$value,
+                     "\nparameters = ",paste(lt$par,collapse=", ")))
+      }
+
       ddfobj=assign.par(ddfobj,lt$par)
       initialvalues=getpar(ddfobj)
+      iter<-iter+1
     }
-
-    # Fit both key and adjustments
-    if(showit>=2)
-      errors("Now fitting key+adjustments")
-
-    lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options)
-
-    if(showit==3)
-      errors(paste("iteration ",iter,".",metaiter,"\nConverge = ",lt$converge,"\nlnl = ",lt$value,"\nFinal values = ",paste(lt$par,collapse=", ")))
-
-    ddfobj=assign.par(ddfobj,lt$par)
-    initialvalues=getpar(ddfobj)
-    iter<-iter+1
-  }
 	  
-  if(iter>misc.options$maxiter)
-    errors(paste("Maximum iterations exceeded!",iter,">",misc.options$maxiter,"\n"))
-   
-  if(showit>=2)
-    errors(paste("Convergence!\nIteration ",iter,".",metaiter,"\nConverge = ",lt$converge,"\nlnl = ",lt$value,"\nFinal values = ",paste(lt$par,collapse=", ")))
+    if(iter>misc.options$maxiter)
+      errors(paste("Maximum iterations exceeded!",
+                   iter,">",misc.options$maxiter,"\n"))
+     
+    if(showit>=2){
+      errors(paste("Convergence!\nIteration ",iter,".",metaiter,
+                   "\nConverge = ",lt$converge,"\nlnl = ",lt$value,
+                   "\nparameters = ",paste(lt$par,collapse=", ")))
+    }
   }
+
   # Return some (hopefully correct) results
   return(lt)
 }

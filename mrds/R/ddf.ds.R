@@ -129,7 +129,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
                                 refit=TRUE,nrefits=25, initial=NA, 
                                 lowerbounds=NA, upperbounds=NA, limit=TRUE,
                                 parscale=NA, maxiter=12, standardize=TRUE, 
-                                mono.points=20, mono.tol=1e-8, mono.delta=1e-7)
+                                mono.points=20, mono.tol=1e-7, mono.delta=1e-7)
 
 #
 #  Save current user options and then set design contrasts to treatment style
@@ -189,7 +189,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
   ddfobj=create.ddfobj(model,xmat,meta.data,control$initial) 
   if(!is.null(ddfobj$shape) && ncol(ddfobj$shape$dm)>1)doeachint=TRUE
   if(!setdoeachint & !is.null(ddfobj$shape))control$doeachint=TRUE
-  initialvalues=c(ddfobj$shape$parameters,ddfobj$scale$parameters,ddfobj$adjustment$parameters)
+  initialvalues=c(ddfobj$shape$parameters,ddfobj$scale$parameters,
+                  ddfobj$adjustment$parameters)
   bounds=setbounds(control$lowerbounds,control$upperbounds,initialvalues,ddfobj)
   misc.options<-list(point=meta.data$point, int.range=meta.data$int.range,
                      showit=control$showit, doeachint=control$doeachint,
@@ -202,6 +203,12 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
                      mono.points=control$mono.points,
                      mono.tol=control$mono.tol,
                      mono.delta=control$mono.delta)
+
+  # debug - print the initial values
+  if(misc.options$showit>1){
+    cat("initialvalues=",initialvalues,"\n")
+  }
+
 
 # Note there is a difference between maxit (the maximum numbr of iterations
 # for optimx() uses) and maxiter (which is what detfct.fit uses.)

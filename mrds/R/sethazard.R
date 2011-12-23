@@ -1,16 +1,24 @@
 sethazard <- function(ddfobj,dmat,width)
 {
 # temporary function to evaluate the likelihood for hazard rate
-	evallike<-function(fpar){
-		ddfobj$intercept.only=TRUE
-		ddfobj$shape$parameters[1]=fpar[1]
-		ddfobj$scale$parameters[1]=fpar[2]
-		fpar=getpar(ddfobj)
-		ddfobj$shape$parameters[1]=NA
-		ddfobj$scale$parameters[1]=NA
-		flnl(fpar, ddfobj, FALSE, misc.options=list(width=width, int.range=c(0,width),showit=FALSE,doeachint=TRUE,
-						integral.numeric=FALSE,standardize=FALSE,fitting="none",point=FALSE))
-	}
+  evallike<-function(fpar){
+    ddfobj$intercept.only=TRUE
+    ddfobj$shape$parameters[1]=fpar[1]
+    ddfobj$scale$parameters[1]=fpar[2]
+    # set adjustment parameters to zero for now...
+    if(!is.null(ddfobj$adjustment))
+      ddfobj$adjustment$parameters<-rep(0,length(ddfobj$adjustment$order))
+
+    fpar=getpar(ddfobj)
+    ddfobj$shape$parameters[1]=NA
+    ddfobj$scale$parameters[1]=NA
+    if(!is.null(ddfobj$adjustment))
+      ddfobj$adjustment$parameters<-rep(NA,length(ddfobj$adjustment$order))
+
+
+    flnl(fpar, ddfobj, FALSE, misc.options=list(width=width, int.range=c(0,width),showit=FALSE,doeachint=TRUE,
+         integral.numeric=FALSE,standardize=FALSE,fitting="none",point=FALSE))
+  }
 # Using code from CDS in Distance.
 #* First find the scale parameter as you (CDS) would for half-normal, by finding:
 	ss<-sqrt(sum(dmat$distance^2)/length(dmat$distance))

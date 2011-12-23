@@ -100,7 +100,7 @@
 #' \code{left} \tab distance specifying inner truncation value \cr
 #' \code{binned} \tab TRUE or FALSE to specify whether distances should be
 #' binned for analysis \cr \code{int.range} \tab an integration range for
-#' detection probability \cr }
+#' detection probability \cr \code{mono} \tab constrain the detection function to be (strictly) monotonically decreasing (when there are no covariates) \cr \code{mono.strict} \tab when TRUE (default when mono=TRUE) strict monotonicity is enforced, else only weak monotonicity. \cr}
 #' 
 #' Using \code{meta.data=list(int.range=c(1,10))} is the same as
 #' \code{meta.data=list(left=1,width=10)}.  If

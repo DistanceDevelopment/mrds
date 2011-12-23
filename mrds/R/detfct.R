@@ -89,10 +89,6 @@ function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdi
 #
 # Uses : getpar, scalevalue, keyfct.hn, keyfct.hz, adjfct.poly, adjfct.herm, adjfct.cos
 #
-# All this stuff is detailed in The Book (Distance Sampling, Buckland et al, 1993)
-# page 46 onwards.
-#
-
   if(is.null(select))
   {
 	  if(is.null(index))
