@@ -4,7 +4,7 @@
 estimator}
 \usage{
   \method{print}{dht} (x, cor = FALSE, bysample = FALSE,
-  vcmatrices = FALSE, ...)
+    vcmatrices = FALSE, ...)
 }
 \arguments{
   \item{x}{dht object that results from call to dht for a

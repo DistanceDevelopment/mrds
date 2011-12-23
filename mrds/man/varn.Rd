@@ -72,7 +72,7 @@
 }
 \references{
   Fewster, R.M., S.T. Buckland, K.P. Burnham, D.L.
-  Borchers, P.E. Jupp, J.L. Laake and L. Thomas. 2009.
+  Borchers, P.E.  Jupp, J.L. Laake and L. Thomas. 2009.
   Estimating the encounter rate variance in distance
   sampling. Biometrics 65: 225-236.
 }

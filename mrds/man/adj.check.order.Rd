@@ -29,7 +29,7 @@
 }
 \references{
   S.T.Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake.
-  1993. Robust Models. In: Distance Sampling, eds.
+  1993.  Robust Models. In: Distance Sampling, eds.
   S.T.Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake.
   Chapman & Hall.
 }

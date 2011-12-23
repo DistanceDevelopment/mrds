@@ -3,7 +3,7 @@
 \title{CDS function definition}
 \usage{
   cds(key = NULL, adj.series = NULL, adj.order = NULL,
-  adj.scale = "width", formula = ~1, shape.formula = ~1)
+    adj.scale = "width", formula = ~1, shape.formula = ~1)
 }
 \arguments{
   \item{key}{string identifying key function (currently

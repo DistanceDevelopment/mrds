@@ -2,8 +2,9 @@
 \alias{gstdint}
 \title{Integral of standardized (scale=1) detection function}
 \usage{
-  gstdint(x, xmin = NULL, ddfobj, index = NULL, select =
-  NULL, width, standardize = TRUE, point = FALSE)
+  gstdint(x, xmin = NULL, ddfobj, index = NULL,
+    select = NULL, width, standardize = TRUE,
+    point = FALSE)
 }
 \arguments{
   \item{x}{vector of lower or upper values for integral

@@ -1,6 +1,12 @@
 \name{plot_uncond}
 \alias{plot_uncond}
 \title{Plot unconditional detection function from distance sampling model}
+\usage{
+  plot_uncond(model, obs, xmat, gxvalues, nc, finebr,
+    breaks, showpoints, showlines, maintitle, ylim,
+    point = FALSE, return.lines = FALSE, angle = -45,
+    density = 20, col = "black", jitter = NULL, ...)
+}
 \arguments{
   \item{x}{fitted model from \code{ddf}}
 

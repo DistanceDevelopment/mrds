@@ -2,8 +2,8 @@
 \alias{ddf.trial.fi}
 \title{Mark-Recapture Analysis of Trial Configuration - FI}
 \usage{
-  ddf.trial.fi(model, data, meta.data = list(), control =
-  list(), call = "", method)
+  ddf.trial.fi(model, data, meta.data = list(),
+    control = list(), call = "", method)
 }
 \arguments{
   \item{model}{mark-recapture model specification}
@@ -65,9 +65,9 @@
 \references{
   Laake, J.L. and D.L. Borchers. 2004. Methods for
   incomplete detection at distance zero. In: Advanced
-  Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
-  Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
-  University Press.
+  Distance Sampling, eds. S.T.  Buckland, D.R.Anderson,
+  K.P. Burnham, J.L. Laake, D.L. Borchers, and L.  Thomas.
+  Oxford University Press.
 }
 \seealso{
   \code{\link{ddf.trial}},\code{\link{summary.trial.fi}},\code{\link{coef.trial.fi}},\code{\link{plot.trial.fi}},

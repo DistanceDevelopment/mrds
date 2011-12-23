@@ -3,9 +3,9 @@
 \alias{ptdata.dual}
 \title{Simulated dual observer point count data}
 \format{The format is 420 obs of 6 variables: ..$ distance: numeric distance from center $
-observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
-detected: numeric 0/1  $ person: Factor with 2 levels A,B $ pair: Factor with 2 levels "AB" BA" $
-object : sequential object number}
+  observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
+  detected: numeric 0/1  $ person: Factor with 2 levels A,B $ pair: Factor with 2 levels "AB" BA" $
+  object : sequential object number}
 \description{
   Simulated dual observer point count data with detection
   p(0)=0.8; hn sigma=30; w=100 for both observers with
@@ -17,5 +17,6 @@ xx=ddf(mrmodel=~glm(formula=~distance), dsmodel = ~cds(key="hn", formula = ~1), 
 summary(xx)
 plot(xx,main="Simulated point count data")
 }
+\keyword{dataset}
 \keyword{datasets}
 

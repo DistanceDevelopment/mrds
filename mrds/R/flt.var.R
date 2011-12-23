@@ -44,10 +44,16 @@ flt.var <- function(ddfobj, TCI, misc.options)
 	deltap=.0001*fpar1[i]
 	if(deltap==0)deltap=0.0001
     fpar[i] <- fpar1[i]- deltap
-	x1=-flt.lnl(fpar, ddfobj,TCI,misc.options)
+	if(misc.options$point)
+		x1=-fpt.lnl(fpar, ddfobj,TCI,misc.options)
+	else
+	   x1=-flt.lnl(fpar, ddfobj,TCI,misc.options)
     fpar[i] <- fpar1[i]+deltap
-	x2=-flt.lnl(fpar, ddfobj,TCI,misc.options)
-    parmat=cbind(parmat,(x2-x1)/(2*deltap))
+	if(misc.options$point)
+		x2=-fpt.lnl(fpar, ddfobj,TCI,misc.options)
+	else
+		x2=-flt.lnl(fpar, ddfobj,TCI,misc.options)
+	parmat=cbind(parmat,(x2-x1)/(2*deltap))
   }
 #
 #    Compute varmat using first partial approach (pg 62 of Buckland et al 2002)

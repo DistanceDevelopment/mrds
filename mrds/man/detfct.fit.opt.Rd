@@ -3,7 +3,7 @@
 \title{Fit detection function using key-adjustment functions}
 \usage{
   detfct.fit.opt(ddfobj, optim.options, bounds,
-  misc.options, fitting = "all")
+    misc.options, fitting = "all")
 }
 \arguments{
   \item{ddfobj}{detection function object}

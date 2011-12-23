@@ -2,9 +2,9 @@
 \alias{histline}
 \title{Plot histogram line}
 \usage{
-  histline(height, breaks, lineonly = FALSE, outline =
-  FALSE, fill = FALSE, ylim = range(height), xlab = "x",
-  ylab = "y", det.plot = FALSE, ...)
+  histline(height, breaks, lineonly = FALSE,
+    outline = FALSE, fill = FALSE, ylim = range(height),
+    xlab = "x", ylab = "y", det.plot = FALSE, ...)
 }
 \arguments{
   \item{height}{heights of histogram bars}

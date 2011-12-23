@@ -2,8 +2,8 @@
 \alias{prob.se}
 \title{Average p and average p(0) variance}
 \usage{
-  prob.se(model, fct, vcov, observer = NULL, fittedmodel =
-  NULL)
+  prob.se(model, fct, vcov, observer = NULL,
+    fittedmodel = NULL)
 }
 \arguments{
   \item{model}{ddf model object}

@@ -3,8 +3,8 @@
 \title{Density and abundance estimates and variances}
 \usage{
   dht(model, region.table, sample.table, obs.table = NULL,
-  subset = NULL, se = TRUE, bootstrap = FALSE, options =
-  list())
+    subset = NULL, se = TRUE, bootstrap = FALSE,
+    options = list())
 }
 \arguments{
   \item{model}{ddf model object}
@@ -182,7 +182,7 @@
 }
 \references{
   Borchers, D.L., S.T. Buckland, P.W. Goedhart, E.D.
-  Clarke, and S.L. Hedley. 1998.  Horvitz-Thompson
+  Clarke, and S.L. Hedley.  1998.  Horvitz-Thompson
   estimators for double-platform line transect surveys.
   Biometrics 54: 1221-1237.
 
@@ -198,19 +198,19 @@
   Populations. Oxford University Press.
 
   Fewster, R.M., S.T. Buckland, K.P. Burnham, D.L.
-  Borchers, P.E. Jupp, J.L. Laake and L. Thomas. 2009.
+  Borchers, P.E. Jupp, J.L.  Laake and L. Thomas. 2009.
   Estimating the encounter rate variance in distance
   sampling. Biometrics 65: 225-236.
 
   Huggins, R.M. 1989.  On the statistical analysis of
-  capture experiments. Biometrika 76:133-140.
+  capture experiments.  Biometrika 76:133-140.
 
   Huggins, R.M. 1991. Some practical aspects of a
   conditional likelihood approach to capture experiments.
   Biometrics 47: 725-732.
 
   Innes, S.  M.P. Heide-Jorgensen, J.L. Laake, K.L. Laidre,
-  H.J. Cleator, P. Richard, and R.E.A. Stewart.  2002.
+  H.J. Cleator, P.  Richard, and R.E.A. Stewart.  2002.
   Surveys of belugas and narwhals in the Canadian High
   Arctic in 1996.  NAMMCO Scientific Publications 4:
   169-190.
@@ -218,7 +218,7 @@
   Marques, F.F.C. and S.T. Buckland. 2004. Covariate models
   for the detection function. In: Advanced Distance
   Sampling, eds. S.T. Buckland, D.R.Anderson, K.P. Burnham,
-  J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  J.L. Laake, D.L. Borchers, and L. Thomas.  Oxford
   University Press.
 }
 \seealso{

@@ -2,8 +2,8 @@
 \alias{ddf.io.fi}
 \title{Mark-Recapture Distance Sampling (MRDS) IO - FI}
 \usage{
-  ddf.io.fi(model, data, meta.data = list(), control =
-  list(), call = "", method)
+  ddf.io.fi(model, data, meta.data = list(),
+    control = list(), call = "", method)
 }
 \arguments{
   \item{model}{mark-recapture model specification}
@@ -67,9 +67,9 @@
 \references{
   Laake, J.L. and D.L. Borchers. 2004. Methods for
   incomplete detection at distance zero. In: Advanced
-  Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
-  Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
-  University Press.
+  Distance Sampling, eds. S.T.  Buckland, D.R.Anderson,
+  K.P. Burnham, J.L. Laake, D.L. Borchers, and L.  Thomas.
+  Oxford University Press.
 }
 \seealso{
   \code{\link{ddf.io}},\code{\link{summary.io.fi}},\code{\link{coef.io.fi}},\code{\link{plot.io.fi}},

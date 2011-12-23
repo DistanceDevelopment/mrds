@@ -13,8 +13,8 @@
 \title{Collection of functions for logistic detection functions}
 \usage{
   is.linear.logistic(xmat,g0model,zdim,width)
-  is.logistic.constant(xmat, g0model, width)
-  integratelogistic.analytic(x, models, beta, width)
+    is.logistic.constant(xmat, g0model, width)
+    integratelogistic.analytic(x, models, beta, width)
 }
 \arguments{
   \item{xmat}{data matrix}

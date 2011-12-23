@@ -3,7 +3,7 @@
 \title{Iterative offset GLM/GAM for fitting detection function}
 \usage{
   io.glm(datavec, fitformula, eps = 1e-05, iterlimit = 500,
-  GAM = FALSE, gamplot = TRUE)
+    GAM = FALSE, gamplot = TRUE)
 }
 \arguments{
   \item{datavec}{dataframe}
@@ -50,15 +50,15 @@
 }
 \references{
   Buckland, S.T., J.M. breiwick, K.L. Cattanach, and J.L.
-  Laake. 1993. Estimated population size of the California
+  Laake.  1993. Estimated population size of the California
   gray whale.  Marine Mammal Science, 9:235-249.
 
   Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers,
   T.A. Marques, J.R.B. Bishop, and L. Thomas. 2004.
-  Further topics in distance sampling. pp: 360-363. In:
+  Further topics in distance sampling.  pp: 360-363. In:
   Advanced Distance Sampling, eds. S.T. Buckland,
   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers,
-  and L. Thomas. Oxford University Press.
+  and L. Thomas.  Oxford University Press.
 }
 \keyword{Models}
 \keyword{Statistical}

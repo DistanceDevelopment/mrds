@@ -2,8 +2,8 @@
 \alias{ddf}
 \title{Distance Detection Function Fitting}
 \usage{
-  ddf(dsmodel = call(), mrmodel = call(), data, method =
-  "ds", meta.data = list(), control = list())
+  ddf(dsmodel = call(), mrmodel = call(), data,
+    method = "ds", meta.data = list(), control = list())
 }
 \arguments{
   \item{dsmodel}{distance sampling model specification}
@@ -193,20 +193,24 @@
   values include:
 
   \tabular{ll}{ Option \tab Value \cr \code{showit} \tab
-  TRUE or FALSE; if TRUE will give iteration fitting output
-  \cr \code{doeachint} \tab if TRUE forces numerical
-  integration rather than interpolation method \cr
-  \code{estimate} \tab if FALSE fits model but doesn't
-  estimate predicted probabilities \cr \code{refit} \tab if
-  TRUE the algorithm will attempt multiple optimizations at
-  different starting values if it doesn't converge \cr
-  \code{nrefits} \tab number of refitting attempts \cr
-  \code{initial} \tab a vector of starting values for the
-  parameters \cr \code{lowerbounds} \tab a vector of
-  lowerbounds for the parameters \cr \code{upperbounds}
-  \tab a vector of upperbounds for the parameters \cr
-  \code{limit} \tab if TRUE restrict analysis to
-  observations with \code{detected}=1 \cr }
+  Integer (0-3, default 0) controls the (increasing) amount
+  of information printed during fitting. 0 - none, >=1 -
+  information about refitting and bound changes is printed,
+  >=2 - information about adjustment term fitting is
+  printed, ==3 - per-iteration parameter estimates and
+  log-likelihood printed. \cr \code{doeachint} \tab if TRUE
+  forces numerical integration rather than interpolation
+  method \cr \code{estimate} \tab if FALSE fits model but
+  doesn't estimate predicted probabilities \cr \code{refit}
+  \tab if TRUE the algorithm will attempt multiple
+  optimizations at different starting values if it doesn't
+  converge \cr \code{nrefits} \tab number of refitting
+  attempts \cr \code{initial} \tab a vector of starting
+  values for the parameters \cr \code{lowerbounds} \tab a
+  vector of lowerbounds for the parameters \cr
+  \code{upperbounds} \tab a vector of upperbounds for the
+  parameters \cr \code{limit} \tab if TRUE restrict
+  analysis to observations with \code{detected}=1 \cr }
 }
 \examples{
 data(book.tee.data)
@@ -224,14 +228,14 @@ result=ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance), data = egdata,
 \references{
   Laake, J.L. and D.L. Borchers. 2004. Methods for
   incomplete detection at distance zero. In: Advanced
-  Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
-  Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
-  University Press.
+  Distance Sampling, eds. S.T.  Buckland, D.R.Anderson,
+  K.P. Burnham, J.L. Laake, D.L. Borchers, and L.  Thomas.
+  Oxford University Press.
 
   Marques, F.F.C. and S.T. Buckland. 2004. Covariate models
   for the detection function. In: Advanced Distance
   Sampling, eds. S.T. Buckland, D.R.Anderson, K.P. Burnham,
-  J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  J.L. Laake, D.L. Borchers, and L. Thomas.  Oxford
   University Press.
 }
 \seealso{

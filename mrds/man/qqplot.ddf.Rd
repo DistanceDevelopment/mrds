@@ -56,11 +56,11 @@
 }
 \references{
   Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers,
-  T.A. Marques, J.R.B. Bishop, and L. Thomas. 2004.
+  T.A.  Marques, J.R.B. Bishop, and L. Thomas. 2004.
   Further topics in distance sampling. pp: 385-389. In:
   Advanced Distance Sampling, eds. S.T. Buckland,
   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers,
-  and L. Thomas. Oxford University Press.
+  and L. Thomas.  Oxford University Press.
 }
 \seealso{
   \code{\link{ddf.gof}}, \code{\link{cdf.ds}}

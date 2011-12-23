@@ -3,7 +3,7 @@
 \title{CDS/MCDS Distance Detection Function Fitting}
 \usage{
   ddf.ds(model, data, meta.data = list(), control = list(),
-  call, method = "ds")
+    call, method = "ds")
 }
 \arguments{
   \item{model}{model list with key function and scale
@@ -70,7 +70,7 @@ egdata<<-book.tee.data$book.tee.dataframe
 samples<<-book.tee.data$book.tee.samples
 obs<<-book.tee.data$book.tee.obs
 result=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = egdata[egdata$observer ==
-1, ], method = "ds", meta.data = list(width = 4))
+    1, ], method = "ds", meta.data = list(width = 4))
 summary(result,se=TRUE)
 plot(result,main="cds - observer 1")
 print(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),se=TRUE))
@@ -82,14 +82,14 @@ print(ddf.gof(result))
 \references{
   Laake, J.L. and D.L. Borchers. 2004. Methods for
   incomplete detection at distance zero. In: Advanced
-  Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
-  Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
-  University Press.
+  Distance Sampling, eds. S.T.  Buckland, D.R.Anderson,
+  K.P. Burnham, J.L. Laake, D.L. Borchers, and L.  Thomas.
+  Oxford University Press.
 
   Marques, F.F.C. and S.T. Buckland. 2004. Covariate models
   for the detection function. In: Advanced Distance
   Sampling, eds. S.T. Buckland, D.R.Anderson, K.P. Burnham,
-  J.L. Laake, D.L. Borchers, and L. Thomas. Oxford
+  J.L. Laake, D.L. Borchers, and L. Thomas.  Oxford
   University Press.
 }
 \seealso{

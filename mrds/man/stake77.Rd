@@ -3,19 +3,19 @@
 \alias{stake77}
 \title{Wooden stake data from 1977 survey}
 \format{A data frame with 150 observations on the following 10 variables.
-\describe{ \item{StakeNo}{unique number for each stake 1-150}
-\item{PD}{perpendicular distance at which the stake was placed
-from the line} \item{Obs1}{0/1 whether missed/seen by observer 1}
-\item{Obs2}{0/1 whether missed/seen by observer 2}
-\item{Obs3}{0/1 whether missed/seen by observer 3}
-\item{Obs4}{0/1 whether missed/seen by observer 4}
-\item{Obs5}{0/1 whether missed/seen by observer 5}
-\item{Obs6}{0/1 whether missed/seen by observer 6}
-\item{Obs7}{0/1 whether missed/seen by observer 7}
-\item{Obs8}{0/1 whether missed/seen by observer 8} }}
+  \describe{ \item{StakeNo}{unique number for each stake 1-150}
+  \item{PD}{perpendicular distance at which the stake was placed
+  from the line} \item{Obs1}{0/1 whether missed/seen by observer 1}
+  \item{Obs2}{0/1 whether missed/seen by observer 2}
+  \item{Obs3}{0/1 whether missed/seen by observer 3}
+  \item{Obs4}{0/1 whether missed/seen by observer 4}
+  \item{Obs5}{0/1 whether missed/seen by observer 5}
+  \item{Obs6}{0/1 whether missed/seen by observer 6}
+  \item{Obs7}{0/1 whether missed/seen by observer 7}
+  \item{Obs8}{0/1 whether missed/seen by observer 8} }}
 \source{
   Laake, J. 1978. Line transect estimators robust to animal
-  movement. M.S. Thesis. Utah State University, Logan,
+  movement.  M.S. Thesis. Utah State University, Logan,
   Utah. 55p.
 }
 \description{
@@ -28,40 +28,40 @@ data(stake77)
 # Functions to extract stake data and put in the mrds format for model fitting.
 extract.stake=function(stake,obs)
 {
-extract.obs=function(obs)
-{
-example=subset(stake,eval(parse(text=paste("Obs",obs,"==1",sep=""))),select="PD")
-example$distance=example$PD
-example$object=1:nrow(example)
-example$PD=NULL
-return(example)
-}
-if(obs!="all")
-return(extract.obs(obs=obs))
-else
-{
-example=NULL
-for(i in 1:(ncol(stake)-2))
-{
-df=extract.obs(obs=i)
-df$person=i
-example=rbind(example,df)
-}
-example$person=factor(example$person)
-example$object=1:nrow(example)
-return(example)
-}
+  extract.obs=function(obs)
+  {
+     example=subset(stake,eval(parse(text=paste("Obs",obs,"==1",sep=""))),select="PD")
+     example$distance=example$PD
+     example$object=1:nrow(example)
+     example$PD=NULL
+     return(example)
+ }
+ if(obs!="all")
+	 return(extract.obs(obs=obs))
+ else
+ {
+	 example=NULL
+     for(i in 1:(ncol(stake)-2))
+	 {
+		 df=extract.obs(obs=i)
+		 df$person=i
+		 example=rbind(example,df)
+	 }
+	 example$person=factor(example$person)
+	 example$object=1:nrow(example)
+	 return(example)
+ }
 }
 extract.stake.pairs=function(stake,obs1,obs2,removal=FALSE)
 {
-obs1=paste("Obs",obs1,sep="")
-obs2=paste("Obs",obs2,sep="")
-example=subset(stake,eval(parse(text=paste(obs1,"==1 |",obs2,"==1 ",sep=""))),select=c("PD",obs1,obs2))
-names(example)=c("distance","obs1","obs2")
-detected=c(example$obs1,example$obs2)
-example=data.frame(object=rep(1:nrow(example),2),distance=rep(example$distance,2),detected=detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
-if(removal)example$detected[example$observer==2]=1
-return(example)
+  obs1=paste("Obs",obs1,sep="")
+  obs2=paste("Obs",obs2,sep="")
+  example=subset(stake,eval(parse(text=paste(obs1,"==1 |",obs2,"==1 ",sep=""))),select=c("PD",obs1,obs2))
+  names(example)=c("distance","obs1","obs2")
+  detected=c(example$obs1,example$obs2)
+  example=data.frame(object=rep(1:nrow(example),2),distance=rep(example$distance,2),detected=detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
+  if(removal)example$detected[example$observer==2]=1
+  return(example)
 }
 # extract data for observer 1 and fit a single observer model
 stakes=extract.stake(stake77,1)
@@ -80,5 +80,6 @@ ddf.gof(io.model)
   Estimation of Density from Line Transect Sampling of
   Biological Populations. Wildlife Monographs:7-202.
 }
+\keyword{dataset}
 \keyword{datasets}
 

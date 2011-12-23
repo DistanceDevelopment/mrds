@@ -3,11 +3,12 @@
 \title{Plot fit of detection functions and histograms of data from distance
 sampling model}
 \usage{
-  \method{plot}{ds} (x, which = c(2), byvar = "", breaks =
-  NULL, nc = NULL, winht = 4, winwd = 6, jitter.v = rep(0,
-  3), showpoints = TRUE, subset = NULL, pl.col =
-  c("black"), bw.col = c(grey(0)), black.white = FALSE,
-  pl.den = rep(20, 1), pl.ang = rep(-45, 1), ...)
+  \method{plot}{ds} (x, which = c(2), byvar = "",
+    breaks = NULL, nc = NULL, winht = 4, winwd = 6,
+    jitter.v = rep(0, 3), showpoints = TRUE, subset = NULL,
+    pl.col = c("black"), bw.col = c(grey(0)),
+    black.white = FALSE, pl.den = rep(20, 1),
+    pl.ang = rep(-45, 1), ...)
 }
 \arguments{
   \item{x}{fitted model from \code{ddf}}
