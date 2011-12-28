@@ -1,6 +1,6 @@
 Package: mrds
-Version: 2.0.3
-Date: 2011-8-22
+Version: 2.0.4
+Date: 2011-12-28
 Title: Mark-Recapture Distance Sampling (mrds)
 Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers
     <dlb@mcs.st-and.ac.uk>, Len Thomas

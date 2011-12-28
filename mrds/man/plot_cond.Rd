@@ -3,12 +3,11 @@
 \title{Plot conditional detection function from distance sampling model}
 \usage{
   plot_cond(obs, xmat, gxvalues, est, nc, breaks,
-    showpoints, showlines, maintitle, ylim,
-    return.lines = FALSE, angle = -45, density = 20,
-    col = "black", jitter = NULL, ...)
+    showpoints, showlines, maintitle, ylim, angle = -45,
+    density = 20, col = "black", jitter = NULL, ...)
 }
 \arguments{
-  \item{x}{fitted model from \code{ddf}}
+  \item{obs}{obsever code}
 
   \item{xmat}{processed data}
 

@@ -8,16 +8,19 @@
     density = 20, col = "black", jitter = NULL, ...)
 }
 \arguments{
-  \item{x}{fitted model from \code{ddf}}
+  \item{model}{fitted model from \code{ddf}}
+
+  \item{obs}{value of observer for plot}
 
   \item{xmat}{processed data}
 
   \item{gxvalues}{detection function values for each
   observation}
 
-  \item{est}{line values constructed with calcp.mrds}
-
   \item{nc}{number of equal-width bins for histogram}
+
+  \item{finebr}{fine break values over which line is
+  averaged}
 
   \item{breaks}{user define breakpoints}
 
@@ -30,6 +33,8 @@
   \item{maintitle}{main title line for each plot}
 
   \item{ylim}{range of y axis; defaults to (0,1)}
+
+  \item{point}{point count data if TRUE}
 
   \item{return.lines}{if TRUE, returns values for line}
 

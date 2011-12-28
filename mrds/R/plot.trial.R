@@ -80,10 +80,11 @@
 #' @param which index to specify which plots should be produced. 1: uncond det fct, 2:cond det fct
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
-#' @param showpoints logical variable; if TRUE plots predicted value for each
-#'   observation
+#' @param maintitle main title line for each plot
 #' @param showlines logical variable; if TRUE a line representing the average
 #'   detection probability is plotted
+#' @param showpoints logical variable; if TRUE plots predicted value for each
+#'   observation
 #' @param ylim range of y axis; defaults to (0,1)
 #' @param angle shading angle for hatching
 #' @param density shading density for hatching

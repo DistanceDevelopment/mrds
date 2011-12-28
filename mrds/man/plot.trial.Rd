@@ -19,12 +19,14 @@ sampling model}
 
   \item{nc}{number of equal-width bins for histogram}
 
-  \item{showpoints}{logical variable; if TRUE plots
-  predicted value for each observation}
+  \item{maintitle}{main title line for each plot}
 
   \item{showlines}{logical variable; if TRUE a line
   representing the average detection probability is
   plotted}
+
+  \item{showpoints}{logical variable; if TRUE plots
+  predicted value for each observation}
 
   \item{ylim}{range of y axis; defaults to (0,1)}
 

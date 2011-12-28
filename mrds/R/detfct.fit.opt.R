@@ -72,7 +72,7 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 
   # grab the initial values
   initialvalues<-getpar(ddfobj)
-  initialvalues.set<-initialvalues #Â store for later
+  initialvalues.set<-initialvalues # store for later
 
 # dlm 31-May-2006 Initial work started.
 # dlm 05-June-2006 Added an extra level of showit for this level.

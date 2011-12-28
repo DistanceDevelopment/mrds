@@ -108,7 +108,7 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
   # Otherwise we need to play around...
 
     # think this needs to live elsewhere, but let's leave it here for
-    # the moment
+    # the moment
     if(!is.null(ddfobj$adjustment) && ddfobj$adjustment$series=="herm")
       ddfobj$adjustment$parameters<-rep(1,length(ddfobj$adjustment$order))
 

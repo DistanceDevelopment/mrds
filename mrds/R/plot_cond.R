@@ -6,7 +6,7 @@
 #' 
 #' 
 #' @aliases plot_cond
-#' @param x fitted model from \code{ddf}
+#' @param obs obsever code
 #' @param xmat processed data
 #' @param gxvalues detection function values for each observation
 #' @param est line values constructed with calcp.mrds
@@ -40,7 +40,7 @@
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
 #' 
-"plot_cond" <-function(obs,xmat,gxvalues,est,nc,breaks,showpoints,showlines,maintitle,ylim,return.lines=FALSE,angle=-45,density=20,col="black",jitter=NULL,...)
+"plot_cond" <-function(obs,xmat,gxvalues,est,nc,breaks,showpoints,showlines,maintitle,ylim,angle=-45,density=20,col="black",jitter=NULL,...)
 {
    selection <-xmat$detected[xmat$observer!=obs]==1
    selmat <- (xmat[xmat$observer==obs,])[selection,]
