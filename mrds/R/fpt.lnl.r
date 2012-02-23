@@ -32,7 +32,7 @@ function(fpar, ddfobj,TCI,misc.options)
   lnl=rep(0,dim(x)[1])
   if(any(x$binned))
   {
-    if(ddfobj$type=="hr")cgftab <- tablecgf(ddfobj,width=width,standardize=misc.options$standardize,point=TRUE)
+    if(ddfobj$type=="hr") ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=misc.options$standardize,point=TRUE)
     key.scale<-ddfobj$scale$parameters
     intall <- predict(ddfobj$cgftab, as.vector(right/scalevalue(key.scale, z[x$binned,])))$y * 
                         scalevalue(key.scale,z[x$binned,])^2 -
