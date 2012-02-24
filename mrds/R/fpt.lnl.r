@@ -32,15 +32,15 @@ function(fpar, ddfobj,TCI,misc.options)
   lnl=rep(0,dim(x)[1])
   if(any(x$binned))
   {
-    if(ddfobj$type=="hr")cgftab <- tablecgf(ddfobj,width=width,standardize=misc.options$standardize,point=TRUE)
+    if(ddfobj$type=="hr") ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=misc.options$standardize,point=TRUE)
     key.scale<-ddfobj$scale$parameters
-    intall <- predict(cgftab, as.vector(right/scalevalue(key.scale, z[x$binned,])))$y * 
+    intall <- predict(ddfobj$cgftab, as.vector(right/scalevalue(key.scale, z[x$binned,])))$y * 
                         scalevalue(key.scale,z[x$binned,])^2 -
-              predict(cgftab, as.vector(left/scalevalue(key.scale, z[x$binned,])))$y *
+              predict(ddfobj$cgftab, as.vector(left/scalevalue(key.scale, z[x$binned,])))$y *
                           scalevalue(key.scale,z[x$binned,])^2
       
-    intbegin <- predict(cgftab, as.vector(x$distbegin[x$binned]/scalevalue(key.scale, z[x$binned,])))$y * scalevalue(key.scale,z[x$binned,])^2    
-    intend <- predict(cgftab, as.vector(x$distend[x$binned]/scalevalue(key.scale, z[x$binned,])))$y * scalevalue(key.scale,z[x$binned,])^2
+    intbegin <- predict(ddfobj$cgftab, as.vector(x$distbegin[x$binned]/scalevalue(key.scale, z[x$binned,])))$y * scalevalue(key.scale,z[x$binned,])^2    
+    intend <- predict(ddfobj$cgftab, as.vector(x$distend[x$binned]/scalevalue(key.scale, z[x$binned,])))$y * scalevalue(key.scale,z[x$binned,])^2
 #
 #    24-Aug-05; jll; To avoid numerical problems due to approximation of integral the following
 #    line of code was added; added this on 19 Jan 06 to mrds-dev
