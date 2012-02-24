@@ -5,11 +5,8 @@
 #' function approach.  If adjustment functions are included it will alternate
 #' between fitting parameters of key and adjustment functions and then all
 #' parameters much like the approach in the CDS and MCDS Distance FORTRAN code.
-#' This function is called by the driver functioin \code{detfct.fit}.  This function does
-#' the calls the optimx() function (from the package optimx).
-#' SAY SOMETHING HERE ABOUT LORENZO's CODE!! which does not allow non-linear constraints so inclusion of adjustments does
-#' allow the detection function to be non-monotone.
-#' 
+#' This function is called by the driver functioin \code{detfct.fit}.  This 
+#' function does the calls the optimx() function (from the package optimx).
 #' 
 #' @import optimx
 #' @aliases detfct.fit.opt

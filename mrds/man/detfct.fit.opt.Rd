@@ -64,10 +64,7 @@
   Distance FORTRAN code. This function is called by the
   driver functioin \code{detfct.fit}.  This function does
   the calls the optimx() function (from the package
-  optimx). SAY SOMETHING HERE ABOUT LORENZO's CODE!! which
-  does not allow non-linear constraints so inclusion of
-  adjustments does allow the detection function to be
-  non-monotone.
+  optimx).
 }
 \author{
   Dave Miller; Jeff Laake; Lorenzo Milazzo
