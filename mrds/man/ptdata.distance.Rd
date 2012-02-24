@@ -18,6 +18,5 @@ Regions=data.frame(Region.Label=1,Area=1)
 Samples=data.frame(Sample.Label=1:30,Region.Label=rep(1,30),Effort=rep(1,30))
 print(dht(xx,sample.table=Samples,region.table=Regions))
 }
-\keyword{dataset}
 \keyword{datasets}
 

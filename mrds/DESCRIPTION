@@ -1,38 +1,33 @@
 Package: mrds
-Version: 2.0.4
-Date: 2011-12-28
-Title: Mark-Recapture Distance Sampling (mrds)
-Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers
-    <dlb@mcs.st-and.ac.uk>, Len Thomas
-    <len@mcs.st-and.ac.uk>, David Miller
-    <dlm22@st-and.ac.uk> and Jon Bishop
-    <jonb@mcs.st-and.ac.uk>
-Maintainer: Jeff Laake <jeff.laake@noaa.gov>
-Description: This package implements mark-recapture
-    distance sampling methods as described in D.L.
-    Borchers, W. Zucchini and Fewster, R.M. (1988),
-    "Mark-recapture models for line transect surveys",
-    Biometrics 54: 1207-1220. and Laake, J.L. (1999)
-    "Distance sampling with independent observers: Reducing
-    bias from heterogeneity by weakening the conditional
-    independence assumption." in Amstrup, G.W., Garner,
-    S.C., Laake, J.L., Manly, B.F.J., McDonald, L.L. and
-    Robertson, D.G. (eds) "Marine mammal survey and
-    assessment methods", Balkema, Rotterdam: 137-148 and
-    Borchers, D.L., Laake, J.L., Southwell, C. and Paxton,
-    C.L.G. "Accommodating unmodelled heterogeneity in
-    double-observer distance sampling surveys". 2006.
-    Biometrics 62:372-378.)
-Depends:
-    R (>= 2.0.0),optimx,Rsolnp
 Imports:
     optimx,
     mgcv,
     Rsolnp
+Maintainer: Jeff Laake <jeff.laake@noaa.gov>
+License: GPL version 2 or later
+Title: Mark-Recapture Distance Sampling (mrds)
+LazyLoad: yes
+Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers
+    <dlb@mcs.st-and.ac.uk>, Len Thomas <len@mcs.st-and.ac.uk>, David
+    Miller <dlm22@st-and.ac.uk> and Jon Bishop <jonb@mcs.st-and.ac.uk>
+Description: This package implements mark-recapture distance sampling
+    methods as described in D.L. Borchers, W. Zucchini and Fewster,
+    R.M. (1988), "Mark-recapture models for line transect surveys",
+    Biometrics 54: 1207-1220. and Laake, J.L. (1999) "Distance sampling
+    with independent observers: Reducing bias from heterogeneity by
+    weakening the conditional independence assumption." in Amstrup,
+    G.W., Garner, S.C., Laake, J.L., Manly, B.F.J., McDonald, L.L. and
+    Robertson, D.G. (eds) "Marine mammal survey and assessment
+    methods", Balkema, Rotterdam: 137-148 and Borchers, D.L., Laake,
+    J.L., Southwell, C. and Paxton, C.L.G. "Accommodating unmodelled
+    heterogeneity in double-observer distance sampling surveys". 2006.
+    Biometrics 62:372-378.)
+Version: 2.0.4
+Date: 2011-12-28
+Depends:
+    R (>= 2.0.0),optimx,Rsolnp
 Suggests:
     testthat
-LazyLoad: yes
-License: GPL version 2 or later
 Collate:
     'adj.check.order.R'
     'adjfct.cos.R'
@@ -68,8 +63,8 @@ Collate:
     'ddf.trial.R'
     'DeltaMethod.R'
     'det.tables.R'
-    'detfct.fit.opt.R'
     'detfct.fit.mono.R'
+    'detfct.fit.opt.R'
     'detfct.fit.R'
     'detfct.R'
     'dht.deriv.R'
@@ -110,6 +105,7 @@ Collate:
     'logisticdupbyx.R'
     'logit.R'
     'mcds.R'
+    'mrds-package.R'
     'NCovered.ds.R'
     'NCovered.io.fi.R'
     'NCovered.io.R'
@@ -123,6 +119,7 @@ Collate:
     'pdot.dsr.integrate.logistic.R'
     'pks.R'
     'plot_cond.R'
+    'plot_uncond.R'
     'plot.det.tables.R'
     'plot.ds.R'
     'plot.io.fi.R'
@@ -131,7 +128,6 @@ Collate:
     'plot.rem.R'
     'plot.trial.fi.R'
     'plot.trial.R'
-    'plot_uncond.R'
     'predict.ds.R'
     'predict.io.fi.R'
     'predict.io.R'
@@ -159,6 +155,7 @@ Collate:
     'setcov.R'
     'sethazard.R'
     'setinitial.ds.R'
+    'sim.mix.R'
     'summary.ds.R'
     'summary.io.fi.R'
     'summary.io.R'
@@ -171,4 +168,3 @@ Collate:
     'test.breaks.R'
     'varn.R'
     'zzz.R'
-    'mrds-package.R'

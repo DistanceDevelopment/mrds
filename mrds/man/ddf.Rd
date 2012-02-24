@@ -209,12 +209,17 @@
   \tab if TRUE the algorithm will attempt multiple
   optimizations at different starting values if it doesn't
   converge \cr \code{nrefits} \tab number of refitting
-  attempts \cr \code{initial} \tab a vector of starting
-  values for the parameters \cr \code{lowerbounds} \tab a
-  vector of lowerbounds for the parameters \cr
-  \code{upperbounds} \tab a vector of upperbounds for the
-  parameters \cr \code{limit} \tab if TRUE restrict
-  analysis to observations with \code{detected}=1 \cr }
+  attempts \cr \code{initial} \tab a named list of starting
+  values for the parameters (\code{$scale}, \code{$shape},
+  \code{$adjust}) \cr \code{lowerbounds} \tab a vector of
+  lowerbounds for the parameters \cr \code{upperbounds}
+  \tab a vector of upperbounds for the parameters \cr
+  \code{limit} \tab if TRUE restrict analysis to
+  observations with \code{detected}=1 \cr \code{debug} \tab
+  if TRUE, if fitting fails, return an object with fitting
+  information \cr \code{nofit} \tab if TRUE don't fit a
+  model, but use the starting values and generate an object
+  based on those values \cr}
 }
 \examples{
 data(book.tee.data)

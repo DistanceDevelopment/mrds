@@ -95,7 +95,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #
 #   Code structure for optimization with optim
 #
-#    ddf.ds --> detfct.fit --> detfct.fit.opt --> optim --> flnl 
+#    ddf.ds --> detfct.fit --> detfct.fit.opt --> optimx or solnp --> flnl 
 #                   
 #      flnl--> flt.lnl -->
 #              fpt.lnl --> detfct
@@ -125,11 +125,12 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #
 # Set up control values
 #
-  control=assign.default.values(control,showit=0,doeachint=FALSE,estimate=TRUE,
-                                refit=TRUE,nrefits=25, initial=NA, 
+  control <- assign.default.values(control,showit=0,doeachint=FALSE,
+                                estimate=TRUE,refit=TRUE,nrefits=25,initial=NA, 
                                 lowerbounds=NA, upperbounds=NA, limit=TRUE,
                                 parscale=NA, maxiter=12, standardize=TRUE, 
-                                mono.points=20, mono.tol=1e-7, mono.delta=1e-7)
+                                mono.points=20, mono.tol=1e-7, mono.delta=1e-7,
+                                debug=FALSE,nofit=FALSE)
 
 #
 #  Save current user options and then set design contrasts to treatment style
@@ -139,16 +140,18 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #
 #  Process data 
 #   First remove data with missing distances
-	if(!is.null(data$distance))
-		data=data[!is.na(data$distance),]
-	else
-		data=data[!is.na(data$distbegin)&!is.na(data$distend),]
-	if(is.null(data$object))
+	if(!is.null(data$distance)){
+		data <- data[!is.na(data$distance),]
+   }else{
+		data <- data[!is.na(data$distbegin)&!is.na(data$distend),]
+   }
+	if(is.null(data$object)){
      stop("\nobject field is missing in the data\n")
+   }
 #  Next call function to process data based on values of meta.data 
-   datalist=process.data(data,meta.data,check=FALSE)
-   xmat=datalist$xmat
-   meta.data=datalist$meta.data
+   datalist <- process.data(data,meta.data,check=FALSE)
+   xmat <- datalist$xmat
+   meta.data <- datalist$meta.data
 #
 #  31 March 06; added code to use all unique detections (observer=1) if observer is present
 #
@@ -158,8 +161,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
       {
          if(length(levels(factor(xmat$observer)))>1)
          {
-            xmat=xmat[xmat$observer==levels(factor(xmat$observer))[1],]
-            xmat$detected=rep(1,dim(xmat)[1])
+            xmat <- xmat[xmat$observer==levels(factor(xmat$observer))[1],]
+            xmat$detected <- rep(1,dim(xmat)[1])
          }
       }
    }
@@ -170,28 +173,36 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
    if(!is.null(xmat$detected)){
      if(control$limit) xmat <- xmat[xmat$detected==1,]
    }else
-     xmat$detected<-rep(1,dim(xmat)[1])
+     xmat$detected <- rep(1,dim(xmat)[1])
 #
 #  Make sure object #'s are unique
 #
-   if(length(unique(xmat$object))!=length(xmat$object))
+   if(length(unique(xmat$object))!=length(xmat$object)){
      stop("\nSome values of object field are duplicates.  They must be unique.\n")
+   }
 #
 #  Setup default breaks
 #
-  if(meta.data$binned)
-    breaks=c(max(0,min(as.numeric(levels(as.factor(xmat$distbegin))))),as.numeric(levels(as.factor(xmat$distend))))
-  else
-    breaks=NULL
+  if(meta.data$binned){
+    breaks <- c(max(0,min(as.numeric(levels(as.factor(xmat$distbegin))))),
+                as.numeric(levels(as.factor(xmat$distend))))
+  }else{
+    breaks <- NULL
+  }
 #
 #  Setup detection model
 #               
-  ddfobj=create.ddfobj(model,xmat,meta.data,control$initial) 
-  if(!is.null(ddfobj$shape) && ncol(ddfobj$shape$dm)>1)doeachint=TRUE
-  if(!setdoeachint & !is.null(ddfobj$shape))control$doeachint=TRUE
-  initialvalues=c(ddfobj$shape$parameters,ddfobj$scale$parameters,
-                  ddfobj$adjustment$parameters)
-  bounds=setbounds(control$lowerbounds,control$upperbounds,initialvalues,ddfobj)
+  ddfobj <- create.ddfobj(model,xmat,meta.data,control$initial) 
+  if(!is.null(ddfobj$shape) && ncol(ddfobj$shape$dm)>1){
+    doeachint <- TRUE
+  }
+  if(!setdoeachint & !is.null(ddfobj$shape)){
+    control$doeachint <- TRUE
+  }
+  initialvalues <- c(ddfobj$shape$parameters,ddfobj$scale$parameters,
+                     ddfobj$adjustment$parameters)
+  bounds <- setbounds(control$lowerbounds,control$upperbounds,
+                      initialvalues,ddfobj)
   misc.options<-list(point=meta.data$point, int.range=meta.data$int.range,
                      showit=control$showit, doeachint=control$doeachint,
                      integral.numeric=control$integral.numeric, breaks=breaks,
@@ -202,7 +213,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
                      standardize=control$standardize,
                      mono.points=control$mono.points,
                      mono.tol=control$mono.tol,
-                     mono.delta=control$mono.delta)
+                     mono.delta=control$mono.delta,
+                     debug=control$debug,nofit=control$nofit)
 
   # debug - print the initial values
   if(misc.options$showit>1){
@@ -222,43 +234,62 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #
 # add call and others to return values
 #
-  result=list(call=call,data=data[row.names(data)%in%row.names(xmat),],
-              model=substitute(model),meta.data=meta.data, control=control,method=method,
-              ds=lt,par=lt$par,lnl=-lt$value)
+  result <- list(call=call,data=data[row.names(data)%in%row.names(xmat),],
+              model=substitute(model),meta.data=meta.data, control=control,
+              method=method,ds=lt,par=lt$par,lnl=-lt$value)
 	  
-# 23-Jan-06 jll   Changed this back to use formula in Buckland et al or it doesn't match DISTANCE
-#                 unless the result is singular
-  result$hessian <-flt.var(result$ds$aux$ddfobj, TCI = FALSE, misc.options)
-# dlm 30-May-2006	We probably only want to check this if we have more than one parameter, since
-#                   a 1 parameter model will have a singular Hessian, we don't want to alarm people.
-# jll 28-10-2010    Changed from length(getpar) - getpar is a function; must have been
-#                   late when you made that change Dave.
-  if(length(lt$par)>1){
+  # if there was no convergence, return the fitting object incase it's useful
+  # it won't be of the correct class or have the correct elements
+  if(lt$converge!=0 & misc.options$debug){
+    errors("No convergence, not calculating Hessian, predicted values, abundance")
+    errors("Returned object is for debugging ONLY!")
+    options(save.options)
+    return(result)
+  }
+
+  # 4-Jan-12 dlm sometimes this fails, so wrap it up in a try()
+  result$hessian <- try(flt.var(result$ds$aux$ddfobj, TCI = FALSE, misc.options))
+
+  # 23-Jan-06 jll   Changed this back to use formula in Buckland et al or it 
+  # doesn't match DISTANCE unless the result is singular
+  if(class(result$hessian)=="try-error"){
+    # the hessian returned from solnp() is not what we want, warn about that and don't
+    # return it
+    if(misc.options$mono){
+      cat("First partial hessian calculation failed with monotonicity enforced, no hessian\n")
+    }else{
+      cat("First partial hessian calculation failed; using second-partial hessian\n")
+      result$hessian <- lt$hessian
+    }
+  }else if(length(lt$par)>1){
     if(class(try(solve(result$hessian),silent=TRUE))=="try-error"){
       cat("First partial hessian is singular; using second-partial hessian\n")
-      result$hessian=lt$hessian
+      result$hessian <- lt$hessian
     }
   }
-  modpaste=paste(model)
-  modelvalues=try(eval(parse(text=modpaste[2:length(modpaste)])))
-  class(result$ds)=c(modelvalues$fct,"ds")
+  modpaste <- paste(model)
+  modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
+  class(result$ds) <- c(modelvalues$fct,"ds")
 #
 #   AIC computation
 #
   n <- length(xmat$distance)
-  npar = length(lt$par)
-  result$criterion = 2*lt$value + 2*npar
+  npar <- length(lt$par)
+  result$criterion <- 2*lt$value + 2*npar
 
-  class(result)=c("ds","ddf")
+  class(result) <- c("ds","ddf")
   
-  if(is.null(lt$message))
-    result$ds$message=""
-  if(lt$message =="FALSE CONVERGENCE")
+  if(is.null(lt$message)){
+    result$ds$message <- ""
+  }
+
+  if(lt$message == "FALSE CONVERGENCE"){
     errors("Model fitting did not converge.  Try different initial values or different model")
-  else{
-    result$fitted=predict(result,esw=FALSE)$fitted
-    if(control$estimate)
-      result$Nhat=NCovered(result,group=TRUE)
+  }else{
+    result$fitted <- predict(result,esw=FALSE)$fitted
+    if(control$estimate){
+      result$Nhat <- NCovered(result,group=TRUE)
+    }
   }
 #
 # Restore user options

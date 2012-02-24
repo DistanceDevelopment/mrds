@@ -97,6 +97,7 @@
 #' @param black.white logical variable; if TRUE plots are grayscale
 #' @param pl.den shading density for plots of obs 1, obs 2 detections
 #' @param pl.ang shading angle for plots of obs 1, obs 2 detections
+#' @param main user-specfied plot title
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (plot, hist, lines, points, etc)
 #' @return NULL
@@ -114,7 +115,7 @@
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
 #' 
-plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,jitter.v=rep(0,3),showpoints=TRUE,subset=NULL,pl.col=c('black'),bw.col=c(grey(0)),black.white=FALSE,pl.den=rep(20,1),pl.ang=rep(-45,1),...)
+plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,jitter.v=rep(0,3),showpoints=TRUE,subset=NULL,pl.col=c('black'),bw.col=c(grey(0)),black.white=FALSE,pl.den=rep(20,1),pl.ang=rep(-45,1),main=NULL,...)
 {
 # @usage \method{plot}{ds}(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,jitter.v=rep(0,3),showpoints=TRUE,subset=NULL,pl.col=c('black'),bw.col=c(grey(0)),black.white=FALSE,pl.den=rep(20,1),pl.ang=rep(-45,1),...)
 # plot.ds - detection function plot showing a scaled histogram of detections and then a line giving being the detection function
@@ -145,10 +146,9 @@ plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,ji
 #                          (plot, hist, lines, points, etc)
 #
 #  Uses: setcov, detfct, histline, test.breaks.
-model<-x
-show <- rep(FALSE, 8)
-show[which] <- TRUE
-
+  model<-x
+  show <- rep(FALSE, 8)
+  show[which] <- TRUE
   lower<-0
   divisions<-25
   vname<-"distance"
@@ -158,32 +158,30 @@ show[which] <- TRUE
 
 #est<-calcp.mrds(dpformula=dpformula,dplink=dplink,dppars=dppars,dpdata=dpdata,vname=vname,lower=lower,upper=upper,divisions=divisions,type="line",objname="object",obsname="observer")
 
-dspars<-model$ds$par
-dsmodel<-model$call$dsmodel[[2]][[2]]
+  dspars<-model$ds$par
+  dsmodel<-model$call$dsmodel[[2]][[2]]
+  
+  xlab<-"Distance"
+  p1.name<-"Observer 1"
+  p2.name<-"Observer 2"
+  objname<-"object"
+  obsname<-"observer"
+  detname<-"detected"
+  #nclass<-8
 
-xlab<-"Distance"
-p1.name<-"Observer 1"
-p2.name<-"Observer 2"
-objname<-"object"
-obsname<-"observer"
-detname<-"detected"
-#nclass<-8
-
- dat=dpdata
+  dat<-dpdata
 
  # code from dpexplot:
-
-
-
   ltmodel<-model$ds
   width<-model$meta.data$width
   left<-model$meta.data$left
   ddfobj <- ltmodel$aux$ddfobj
   point=ltmodel$aux$point
-  if(is.null(ltmodel$aux$int.range))
+  if(is.null(ltmodel$aux$int.range)){
     int.range=c(0,width)
-  else
+  }else{
     int.range=ltmodel$aux$int.range
+  }
 
   if(is.matrix(int.range)){
     max.range=as.vector(int.range[1,])
@@ -208,29 +206,32 @@ detname<-"detected"
     return()
   }
 
-  if(is.matrix(int.range))
+  if(is.matrix(int.range)){
     int.range=int.range[selected,]
+  }
   
-   xmat<-ddfobj$xmat[selected,]
-   if(!is.null(ddfobj$scale))
-	   z<-ddfobj$scale$dm[selected,,drop=FALSE]
-   else
-	   z<-matrix(1,nrow=1,ncol=1)
+  xmat<-ddfobj$xmat[selected,]
+  if(!is.null(ddfobj$scale)){
+    z<-ddfobj$scale$dm[selected,,drop=FALSE]
+  }else{
+    z<-matrix(1,nrow=1,ncol=1)
+  }
 
-  if(length(model$fitted)==1)
+  if(length(model$fitted)==1){
     pdot<-rep(model$fitted,sum(as.numeric(selected)))
-  else{
+  }else{
     pdot<-model$fitted[selected]
     Nhat <- sum(1/pdot)
   }
 
-   zdim <- dim(z)[2]
-   n <- length(xmat$distance)
-   intercept.only <- ddfobj$intercept.only
-   theta <- model$par
+  zdim <- dim(z)[2]
+  n <- length(xmat$distance)
+  intercept.only <- ddfobj$intercept.only
+  theta <- model$par
 
-    if(!is.null(breaks))
+  if(!is.null(breaks)){
     nc<-length(breaks)-1
+  }
 
   if(is.null(nc))
     nc<-round( sqrt(n),0)
@@ -240,8 +241,9 @@ detname<-"detected"
 #  other than distance and observer
 #
   hascov <- FALSE
-  if(!ddfobj$intercept.only)
+  if(!ddfobj$intercept.only){
     hascov <- TRUE
+  }
 #
 #   Compute a grid for distance (xgrid), and covariates zgrid for
 #   plotting of detection functions.  Also create intervals of distance (breaks)
@@ -253,14 +255,14 @@ detname<-"detected"
   }
 
   if(is.null(breaks)){
-    if(is.null(model$meta.data$binned))
+    if(is.null(model$meta.data$binned)){
       binned<-FALSE
-    else
+    }else{
       binned<-model$meta.data$binned
-
+    }
     if(binned){
-         breaks<-ltmodel$aux$breaks
-         nc<-length(breaks)-1
+      breaks<-ltmodel$aux$breaks
+      nc<-length(breaks)-1
     }else{
       breaks <-c(max(0,(max.range[1])), max.range[1] +((max.range[2]-max.range[1])/nc)*(1:nc))
       if(breaks[1]>left){
@@ -275,7 +277,6 @@ detname<-"detected"
   breaks<-test.breaks(breaks,model$meta.data$left,width)
   nc<-length(breaks)-1
 
-
   #breaks<-seq(lower,upper,length=(nclass+1))
   lower<-min(breaks)
   upper<-max(breaks)
@@ -287,17 +288,21 @@ detname<-"detected"
  #Set printing options for plots:
 # By default  pl.col=c('black'),
 #             bw.col=c(grey(0))
-#If greyscale plots are required use the following colours:
 
-if(black.white){byval1=bw.col[1]}
-#If colour plots are required use the following:
-else{byval1=pl.col[1]}
-#Density of shaded lines - default is set all to 20
+  # If greyscale plots are required use the following colours:
+  if(black.white){
+    byval1<-bw.col[1]
+  }else{
+  # If colour plots are required use the following:
+    byval1=pl.col[1]
+  }
+ 
+  # Density of shaded lines - default is set all to 20
   denval1<-pl.den[1]
-#Angle of shaded lines - default is set all to -45
+  # Angle of shaded lines - default is set all to -45
   angval1<-pl.ang[1]
 
- #Scaling for grouped data:
+  #Scaling for grouped data:
   if(normalize&!point){
     bindata<-function(x,r,breaks){
       return(hist(r[r>=x[1]&r<=x[2]],breaks=breaks,plot=FALSE)$counts)
@@ -307,12 +312,13 @@ else{byval1=pl.col[1]}
     }
     expected.counts<-apply(int.range,1,bindata,r=(0:1000)*width/1001,breaks=breaks)
     expected.counts<-apply(expected.counts,1,sumit,n=1001,wt=pdot)
-  }else
-	if(!point)
+  }else{
+    if(!point){
       expected.counts<-((breaks[2:(nc+1)]-breaks[1:nc])*(Nhat/breaks[nc+1] ))
-    else
+    }else{
 	  expected.counts<--apply(matrix(c(breaks[2:(nc+1)]^2,breaks[1:nc]^2),ncol=2,nrow=nc),1,diff)*(Nhat/breaks[nc+1]^2 )
-	
+    }  
+  }
 
   hist.obj<-hist(dat[,vname][keep], breaks=breaks, plot = FALSE)
   hist.obj$density<-hist.obj$counts/expected.counts
@@ -322,51 +328,69 @@ else{byval1=pl.col[1]}
 #------------------------------------------------------------------------
 
 
- #Data summary plot for observer 1
-if(show[1]){
- if (.Device=="windows") win.graph()
- histline(h1$counts,breaks=breaks,lineonly=FALSE,ylim=c(0,ymax),xlab=xlab,ylab="Frequency",fill=TRUE,angle=angval1,density=denval1,col=byval1,...)
- title(paste(p1.name,"detections"),cex.main=0.8)
-}
-
- #Detection function plot overlaid on historgram of observed distances - much of this code is taken from earlier plot.ds function.
-if(show[2]){
-   if (.Device=="windows") win.graph()
-
-#  Primary detection function
-  gxvalues <- detfct(xmat$distance,ddfobj,select=selected,width=width)
-  ymax=max(hist.obj$density,max(gxvalues))
-  histline(hist.obj$density,breaks=breaks,lineonly=FALSE,xlab=xlab,ylab="Detection probability",ylim=c(0,ymax),fill=TRUE,angle=angval1,density=denval1,col=byval1,det.plot=TRUE,...)
-
-  if(hascov){
-    finebr=(width/100)*(0:100)
-    xgrid=NULL
-    linevalues=NULL
-    newdat=xmat
-    for(i in 1:(length(finebr)-1)){
-      x=(finebr[i]+finebr[i+1])/2
-      xgrid=c(xgrid,x)
-      newdat$distance=rep(x,nrow(newdat))
-#  1/19/05 jll; added back call to detfct to create detfct.values
-	  detfct.values <-detfct(newdat$distance,ddfobj,select=selected,width=width)
-      if(!normalize&range.varies)
-        detfct.values[x<int.range[,1]|x>int.range[,2]]=0
-
-      linevalues=c(linevalues,sum(detfct.values/pdot)/sum(1/pdot))
+  # Data summary plot for observer 1
+  if(show[1]){
+    if(.Device=="windows"){
+      win.graph()
     }
-  }else
-  {	  
-    if(!is.null(ddfobj$scale)) ddfobj$scale$dm=ddfobj$scale$dm[rep(1,length(xgrid)),]
-	if(!is.null(ddfobj$shape)) ddfobj$shape$dm=ddfobj$shape$dm[rep(1,length(xgrid)),]
-	linevalues <- detfct(xgrid,ddfobj,width=width)
+    histline(h1$counts,breaks=breaks,lineonly=FALSE,ylim=c(0,ymax),xlab=xlab,ylab="Frequency",fill=TRUE,angle=angval1,density=denval1,col=byval1,...)
+    title(paste(p1.name,"detections"),cex.main=0.8)
   }
-  lines(xgrid,linevalues,col=byval1,...)
-  if(showpoints){
-      jitter.p<-rnorm(length(gxvalues),1,jitter.v[1])
+
+  # Detection function plot overlaid on historgram of observed 
+  # distances - much of this code is taken from earlier plot.ds function.
+  if(show[2]){
+    if(.Device=="windows"){
+      win.graph()
+    }
+
+    # Primary detection function
+    gxvalues <- detfct(xmat$distance,ddfobj,select=selected,width=width)
+    ymax <- max(hist.obj$density,max(gxvalues))
+    histline(hist.obj$density,breaks=breaks,lineonly=FALSE,
+             xlab=xlab,ylab="Detection probability",ylim=c(0,ymax),
+             fill=TRUE,angle=angval1,density=denval1,col=byval1,
+             det.plot=TRUE,...)
+
+    if(hascov){
+      finebr <- (width/100)*(0:100)
+      xgrid <- NULL
+      linevalues <- NULL
+      newdat <- xmat
+      for(i in 1:(length(finebr)-1)){
+        x <- (finebr[i]+finebr[i+1])/2
+        xgrid <- c(xgrid,x)
+        newdat$distance <- rep(x,nrow(newdat))
+
+        detfct.values <-detfct(newdat$distance,ddfobj,select=selected,
+                               width=width)
+        if(!normalize&range.varies){
+          detfct.values[x<int.range[,1]|x>int.range[,2]]=0
+        }
+        linevalues<-c(linevalues,sum(detfct.values/pdot)/sum(1/pdot))
+      }
+    }else{	  
+      if(!is.null(ddfobj$scale)){
+        ddfobj$scale$dm <- ddfobj$scale$dm[rep(1,length(xgrid)),]
+      }
+	   if(!is.null(ddfobj$shape)){
+        ddfobj$shape$dm <- ddfobj$shape$dm[rep(1,length(xgrid)),]
+      }
+	   linevalues <- detfct(xgrid,ddfobj,width=width)
+    }
+    lines(xgrid,linevalues,col=byval1,...)
+    if(showpoints){
+      jitter.p <- rnorm(length(gxvalues),1,jitter.v[1])
       points(xmat$distance,gxvalues*jitter.p,col=byval1,...)
+    }
+
+    # use the user-supplied main= ...
+    if(is.null(main)){
+       title("Detection function plot",cex.main=0.8)
+    }else{
+       title(main,cex.main=0.8)
+    }
+    invisible()
   }
-  title("Detection function plot",cex.main=0.8)
-  invisible()
-}
 
 }

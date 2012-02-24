@@ -80,6 +80,5 @@ ddf.gof(io.model)
   Estimation of Density from Line Transect Sampling of
   Biological Populations. Wildlife Monographs:7-202.
 }
-\keyword{dataset}
 \keyword{datasets}
 

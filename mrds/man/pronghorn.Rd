@@ -42,6 +42,5 @@
   in aerial survey protocol for line-transect sampling.
   Wildlife Research 35:289-298.
 }
-\keyword{dataset}
 \keyword{datasets}
 

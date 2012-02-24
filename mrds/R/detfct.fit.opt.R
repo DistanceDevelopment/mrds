@@ -100,8 +100,46 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
      }
   }
 
-# last value of the lnl
-lnl.last<-Inf
+  # if nofit=TRUE, we just want to set the parameters, calculate the 
+  # likelihood and exit
+  if(misc.options$nofit){
+
+    if(any(is.na(initialvalues))){
+      stop("No fitting, but initial values not specified!\n")
+    }
+
+    lt<-list()
+
+    lt$par<-initialvalues
+
+    lt$value<-flnl(initialvalues,ddfobj,TCI=FALSE,misc.options)
+#    lt <- optimx(initialvalues, flnl, method="nlminb", 
+#                 control=list(maxit=1),hessian=TRUE, lower=lowerbounds,
+#                 upper=upperbounds,ddfobj=ddfobj, fitting="all",
+#                 misc.options=misc.options,TCI=FALSE)
+#    lt <-attr(lt,"details")[[1]]
+#    lt$hessian<-lt$nhatend
+    lt$hessian<-NULL
+    lt$model <- list(scalemodel=misc.options$scalemodel) 
+    lt$converge<-0#lt$conv
+    lt$message<-"MAYBE CONVERGENCE?"
+
+    lt$aux <- c(optim.options,bounds,misc.options)
+    ddfobj=assign.par(ddfobj,lt$par)
+    lt$aux$ddfobj=ddfobj
+
+    lt$optim.history<-rbind(misc.options$optim.history,
+                            c(lt$conv,-lt$value,lt$par))
+
+    lt$conv<-NULL
+    return(lt)
+  }
+
+  # save last value of the lnl -- starting value
+  lnl.last<-Inf
+
+  # recover the optimisation history
+  optim.history<-misc.options$optim.history
 
 
 #    while parameters are bounded continue refitting and adjusting bounds
@@ -131,14 +169,26 @@ lnl.last<-Inf
         lowerbounds.ic<- rep(0,2*misc.options$mono.points)
         upperbounds.ic<- rep(1.0^6,2*misc.options$mono.points)
 
-        lt<-solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+        lt<-try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
                   ineqfun=flnl.constr, 
                   ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
                   LB=lowerbounds, UB=upperbounds, 
                   ddfobj=ddfobj, TCI=FALSE, misc.options=misc.options,
                   control=list(trace=as.integer(showit),
                                tol=misc.options$mono.tol,
-                               delta=misc.options$mono.delta))
+                               delta=misc.options$mono.delta)))
+
+        # if that failed then make a dummy object
+        if(class(lt)=="try-error"){
+          lt<-list()
+          lt$conv<-9
+          lt$value<-lnl.last
+          lt$par<-initialvalues
+
+          if(showit==3){
+            errors("Optimisation failed, ignoring and carrying on...")
+          }
+        }
 
         # re-jig some stuff so that this looks like an optim result...
         lt$conv<-lt$convergence
@@ -157,22 +207,26 @@ lnl.last<-Inf
       }
 
 
-#      lt$shapemodel=misc.options$shapemodel
+      # Print debug information
       if(showit==3){
         errors(paste("Converge = ",lt$conv,
                      "\nlnl = ",lt$value,
                      "\nparameters = ",paste(lt$par,collapse=", ")))
       }
 
-# If we do have convergence what do we do
-      if(lt$conv==0|!refit){
+      optim.history<-rbind(optim.history,c(lt$conv,-lt$value,lt$par))
+
+      ## Convergence?!
+      #  OR... don't wiggle the pars or do refits if we're doing adjustment
+      # or key fitting alone only do it in "all" mode
+      if(lt$conv==0|!refit | fitting!="all"){
         itconverged<-TRUE 
 
         lt$aux <- c(optim.options,bounds,misc.options)
         ddfobj=assign.par(ddfobj,lt$par)
         lt$aux$ddfobj=ddfobj
       }else{
-# If we don't have converenge what do we do
+      # If we don't have converenge what do we do
         refit.count<-refit.count+1
         if(is.null(nrefits)|refit.count<=nrefits){
          
@@ -181,7 +235,8 @@ lnl.last<-Inf
           
           # use the new pars only if they gave a better lnl than last time
           if(lt$value<=lnl.last){
-            if(lt$conv==1){
+            # conv==1 has a different meaning in optimx() and solnp()
+            if(lt$conv==1 && !misc.options$mono){
               initialvalues<-lt$par
             }else{
               initialvalues<-lt$par*(runif(length(initialvalues))+.5)
@@ -194,26 +249,45 @@ lnl.last<-Inf
               }
           
             }
-          lnl.last<-lt$value
+            lnl.last<-lt$value
+          }else{
+              # if the new values weren't as good, take the last set
+              # and jiggle them a bit...
+              initialvalues<-initialvalues*(runif(length(initialvalues))+.5)
+              # monotonicity constraints, reset the adjustments to zero
+              # otherwise we end up with an infeasible problem
+              if(misc.options$mono & !is.null(ddfobj$adjustment)){
+                initialvalues[(length(initialvalues)-
+                              length(ddfobj$adjustment$parameters)+1):
+                              length(initialvalues)]<-0
+              }
+
           }
 
-          # DLM - if we just replace NAs with 0s then sometimes these are 
-          #Â       out of bounds so replace with the values we started with
+
+          # DLM - if we just replace NAs with 0s then sometimes these are out
+          #       of bounds so replace with the values we started with
           initialvalues[is.na(initialvalues)]<-initialvalues.set[is.na(initialvalues)]
         }else{
           itconverged<-TRUE
         }
       }
     }   
-
+#
 #  Issue warning if any of the parameters are at their bounds
     bounded <- FALSE
     if(any(is.na(lt$par)) | lt$conv!=0)
     {
+      # if there was no convergence then just return the lt object for debugging
       errors("Problems with fitting data. Did not converge")
-      stop()
+      if(misc.options$debug){
+        lt$optim.history<-optim.history
+        return(lt)
+      }else{
+        stop("No convergence.")
+      }
     }
-# fix jll 17-Aug-05 allows for constrained power parameter in hazard rate
+    # fix jll 17-Aug-05 allows for constrained power parameter in hazard rate
     if(ddfobj$type=="hr"){
       if(any(abs(lt$par[2:length(lt$par)]-lowerbounds[2:length(lt$par)])<0.000001)){
         if(!setlower) 
@@ -289,6 +363,9 @@ lnl.last<-Inf
   bounds$lower<-lowerbounds
   bounds$upper<-upperbounds
   lt$bounds<-bounds
+
+  # save optimisation history
+  lt$optim.history<-optim.history
 
   return(lt)
 }

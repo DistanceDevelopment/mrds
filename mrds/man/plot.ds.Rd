@@ -8,7 +8,7 @@ sampling model}
     jitter.v = rep(0, 3), showpoints = TRUE, subset = NULL,
     pl.col = c("black"), bw.col = c(grey(0)),
     black.white = FALSE, pl.den = rep(20, 1),
-    pl.ang = rep(-45, 1), ...)
+    pl.ang = rep(-45, 1), main = NULL, ...)
 }
 \arguments{
   \item{x}{fitted model from \code{ddf}}
@@ -55,6 +55,8 @@ sampling model}
 
   \item{pl.ang}{shading angle for plots of obs 1, obs 2
   detections}
+
+  \item{main}{user-specfied plot title}
 
   \item{\dots}{other graphical parameters, passed to the
   plotting functions (plot, hist, lines, points, etc)}

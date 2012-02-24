@@ -15,6 +15,5 @@ xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.single, method = "d
 summary(xx)
 plot(xx,main="Simulated point count data")
 }
-\keyword{dataset}
 \keyword{datasets}
 
