@@ -95,7 +95,8 @@ coef.ds <- function(object,...) {
     adj.coeff=as.data.frame(cbind(estimate=ddfobj$adjustment$parameters,se=adj.parm.se))
     adj.names <- NULL
     for(i in 1:nrow(adj.coeff)){
-      adj.names[i] <- paste(ddfobj$adjustment$series,", order",ddfobj$adjustment$order)
+      adj.names[i] <- paste(ddfobj$adjustment$series,
+                            ", order ",ddfobj$adjustment$order,sep="")
     }
     row.names(adj.coeff)=adj.names
 
