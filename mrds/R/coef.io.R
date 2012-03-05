@@ -20,15 +20,15 @@ function(object,...)
     row.names(par)=c(rn, paste("ds expon:",
                                row.names(coef(object$ds)$exponent)))
   }
+  rn=row.names(par)
+  par=rbind(par,coef(object$ds)$scale)
+  row.names(par)=c(rn,paste("ds scale:",
+                            row.names(coef(object$ds)$scale)))
   if(!is.null(coef(object$ds)$adjustment)){
     rn=row.names(par)
     par=rbind(par,coef(object$ds)$adjustment)
     row.names(par)=c(rn, paste("ds adjust:",
                                row.names(coef(object$ds)$adjustment)))
   }
-  rn=row.names(par)
-  par=rbind(par,coef(object$ds)$scale)
-  row.names(par)=c(rn,paste("ds scale:",
-                            row.names(coef(object$ds)$scale)))
   return(par)
 }
