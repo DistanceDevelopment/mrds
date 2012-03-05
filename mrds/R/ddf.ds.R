@@ -229,7 +229,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #
 # Actually do the optimisation!
 #
-   lt <- detfct.fit(ddfobj,optim.options,bounds,misc.options)
+  lt <- detfct.fit(ddfobj,optim.options,bounds,misc.options)
 
 #
 # add call and others to return values
