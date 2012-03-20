@@ -61,7 +61,7 @@
 #' same units of \code{Area}.  For example, if \code{Effort} was entered in
 #' kilometers, \code{Area} in hectares (100m x 100m) and \code{distance} in
 #' meters, then using \code{options=list(convert.units=10)} will convert
-#' \code{a} to units of hectares (100 to convert meters t0 100 meters for
+#' \code{a} to units of hectares (100 to convert meters to 100 meters for
 #' distance and .1 to convert km to 100m units).
 #' 
 #' If the argument \code{se} is set to \code{TRUE}, a standard error for
