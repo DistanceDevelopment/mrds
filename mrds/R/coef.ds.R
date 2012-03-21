@@ -96,19 +96,19 @@ coef.ds <- function(object,...) {
     adj.names <- NULL
     for(i in 1:nrow(adj.coeff)){
       adj.names[i] <- paste(ddfobj$adjustment$series,
-                            ", order ",ddfobj$adjustment$order,sep="")
+                            ", order ",ddfobj$adjustment$order[i],sep="")
     }
-    row.names(adj.coeff)=adj.names
+    row.names(adj.coeff) <- adj.names
 
 # Return values if we have adjustment terms
 
-    if(!is.null(ddfobj$shape))
+    if(!is.null(ddfobj$shape)){
       return(list(scale=coeff,exponent=exp.coeff,adjustment=adj.coeff))
-    else
-	  if(is.null(ddfobj$scale))
+    }else if(is.null(ddfobj$scale)){
 		  return(list(adjustment=adj.coeff))
-	  else  
+	  }else{  
 		  return(list(scale=coeff,adjustment=adj.coeff))
+    }
 
   }
 
