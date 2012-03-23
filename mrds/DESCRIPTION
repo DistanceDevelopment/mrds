@@ -4,7 +4,7 @@ Imports:
     mgcv,
     Rsolnp
 Maintainer: Jeff Laake <jeff.laake@noaa.gov>
-License: GPL version 2 or later
+License: GPL (>=2)
 Title: Mark-Recapture Distance Sampling (mrds)
 LazyLoad: yes
 Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers

@@ -1,3 +1,34 @@
+#' Mark-Recapture Distance Sampling (mrds)
+#' 
+#' This package implements mark-recapture distance sampling
+#'     methods as described in D.L. Borchers, W. Zucchini and Fewster,
+#'     R.M. (1988), "Mark-recapture models for line transect surveys",
+#'     Biometrics 54: 1207-1220. and Laake, J.L. (1999) "Distance sampling
+#'    with independent observers: Reducing bias from heterogeneity by
+#'     weakening the conditional independence assumption." in Amstrup,
+#'     G.W., Garner, S.C., Laake, J.L., Manly, B.F.J., McDonald, L.L. and
+#'     Robertson, D.G. (eds) "Marine mammal survey and assessment
+#'     methods", Balkema, Rotterdam: 137-148 and Borchers, D.L., Laake,
+#'     J.L., Southwell, C. and Paxton, C.L.G. "Accommodating unmodelled
+#'     heterogeneity in double-observer distance sampling surveys". 2006.
+#'     Biometrics 62:372-378.)
+#' 
+#' \tabular{ll}{ Package: \tab mrds \cr Type: \tab Package\cr Version:
+#' \tab 2.0.5\cr Date: \tab 2012-3-23\cr License: \tab GPL (>=2)\cr LazyLoad: \tab
+#' yes\cr }
+#' 
+#' @name mrds-package
+#' @aliases mrds-package mrds
+#' @docType package
+#' @author Jeff Laake <jeff.laake@@noaa.gov>, David Borchers <dlb@@mcs.st-and.ac.uk>, 
+#'    Len Thomas <len@@mcs.st-and.ac.uk>, David Miller <dlm22@@st-and.ac.uk> and Jon Bishop <jonb@@mcs.st-and.ac.uk>
+#' @keywords package
+#' 
+NULL
+
+
+
+
 #' Golf tee data used in chapter 6 of Advanced Distance Sampling examples
 #' 
 #' Double platform data collected in a line transect survey of golf tees by 2
@@ -24,13 +55,8 @@
 #'   $ book.tee.obs :'data.frame': 162 obs. of 3 variables: ..$ object : int
 #'   [1:162] 1 2 3 21 22 23 24 59 60 61 ...  ..$ Region.Label: int [1:162] 1 1
 #'   1 1 1 1 1 1 1 1 ...  ..$ Sample.Label: int [1:162] 1 1 1 1 1 1 1 1 1 1 ...
-#' @references Need to add this
-#' @source Need to add this
 #' @keywords datasets
 NULL
-
-
-
 
 #' Pronghorn aerial survey data from Wyoming
 #' 
