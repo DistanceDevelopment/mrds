@@ -39,10 +39,15 @@ context("easy tests: line transect example")
 # some of these give better likelihoods (lower -logL) than
 # Distance, so just test that...
 
+# code here is a bit cryptic...
+# only want this data visible from the tests, so need to load it this way...
 # load the data
-data(ltexample)
+ex.filename<-system.file("testData/ltexample.rda", package="mrds")
+load(ex.filename)
 # and the model definitions and results from distance
-data(ltresults)
+res.filename<-system.file("testData/ltresults.rda", package="mrds")
+load(res.filename)
+
 width<-25
 
 # load the results from Distance

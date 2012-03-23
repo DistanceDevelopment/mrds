@@ -1,0 +1,37 @@
+\name{sim.mix}
+\alias{sim.mix}
+\title{Simulation of distance sampling data via mixture models
+Allows one to simulate line transect distance sampling data using
+a mixture of half-normal detection functions.}
+\usage{
+  sim.mix(n, sigma, mix.prop, width, means = 0)
+}
+\arguments{
+  \item{n}{number of samples to generate}
+
+  \item{sigma}{vector of scale parameters}
+
+  \item{mix.prop}{vector of mixture proportions (same
+  length as sigma)}
+
+  \item{width}{truncation}
+
+  \item{means}{vector of means (used to generate wacky,
+  non-monotonic data)}
+}
+\value{
+  distances a vector of distances
+}
+\description{
+  Simulation of distance sampling data via mixture models
+  Allows one to simulate line transect distance sampling
+  data using a mixture of half-normal detection functions.
+}
+\note{
+  At the moment this is TOTALLY UNSUPPORTED!  Please don't
+  use it for anything important!
+}
+\author{
+  David Lawrence Miller
+}
+
