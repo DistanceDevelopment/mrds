@@ -31,6 +31,16 @@ test_that("golf tee data gives the same results as Distance",{
                    meta.data=list(width=4))
   expect_that(result.mcds$Nhat, equals(212.2289,tolerance=1e-6))
 
+
+  # check that uniform key works
+  result.unif<-ddf(dsmodel = ~cds(key = "unif",adj.series="cos",adj.order=2), 
+                  data = egdata, method = "ds", meta.data = list(width = 4))
+  expect_that(result.unif$par, equals(0.7005934,tolerance=1e-6))
+  
+  # there should be an error if we don't supply adjustments with uniform key
+  expect_error(ddf(dsmodel = ~cds(key = "unif"), 
+                  data = egdata, method = "ds", meta.data = list(width = 4)))
+
 })
 
 context("easy tests: line transect example")
