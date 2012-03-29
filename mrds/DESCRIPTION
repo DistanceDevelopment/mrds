@@ -4,7 +4,7 @@ Imports:
     mgcv,
     Rsolnp
 Maintainer: Jeff Laake <jeff.laake@noaa.gov>
-License: GPL version 2 or later
+License: GPL (>=2)
 Title: Mark-Recapture Distance Sampling (mrds)
 LazyLoad: yes
 Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers
@@ -22,8 +22,8 @@ Description: This package implements mark-recapture distance sampling
     J.L., Southwell, C. and Paxton, C.L.G. "Accommodating unmodelled
     heterogeneity in double-observer distance sampling surveys". 2006.
     Biometrics 62:372-378.)
-Version: 2.0.4
-Date: 2011-12-28
+Version: 2.0.5
+Date: 2012-3-23
 Depends:
     R (>= 2.0.0),optimx,Rsolnp
 Suggests:

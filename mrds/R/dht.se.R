@@ -285,7 +285,7 @@ function(model,region.table,samples,obs,options,numRegions,estimate.table,Nhat.b
         df=estimate.table$k
         df=sapply(df,compute.df,type=options$ervar)
         df[df<1]=1
-        estimate.table$df = estimate.table$cv^4/((diag(vc1)/estimate.table$Estimate^2)^2/(sum(Nhat.by.sample$n) - 
+        estimate.table$df = estimate.table$cv^4/((diag(vc1)/estimate.table$Estimate^2)^2/(length(model$fitted) - 
             length(model$par)) + (diag(vc2)/estimate.table$Estimate^2)^2/df)
 #
 #       Following code added 11/11/04 jll to compute proper satterthwaite
@@ -296,7 +296,7 @@ function(model,region.table,samples,obs,options,numRegions,estimate.table,Nhat.b
         {
             df.total=(diag(vc2)[numRegions+1])^2/sum((diag(vc2)^2/df)[1:numRegions])
             estimate.table$df[numRegions+1] = estimate.table$cv[numRegions+1]^4 /
-                           ((diag(vc1)[numRegions+1]/estimate.table$Estimate[numRegions+1]^2)^2/(sum(Nhat.by.sample$n)-length(model$par)) 
+                           ((diag(vc1)[numRegions+1]/estimate.table$Estimate[numRegions+1]^2)^2/(length(model$fitted)-length(model$par)) 
                            + (diag(vc2)[numRegions+1]/estimate.table$Estimate[numRegions+1]^2)^2/df.total)
         }
         estimate.table$df[estimate.table$df < 1] = 1

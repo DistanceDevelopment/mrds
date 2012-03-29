@@ -17,9 +17,6 @@
   $ book.tee.obs :'data.frame': 162 obs. of 3 variables: ..$ object : int
   [1:162] 1 2 3 21 22 23 24 59 60 61 ...  ..$ Region.Label: int [1:162] 1 1
   1 1 1 1 1 1 1 1 ...  ..$ Sample.Label: int [1:162] 1 1 1 1 1 1 1 1 1 1 ...}
-\source{
-  Need to add this
-}
 \description{
   Double platform data collected in a line transect survey
   of golf tees by 2 observers at St. Andrews. Field sex was
@@ -27,9 +24,6 @@
   Exposure was either low (0) or high(1) depending on
   height of tee above the ground. size was the number of
   tees in an observed cluster.
-}
-\references{
-  Need to add this
 }
 \keyword{datasets}
 

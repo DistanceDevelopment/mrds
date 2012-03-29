@@ -127,7 +127,7 @@
   entered in kilometers, \code{Area} in hectares (100m x
   100m) and \code{distance} in meters, then using
   \code{options=list(convert.units=10)} will convert
-  \code{a} to units of hectares (100 to convert meters t0
+  \code{a} to units of hectares (100 to convert meters to
   100 meters for distance and .1 to convert km to 100m
   units).
 
