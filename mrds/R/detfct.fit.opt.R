@@ -69,25 +69,23 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 
   # grab the initial values
   initialvalues<-getpar(ddfobj)
-  initialvalues.set<-initialvalues # store for later
+  initialvalues.set<-initialvalues # store for later
 
-# dlm 31-May-2006 Initial work started.
-# dlm 05-June-2006 Added an extra level of showit for this level.
   bounded<-TRUE
   refit.count<-0
-# Set some shortcuts
+  # Set some shortcuts
   lowerbounds<-bounds$lower
   upperbounds<-bounds$upper
   showit<-misc.options$showit
   refit<-misc.options$refit
   nrefits<-misc.options$nrefits
-#
-# jll 18-sept-2006; added this code to get the logicals that indicate whether
-# lower/upper bound settings were specified by the user
+
+  # jll 18-sept-2006; added this code to get the logicals that indicate whether
+  # lower/upper bound settings were specified by the user
   setlower<-bounds$setlower
   setupper<-bounds$setupper
-#
-# 30 Jan 06; jll- modified default parscale values
+
+  # 30 Jan 06; jll- modified default parscale values
   if(any(is.na(misc.options$parscale)))
      misc.options$parscale<-abs(initialvalues)
   else{
@@ -98,9 +96,8 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
   }
 
   # if nofit=TRUE, we just want to set the parameters, calculate the 
-  # likelihood and exit
+  # likelihood and exit
   if(misc.options$nofit){
-
     if(any(is.na(initialvalues))){
       stop("No fitting, but initial values not specified!\n")
     }
@@ -138,17 +135,16 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
   # recover the optimisation history
   optim.history<-misc.options$optim.history
 
-
-#    while parameters are bounded continue refitting and adjusting bounds
+  # while parameters are bounded continue refitting and adjusting bounds
   while(bounded){
     itconverged<-FALSE
 
-#    Continue fitting until convergence occurs as long as refitting is requested
+    # Continue fitting until convergence occurs as long as refitting 
+    # is requested
     while(!itconverged){
-#
-#    Call optimization routine to find constrained mles; upon completion add the user specified 
-#    models and return the list.
-#
+      # Call optimization routine to find constrained mles; upon 
+      # completion add the user specified models and return the list.
+
       # dlm Oct-11  Lorenzo's code for monotonicity doesn't
       #             support covariates, so switch to optimx()
       #             and warn!
@@ -196,13 +192,13 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
         lt$message<-""
 
       }else{
-      # use Jeff's!
+        # use Jeff's!
         lt <- optimx(initialvalues, flnl, method="nlminb", 
                      control=c(optim.options),hessian=TRUE, lower=lowerbounds,
                      upper=upperbounds,ddfobj=ddfobj, fitting=fitting,
                      misc.options=misc.options,TCI=FALSE)
         lt <-attr(lt,"details")[[1]]
-   	  lt$hessian<-lt$nhatend
+        lt$hessian<-lt$nhatend
       }
 
 
@@ -216,7 +212,7 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
       optim.history<-rbind(optim.history,c(lt$conv,-lt$value,lt$par))
 
       ## Convergence?!
-      #  OR... don't wiggle the pars or do refits if we're doing adjustment
+      # OR... don't wiggle the pars or do refits if we're doing adjustment
       # or key fitting alone only do it in "all" mode
       if(lt$conv==0|!refit | fitting!="all"){
         itconverged<-TRUE 
@@ -272,11 +268,10 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
         }
       }
     }   
-#
-#  Issue warning if any of the parameters are at their bounds
+
+    # Issue warning if any of the parameters are at their bounds
     bounded <- FALSE
-    if(any(is.na(lt$par)) | lt$conv!=0)
-    {
+    if(any(is.na(lt$par)) | lt$conv!=0){
       # if there was no convergence then just return the lt object for debugging
       errors("Problems with fitting data. Did not converge")
       if(misc.options$debug){
@@ -289,18 +284,21 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
     # fix jll 17-Aug-05 allows for constrained power parameter in hazard rate
     if(ddfobj$type=="hr"){
       if(any(abs(lt$par[2:length(lt$par)]-lowerbounds[2:length(lt$par)])<0.000001)){
-        if(!setlower) 
+        if(!setlower){ 
           bounded<-TRUE
-  
-        if(showit>=1)
+        }
+
+        if(showit>=1){
           errors(paste("One or more parameters was at a lower bound.\nParameters:",paste(lt$par,collapse=", "),
                        "\nLower bounds:",paste(lowerbounds,collapse=", ")))
+        }
         
       }
     }else{
       if(any(abs(lt$par-lowerbounds)<0.000001)){
-        if(!setlower)
+        if(!setlower){
           bounded<-TRUE
+        }
         
         if(showit>=1)
           errors(paste("One or more parameters was at a lower bound\nParameters: ",
@@ -322,17 +320,18 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
         bounded<-FALSE
     else{
         refit.count=refit.count+1
-        if(!is.null(nrefits))
+        if(!is.null(nrefits)){
           if(refit.count>nrefits){ 
             bounded<- FALSE
             lt$message<-"FALSE CONVERGENCE"
             lt$conv<-1
+          }
         }
     }
-#
-# fix: jll 18-Nov-04; previous code would get stuck at 0 if sign of initial value was opposite
-#      of the mle.  Additional statement skips over 0.
-#
+
+    # fix: jll 18-Nov-04; previous code would get stuck at 0 if sign of 
+    # initial value was opposite of the mle.  
+    # Additional statement skips over 0.
     if(bounded){
         bound.low<-abs(lt$par-lowerbounds)<0.000001
         bound.hi<-abs(lt$par-upperbounds)<0.000001
@@ -368,4 +367,3 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 
   return(lt)
 }
-

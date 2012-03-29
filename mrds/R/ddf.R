@@ -59,13 +59,10 @@
 #' and the remainder is a function definition with specified arguments.  At
 #' present there are two different functions, \code{\link{cds}} and
 #' \code{\link{mcds}}, for conventional distance sampling and multi-covariate
-#' distance sampling.  Both functions have the same arguments
-#' (\code{key},\code{adjust},\code{formula}) in different orders.  The first
-#' two are arguments to specify the key and adjustment functions used to model
-#' the detection function.  Adjustment functions can have the values: "none",
-#' "cos" (cosine), "poly" (polynomials), and "herm" (Hermite polynomials).
-#' Also, half-normal ("hn"), hazard-rate ("hr") and gamma ("gamma") are the
-#' possible key functions.  The argument \code{formula} specifies the formula
+#' distance sampling.  Both functions have the same required arguments
+#' (\code{key},\code{formula}).  The first specifies the key function this
+#' can be half-normal ("hn"), hazard-rate ("hr"), gamma ("gamma") or uniform
+#' ("unif"). The argument \code{formula} specifies the formula
 #' for the log of the scale parameter of the key function (e.g., the equivalent
 #' of the standard deviation in the half-normal).  The variable \code{distance}
 #' should not be included in the formula because the scale is for distance.
@@ -73,6 +70,13 @@
 #' representation of the scale formula. For the hazard rate and gamma
 #' functions, an additional \code{shape.formula} can be specified for the model
 #' of the shape parameter.  The default will be ~1.
+#' Adjustment terms can be specified by setting \code{adj.series} which can have
+#' the values: "none", "cos" (cosine), "poly" (polynomials), and "herm" 
+#' (Hermite polynomials). One must also specify a vector of orders for the
+#' adjustment terms (\code{adj.order}) and a scaling (\code{adj.scale}) which
+#' may be "width" or "scale" (for scaling by the scale parameter). Note that 
+#' the uniform key can only be used with adjustments (usually cosine adjustments
+#' for a Fourier-type analysis.
 #' 
 #' The \code{mrmodel} specifies the form of the conditional detection functions
 #' (i.e.,probability it is seen by observer j given it was seen by observer
