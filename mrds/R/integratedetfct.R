@@ -37,8 +37,7 @@
 #' @author Jeff Laake
 #' @keywords utility
 integratedetfct <-
-function(ddfobj,select,width,int.range,doeachint=FALSE,standardize=TRUE,point=FALSE)
-{
+function(ddfobj,select,width,int.range,doeachint=FALSE,standardize=TRUE,point=FALSE){
 #
 # integratedetfct
 #
@@ -70,10 +69,9 @@ function(ddfobj,select,width,int.range,doeachint=FALSE,standardize=TRUE,point=FA
 #
 #   integrate  - routine to integrate a function; used to integrate detfct or fcidupdetfc over x (0,width)          
 #
-  fpar=getpar(ddfobj)
-#
-#  Determine integration bounds
-#
+  fpar <- getpar(ddfobj)
+
+  #  Determine integration bounds
   if(is.vector(int.range)){
     if(length(int.range)==1){
       left <- 0
@@ -94,48 +92,55 @@ function(ddfobj,select,width,int.range,doeachint=FALSE,standardize=TRUE,point=FA
       right <- int.range[2:dim(int.range)[1],2]
     }
   }
-  if(ddfobj$intercept.only&samelimits)
-  {
-	  if(!point)
-	  return(integrate(fx,lower=left,upper=right,ddfobj=ddfobj, select=c(TRUE,rep(FALSE,nrow(ddfobj$xmat)-1)),
+  if(ddfobj$intercept.only&samelimits){
+	  if(!point){
+	    return(integrate(fx,lower=left,upper=right,ddfobj=ddfobj, 
+                       select=c(TRUE,rep(FALSE,nrow(ddfobj$xmat)-1)),
                        width=width,standardize=standardize)$value)
-    else
-		return(integrate(fr,lower=left,upper=right,ddfobj=ddfobj, select=c(TRUE,rep(FALSE,nrow(ddfobj$xmat)-1)),
-						width=width,standardize=standardize)$value)
+    }else{
+		  return(integrate(fr,lower=left,upper=right,ddfobj=ddfobj, 
+                       select=c(TRUE,rep(FALSE,nrow(ddfobj$xmat)-1)),
+                       width=width,standardize=standardize)$value)
+    }
+  }else if(doeachint){
+    integrals <- rep(0,nrow(ddfobj$scale$dm[select,,drop=FALSE]))
+    xscale <- scalevalue(ddfobj$scale$parameters, 
+                         ddfobj$scale$dm[select,,drop=FALSE])
+
+    for(i in 1:length(integrals)){
+      if(!point){
+        integrals[i] <- xscale[i]*(
+                          gstdint((right/xscale)[i], xmin = 0, ddfobj=ddfobj, 
+                            select=select,index=i,width=width,standardize=TRUE)-
+					                gstdint((left/xscale)[i], xmin = 0, ddfobj=ddfobj, 
+                            select=select,index=i,width=width,standardize=TRUE))
+      }else{
+        integrals[i] <- xscale[i]^2*(
+                          gstdint((right/xscale)[i], xmin=0, ddfobj=ddfobj, 
+                            select=select,index=i,width=width,
+                            standardize=TRUE,point=TRUE)-
+                          gstdint((left/xscale)[i], xmin=0, ddfobj=ddfobj, 
+                            select=select,index=i,width=width,
+                            standardize=TRUE,point=TRUE))
+      }
+    }
+    return(integrals)
+  }else{
+    if(!is.null(ddfobj$shape)){
+      cgftab <- tablecgf(ddfobj,width=width,standardize=standardize,point)
+    }else{
+      cgftab <- ddfobj$cgftab  
+    }
+    # Calls predict.smooth.spline
+		xscale <- scalevalue(ddfobj$scale$parameters, 
+                         ddfobj$scale$dm[select,,drop=FALSE])
+    if(!point){
+      int <- xscale*(predict(cgftab, as.vector(right/xscale))$y -
+                       predict(cgftab, as.vector(left/xscale))$y)
+    }else{
+      int <- xscale^2*(predict(cgftab, as.vector(right/xscale))$y  -
+                     predict(cgftab, as.vector(left/xscale))$y) 
+    }
+    return(int)
   }
-  else
-    if(doeachint)
-	{
-		  integrals=rep(0,nrow(ddfobj$scale$dm[select,,drop=FALSE]))
-		  xscale=scalevalue(ddfobj$scale$parameters, ddfobj$scale$dm[select,,drop=FALSE])
-		  
-		  for(i in 1:length(integrals))
-		      if(!point)
-			    integrals[i]=
-					  xscale[i]*(gstdint((right/xscale)[i], xmin = 0, ddfobj=ddfobj, select=select, index=i, width=width,standardize=TRUE)-
-					  gstdint((left/xscale)[i], xmin = 0, ddfobj=ddfobj, select=select, index=i, width=width,standardize=TRUE))
-	          else
-				  integrals[i]=
-						  xscale[i]^2*(gstdint((right/xscale)[i], xmin = 0, ddfobj=ddfobj, select=select, index=i, width=width,standardize=TRUE,point=TRUE)-
-						  gstdint((left/xscale)[i], xmin = 0, ddfobj=ddfobj, select=select, index=i, width=width,standardize=TRUE,point=TRUE))
-		  return(integrals)
-    }
-	else
-	{
-      if(!is.null(ddfobj$shape))
-        cgftab <- tablecgf(ddfobj,width=width,standardize=standardize,point)
-      else
-		cgftab=ddfobj$cgftab  
-      # Calls predict.smooth.spline
-		xscale=scalevalue(ddfobj$scale$parameters, ddfobj$scale$dm[select,,drop=FALSE])
-        if(!point)
-			  int=
-                     xscale*(predict(cgftab, as.vector(right/xscale))$y -
-			         predict(cgftab, as.vector(left/xscale))$y)
-		else	
-			  int=
-			         xscale^2*(predict(cgftab, as.vector(right/xscale))$y  -
-			         predict(cgftab, as.vector(left/xscale))$y) 
-		return(int)
-    }
 }

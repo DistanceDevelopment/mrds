@@ -24,9 +24,9 @@
 #' @author Jeff Laake
 #' @seealso \code{\link{tablecgf}}
 #' @keywords utility
-gstdint <-
-function (x, xmin = NULL, ddfobj, index=NULL,select=NULL,width,standardize=TRUE, point=FALSE)
-#
+gstdint <- function (x, xmin = NULL, ddfobj, index=NULL,select=NULL,width,
+                      standardize=TRUE, point=FALSE){
+
 #  gstdint - computes integrals of standardized detection function (scale=1)
 #
 #  Arguments:
@@ -42,37 +42,35 @@ function (x, xmin = NULL, ddfobj, index=NULL,select=NULL,width,standardize=TRUE,
 #
 #  Value: vector of integral values of det fct with scale=1
 #
-#  17-Aug-05; This function was changed to use unequal set of grid points and a reduced
-#  integration tolerance to speed up execution.
-#
-#  21-Aug-05; dlm - changed code so that it works with new structure
+#  17-Aug-05; This function was changed to use unequal set of grid points 
+#             and a reduced integration tolerance to speed up execution.
 #
 #  19-Jan-06; jll modified for new detfct so it would std integral with scale=1; stdint=TRUE
 #  2 Sept-10; now works for points
-{
-  	if(!point)
-	{
-  		if(is.null(xmin)){
-    		return(integrate(fx, lower = x[1], upper = x[2], width=width,
-           		ddfobj=ddfobj, select=select, index=index, rel.tol = 1e-7,standardize=standardize,
-           		stdint=TRUE)$value)
-  		}else{ 
-    		return(integrate(fx, lower = xmin, upper = x, width=width,
-		   		ddfobj=ddfobj, select=select, index=index, rel.tol = 1e-7,standardize=standardize,
-           		stdint=TRUE)$value)	
-		}
-	}
-	else
-	{
-		if(is.null(xmin)){
-			return(integrate(fr, lower = x[1], upper = x[2], width=width,
-							ddfobj=ddfobj, select=select, index=index, rel.tol = 1e-7,standardize=standardize,
-							stdint=TRUE)$value)
-		}else{ 
-			return(integrate(fr, lower = xmin, upper = x, width=width,
-							ddfobj=ddfobj, select=select, index=index, rel.tol = 1e-7,standardize=standardize,
-							stdint=TRUE)$value)				
-		}
-  	}
-}
 
+  if(!point){
+    if(is.null(xmin)){
+      return(integrate(fx, lower = x[1], upper = x[2], width=width,
+                       ddfobj=ddfobj, select=select, index=index, 
+                       rel.tol = 1e-7,standardize=standardize,
+           		         stdint=TRUE)$value)
+    }else{
+      return(integrate(fx, lower = xmin, upper = x, width=width,
+       		             ddfobj=ddfobj, select=select, index=index, 
+                       rel.tol = 1e-7,standardize=standardize,
+                       stdint=TRUE)$value)	
+    }
+  }else{
+    if(is.null(xmin)){
+      return(integrate(fr, lower = x[1], upper = x[2], width=width,
+                       ddfobj=ddfobj, select=select, index=index, 
+                       rel.tol = 1e-7,standardize=standardize,
+                       stdint=TRUE)$value)
+    }else{
+      return(integrate(fr, lower = xmin, upper = x, width=width,
+                       ddfobj=ddfobj, select=select, index=index, 
+                       rel.tol = 1e-7,standardize=standardize,
+                       stdint=TRUE)$value)				
+    }
+  }
+}

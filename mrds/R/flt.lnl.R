@@ -1,5 +1,5 @@
 flt.lnl <- function(fpar,ddfobj,TCI,misc.options){
-#
+
 # flt.lnl - computes negative log-likelihood values of line transect grouped/ungrouped distances
 #
 # Arguments: see flnl for description of arguments
@@ -25,51 +25,50 @@ flt.lnl <- function(fpar,ddfobj,TCI,misc.options){
     right <- int.range[2:dim(int.range)[1],2]
   }       
 
-  # Compute log-likelihood for binned data
-
   z <- ddfobj$scale$dm
   x <- ddfobj$xmat
   lnl <- rep(0,dim(x)[1])
+
+  # Compute log-likelihood for binned data
   if(any(x$binned)){
     if(ddfobj$type=="hr"){
       ddfobj$cgftab <- tablecgf(ddfobj,width=width,
                             standardize=misc.options$standardize, point=FALSE)
     }
 
-    # 1/19/06 jll; added call to create key.scale; fixed intall computation 
-    # as the minus was on next line so that was not included in calculation
-    key.scale <- ddfobj$scale$parameters
-    intall <- predict(ddfobj$cgftab, 
-                      as.vector(right/scalevalue(key.scale, z[x$binned,])))$y * 
-                        scalevalue(key.scale,z[x$binned,]) -
-              predict(ddfobj$cgftab, 
-                      as.vector(left/scalevalue(key.scale, z[x$binned,])))$y *
-                          scalevalue(key.scale,z[x$binned,])
+    # 1/19/06 jll; fixed intall computation as the minus was on next line 
+    # so that was not included in calculation
+    key.scale <- scalevalue(ddfobj$scale$parameters,z[x$binned,])
+    intall <- as.vector(key.scale*(
+                        predict(ddfobj$cgftab,as.vector(right/key.scale))$y-
+                        predict(ddfobj$cgftab,as.vector(left/key.scale))$y))
       
-    intbegin <- predict(ddfobj$cgftab, as.vector(x$distbegin[x$binned]/
-                        scalevalue(key.scale, z[x$binned,])))$y * 
-                  scalevalue(key.scale,z[x$binned,])    
+    intbegin <- as.vector(key.scale*
+                          predict(ddfobj$cgftab,
+                                  as.vector(x$distbegin[x$binned]/key.scale))$y)
 
-    intend <- predict(ddfobj$cgftab, as.vector(x$distend[x$binned]/
-                      scalevalue(key.scale, z[x$binned,])))$y * 
-                  scalevalue(key.scale,z[x$binned,])
+    intend <- as.vector(key.scale*
+                        predict(ddfobj$cgftab,
+                                as.vector(x$distend[x$binned]/key.scale))$y)
 
     # 24-Aug-05; jll; To avoid numerical problems due to approximation of 
     # integral the following line of code was added
     intend[intend <= intbegin] <- intbegin[intend <= intbegin]+1e-8
+
     if(is.vector(left)){
       intall[is.infinite(intall)]<- right - left
     }else{
-      intall[is.infinite(intall)]<- right[is.infinite(intall)] - left[is.infinite(intall)]
+      intall[is.infinite(intall)]<- right[is.infinite(intall)] - 
+                                    left[is.infinite(intall)]
     }
-    lnl[x$binned] <-  -log((intend-intbegin)/intall)
+
+    lnl[x$binned] <- -log((intend-intbegin)/intall)
   }
 
   # Compute log-likelihood for unbinned data
-
-  # dlm 13-Oct-11 setting standardize=FALSE here
-  #          if not then we get divide by zero errors...
   if(!all(x$binned)){
+    # dlm 13-Oct-11 setting standardize=FALSE here
+    #          if not then we get divide by zero errors...
     p1 <- fx(x$distance[!x$binned],ddfobj=ddfobj,select=!x$binned,
              width=width,standardize=FALSE)
     p1[p1<1.0e-15] <- 1.0e-15

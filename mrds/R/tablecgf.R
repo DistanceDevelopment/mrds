@@ -22,9 +22,7 @@
 #' @author Jeff Laake
 #' @seealso \code{\link{gstdint}}
 #' @keywords utility
-tablecgf <-
-function(ddfobj, width ,standardize=TRUE,point=FALSE)
-{
+tablecgf <- function(ddfobj, width, standardize=TRUE, point=FALSE){
 #
 # Tablecgf 
 #
@@ -36,25 +34,22 @@ function(ddfobj, width ,standardize=TRUE,point=FALSE)
 # width          - scalar, vector or matrix of integration bounds
 # standardize    - logical used to decide whether to divide through by the function evaluated at 0 
 # point          - logical to determine if point count(TRUE) or line transect(FALSE)
-#	
-#
-# Functions:
-# gstdint        -computes integral of standardized detection function over interval x,x+gridint
-# cumsum         -splus function that returns the cumulative sums of a vector
-# smooth.spline  -splus function that creates spline approximation for interpolation
-# apply          -splus function which applies a named function to the elements of a vector
-#
-# This function was completely changed in Aug 05 to use a fixed set of grid points
-# which seems to be more reliable and possibly a little quicker
-#
-#Create grid over interval with exponentially spaced standard set of 100 grid points
-    xx=exp(0.05*(1:100))-1
-    xx=cbind(c(0,xx[1:99]),xx)
-#Create cumulative sums of values of g(x) integrals from grid (xx)
-	y <- cumsum(apply(xx, 1, gstdint, ddfobj=ddfobj,index=1,width=width,standardize=standardize,point=point))
-#Return smoothed spline of cumulative integral values
-    spp <- smooth.spline(c(0,xx[,2]), c(0, y))
-    return(spp)
+
+# Functions: gstdint 
+
+  # This function was completely changed in Aug 05 to use a fixed set of 
+  # grid points which seems to be more reliable and possibly a little quicker
+
+  # Create grid over interval with exponentially spaced standard set 
+  # of 100 grid points
+  xx <- exp(0.05*(1:100))-1
+  xx <- cbind(c(0,xx[1:99]),xx)
+
+  # Create cumulative sums of values of g(x) integrals from grid (xx)
+  y <- cumsum(apply(xx, 1, gstdint, ddfobj=ddfobj,index=1,width=width,
+              standardize=standardize,point=point))
+
+  # Return smoothed spline of cumulative integral values
+  spp <- smooth.spline(c(0,xx[,2]), c(0, y))
+  return(spp)
 }
-
-

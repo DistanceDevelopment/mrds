@@ -26,9 +26,8 @@
 #' @note Internal function not meant to be called by user
 #' @author Jeff Laake
 #' @seealso \code{\link{detfct}}, \code{\link{ddf}}
-create.ddfobj=function(model,xmat,meta.data,initial)
-{
-	##############################################################################	
+create.ddfobj <- function(model,xmat,meta.data,initial){
+
 # Creates distance sampling function object
 #
 # Distance sampling function object: List with elements (all can be null except type)
@@ -56,10 +55,10 @@ create.ddfobj=function(model,xmat,meta.data,initial)
 #	    link
 	##############################################################################	
 # Create empty object and get values from cds or mcds function
-  ddfobj=vector("list")
-  point=meta.data$point
-  modpaste=paste(model)
-  modelvalues=try(eval(parse(text=modpaste[2:length(modpaste)])))
+  ddfobj <- vector("list")
+  point <- meta.data$point
+  modpaste <- paste(model)
+  modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
   if(class(modelvalues)=="try-error"){
     stop("Invalid model specification: ",model)
   }
@@ -113,18 +112,19 @@ create.ddfobj=function(model,xmat,meta.data,initial)
     ddfobj$shape$dm=setcov(ddfobj$xmat,ddfobj$shape$formula)$cov
     ddfobj$shape$parameters=rep(0,ncol(ddfobj$shape$dm))
   }
-#   Set up integral table if this is a half-normal detection function and it is not an intercept.only
-#   and likelihood will incorporate integrals
-  if(ddfobj$type=="hn")
-    ddfobj$cgftab <- tablecgf(ddfobj=ddfobj,width=meta.data$width)
-  else
+
+  # Set up integral table if this is a half-normal detection function and
+  # it is not an intercept.only and likelihood will incorporate integrals
+  if(ddfobj$type=="hn"){
+    ddfobj$cgftab <- tablecgf(ddfobj=ddfobj,width=meta.data$width,point=point)
+  }else{
     ddfobj$cgftab <- NULL
+  }
 	
-#   Compute initialvalues unless uniform 
+  # Compute initialvalues unless uniform 
   initialvalues <- setinitial.ds(ddfobj,width=meta.data$width,initial,point)
 	
-#   Delete columns of dm that end up as NA from initialvalues
-#
+  # Delete columns of dm that end up as NA from initialvalues
   if(!is.null(ddfobj$scale)){
     if(!ddfobj$intercept.only){
       if(any(is.na(initialvalues$scale)))

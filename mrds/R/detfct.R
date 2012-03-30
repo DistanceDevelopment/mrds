@@ -60,18 +60,19 @@
 #'	For \code{adjfct.cos, adjfct.poly, adjfct.herm}, vector of the value of the adjustment term at x.
 #'	For \code{scalevalue}, the value is a vector of the computed scales for the design matrix z. 
 #'	For \code{apex.gamma}, the value is the distance at which the gamma peaks
-#' @author Jeff Laake David Miller
+#' @author Jeff Laake, David Miller
 #' @seealso  \code{\link{mcds}},  \code{\link{cds}}
 #' @references 	Marques and Buckland 2004
 #'	Laake and Borchers 2004. in Buckland et al 2004.
 #'	Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection function for line transect surveys with mark-recapture and covariate data. Journal of Agricultural Biological and Environmental Statistics 14:207-223.
 fx <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 	return(detfct(distance,ddfobj,select,index,width,standardize,stdint)/width)
+
 fr <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 	return(detfct(distance,ddfobj,select,index,width,standardize,stdint)*2*distance/width^2)
-detfct <-
-function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
-{
+
+detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
+                    standardize=TRUE,stdint=FALSE){
 #
 # detfct - calls key and adjustment terms to create the detection function
 #
@@ -212,4 +213,3 @@ function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdi
     return(key.vals)
   }
 }
-
