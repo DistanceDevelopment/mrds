@@ -15,21 +15,7 @@
 #' @seealso \code{\link{summary.ds}}
 #' @keywords utility
 
-print.summary.ds <- 
-function (x,...)
-#
-# print.summary.ds
-#  Print summary data for a ds object.
-# 
-# Argument
-#  x	- object returned from summary.ds
-#
-# Value
-#  Prints summary information
-#
-# dlm 03-Sep-05	Initial work started
-#
-{
+print.summary.ds <- function (x,...){
   cat("\nSummary for ds object \n")
     
   cat("Number of observations : ", x$n,"\n")

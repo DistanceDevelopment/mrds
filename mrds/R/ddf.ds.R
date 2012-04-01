@@ -253,8 +253,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
   # 23-Jan-06 jll   Changed this back to use formula in Buckland et al or it 
   # doesn't match DISTANCE unless the result is singular
   if(class(result$hessian)=="try-error"){
-    # the hessian returned from solnp() is not what we want, warn about that and don't
-    # return it
+    # the hessian returned from solnp() is not what we want, warn about 
+    # that and don't return it
     if(misc.options$mono){
       cat("First partial hessian calculation failed with monotonicity enforced, no hessian\n")
     }else{
@@ -270,9 +270,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
   modpaste <- paste(model)
   modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
   class(result$ds) <- c(modelvalues$fct,"ds")
-#
-#   AIC computation
-#
+
+  # AIC computation
   n <- length(xmat$distance)
   npar <- length(lt$par)
   result$criterion <- 2*lt$value + 2*npar

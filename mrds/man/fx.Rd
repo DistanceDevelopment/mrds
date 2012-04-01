@@ -120,7 +120,7 @@
   point counts respectively
 }
 \author{
-  Jeff Laake David Miller
+  Jeff Laake, David Miller
 }
 \references{
   Marques and Buckland 2004 Laake and Borchers 2004. in

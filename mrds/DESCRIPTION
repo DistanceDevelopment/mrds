@@ -105,6 +105,7 @@ Collate:
     'logisticdupbyx.R'
     'logit.R'
     'mcds.R'
+    'model.description.R'
     'mrds-package.R'
     'NCovered.ds.R'
     'NCovered.io.fi.R'
@@ -168,3 +169,4 @@ Collate:
     'test.breaks.R'
     'varn.R'
     'zzz.R'
+    'print.ddf.R'
