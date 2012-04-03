@@ -234,6 +234,25 @@ obs<<-book.tee.data$book.tee.obs
 result=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = egdata, method = "ds", meta.data = list(width = 4))
 result=ddf(mrmodel = ~glm(~distance), data = egdata, method = "io.fi", meta.data = list(width = 4))
 result=ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance), data = egdata, method = "io", meta.data = list(width = 4))
+
+data(ptdata.single)
+ptdata.single$dist.begin=(as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
+ptdata.single$dist.end=(as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
+model=ddf(data=ptdata.single,dsmodel=~cds(key="hn"),meta.data=list(point=TRUE,binned=TRUE))
+summary(model)
+plot(model,main="Single observer binned point data - half normal",new=FALSE)
+model=ddf(data=ptdata.single,dsmodel=~cds(key="hr"),meta.data=list(point=TRUE,binned=TRUE))
+summary(model)
+plot(model,main="Single observer binned point data - hazard rate",new=FALSE)
+
+dev.new()
+data(ptdata.dual)
+ptdata.dual$dist.begin=(as.numeric(cut(ptdata.dual$distance,10*(0:10)))-1)*10
+ptdata.dual$dist.end=(as.numeric(cut(ptdata.dual$distance,10*(0:10))))*10
+model=ddf(method="io",data=ptdata.dual,dsmodel=~cds(key="hn"),mrmodel=~glm(formula=~distance*observer),meta.data=list(point=TRUE,binned=TRUE))
+summary(model)
+par(mfrow=c(2,3))
+plot(model,main="Dual observer binned point data")
 }
 \author{
   Jeff Laake
