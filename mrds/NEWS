@@ -1,0 +1,53 @@
+mrds 2.0.6
+------------
+
+NEW FEATURES
+
+* Example code for binned point count data added to help for ddf
+
+BUG FIXES
+
+* Patched create.ddfobj so that point counts with binned data would work properly.
+
+mrds 2.0.5
+------------
+
+NEW FEATURES
+
+* First version submitted to CRAN
+
+BUG FIXES
+
+* Fixed code in dht.se such that it uses sample size from detection model in Satterthwaite approximation rather than size of selected subset of observations.
+
+* Fixed coef functions so they would return parameter estimates for adjustment functions if any.
+
+mrds 2.0.4
+------------
+
+BUG FIXES
+
+* Changed flt.var to compute variance of average p correctly for point transects.
+
+* Numerous changes by dlm to optimization code
+
+* Changes to documentation to remove non-ASCII characters
+
+mrds 2.0.3
+-----------
+
+NEW FEATURES
+
+* Major rewrite to ddf and summary functions to handle adjustment functions
+
+BUG FIXES
+
+* Changes to det.tables and gof functions to use include.lowest=TRUE in calls to cut function
+
+* Changed all usage of T and F to TRUE and FALSE 
+
+
+mrds 2.0.2
+-----------
+
+* For changes in 2.0.2 and earlier see ONEWS
