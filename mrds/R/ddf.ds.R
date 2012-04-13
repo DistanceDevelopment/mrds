@@ -234,7 +234,9 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #
 # add call and others to return values
 #
-  result <- list(call=call,data=data[row.names(data)%in%row.names(xmat),],
+  stored_data=data[row.names(data)%in%row.names(xmat),]
+  stored_data$detected=1
+  result <- list(call=call,data=stored_data,
               model=substitute(model),meta.data=meta.data, control=control,
               method=method,ds=lt,par=lt$par,lnl=-lt$value)
 	  
