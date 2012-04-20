@@ -157,6 +157,13 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
    xmat1=xmat[xmat$observer==1,]
    npar=ncol(model.matrix(p.formula,xmat1))
    fit <- optimx(rep(0,npar),lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
+
+   # did the model converge?
+   if(fit$conv!=0){
+     stop("No convergence in ddf.io.fi()")
+   }
+
+
    fit <-attr(fit,"details")[[1]]
    fit$hessian<-fit$nhatend  
 #   fit=optim(par=rep(0,npar),lnl.io,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula),
@@ -198,8 +205,7 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 #  If this is method=io.fi then compute lnl for L_y and add to L_omega before
 #  computing AIC. Note the code in predict is currently specific to logit link.    
 #
-   if(method=="io.fi")
-   {
+   if(method=="io.fi"){
 #
 #     Compute fitted values - integral of p(x)/width    
 #
