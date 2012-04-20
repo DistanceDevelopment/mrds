@@ -11,6 +11,8 @@ BUG FIXES
 
 * Patched ddf.ds such that stored data in object$data has detected=1
 
+* Patched ddf.io.fi to throw an error when optimx() does not converge.
+
 mrds 2.0.5
 ------------
 
