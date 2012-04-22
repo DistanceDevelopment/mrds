@@ -155,7 +155,7 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
    p.formula=as.formula(model.formula)
    xmat2=xmat[xmat$observer==2,]
    xmat1=xmat[xmat$observer==1,]
-   npar=ncol(model.matrix(p.formula,xmat1))
+   npar=ncol(model.matrix(p.formula,xmat))
    fit <- optimx(rep(0,npar),lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
 
    # did the model converge?
@@ -256,11 +256,11 @@ io.pdot=function(xmat1,xmat2,beta)
 p.io <- function(par,x1,x2,models)
 {
 # create design matrix for p1,p2 and delta
-	xmat1=model.matrix(models$p.formula,x1)
-	xmat2=model.matrix(models$p.formula,x2)
-# extract parameter vectors: beta for detection and gamma for delta
-	xmat1=model.matrix(models$p.formula,x1)
-	xmat2=model.matrix(models$p.formula,x2)
+	x=rbind(x1,x2)
+	dmrows=length(x1)
+	xmat=model.matrix(models$p.formula,x)
+	xmat1=xmat[1:dmrows,,drop=FALSE]
+	xmat2=xmat[(dmrows+1):(2*dmrows),,drop=FALSE]
 	p01=io.p01(xmat1,xmat2,beta=par)
 	p10=io.p10(xmat1,xmat2,beta=par)
 	p11=io.p11(xmat1,xmat2,beta=par)

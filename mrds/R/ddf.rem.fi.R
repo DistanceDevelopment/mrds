@@ -247,8 +247,11 @@ lnl.removal <- function(par,x1,x2,models)
 ################################################################################
 p.removal.mr <- function(par,x1,x2,models)    
 {
-	xmat1=model.matrix(models$p.formula,x1)
-	xmat2=model.matrix(models$p.formula,x2)
+	x=rbind(x1,x2)
+	dmrows=length(x1)
+	xmat=model.matrix(models$p.formula,x)
+	xmat1=xmat[1:dmrows,,drop=FALSE]
+	xmat2=xmat[(dmrows+1):(2*dmrows),,drop=FALSE]
 	p01=rem.p01(xmat1,xmat2,beta=par)
 	p11=rem.p11(xmat1,xmat2,beta=par)
 	pdot=rem.pdot(xmat1,xmat2,beta=par)

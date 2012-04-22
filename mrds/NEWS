@@ -13,6 +13,8 @@ BUG FIXES
 
 * Patched ddf.io.fi to throw an error when optimx() does not converge.
 
+* Patched ddf.io.fi and ddf.rem.fi so inclusion of factor(observer) will work in formula.
+
 mrds 2.0.5
 ------------
 
