@@ -5,6 +5,8 @@ NEW FEATURES
 
 * Example code for binned point count data added to help for ddf
 
+* Modified ddf.rem.fi and ddf.io.fi to use starting values from iterative offset glm to make optimization more robust
+
 BUG FIXES
 
 * Patched create.ddfobj so that point counts with binned data would work properly.

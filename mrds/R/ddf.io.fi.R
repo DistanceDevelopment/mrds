@@ -156,31 +156,31 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
    xmat2=xmat[xmat$observer==2,]
    xmat1=xmat[xmat$observer==1,]
    npar=ncol(model.matrix(p.formula,xmat))
-   fit <- optimx(rep(0,npar),lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
-
-   # did the model converge?
-   if(fit$conv!=0){
-     stop("No convergence in ddf.io.fi()")
-   }
-
-
-   fit <-attr(fit,"details")[[1]]
-   fit$hessian<-fit$nhatend  
 #   fit=optim(par=rep(0,npar),lnl.io,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula),
 #		  hessian=TRUE,control=list(maxit=5000))
 #   fit$hessian=hessian(lnl.removal,x=fit$par,method="Richardson",x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
    GAM=FALSE
-   if(modelvalues$fct=="gam") 
-   {
-      GAM=TRUE
-   } else
-      xmat=create.model.frame(xmat,as.formula(model.formula),meta.data)
+#   if(modelvalues$fct=="gam") 
+#   {
+#      GAM=TRUE
+#   } else
+   xmat=create.model.frame(xmat,as.formula(model.formula),meta.data)
    model.formula=as.formula(paste(model.formula,"+offset(offsetvalue)"))
 #
 #  Fit the conditional detection functions using io.glm 
 #
    suppressWarnings(result$mr <- io.glm (xmat,model.formula,GAM=GAM))
-   if(GAM)result$mr$data=xmat
+#   if(GAM)result$mr$data=xmat
+#
+#  Now use optimx with starting values perturbed by 5%
+#
+   fit <- optimx(result$mr$coefficients*1.05,lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))  
+   # did the model converge?
+   if(fit$conv!=0){
+	   stop("No convergence in ddf.io.fi()")
+   }
+   fit <-attr(fit,"details")[[1]]
+   fit$hessian<-fit$nhatend  
    result$mr$mr$coefficients=fit$par   
    result$hessian=fit$hessian	
 #
@@ -257,7 +257,7 @@ p.io <- function(par,x1,x2,models)
 {
 # create design matrix for p1,p2 and delta
 	x=rbind(x1,x2)
-	dmrows=length(x1)
+	dmrows=nrow(x1)
 	xmat=model.matrix(models$p.formula,x)
 	xmat1=xmat[1:dmrows,,drop=FALSE]
 	xmat2=xmat[(dmrows+1):(2*dmrows),,drop=FALSE]
