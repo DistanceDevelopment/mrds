@@ -19,6 +19,9 @@ BUG FIXES
 
 * Patched dht, dht.se and covered.region.dht so it would handle 0 observations
 
+* Suppress package messages from optimx
+
+
 mrds 2.0.5
 ------------
 
