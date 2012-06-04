@@ -174,7 +174,7 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 #
 #  Now use optimx with starting values perturbed by 5%
 #
-   fit <- optimx(result$mr$coefficients*1.05,lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))  
+   fit <- suppressPackageStartupMessages(optimx(result$mr$coefficients*1.05,lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))  
    # did the model converge?
    if(fit$conv!=0){
 	   stop("No convergence in ddf.io.fi()")

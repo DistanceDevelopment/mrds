@@ -183,7 +183,7 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 #
 #  Now use optimx with starting values perturbed by 5%
 #
-fit <- optimx(1.05*result$mr$coefficients,lnl.removal, method="nlminb", hessian=TRUE,  x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
+fit <- suppressPackageStartupMessages(optimx(1.05*result$mr$coefficients,lnl.removal, method="nlminb", hessian=TRUE,  x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))
 fit <-attr(fit,"details")[[1]]
 fit$hessian<-fit$nhatend  
 result$mr$mr$coefficients=fit$par   

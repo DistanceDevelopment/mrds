@@ -193,10 +193,10 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 
       }else{
         # use Jeff's!
-        lt <- optimx(initialvalues, flnl, method="nlminb", 
+        lt <- suppressPackageStartupMessages(optimx(initialvalues, flnl, method="nlminb", 
                      control=c(optim.options),hessian=TRUE, lower=lowerbounds,
                      upper=upperbounds,ddfobj=ddfobj, fitting=fitting,
-                     misc.options=misc.options,TCI=FALSE)
+                     misc.options=misc.options,TCI=FALSE))
         lt <-attr(lt,"details")[[1]]
         lt$hessian<-lt$nhatend
       }
