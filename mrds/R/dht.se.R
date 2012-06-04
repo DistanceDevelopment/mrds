@@ -170,9 +170,14 @@ function(model,region.table,samples,obs,options,numRegions,estimate.table,Nhat.b
         nobs = tapply(obs$object, obs$Label, length)
         nobs = data.frame(Label = names(nobs), n = as.vector(nobs)[!is.na(nobs)])
         Nhat.by.sample$n=NULL
+# 29 May 2012 lhm - changed to deal with the case where there are no sighings
+        if(nrow(nobs) > 0){
         Nhat.by.sample = merge(Nhat.by.sample, nobs, by.x = "Label",
             by.y = "Label", all.x = TRUE)
         Nhat.by.sample$n[is.na(Nhat.by.sample$n)] = 0
+        }else{
+          Nhat.by.sample <- cbind(Nhat.by.sample, n = rep(0,nrow(Nhat.by.sample)))
+        }
 #
 #       Compute number of lines per region for df calculation
 #
@@ -188,11 +193,18 @@ function(model,region.table,samples,obs,options,numRegions,estimate.table,Nhat.b
 #       and variance of mean for group size. jll 11/11/04 deleted errant ^2 in vars calculation
 #
         if (!options$group) {
+            # 29 May 2012 lhm - changed to deal with the case where there are no sightings
+            if(length(obs$size) > 0){
             vars = by(obs$size, obs$Region.Label, var)/by(obs$size, 
                 obs$Region.Label, length)
             sbar = by(obs$size, obs$Region.Label, mean)
             sobs = data.frame(Region.Label = names(sbar), vars = as.vector(vars), 
                 sbar = as.vector(sbar))
+            }else{
+              sobs = data.frame(Region.Label = levels(obs$Region.Label),
+                  vars = rep(NA,length(levels(obs$Region.Label))),
+                  sbar = rep(NA,length(levels(obs$Region.Label))))
+            }
             Nhat.by.sample = merge(Nhat.by.sample, sobs, by.x = "Region.Label", 
                 by.y = "Region.Label", all.x = TRUE)
             Nhat.by.sample$sbar[is.na(Nhat.by.sample$sbar)] = 0

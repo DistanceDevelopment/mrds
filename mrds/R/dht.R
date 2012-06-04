@@ -213,8 +213,7 @@ tables.dht=function(group)
 #
 #  Create summary table
 #
-    summary.table = Nhat.by.sample[, -2]
-    summary.table = summary.table[, -(3:6)]
+    summary.table = Nhat.by.sample[, c("Region.Label","Area","CoveredArea","Effort.y")]
     summary.table = unique(summary.table)
     var.er=sapply(split(Nhat.by.sample,Nhat.by.sample$Region.Label),
                         function(x)varn(x$Effort.x,x$n,type=options$ervar))
@@ -245,6 +244,12 @@ tables.dht=function(group)
     summary.table$cv.ER=summary.table$se.ER/summary.table$ER
     summary.table$cv.ER[summary.table$ER==0]=0
 #
+#  29/05/12 lhm - change to set missing values to 0
+#
+    summary.table$ER[is.nan(summary.table$ER)]=0
+    summary.table$se.ER[is.nan(summary.table$se.ER)]=0
+    summary.table$cv.ER[is.nan(summary.table$cv.ER)]=0
+#
 #   If summary of individuals for a clustered popn, add mean group size and its std error
 #
     if(!group)
@@ -256,13 +261,14 @@ tables.dht=function(group)
                    mean.size=as.vector(mean.clustersize),se.mean=as.vector(se.clustersize))
 
        summary.table= merge(summary.table, cs, by.x = "Region",all=TRUE,sort=FALSE)
-       summary.table$mean.size[is.na(summary.table$mean.size)]=0
-       summary.table$se.mean[is.na(summary.table$se.mean)]=0
        if (numRegions > 1)
        {
           summary.table$mean.size[numRegions+1]=mean(obs$size)
           summary.table$se.mean[numRegions+1]=sqrt(var(obs$size)/length(obs$size))
        }
+       #  29/05/12 lhm - moved to set missing values to 0
+       summary.table$mean.size[is.na(summary.table$mean.size)]=0
+       summary.table$se.mean[is.na(summary.table$se.mean)]=0
     }
     rownames(summary.table) = 1:dim(summary.table)[1]
 #
