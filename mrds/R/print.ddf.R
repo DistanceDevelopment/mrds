@@ -14,38 +14,39 @@
 print.ddf<-function(x, ...){
 
   cat("\nDistance sampling analysis object\n")
-  cat("\nDetection function:\n",model.description(x),"\n")
+  print(summary(x))
 
-  if(!is.null(x$ds$aux$ddfobj$scale$formula)){
-    cat("\nModel formula:",x$ds$aux$ddfobj$scale$formula,"\n")
-  }
+#
+#  if(!is.null(x$ds$aux$ddfobj$scale$formula)){
+#    cat("\nModel formula:",x$ds$aux$ddfobj$scale$formula,"\n")
+#  }
 
-  coeff<-coef(x)
+#  coeff<-coef(x)
 
-  cat("\nModel coefficients:\n")
-  print(coeff$scale)
-  if(x$ds$aux$ddfobj$type %in% c("gamma","hr")) {
-    cat("\nShape parameters: ", "\n")
-    print(coeff$exponent)
-  }
-  if (!is.null(coeff$adj.parm)) {
-     cat("\nAdjustment term parameter(s): ", "\n")
-     print(coeff$adjustment)
-  }
+#  cat("\nModel coefficients:\n")
+#  print(coeff$scale)
+#  if(x$ds$aux$ddfobj$type %in% c("gamma","hr")) {
+#    cat("\nShape parameters: ", "\n")
+#    print(coeff$exponent)
+#  }
+#  if (!is.null(coeff$adj.parm)) {
+#     cat("\nAdjustment term parameter(s): ", "\n")
+#     print(coeff$adjustment)
+#  }
 
   # Remind the user that monotonicity constraints were enforced
-  if(x$ds$aux$mono & x$ds$aux$mono.strict){
-    cat("\nStrict monotonicity constraints were enforced.\n")
-  }else if(x$ds$aux$mono){
-    cat("\nMonotonicity constraints were enforced.\n")
-  }
+#  if(x$ds$aux$mono & x$ds$aux$mono.strict){
+#    cat("\nStrict monotonicity constraints were enforced.\n")
+#  }else if(x$ds$aux$mono){
+#    cat("\nMonotonicity constraints were enforced.\n")
+#  }
 
 
-  if(!is.null(x$Nhat)){
-    cat("\nEstimated abundance in covered region:",x$Nhat,"\n")
-  }
+#  if(!is.null(x$Nhat)){
+#    cat("\nEstimated abundance in covered region:",x$Nhat,"\n")
+#  }
 
-  cat("\nAIC:",x$criterion,"\n")
+#  cat("\nAIC:",x$criterion,"\n")
 
   invisible()
 }

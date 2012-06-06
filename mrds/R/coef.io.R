@@ -21,9 +21,13 @@ function(object,...)
                                row.names(coef(object$ds)$exponent)))
   }
   rn=row.names(par)
-  par=rbind(par,coef(object$ds)$scale)
-  row.names(par)=c(rn,paste("ds scale:",
-                            row.names(coef(object$ds)$scale)))
+  ds.scale=coef(object$ds)$scale
+  if(!is.null(ds.scale))
+  {
+	  par=rbind(par,coef(object$ds)$scale)
+	  row.names(par)=c(rn,paste("ds scale:",
+					  row.names(coef(object$ds)$scale)))
+  }
   if(!is.null(coef(object$ds)$adjustment)){
     rn=row.names(par)
     par=rbind(par,coef(object$ds)$adjustment)

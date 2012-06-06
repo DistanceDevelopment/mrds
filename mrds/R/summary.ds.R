@@ -77,6 +77,7 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
   # This is a vector remember, so if you are using this 
   # you need to take that into account.
   if(!is.null(coeff$adjustment)){
+	ans$adjustment=model$ds$aux$ddfobj$adjustment
     ans$coeff$adj.order <- model$adj.order
     ans$coeff$adj.parm <- coeff$adjustment
   }
