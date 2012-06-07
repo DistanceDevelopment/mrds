@@ -143,7 +143,7 @@
   { 
 	  if(.Platform$GUI=="Rgui")dev.new()
      ddfobj <- model$ds$ds$aux$ddfobj
-     detfct.pooled.values <- detfct(xmat$distance,ddfobj)
+     detfct.pooled.values <- detfct(xmat$distance,ddfobj,width=width-left)
 	 xmat.trial <- xmat
      xmat.trial$distance <- 0
      if(ddfobj$type=="gamma")

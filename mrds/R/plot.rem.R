@@ -132,12 +132,12 @@ plot.rem <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showline
 	p0<-predict(model$mr,newdata=xmat.p0,integrate=FALSE)$fitted
 	xmat<-model$mr$data
 	cond.det<-predict(model$mr,newdata=xmat,integrate=FALSE)
-	detfct.pooled.values <- detfct(xmat$distance[xmat$observer==1],ddfobj)
+	width <- model$meta.data$width
+	left <- model$meta.data$left
+	detfct.pooled.values <- detfct(xmat$distance[xmat$observer==1],ddfobj,width=width-left)
 	delta<-cond.det$fitted/(p0*detfct.pooled.values)
 	p1<-cond.det$p1
 	p2<-cond.det$p2
-	width <- model$meta.data$width
-	left <- model$meta.data$left
 #
 #   If number of classes for histogram intervals was not set compute a reasonable default
 #

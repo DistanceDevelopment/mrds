@@ -21,7 +21,7 @@ BUG FIXES
 
 * Suppress package messages from optimx
 
-* Patched print.ddf, model.description, summery.ds, print.summary.ds and coef.io to handle uniform key function.
+* Patched print.ddf, model.description, summary.ds, print.summary.ds and coef.io, coef.trial, coef.rem, plot.io, plot.trial, and plot.rem to handle uniform key function.
 
 
 mrds 2.0.5
