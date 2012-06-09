@@ -140,8 +140,16 @@ function(data,meta.data=list(),check=TRUE)
 #                  binned=TRUE
 #            else
         binned=TRUE
-
+  if(meta.data$binned & !binned) 
+	  stop("\nbinned set to TRUE in meta.data but distbegin and distend fields are missing.\n")
+  if(!meta.data$binned & binned)
+  {
+	  cat("Warning:data contain distbegin and distend fields but binned=FALSE. Analyzing as not binned\n")
+	  binned=FALSE
+  }
   meta.data$binned=binned
+  if(meta.data$binned & is.null(meta.data$breaks))
+	  stop("\nbreaks must be set in meta.data for binned data\n")
 #
 #  Fill in distance field for binned observations and create logical variable
 #

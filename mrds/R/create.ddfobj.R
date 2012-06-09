@@ -115,7 +115,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
 
   # Set up integral table if this is a half-normal detection function and
   # it is not an intercept.only and likelihood will incorporate integrals
-  if(ddfobj$type=="hn"){
+  if(ddfobj$type%in%c("hn","unif")){
     ddfobj$cgftab <- tablecgf(ddfobj=ddfobj,width=meta.data$width,point=point)
   }else{
     ddfobj$cgftab <- NULL
@@ -137,5 +137,14 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
     ddfobj$shape$parameters=initialvalues$shape
   if(!is.null(ddfobj$adjustment))
     ddfobj$adjustment$parameters=initialvalues$adjustment
+# Add restriction to prevent adjustments if scale formula isn't ~1
+  if(!is.null(ddfobj$adjustment) & ddfobj$type!="unif")
+  {
+	  if(ddfobj$scale$formula != ~1)
+		  stop("\nAdjustment functions cannot be used with scale covariates")
+	  else
+		  if(!is.null(ddfobj$shape))
+			  if(ddfobj$shape$formula != ~1) stop("\nAdjustment functions cannot be used with shape covariates")
+  }			  
   return(ddfobj)
 }

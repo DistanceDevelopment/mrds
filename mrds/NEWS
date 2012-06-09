@@ -7,6 +7,11 @@ NEW FEATURES
 
 * Modified ddf.rem.fi and ddf.io.fi to use starting values from iterative offset glm to make optimization more robust
 
+* Added a restriction so no one attempts fitting adjustment functions with covariates.
+
+* Added some code to assure all of the necessary fields are available for binned data (binned=TRUE).
+
+
 BUG FIXES
 
 * Patched create.ddfobj so that point counts with binned data would work properly
@@ -21,7 +26,7 @@ BUG FIXES
 
 * Suppress package messages from optimx
 
-* Patched print.ddf, model.description, summary.ds, print.summary.ds and coef.io, coef.trial, coef.rem, plot.io, plot.trial, and plot.rem to handle uniform key function.
+* Patched fpt.lnl, flt.lnl, print.ddf, model.description, summary.ds, print.summary.ds and coef.io, coef.trial, coef.rem, plot.io, plot.trial, and plot.rem to handle uniform key function.
 
 
 mrds 2.0.5

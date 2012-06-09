@@ -146,7 +146,8 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
 	key.vals <- keyfct.hz(distance, key.scale, key.shape)
   }else if(key == "unif"){
 	key.vals <- rep(1/width,length(distance))
-  }else if(key == "gamma"){
+#	key.vals <- rep(1,length(distance))
+}else if(key == "gamma"){
 	key.vals <- keyfct.gamma(distance, key.scale, key.shape)
   }
 
@@ -191,7 +192,7 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
       }else if(key == "gamma"){
         key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
       }else if(key == "unif"){
-        key.val.0 <- rep(1,length(distance))
+        key.val.0 <- rep(1/width,length(distance))
       }
 
       if(adj.series == "poly"){

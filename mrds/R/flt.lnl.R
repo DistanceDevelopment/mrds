@@ -75,12 +75,12 @@ flt.lnl <- function(fpar,ddfobj,TCI,misc.options){
     p1[is.nan(p1)] <- 1.0e-15
     int1 <- integratedetfct(ddfobj,select=!x$binned,width=width,
                       int.range=int.range,doeachint=misc.options$doeachint,
-                      standardize=misc.options$standardize)
+                      standardize=FALSE)
 
 	  if(any(int1<0)){
 		  int1 <- integratedetfct(ddfobj,select=!x$binned,width=width,
                         int.range=int.range,doeachint=TRUE,
-                        standardize=misc.options$standardize)
+                        standardize=FALSE)
     }
 
 	  if(is.vector(left)){

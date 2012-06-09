@@ -116,7 +116,7 @@ function(finebr,obs,model)
  #   z <- model$ds$ds$aux$z
  
     if(model$method=="io" | model$method=="trial" | model$method=="rem"  ){     
-      detfct.pooled.values <- detfct(newdat$distance[newdat$observer==1],ddfobj)
+      detfct.pooled.values <- detfct(newdat$distance[newdat$observer==1],ddfobj,width=model$meta.data$width-model$meta.data$left)
       deltax <- detfct.pooled.values/(cond.det$fitted/g0)
     }else{
       detfct.pooled.values <- cond.det$fitted/g0

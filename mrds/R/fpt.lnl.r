@@ -33,8 +33,10 @@ fpt.lnl <- function(fpar, ddfobj,TCI,misc.options){
       ddfobj$cgftab <- tablecgf(ddfobj,width=width,
                                 standardize=misc.options$standardize,point=TRUE)
     }
-
-    key.scale <- scalevalue(ddfobj$scale$parameters, z[x$binned,])
+    if(ddfobj$type=="unif")
+		key.scale <- 1
+	else
+        key.scale <- scalevalue(ddfobj$scale$parameters, z[x$binned,])
     intall <- as.vector(key.scale^2*(
                         predict(ddfobj$cgftab,as.vector(right/key.scale))$y-
                         predict(ddfobj$cgftab, as.vector(left/key.scale))$y))
@@ -72,7 +74,7 @@ fpt.lnl <- function(fpar, ddfobj,TCI,misc.options){
 
     int1 <- integratedetfct(ddfobj,select=!x$binned,width=width,
                       int.range=int.range,doeachint=misc.options$doeachint,
-                      standardize=misc.options$standardize,point=TRUE)
+                      standardize=FALSE,point=TRUE)
 
     if(is.vector(left)){
       int1[is.infinite(int1)] <- right - left
