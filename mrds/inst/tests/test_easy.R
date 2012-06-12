@@ -32,10 +32,10 @@ test_that("golf tee data gives the same results as Distance",{
   expect_that(result.mcds$Nhat, equals(212.2289,tolerance=1e-6))
 
 
-  # check that uniform key works
-  result.unif<-ddf(dsmodel = ~cds(key = "unif",adj.series="cos",adj.order=2), 
-                  data = egdata, method = "ds", meta.data = list(width = 4))
-  expect_that(result.unif$par, equals(0.7005934,tolerance=1e-6))
+#  # check that uniform key works
+#  result.unif<-ddf(dsmodel = ~cds(key = "unif",adj.series="cos",adj.order=2), 
+#                  data = egdata, method = "ds", meta.data = list(width = 4))
+#  expect_that(result.unif$par, equals(0.7005934,tolerance=1e-6))
   
   # there should be an error if we don't supply adjustments with uniform key
   expect_error(ddf(dsmodel = ~cds(key = "unif"), 
@@ -78,50 +78,45 @@ model.set<-1:nrow(models)
 #wb<-c(11,12,27,28,30)
 ### really weird bugs
 #rwb<-c(21)
-### test failures (likelihood not as good...)
-#fails<-c(16,23,24,25,26,31,32)
-##model.set<-model.set[-c(wb, fails)]
-#model.set<-wb#fails
 
 # remove some models
 # 12 has a paramter ~=0, so don't try to fit that
 # 30 is really weird:
-#ack<-function(x){exp(-x^2/(2*2.5^2))*(1+-0.9*((x/2.5)^4))}
-#plot(seq(0,25,len=1000),ack(seq(0,25,len=1000)))
-#integrate(ack,upper=25,lower=0)
-#model.set<-model.set[-c(1:12,30)]
-#model.set<-model.set[-c(6,7,12,17,18,27,28,31)]
-model.set<-model.set[-c(3,5,10,12,14,16,23:29,31,32)]
+#  ack<-function(x){exp(-x^2/(2*2.5^2))*(1+-0.9*((x/2.5)^4))}
+#  plot(seq(0,25,len=1000),ack(seq(0,25,len=1000)))
+#  integrate(ack,upper=25,lower=0)
+
+model.set<-model.set[-c(10,11,12,14,16,21,23:29,30)]
 
 better<-rep(0,nrow(models))
 
 for(i in model.set){
-  mcds.call<-paste("~mcds(key=\"")
 
+  set.seed(1245)
+
+  # uncomment for debug
+  #cat("model",i,":")
+
+  # construct the model
+  mcds.call<-paste("~mcds(key=\"")
   key<-switch(models$key[i],HN="hn",HA="hr")
   mcds.call<-paste(mcds.call,key,"\"",sep="")
-
   adjust<-switch(models$adj[i],
                  CO="cos",
                  PO="poly",
                  HE="herm")
-
   scaling<-models$scaling[i]
   if(scaling=="sigma") scaling<-"scale"
-
-
   # build the bits relating to adjustments
   if(models$noAdj[i]!=0){
     adj.order<-models$order[i]
     if(grepl(",",adj.order)){
       adj.order<-paste("c(",adj.order,")",sep="")
     }
-
     mcds.call<-paste(mcds.call,",adj.series=\"",adjust,"\",
                                  adj.order=",adj.order,",
                                  adj.scale=\"",scaling,"\"",sep="")
   }
-
   # monotonicity bits
   mono<-switch(models$monotone[i],
                None=FALSE,
@@ -131,16 +126,17 @@ for(i in model.set){
                 None=FALSE,
                 Weak=FALSE,
                 strict=TRUE)
-
   mcds.call<-paste(mcds.call,",formula=~1)",sep="")
+
   this.model<-ltresults[[i]]
 
+  # actually fit some models
   if(this.model$status==1 | this.model$status==2){
 
     result<-try(test.df(eval(parse(text=mcds.call)),ltexample,width,
                     mono=mono,strict=mono.strict,showit=0))
 
-    #expect_that(all(class(result)=="try-error"),is_false())
+    expect_that(all(class(result)=="try-error"),is_false())
 
     if(all(class(result)!="try-error")){
 
@@ -177,17 +173,16 @@ for(i in model.set){
       #}
     }
 
-#    cat(paste("\n",i," -- Done!\n"))
+  # uncomment for debug
+  #cat("\n")
 
   }else{
     cat(paste("\n",i," -- MCDS error!\n"))
   }
-
-  
 }
 
 # extra column of when mrds beat Distance
-models<-cbind(models,better)
+#models<-cbind(models,better)
 
 #cat("the following were fine:\n")
 #print(models[model.set,])
