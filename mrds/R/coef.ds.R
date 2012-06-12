@@ -36,63 +36,46 @@
 #'   based on the type of model.
 #' @author Jeff Laake; 
 coef.ds <- function(object,...) {
-#
-# coef.ds
-# @export coef.ds coef.io coef.rem coef.rem.fi coef.trial coef.trial.fi
-#
-# Provides a summary of parameters and estimates from the output of fit.ds
-#
-# Arguments:
-#
-# object      - fitted object from ddf
-#
-# Value: list of coefficient data frames (scale and exponent (if hazard))
-#
-# Uses: getpar
-#
   ltmodel <- object$ds
   vcov <- solvecov(object$hessian)$inv
-#  vcov=matrix(1,nrow=nrow(model$hessian),ncol=nrow(model$hessian))
-# dlm 11/07/05	Changed call to getpar to work with the new model.
-#  gotpars <- getpar(model$par,ltmodel$aux$ftype,ltmodel$aux$zdim,ncol(ltmodel$aux$xp)) 
-#  key.scale <- gotpars$key.scale
-#  key.shape <- gotpars$key.shape
-#  adj.parm <- gotpars$adj.parm
-#  rm(gotpars)
+  #vcov=matrix(1,nrow=nrow(model$hessian),ncol=nrow(model$hessian))
 
-# dlm 24-Aug-05  Call getpar to find the standard errors in the right
-#		 order.
-  ddfobj=ltmodel$aux$ddfobj
+  ddfobj <- ltmodel$aux$ddfobj
   indices <- getpar(ddfobj,index=TRUE)
-  se=sqrt(diag(vcov))
-  if(indices[1]!=0)
-	  key.shape.se <- se[1:indices[1]]
-  if(indices[2]!=0) 
-       key.scale.se <- se[(indices[1]+1):indices[2]]
-  if(indices[3]!=0)
-	   if(indices[2]!=0)
-	      adj.parm.se <- se[(indices[2]+1):indices[3]]
-       else
-		   adj.parm.se <- se[(indices[1]+1):indices[3]]
-# Always get the scale parameter
-  if(!is.null(ddfobj$scale))
-  {
-     coeff=as.data.frame(cbind(estimate=ddfobj$scale$parameters,se=key.scale.se))
-     row.names(coeff)=colnames(ddfobj$scale$dm)
-  }
-# If we have a non-null shape parameter, get that too
+  se <- sqrt(diag(vcov))
 
-  if(!is.null(ddfobj$shape))
-  {
-    exp.coeff=as.data.frame(cbind(estimate=ddfobj$shape$parameters,se=key.shape.se))
-    row.names(exp.coeff)=colnames(ddfobj$shape$dm)
+  if(indices[1]!=0){
+	  key.shape.se <- se[1:indices[1]]
+  }
+  if(indices[2]!=0){
+    key.scale.se <- se[(indices[1]+1):indices[2]]
+  }
+  if(indices[3]!=0){
+    if(indices[2]!=0){
+      adj.parm.se <- se[(indices[2]+1):indices[3]]
+    }else{
+      adj.parm.se <- se[(indices[1]+1):indices[3]]
+    }
+  }
+
+  # Always get the scale parameter
+  if(!is.null(ddfobj$scale)){
+    coeff <- as.data.frame(cbind(estimate=ddfobj$scale$parameters,
+                                 se=key.scale.se))
+    row.names(coeff) <- colnames(ddfobj$scale$dm)
+  }
+
+  # If we have a non-null shape parameter, get that too
+  if(!is.null(ddfobj$shape)){
+    exp.coeff <- as.data.frame(cbind(estimate=ddfobj$shape$parameters,
+                                     se=key.shape.se))
+    row.names(exp.coeff) <- colnames(ddfobj$shape$dm)
   }
   
-# Get the adjustment parameter if we need it
-
+  # Get the adjustment parameters if necessary
   if(!is.null(ddfobj$adjustment)){
-# dlm 26-Aug-05	Added handling for multiple adjustment parameters
-    adj.coeff=as.data.frame(cbind(estimate=ddfobj$adjustment$parameters,se=adj.parm.se))
+    adj.coeff <- as.data.frame(cbind(estimate=ddfobj$adjustment$parameters,
+                                     se=adj.parm.se))
     adj.names <- NULL
     for(i in 1:nrow(adj.coeff)){
       adj.names[i] <- paste(ddfobj$adjustment$series,
@@ -100,8 +83,7 @@ coef.ds <- function(object,...) {
     }
     row.names(adj.coeff) <- adj.names
 
-# Return values if we have adjustment terms
-
+    # Return values if we have adjustment terms
     if(!is.null(ddfobj$shape)){
       return(list(scale=coeff,exponent=exp.coeff,adjustment=adj.coeff))
     }else if(is.null(ddfobj$scale)){
@@ -112,38 +94,42 @@ coef.ds <- function(object,...) {
 
   }
 
-# Return values if no adjustment terms
-
-  if(!is.null(ddfobj$shape))
+  # Return values if no adjustment terms
+  if(!is.null(ddfobj$shape)){
 		return(list(scale=coeff,exponent=exp.coeff))
-  else
+  }else{
     return(list(scale=coeff))
+  }
 }
 
-#
-#
+
+
 # solvecov code was taken from package fpc: Christian
 # Hennig chrish@@stats.ucl.ac.uk http://www.homepages.ucl.ac.uk/~ucakche/
-solvecov=function (m, cmax = 1e+10)
-# from package fpc
-{
-    options(show.error.messages = FALSE)
-    covinv <- try(solve(m))
-    if (class(covinv) != "try-error")
-        coll = FALSE
-    else {
-        p <- nrow(m)
-        cove <- eigen(m, symmetric = TRUE)
-        coll <- TRUE
-        if (min(cove$values) < 1/cmax) {
-            covewi <- diag(p)
-            for (i in 1:p) if (cove$values[i] < 1/cmax)
-                covewi[i, i] <- cmax
-            else covewi[i, i] <- 1/cove$values[i]
+solvecov <- function (m, cmax = 1e+10){
+  options(show.error.messages = FALSE)
+  covinv <- try(solve(m))
+  if(class(covinv) != "try-error"){
+    coll = FALSE
+  }else{
+    p <- nrow(m)
+    cove <- eigen(m, symmetric = TRUE)
+    coll <- TRUE
+    if(min(cove$values) < 1/cmax) {
+      covewi <- diag(p)
+      for (i in 1:p){
+        if (cove$values[i] < 1/cmax){
+          covewi[i, i] <- cmax
+        }else{
+         covewi[i, i] <- 1/cove$values[i]
         }
-        else covewi <- diag(1/cove$values, nrow = length(cove$values))
-        covinv <- cove$vectors %*% covewi %*% t(cove$vectors)
+      }
+    }else{
+      covewi <- diag(1/cove$values, nrow = length(cove$values))
     }
-    options(show.error.messages = TRUE)
-    out <- list(inv = covinv, coll = coll)
+    covinv <- cove$vectors %*% covewi %*% t(cove$vectors)
+  }
+  options(show.error.messages = TRUE)
+  out <- list(inv = covinv, coll = coll)
+  return(out)
 }
