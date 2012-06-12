@@ -73,23 +73,6 @@ fr <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRU
 
 detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
                     standardize=TRUE,stdint=FALSE){
-#
-# detfct - calls key and adjustment terms to create the detection function
-#
-# Arguments:
-#	distance		- vector of distances 
-#	ddfobj			- distance sampling object
-#	select		    - selection of data values
-#   index           - index of specific row
-#	width			- truncation width
-# 	standardize		- standardizes detection function so g(0)=1
-# 	stdint			- standardizes the scale to 1 for integral computation
-#
-# Value	
-#   the value of the detection function at the specified point(s)
-#
-# Uses : getpar, scalevalue, keyfct.hn, keyfct.hz, adjfct.poly, adjfct.herm, adjfct.cos
-#
   if(is.null(select))
   {
 	  if(is.null(index))
