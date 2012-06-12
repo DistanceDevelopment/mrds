@@ -197,10 +197,10 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
   }
 
 
-# Note there is a difference between maxit (the maximum numbr of iterations
-# for optimx() uses) and maxiter (which is what detfct.fit uses.)
-   optim.options <- list(maxit=control$optimx.maxit,
-                         optimx.method=control$optimx.method)
+  # Note there is a difference between maxit (the maximum numbr of iterations
+  # for optimx() uses) and maxiter (which is what detfct.fit uses.)
+  optim.options <- list(maxit=control$optimx.maxit,
+                        optimx.method=control$optimx.method)
 
 #
 # Actually do the optimisation!

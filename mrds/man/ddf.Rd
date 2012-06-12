@@ -205,7 +205,7 @@
   of information printed during fitting. 0 - none, >=1 -
   information about refitting and bound changes is printed,
   >=2 - information about adjustment term fitting is
-  printed, ==3 - per-iteration parameter estimates and
+  printed, ==3 -per-iteration parameter estimates and
   log-likelihood printed. \cr \code{doeachint} \tab if TRUE
   forces numerical integration rather than interpolation
   method \cr \code{estimate} \tab if FALSE fits model but
@@ -223,7 +223,12 @@
   if TRUE, if fitting fails, return an object with fitting
   information \cr \code{nofit} \tab if TRUE don't fit a
   model, but use the starting values and generate an object
-  based on those values \cr}
+  based on those values \cr \code{optimx.method} \tab one
+  (or a vector of) string(s) giving the optimisation method
+  to use. If more than one is supplied, the results from
+  one are used as the starting values for the next. See
+  \code{\link{optimx}}\cr \code{optimx.maxit} \tab maximum
+  number of iterations to use in the optimisation.\cr}
 }
 \examples{
 data(book.tee.data)

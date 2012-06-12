@@ -130,25 +130,35 @@
 #' to control fitting if the algorithm doesn't converge which happens
 #' infrequently.  The list values include:
 #' 
-#' \tabular{ll}{ Option \tab Value \cr \code{showit} \tab Integer (0-3, 
-#' default 0) controls the (increasing) amount of information printed during 
-#' fitting. 0 - none, >=1 - information about refitting and bound changes is 
-#' printed, >=2 - information about adjustment term fitting is printed, ==3 -
-#' per-iteration parameter estimates and log-likelihood printed. \cr 
-#' \code{doeachint} \tab if TRUE forces numerical integration rather than 
-#' interpolation method \cr \code{estimate} \tab if FALSE fits model but 
-#' doesn't estimate predicted probabilities \cr \code{refit} \tab if TRUE the 
-#' algorithm will attempt multiple optimizations at different starting values 
-#' if it doesn't converge \cr \code{nrefits} \tab number of refitting attempts 
-#' \cr \code{initial} \tab a named list of starting values for the parameters 
-#' (\code{$scale}, \code{$shape}, \code{$adjust}) \cr 
-#' \code{lowerbounds} \tab a vector of lowerbounds for the parameters \cr 
-#' \code{upperbounds} \tab a vector of upperbounds for the parameters \cr 
-#' \code{limit} \tab if TRUE restrict analysis to observations with 
-#' \code{detected}=1 \cr \code{debug} \tab  if TRUE, if fitting fails, return 
-#' an object with fitting information \cr \code{nofit} \tab if TRUE don't fit 
-#' a model, but use the starting values and generate an object based on those 
-#' values \cr}
+#' \tabular{ll}{ Option \tab Value \cr 
+#'   \code{showit} \tab Integer (0-3, default 0) controls the (increasing) 
+#'    amount of information printed during fitting. 0 - none, >=1 - information
+#'    about refitting and bound changes is printed, >=2 - information about 
+#'    adjustment term fitting is printed, ==3 -per-iteration parameter 
+#'    estimates and log-likelihood printed. \cr 
+#'   \code{doeachint} \tab if TRUE forces numerical integration rather than 
+#'    interpolation method \cr 
+#'   \code{estimate} \tab if FALSE fits model but doesn't estimate predicted 
+#'    probabilities \cr 
+#'   \code{refit} \tab if TRUE the algorithm will attempt multiple optimizations
+#'    at different starting values if it doesn't converge \cr 
+#'   \code{nrefits} \tab number of refitting attempts \cr 
+#'   \code{initial} \tab a named list of starting values for the parameters 
+#'    (\code{$scale}, \code{$shape}, \code{$adjust}) \cr 
+#'   \code{lowerbounds} \tab a vector of lowerbounds for the parameters \cr 
+#'   \code{upperbounds} \tab a vector of upperbounds for the parameters \cr 
+#'   \code{limit} \tab if TRUE restrict analysis to observations with 
+#'    \code{detected}=1 \cr 
+#'   \code{debug} \tab  if TRUE, if fitting fails, return an object with fitting
+#'    information \cr 
+#'   \code{nofit} \tab if TRUE don't fit a model, but use the starting values 
+#'    and generate an object based on those values \cr
+#'   \code{optimx.method} \tab one (or a vector of) string(s) giving the 
+#'    optimisation method to use. If more than one is supplied, the results from
+#'    one are used as the starting values for the next. See 
+#'    \code{\link{optimx}}\cr
+#'   \code{optimx.maxit} \tab maximum number of iterations to use in the 
+#'    optimisation.\cr}
 #' 
 #' @param dsmodel distance sampling model specification
 #' @param mrmodel mark-recapture model specification
@@ -204,44 +214,34 @@
 #' summary(model)
 #' par(mfrow=c(2,3))
 #' plot(model,main="Dual observer binned point data")
-#' 
-ddf <-
-function(dsmodel=call(), mrmodel=call(),data, method="ds", meta.data=list(), control=list())
-{
-# 
-# ddf  - generic function for fitting distance detection functions
-#
-# Arguments:
-#
-#  dsmodel   - distance sampling model specification
-#  mrmodel   - mark-recapture model specfication 
-#  data      - dataframe
-#  method    - fitting method
-#  meta.data - list containing settings controlling data structure
-#  control   - list containing settings controlling model fitting
-#
-# Value:
-# 
-#   model object of class=(method, "ddf")
-#
-# Functions Used: ddf.ds, ddf.io, ddf.trial, ddf.io.fi, ddf.trial.fi, ddf.rem, ddf.rem.fi  
-#
-#   
-#  Save current user options and then set desgn contrasts to treatment style; load stats
-#
+ 
+ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds", 
+                meta.data=list(), control=list()){
+# Functions Used: ddf.ds, ddf.io, ddf.trial, ddf.io.fi, ddf.trial.fi, 
+#                 ddf.rem, ddf.rem.fi  
+
+  # Save current user options and then set desgn contrasts to treatment 
+  # style; load stats
+
   save.options<-options()
   options(contrasts=c("contr.treatment","contr.poly"))
   library(stats)
-#
-# Check to make sure method is valid and correct model components have been specified
-#
-  method=match.arg(method,c("ds","io","io.fi","trial","trial.fi","rem","rem.fi"))
-  if(method %in% c("ds","io","trial","rem"))
-      if(missing(dsmodel))
-         stop("For method=",method,", dsmodel must be specified")
-  if(method != "ds")
-      if(missing(mrmodel))
-         stop("For method=",method,", mrmodel must be specified")
+
+  # Check to make sure method is valid and correct model components 
+  # have been specified
+  method <- match.arg(method,c("ds","io","io.fi","trial","trial.fi",
+                               "rem","rem.fi"))
+
+  if(method %in% c("ds","io","trial","rem")){
+    if(missing(dsmodel)){
+      stop("For method=",method,", dsmodel must be specified")
+    }
+  }
+  if(method != "ds"){
+    if(missing(mrmodel)){
+      stop("For method=",method,", mrmodel must be specified")
+    }
+  }
 #
 # call method specific fitting function
 #
