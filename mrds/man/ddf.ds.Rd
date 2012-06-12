@@ -61,9 +61,8 @@
   tested via simulation.
 }
 \examples{
-#
-# ddf.ds is called in the following example when ddf is called and method="ds"
-#
+# ddf.ds is called when ddf is called with method="ds"
+
 data(book.tee.data)
 region<<-book.tee.data$book.tee.region
 egdata<<-book.tee.data$book.tee.dataframe

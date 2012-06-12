@@ -45,28 +45,8 @@
 #' @author Dave Miller; Jeff Laake
 detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
 {
-#
-# detfct.fit
-#
-# A function for fitting detection functions using a method similar to that of
-# STB's code for MCDS in FORTRAN.
-#
-# Arguments:
-#
-#  ddfobj      		    - detection function object
-#  optim.options 		- control options for optim
-#  bounds			    - bounds for the parameters
-#  misc.options			- things that wouldn't fit in elsewhere
-#
-# Value:
-#
-#  lt				- lt object
-#
 # Functions Used:
 #  assign.par, detfct.fit.opt, errors, get.par 
-#
-# dlm 31-May-2006 Initial work started.
-# dlm 13-July-2007 Re-write of how the adjustment optimisation is done...
 
   # show debug information
   showit<-misc.options$showit
@@ -89,7 +69,6 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
      misc.options$mono | misc.options$nofit){
 
     if(misc.options$mono){
-    
       # get best key pars first
       save.mono<-misc.options$mono
       save.mono.strict<-misc.options$mono.strict
@@ -102,14 +81,11 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
       misc.options$mono.strict<-save.mono.strict
 
       ddfobj<-assign.par(ddfobj,lt$par)
-
-      lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options)
-    }else{
-      lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options)
     }
-  }
-  else
-  {
+
+    lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options)
+
+  }else{
   # Otherwise we need to play around...
 
     # think this needs to live elsewhere, but let's leave it here for
@@ -117,13 +93,13 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
     if(!is.null(ddfobj$adjustment) && ddfobj$adjustment$series=="herm")
       ddfobj$adjustment$parameters<-rep(1,length(ddfobj$adjustment$order))
 
-    initialvalues=getpar(ddfobj)
+    initialvalues <- getpar(ddfobj)
     # This holds the previous values, to test for convergence
     lastvalues <- initialvalues
 
     # Now start to alternate between adjustment and key
     if(showit>=2)
-      errors("starting to cycle the optimisation...")
+      errors("starting to cycle the optimisation...",preamble="Info")
 
     # Fudge to make this work the first time.
     firstrun<-TRUE
@@ -131,8 +107,7 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
     while((iter < misc.options$maxiter) && 
            (all((abs(initialvalues-lastvalues)/(epsilon+abs(lastvalues))) < 
                (epsilon/sqrt(nrow(ddfobj$xmat)))) |
-          		firstrun))
-	 {
+          		firstrun)){
 
       # Variable to count sub iterations... :)
       metaiter<-0
@@ -147,18 +122,22 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
           misc.options$refit<-FALSE
         }
 
-        if(showit==3)
-          errors(paste(fitting,"iteration ",iter,".",metaiter, 
-                       " initial values = ",paste(initialvalues,collapse=", ")))
+        if(showit==3) {
+          errors(paste(fitting," iteration ",iter,".",metaiter,preamble="Info"))
+          errors(paste("initial values = ",
+                 paste(initialvalues,collapse=", "),sep=""),preamble="Info")
+        }
 
-        lt <-try(detfct.fit.opt(ddfobj,optim.options,bounds,misc.options,
+        lt <- try(detfct.fit.opt(ddfobj,optim.options,bounds,misc.options,
                              fitting=fitting))
-        metaiter<-metaiter+1
+        metaiter <- metaiter+1
+
 
         # report failure
         if(all(class(lt)=="try-error")){
           if(showit==3){ 
-            errors(paste("iteration ",iter,", fitting",fitting," failed.\n"))
+            errors(paste("iteration ",iter,", fitting ",
+                         fitting," failed.",sep=""),preamble="Info")
           }
           if(fitting=="all"){
             stop("*** Warning: fitting failed! Try again with better initial values.\n")
@@ -171,16 +150,22 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
             errors(paste("iteration ",iter,".",metaiter,
                          ":\nConverge = ",lt$converge,
                          "\nlnl = ",lt$value,
-                         "\nparameters = ",paste(lt$par,collapse=", ")))
+                         "\nparameters = ",paste(lt$par,collapse=", "),sep=""),
+                   preamble="Info")
           }
 
+          # were any of the pars NA?
+          # if so, reset to initialvalues
+          if(any(is.na(lt$par))){
+            lt$par[is.na(lt$par)]<-initialvalues[is.na(lt$par)]  
+          }
           # Rebuild initialvalues again
-          ddfobj<-assign.par(ddfobj,lt$par)
-          initialvalues<-getpar(ddfobj)
+          ddfobj <- assign.par(ddfobj,lt$par)
+          initialvalues <- getpar(ddfobj)
 
           # save the optimisation history
-          optim.history<-lt$optim.history
-          misc.options$optim.history<-optim.history
+          optim.history <- lt$optim.history
+          misc.options$optim.history <- optim.history
         }
 
         # restore the refit status
@@ -193,12 +178,13 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
 	  
     if(iter>misc.options$maxiter)
       errors(paste("Maximum iterations exceeded!",
-                   iter,">",misc.options$maxiter,"\n"))
+                   iter,">",misc.options$maxiter,sep=""),preamble="Info")
      
     if(showit>=2){
       errors(paste("Convergence!\nIteration ",iter,".",metaiter,
                    "\nConverge = ",lt$converge,"\nlnl = ",lt$value,
-                   "\nparameters = ",paste(lt$par,collapse=", ")))
+                   "\nparameters = ",paste(lt$par,collapse=", "),sep=""),
+             preamble="Info")
     }
   }
 

@@ -47,9 +47,9 @@
 #' @keywords Statistical Models
 #' @examples
 #' 
-#' #
-#' # ddf.ds is called in the following example when ddf is called and method="ds"
-#' #
+#' 
+#' # ddf.ds is called when ddf is called with method="ds"
+#' 
 #' data(book.tee.data)
 #' region<<-book.tee.data$book.tee.region
 #' egdata<<-book.tee.data$book.tee.dataframe
@@ -65,33 +65,9 @@
 #' 
 ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds")
 {
-# 
-# ddf.ds
-#
-# Fits distance sampling detection function for grouped (binned), ungrouped (unbinned) or mixture of the two.
-#
-# Note: if mixture, width must be set to be >= largest interval endpoint; this could be changed with
-#       a more complicated analysis; likewise, if all binned and bins overlap, the above must also hold;
-#       if bins don't overlap, width must be one of the interval endpoints; same holds for left truncation
-#       Although the mixture analysis works in principle it has not been tested via simulation.
-#
-
-# Arguments:
-#
-#  model     - model list with key function, scale formula, shape formula
-#  data      - dataframe
-#  meta.data - list containing settings controlling data structure, selection
-#  control   - list containing settings controlling model fitting
-#
-
-# Value:
-#
-#  result    - ds model object 
-#
 # Functions Used: 
-#        assign.default.values, process.data, create.ddfobj, setbounds, detfct.fit, flt.var, 
-#        predict(predict.ds), NCovered(NCovered.ds)
-#
+#        assign.default.values, process.data, create.ddfobj, setbounds, 
+#        detfct.fit, flt.var, predict(predict.ds), NCovered(NCovered.ds)
 #
 #   Code structure for optimization with optim
 #
@@ -130,7 +106,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
                                 lowerbounds=NA, upperbounds=NA, limit=TRUE,
                                 parscale=NA, maxiter=12, standardize=TRUE, 
                                 mono.points=20, mono.tol=1e-7, mono.delta=1e-7,
-                                debug=FALSE,nofit=FALSE)
+                                debug=FALSE,nofit=FALSE,optimx.method="nlminb",
+                                optimx.maxit=300)
 
 #
 #  Save current user options and then set design contrasts to treatment style
@@ -155,12 +132,9 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #
 #  31 March 06; added code to use all unique detections (observer=1) if observer is present
 #
-   if(!is.null(xmat$observer))
-   {
-      if(control$limit)
-      {
-         if(length(levels(factor(xmat$observer)))>1)
-         {
+   if(!is.null(xmat$observer)){
+      if(control$limit){
+         if(length(levels(factor(xmat$observer)))>1){
             xmat <- xmat[xmat$observer==levels(factor(xmat$observer))[1],]
             xmat$detected <- rep(1,dim(xmat)[1])
          }
@@ -214,7 +188,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
                      mono.points=control$mono.points,
                      mono.tol=control$mono.tol,
                      mono.delta=control$mono.delta,
-                     debug=control$debug,nofit=control$nofit)
+                     debug=control$debug,nofit=control$nofit
+                    )
 
   # debug - print the initial values
   if(misc.options$showit>1){
@@ -224,7 +199,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 
 # Note there is a difference between maxit (the maximum numbr of iterations
 # for optimx() uses) and maxiter (which is what detfct.fit uses.)
-   optim.options <- list(maxit=300)
+   optim.options <- list(maxit=control$optimx.maxit,
+                         optimx.method=control$optimx.method)
 
 #
 # Actually do the optimisation!

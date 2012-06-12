@@ -5,9 +5,10 @@
 #' 
 #' @param errmsg the message to be stored/printed (optional)
 #' @param errmode report or print errors (default report)
+#' @param preamble character string to paste before the message 
 #' @return None
 #' @author Dave Miller
-errors <- function(errmsg=NULL,errmode="report")
+errors <- function(errmsg=NULL,errmode="report",preamble="Warning")
 #
 # errors
 #
@@ -33,7 +34,7 @@ errors <- function(errmsg=NULL,errmode="report")
 
   if(errmode == "report"){
 
-    cat(paste("\n** Warning:",errmsg,"**\n"))
+    cat(paste("\n** ",preamble,": ",errmsg,"**\n",sep=""))
   
   }else{
     cat("\nOnly report is implemented at the moment.\n")

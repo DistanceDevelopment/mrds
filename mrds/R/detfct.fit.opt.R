@@ -44,54 +44,42 @@
 #'   list of formulas for detection function model (probably can remove this)
 #'   }}
 #' @author Dave Miller; Jeff Laake; Lorenzo Milazzo
-detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all")
-{
-#
-# detfct.fit.opt
-#
-# A function to actually do the optimisation.
-#
-# Arguments:
-#
-#  ddfobj            - distance sampling object for the detection function
-#  control.options   - control options for optim
-#  bounds            - bounds for the function
-#  misc.options      - things that wouldn't fit in elsewhere
-#  fitting           - "all","key","adjust"
-#
-# Value:
-#
-#  lt				- lt object (something more descriptive)
-#
-# Functions Used:
-#
-#  assign.par, detfct.fit.opt, errors, get.par 
+detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options, 
+                           fitting="all"){
+  # Functions Used:
+  #  assign.par, detfct.fit.opt, errors, get.par 
 
   # grab the initial values
-  initialvalues<-getpar(ddfobj)
-  initialvalues.set<-initialvalues # store for later
+  initialvalues <- getpar(ddfobj)
+  initialvalues.set <- initialvalues # store for later
 
-  bounded<-TRUE
-  refit.count<-0
+  bounded <- TRUE
+  refit.count <- 0
   # Set some shortcuts
-  lowerbounds<-bounds$lower
-  upperbounds<-bounds$upper
-  showit<-misc.options$showit
-  refit<-misc.options$refit
-  nrefits<-misc.options$nrefits
+  lowerbounds <- bounds$lower
+  upperbounds <- bounds$upper
+  showit <- misc.options$showit
+  refit <- misc.options$refit
+  nrefits <- misc.options$nrefits
 
   # jll 18-sept-2006; added this code to get the logicals that indicate whether
   # lower/upper bound settings were specified by the user
-  setlower<-bounds$setlower
-  setupper<-bounds$setupper
+  setlower <- bounds$setlower
+  setupper <- bounds$setupper
+
+  # grab the method(s) if we're using optimx()
+  if(!(misc.options$mono & !is.null(ddfobj$adjustment))){
+    opt.method <- optim.options$optimx.method
+    optim.options$optimx.method <- NULL
+  }
 
   # 30 Jan 06; jll- modified default parscale values
   if(any(is.na(misc.options$parscale)))
-     misc.options$parscale<-abs(initialvalues)
+     misc.options$parscale <- abs(initialvalues)
   else{
      if(length(misc.options$parscale)!=length(initialvalues)){
         errors("Incorrect length of parameter scale vector; using default values\n")
-        misc.options$parscale<-abs(initialvalues)
+        misc.options$parscale <- abs(initialvalues)
      }
   }
 
@@ -193,7 +181,7 @@ detfct.fit.opt <- function(ddfobj,optim.options,bounds,misc.options,fitting="all
 
       }else{
         # use Jeff's!
-        lt <- suppressPackageStartupMessages(optimx(initialvalues, flnl, method="nlminb", 
+        lt <- try(optimx(initialvalues, flnl, method="nlminb", 
                      control=c(optim.options),hessian=TRUE, lower=lowerbounds,
                      upper=upperbounds,ddfobj=ddfobj, fitting=fitting,
                      misc.options=misc.options,TCI=FALSE))
