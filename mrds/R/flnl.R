@@ -48,37 +48,11 @@
 #' @author Jeff Laake
 #' @seealso \code{\link{flt.var}}, \code{\link{detfct}}
 #' @keywords utility
-flnl <- function(fpar, ddfobj, TCI, misc.options, fitting="all")
-#
-# flt - computes objective function for line transect fitting of grouped/ungrouped distances
-#
-# Arguments:
-#
-# fpar            - det fct parameter values
-# ddfobj           - distance sampling object
-# TCI             - TRUE if point independence
-# misc.options
-#	width           - transect width
-#   int.range       - integration range for observations
-#   showit          - if TRUE shows iteration values
-#   doeachint       - if TRUE doesn't use cgftab and does each integral instead (for testing only)
-#   integral.numeric- if TRUE integral is computed numerically rather than analytically
-# fitting         - "key" if only fitting key fct parameters, "adjust" if fitting adjustment function parameters
-#                     or "all" to fit both.
-#
-#  Value:
-#
-#  lnl - sum of negative log-likelihood values at values of fpar
-#
+flnl <- function(fpar, ddfobj, TCI, misc.options, fitting="all"){
 #  Functions Used:  flt.lnl, fpt.lnl, getpar
-#
-{
-#
 #   If iteration results are printed, output parameter values
 #   17-Aug-05 jll changed value of showit here and below
 #   dlm 05-June-2006 Added an extra level of showit.
-  if(misc.options$showit==3)
-    cat("\npar = ", fpar,"\n")
 
   # dlm 27-May-2006 (or some time around then...)
   # During the optimisation we want to make sure that we are keeping the right things
@@ -109,10 +83,6 @@ flnl <- function(fpar, ddfobj, TCI, misc.options, fitting="all")
     }
   } 		
 
-  #pars=getpar(ddfobj)
-  #pars[which(is.na(pars))]<-fpar[which(is.na(pars))]
-  #fpar<-pars
-
   if(misc.options$point){
     lnl<-sum(fpt.lnl(fpar, ddfobj, TCI, misc.options))
   }else{
@@ -120,8 +90,10 @@ flnl <- function(fpar, ddfobj, TCI, misc.options, fitting="all")
   }
 
   # If iteration results are printed, output log-likelihood
-  if(misc.options$showit==3)
+  if(misc.options$showit==3){
+    cat("\npar = ", fpar,"\n")
     cat("lt lnl = ", lnl,   "\n")    
+  }
   
   return(lnl)
 }
