@@ -21,8 +21,8 @@
   all can be null except type: \item{type}{type of
   detection function hn,hr,gamma,unif,logistic}
   \item{xmat}{model data frame} \item{intercept.only}{TRUE
-  if scale = ~1 and no shape parameter} \item{cgftab}{table
-  of standardized integral values for half-normal}
+  if scale = ~1 and any shape formula =~1}
+  \item{cgftab}{table of standardized integral values}
   \item{scale}{sublist with elements (can be NULL i.e.,
   unif key):formula, parameters, design matrix (dm)}
   \item{shape}{sublist with elements (power of hazard rate

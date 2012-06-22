@@ -6,8 +6,6 @@
 #' 
 #' 
 #' @param ddfobj distance sampling object
-#' @param TCI TRUE if point independence assumed (only relevant for double
-#'   observer survey analysis)
 #' @param misc.options width-transect width (W); int.range-integration range
 #'   for observations; showit-if TRUE shows values of parameters and
 #'   log-likelihood; doeachint-if TRUE doesn't use cgftab and does each
@@ -18,10 +16,10 @@
 #'   distance sampling detection functions.  It is not intended for the user to
 #'   invoke this function but it is documented here for completeness.
 #' @author Jeff Laake
-#' @seealso \code{\link{flnl}},\code{\link{flt.lnl}},\code{\link{ddf.ds}}
+#' @seealso \code{\link{flnl}},\code{\link{flpt.lnl}},\code{\link{ddf.ds}}
 #' @references Buckland et al. 2002
 #' @keywords utility
-flt.var <- function(ddfobj, TCI, misc.options)
+flt.var <- function(ddfobj, misc.options)
 #   flt.var - computes hessian for v-c matrix (see pg 62 of Buckland et al 2002)
 #
 #   Arguments: see flt for definitions
@@ -44,15 +42,9 @@ flt.var <- function(ddfobj, TCI, misc.options)
 	deltap=.0001*fpar1[i]
 	if(deltap==0)deltap=0.0001
     fpar[i] <- fpar1[i]- deltap
-	if(misc.options$point)
-		x1=-fpt.lnl(fpar, ddfobj,TCI,misc.options)
-	else
-	   x1=-flt.lnl(fpar, ddfobj,TCI,misc.options)
+		x1=-flpt.lnl(fpar, ddfobj,misc.options)
     fpar[i] <- fpar1[i]+deltap
-	if(misc.options$point)
-		x2=-fpt.lnl(fpar, ddfobj,TCI,misc.options)
-	else
-		x2=-flt.lnl(fpar, ddfobj,TCI,misc.options)
+		x2=-flpt.lnl(fpar, ddfobj,misc.options)
 	parmat=cbind(parmat,(x2-x1)/(2*deltap))
   }
 #

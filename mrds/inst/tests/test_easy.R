@@ -29,7 +29,7 @@ test_that("golf tee data gives the same results as Distance",{
   result.mcds<-ddf(dsmodel=~mcds(key = "hn", formula=~1), 
                    data=egdata[egdata$observer==1,], method="ds", 
                    meta.data=list(width=4))
-  expect_that(result.mcds$Nhat, equals(212.2289,tolerance=1e-6))
+  expect_that(result.mcds$Nhat, equals(212.229,tolerance=1e-3))
 
 
 #  # check that uniform key works

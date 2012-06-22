@@ -73,10 +73,9 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #
 #    ddf.ds --> detfct.fit --> detfct.fit.opt --> optimx or solnp --> flnl 
 #                   
-#      flnl--> flt.lnl -->
-#              fpt.lnl --> detfct
-#                         tablecgf --> gstdint
-#                         integratedetfct --> detfct, gstdint, tablecgf
+#      flnl--> flpt.lnl --> distpdf ---> detfct
+#                           tablecgf --> gstdint --> integratepdf ---> distpdf
+#                           integratedpdf --> distpdf
 #
 #   Detection function and options are described in ddfobj which is created by create.ddfobj.
 #   That function creates list structure and sets up initial values.
@@ -226,7 +225,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
   }
 
   # 4-Jan-12 dlm sometimes this fails, so wrap it up in a try()
-  result$hessian <- try(flt.var(result$ds$aux$ddfobj, TCI = FALSE, misc.options))
+  result$hessian <- try(flt.var(result$ds$aux$ddfobj, misc.options))
 
   # 23-Jan-06 jll   Changed this back to use formula in Buckland et al or it 
   # doesn't match DISTANCE unless the result is singular

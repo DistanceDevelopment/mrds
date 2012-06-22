@@ -80,7 +80,7 @@ function(object,newdata=NULL,compute=FALSE,int.range=NULL,esw=FALSE,...)
 	model <- object
 	ltmodel<-model$ds
 	x <- ltmodel$aux$ddfobj$xmat   
-	point=ltmodel$aux$point
+	point <- ltmodel$aux$point
 	width <- ltmodel$aux$width
 #
 #   If there are no fitted values present or compute is set TRUE or
@@ -103,9 +103,10 @@ function(object,newdata=NULL,compute=FALSE,int.range=NULL,esw=FALSE,...)
 # dlm 21/07/2005	Got rid of ambiguity in control structure
     if(is.null(int.range)){
       if(is.null(ltmodel$aux$int.range)){
-        int.range=c(0,width)
+        int.range <- cbind(rep(0,nrow(ddfobj$xmat)),rep(width,nrow(ddfobj$xmat)))
       }else{
-        int.range=ltmodel$aux$int.range
+        int.range <- ltmodel$aux$int.range
+		if(is.vector(int.range)) int.range <- cbind(rep(int.range[1],nrow(ddfobj$xmat)),rep(int.range[2],nrow(ddfobj$xmat)))
       }
     }
 #
@@ -144,7 +145,10 @@ function(object,newdata=NULL,compute=FALSE,int.range=NULL,esw=FALSE,...)
 #       if(ftype=="logistic")
 #          int1=integratedetfct.logistic (x,ltmodel$model$scalemodel,width,int.range,theta1,ltmodel$aux$integral.numeric,z)
 #       else
-    int1=integratedetfct(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),width=width,int.range=int.range,doeachint=doeachint,point=point)
+  	 ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=TRUE, point=point)
+     int1 <- integratepdf(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),width=width,
+		int.range=int.range,doeachint=doeachint,standardize=TRUE,point=point)
+#    int1=integratedetfct(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),width=width,int.range=int.range,doeachint=doeachint,point=point)
 #
 #   If the predicted values don't need to be computed, then use the values in the
 #   model object (model$fitted) and change to integral (esw) values.  Note this needs to

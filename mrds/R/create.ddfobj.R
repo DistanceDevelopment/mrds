@@ -14,8 +14,8 @@
 #' @return Distance sampling function object list with elements that all can be
 #'   null except type: \item{type}{type of detection function
 #'   hn,hr,gamma,unif,logistic} \item{xmat}{model data frame}
-#'   \item{intercept.only}{TRUE if scale = ~1 and no shape parameter}
-#'   \item{cgftab}{table of standardized integral values for half-normal}
+#'   \item{intercept.only}{TRUE if scale = ~1 and any shape formula =~1}
+#'   \item{cgftab}{table of standardized integral values}
 #'   \item{scale}{sublist with elements (can be NULL i.e., unif key):formula,
 #'   parameters, design matrix (dm)} \item{shape}{sublist with elements (power
 #'   of hazard rate or gamma) (can be NULL i.e., unif or hn key):formula,
@@ -26,34 +26,8 @@
 #' @note Internal function not meant to be called by user
 #' @author Jeff Laake
 #' @seealso \code{\link{detfct}}, \code{\link{ddf}}
-create.ddfobj <- function(model,xmat,meta.data,initial){
-
-# Creates distance sampling function object
-#
-# Distance sampling function object: List with elements (all can be null except type)
-#	type           - type of detection function hn,hr,gamma,unif,logistic
-#   xmat           - model data frame
-#   intercept.only - TRUE if scale = ~1 and no shape parameter
-#   cgftab         - table of standardized integral values for half-normal
-#	scale - sublist with elements (can be NULL i.e., unif key)
-#	    formula
-# 	    parameters
-#	    design matrix (dm)
-#	shape - sublist with elements (power of hazard rate or gamma) (can be NULL i.e., unif or hn key)
-#	    formula
-#	    parameters
-#	    design matrix (dm)
-#	adjustment - sublist with elements (is NULL if no adjustments used)
-#       series
-#	    order
-#	    scale
-#       parameters (dm)
-#	g0 - sublist with elements (not used at present)
-#   	formula
-#	    parameters
-#	    design matrix (dm)
-#	    link
-	##############################################################################	
+create.ddfobj <- function(model,xmat,meta.data,initial)
+{
 # Create empty object and get values from cds or mcds function
   ddfobj <- vector("list")
   point <- meta.data$point
@@ -116,7 +90,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   # Set up integral table if this is a half-normal detection function and
   # it is not an intercept.only and likelihood will incorporate integrals
   if(ddfobj$type%in%c("hn","unif")){
-    ddfobj$cgftab <- tablecgf(ddfobj=ddfobj,width=meta.data$width,point=point)
+    ddfobj$cgftab <- tablecgf(ddfobj=ddfobj,width=meta.data$width,point=point,standardize=FALSE)
   }else{
     ddfobj$cgftab <- NULL
   }

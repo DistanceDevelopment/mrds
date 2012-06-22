@@ -72,7 +72,8 @@ ddf.gof(ds.model)
 stkpairs=extract.stake.pairs(stake77,1,3,removal=FALSE)
 io.model=ddf(dsmodel = ~mcds(key = "hn", formula=~1), mrmodel=~glm(formula=~distance),data = stkpairs, method = "io")
 summary(io.model)
-plot(io.model,breaks=seq(0,20,2),showpoints=TRUE)
+par(mfrow=c(3,2))
+plot(io.model,breaks=seq(0,20,2),showpoints=TRUE,new=FALSE)
 ddf.gof(io.model)
 }
 \references{

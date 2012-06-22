@@ -85,7 +85,7 @@ test_that("monotonic and non-monotonic fits are different for non-monotone data"
    set.seed(3141)
 
    # simulate some non-monotonic data
-   dat<-sim.mix(100,c(0.1,3),c(0.3,0.7),10,means=c(0,4))
+   dat<-mrds:::sim.mix(100,c(0.1,3),c(0.3,0.7),10,means=c(0,4))
    dat<-data.frame(distance=dat,object=1:length(dat),observed=rep(1,length(dat)))
 
    trunc<-7
@@ -112,16 +112,16 @@ test_that("monotonic and non-monotonic fits are different for non-monotone data"
    newdata<-data.frame(distance=x,object=1:length(x),observed=rep(1,length(x)))
 
    ddfobj<-result.n$ds$aux$ddfobj
-   ddfobj$scale$dm<-setcov(newdata, as.formula(ddfobj$scale$formula))$cov
-   pred.n<-detfct(x,ddfobj,width=trunc)
+   ddfobj$scale$dm<-mrds:::setcov(newdata, as.formula(ddfobj$scale$formula))$cov
+   pred.n<-mrds:::detfct(x,ddfobj,width=trunc)
 
    ddfobj<-result.w$ds$aux$ddfobj
-   ddfobj$scale$dm<-setcov(newdata, as.formula(ddfobj$scale$formula))$cov
-   pred.w<-detfct(x,ddfobj,width=trunc)
+   ddfobj$scale$dm<-mrds:::setcov(newdata, as.formula(ddfobj$scale$formula))$cov
+   pred.w<-mrds:::detfct(x,ddfobj,width=trunc)
 
    ddfobj<-result.s$ds$aux$ddfobj
-   ddfobj$scale$dm<-setcov(newdata, as.formula(ddfobj$scale$formula))$cov
-   pred.s<-detfct(x,ddfobj,width=trunc)
+   ddfobj$scale$dm<-mrds:::setcov(newdata, as.formula(ddfobj$scale$formula))$cov
+   pred.s<-mrds:::detfct(x,ddfobj,width=trunc)
 
    expect_that(all(diff(order(pred.n,decreasing=TRUE))==1),is_false())
    expect_that(all(diff(order(pred.w,decreasing=TRUE))==1),is_true())

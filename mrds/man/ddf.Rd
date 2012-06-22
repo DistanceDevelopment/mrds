@@ -245,10 +245,10 @@ ptdata.single$distbegin=(as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
 ptdata.single$distend=(as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
 model=ddf(data=ptdata.single,dsmodel=~cds(key="hn"),meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
 summary(model)
-plot(model,main="Single observer binned point data - half normal",new=FALSE)
+plot(model,main="Single observer binned point data - half normal")
 model=ddf(data=ptdata.single,dsmodel=~cds(key="hr"),meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
 summary(model)
-plot(model,main="Single observer binned point data - hazard rate",new=FALSE)
+plot(model,main="Single observer binned point data - hazard rate")
 
 dev.new()
 data(ptdata.dual)
@@ -257,11 +257,11 @@ ptdata.dual$distend=(as.numeric(cut(ptdata.dual$distance,10*(0:10))))*10
 model=ddf(method="io",data=ptdata.dual,dsmodel=~cds(key="hn"),mrmodel=~glm(formula=~distance*observer),meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
 summary(model)
 par(mfrow=c(2,3))
-plot(model,main="Dual observer binned point data")
+plot(model,main="Dual observer binned point data",new=FALSE)
 model=ddf(method="io",data=ptdata.dual,dsmodel=~cds(key="unif",adj.series="cos", adj.order=1),mrmodel=~glm(formula=~distance*observer),meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
 summary(model)
 par(mfrow=c(2,3))
-plot(model,main="Dual observer binned point data")
+plot(model,main="Dual observer binned point data",new=FALSE)
 }
 \author{
   Jeff Laake

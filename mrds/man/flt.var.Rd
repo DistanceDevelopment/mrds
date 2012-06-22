@@ -2,13 +2,10 @@
 \alias{flt.var}
 \title{Hessian computation for fitted distance detection function model parameters}
 \usage{
-  flt.var(ddfobj, TCI, misc.options)
+  flt.var(ddfobj, misc.options)
 }
 \arguments{
   \item{ddfobj}{distance sampling object}
-
-  \item{TCI}{TRUE if point independence assumed (only
-  relevant for double observer survey analysis)}
 
   \item{misc.options}{width-transect width (W);
   int.range-integration range for observations; showit-if
@@ -39,7 +36,7 @@
   Buckland et al. 2002
 }
 \seealso{
-  \code{\link{flnl}},\code{\link{flt.lnl}},\code{\link{ddf.ds}}
+  \code{\link{flnl}},\code{\link{flpt.lnl}},\code{\link{ddf.ds}}
 }
 \keyword{utility}
 

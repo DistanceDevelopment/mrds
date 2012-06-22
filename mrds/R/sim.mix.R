@@ -8,7 +8,6 @@
 #' @param mix.prop vector of mixture proportions (same length as sigma)
 #' @param width truncation
 #' @param means vector of means (used to generate wacky, non-monotonic data)
-#'
 #' @return distances a vector of distances
 #'
 #' @author David Lawrence Miller

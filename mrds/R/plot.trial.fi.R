@@ -106,9 +106,10 @@
 #' samples<<-book.tee.data$book.tee.samples
 #' obs<<-book.tee.data$book.tee.obs
 #' xx=ddf(dsmodel = ~mcds(key = "hn", formula = ~sex), data = egdata[egdata$observer==1, ], method = "ds", meta.data = list(width = 4))
-#' plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
-#' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
-#' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
+#' par(mfrow=c(2,2))
+#' plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE,new=FALSE)
+#' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0,new=FALSE)
+#' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1,new=FALSE)
 #' 
 "plot.trial.fi" <-
 		function(x, which=1:2, breaks=NULL, nc=NULL,  maintitle="", showlines=TRUE, showpoints=TRUE, 

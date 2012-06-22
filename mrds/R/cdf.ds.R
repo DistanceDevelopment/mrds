@@ -54,40 +54,41 @@ function(model,newdata=NULL)
   cgftab <- ddfobj$cgftab
   point <- model$meta.data$point
 #
-# Set up integration range
+# Set up integration ranges
 #
   if(is.null(ltmodel$aux$int.range)){
-    int.range=cbind(rep(0,dim(x)[1]+1),c(width,x$distance))
+    int.range=as.matrix(cbind(rep(0,nrow(x)+1),c(width,x$distance)))
   }else{
     int.range=ltmodel$aux$int.range
-    if(is.matrix(int.range))
+	if(is.vector(int.range))int.range=matrix(int.range,nrow=1)
+    if(nrow(int.range)>1)
       int.range[,2]=c(width,x$distance)
     else
-      int.range=cbind(rep(int.range[1],dim(x)[1]+1),c(width,x$distance))
+      int.range=cbind(rep(int.range[1],nrow(x)+1),c(width,x$distance))
   }
+  int.range <- int.range[-1,]
 
 #
 # If there are no adjustments
 #
-  if(any(is.null(ddfobj$adjustment$order))){
+#  if(any(is.null(ddfobj$adjustment$order))){
 #
 #      Do integration of g(x) from inner (0 or left) to x
 #
-	 int1<-integratedetfct(ddfobj=ddfobj,select=rep(TRUE,nrow(x)),width=width,
+	int1<-integratepdf(ddfobj=ddfobj,select=rep(TRUE,nrow(x)),width=width,
                           int.range=int.range, doeachint=TRUE,
-                          standardize=ltmodel$aux$misc.options$standardize,
-                          point=point)
+                          standardize=TRUE,point=point)
 	  
-#   integral of g(x) over entire integration range (e.g., 0 to W)
+#   integral of g(x) over entire integration range 
     int2=predict(model,integrate=TRUE,esw=FALSE,compute=TRUE)$fitted
 		
 #
 # If there are adjustments...
 #
-  }else{
+#  }else{
 
-    left <- int.range[2:dim(int.range)[1],1]
-    right <- int.range[2:dim(int.range)[1],2]
+#    left <- int.range[2:dim(int.range)[1],1]
+#    right <- int.range[2:dim(int.range)[1],2]
 
 # dlm Oct-11 this doesn't work with Jeff's new detfct...
 #    int1<-integrate(detfct,select=rep(TRUE,nrow(x)),lower=left,upper=right,
@@ -116,29 +117,29 @@ function(model,newdata=NULL)
 #    }
 
    # this might be better?
-   n<-length(x$distance)
+#   n<-length(x$distance)
 
    # create a matrix to apply()
    # left limit, right limit, index (for select), number of entries
-   lrdata<-cbind(left,right,1:n,rep(n,n))
+#   lrdata<-cbind(left,right,1:n,rep(n,n))
    
    # integration function
-   intf<-function(lrdata,width,ddfobj){
-      sel<-rep(FALSE,lrdata[4])
-      sel[lrdata[3]]<-TRUE
-      integrate(detfct,select=sel,
-                lower=lrdata[1],upper=lrdata[2],
-                ddfobj=ddfobj,width=width)$value
-   }
+#  intf<-function(lrdata,width,ddfobj){
+#      sel<-rep(FALSE,lrdata[4])
+#      sel[lrdata[3]]<-TRUE
+#      integrate(detfct,select=sel,
+#                lower=lrdata[1],upper=lrdata[2],
+#                ddfobj=ddfobj,width=width)$value
+#   }
    
    # apply number 1
-   int1<-apply(lrdata,1,intf,width=width,ddfobj=ddfobj)
+#   int1<-apply(lrdata,1,intf,width=width,ddfobj=ddfobj)
    # modify the data so it's just integration over (0,width)
-   lrdata<-cbind(rep(0,n),rep(width,n),1:n,rep(n,n))
+#   lrdata<-cbind(rep(0,n),rep(width,n),1:n,rep(n,n))
    # do the integration 
-   int2<-apply(lrdata,1,intf,width=width,ddfobj=ddfobj)
+#   int2<-apply(lrdata,1,intf,width=width,ddfobj=ddfobj)
 
-  }
+#  }
 
 #
 #   Divide by integral of g(x) over entire integration range (e.g., 0 to W); 

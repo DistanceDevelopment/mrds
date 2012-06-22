@@ -94,13 +94,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
     lt$par<-initialvalues
 
-    lt$value<-flnl(initialvalues,ddfobj,TCI=FALSE,misc.options)
-#    lt <- optimx(initialvalues, flnl, method="nlminb", 
-#                 control=list(maxit=1),hessian=TRUE, lower=lowerbounds,
-#                 upper=upperbounds,ddfobj=ddfobj, fitting="all",
-#                 misc.options=misc.options,TCI=FALSE)
-#    lt <-attr(lt,"details")[[1]]
-#    lt$hessian<-lt$nhatend
+    lt$value<-flnl(initialvalues,ddfobj,misc.options)
     lt$hessian<-NULL
     lt$model <- list(scalemodel=misc.options$scalemodel) 
     lt$converge<-0#lt$conv
@@ -156,7 +150,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                   ineqfun=flnl.constr, 
                   ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
                   LB=lowerbounds, UB=upperbounds, 
-                  ddfobj=ddfobj, TCI=FALSE, misc.options=misc.options,
+                  ddfobj=ddfobj, misc.options=misc.options,
                   control=list(trace=as.integer(showit),
                                tol=misc.options$mono.tol,
                                delta=misc.options$mono.delta)))
@@ -185,7 +179,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                      control=c(optim.options,follow.on=TRUE),
                      hessian=TRUE, lower=lowerbounds,
                      upper=upperbounds,ddfobj=ddfobj, fitting=fitting,
-                     misc.options=misc.options,TCI=FALSE))
+                     misc.options=misc.options))
         lt <-attr(lt,"details")[[1]]
         lt$hessian<-lt$nhatend
       }

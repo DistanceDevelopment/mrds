@@ -1,16 +1,12 @@
 \name{gstdint}
 \alias{gstdint}
-\title{Integral of standardized (scale=1) detection function}
+\title{Integral of pdf of distances}
 \usage{
-  gstdint(x, xmin = NULL, ddfobj, index = NULL,
-    select = NULL, width, standardize = TRUE,
-    point = FALSE)
+  gstdint(x, ddfobj, index = NULL, select = NULL, width,
+    standardize = TRUE, point = FALSE, stdint = TRUE)
 }
 \arguments{
-  \item{x}{vector of lower or upper values for integral
-  bound (depending on value of xmin)}
-
-  \item{xmin}{lower bound if specified}
+  \item{x}{lower,upper value for integration}
 
   \item{ddfobj}{distance detection function specification}
 
@@ -26,19 +22,16 @@
 
   \item{point}{logical to determine if point count(TRUE) or
   line transect(FALSE)}
+
+  \item{stdint}{if TRUE, scale=1 otherwise specified scale
+  used}
 }
 \value{
-  vector of integral values of detection function with
-  scale=1
+  vector of integral values of detection function
 }
 \description{
-  Computes the integral of a standardized (scale=1)
-  detection function for a specified range
-}
-\details{
-  If \code{xmin} is specified it computes the integral from
-  \code{xmin} to each value in \code{x}; otherwise, it
-  computes the integral from 0 to \code{x}.
+  Computes the integral of distpdf with scale=1
+  (stdint=TRUE) or specified scale (stdint=FALSE)
 }
 \note{
   This is an internal function that is not intended to be
