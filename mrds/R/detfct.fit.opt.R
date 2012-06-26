@@ -72,21 +72,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     opt.method <- optim.options$optimx.method
     optim.options$optimx.method <- NULL
   }
-
-  # 30 Jan 06; jll- modified default parscale values
-  if(any(is.na(misc.options$parscale)))
-     misc.options$parscale <- abs(initialvalues)
-  else{
-     if(length(misc.options$parscale)!=length(initialvalues)){
-        errors("Incorrect length of parameter scale vector; using default values\n")
-        misc.options$parscale <- abs(initialvalues)
-     }
-  }
-
   # if nofit=TRUE, we just want to set the parameters, calculate the 
   # likelihood and exit
   if(misc.options$nofit){
-    if(any(is.na(initialvalues))){
+    if(!is.null(initialvalues) && any(is.na(initialvalues))){
       stop("No fitting, but initial values not specified!\n")
     }
 
@@ -110,7 +99,16 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     lt$conv<-NULL
     return(lt)
   }
-
+  # 30 Jan 06; jll- modified default parscale values
+  if(any(is.na(misc.options$parscale)))
+	  misc.options$parscale <- abs(initialvalues)
+  else{
+	  if(length(misc.options$parscale)!=length(initialvalues)){
+		  errors("Incorrect length of parameter scale vector; using default values\n")
+		  misc.options$parscale <- abs(initialvalues)
+	  }
+  }
+  
   # save last value of the lnl -- starting value
   lnl.last<-Inf
 
@@ -215,19 +213,19 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           if(lt$value<=lnl.last){
             # conv==1 has a different meaning in optimx() and solnp()
             if(lt$conv==1 && !misc.options$mono){
-              initialvalues<-lt$par
+              initialvalues <- lt$par
             }else{
-              initialvalues<-lt$par*(runif(length(initialvalues))+.5)
+              initialvalues <- lt$par*(runif(length(initialvalues))+.5)
               # monotonicity constraints, reset the adjustments to zero
               # otherwise we end up with an infeasible problem
               if(misc.options$mono & !is.null(ddfobj$adjustment)){
                 initialvalues[(length(initialvalues)-
                               length(ddfobj$adjustment$parameters)+1):
-                              length(initialvalues)]<-0
+                              length(initialvalues)] <- 0
               }
           
             }
-            lnl.last<-lt$value
+            lnl.last <- lt$value
           }else{
               # if the new values weren't as good, take the last set
               # and jiggle them a bit...
@@ -237,7 +235,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
               if(misc.options$mono & !is.null(ddfobj$adjustment)){
                 initialvalues[(length(initialvalues)-
                               length(ddfobj$adjustment$parameters)+1):
-                              length(initialvalues)]<-0
+                              length(initialvalues)] <- 0
               }
 
           }

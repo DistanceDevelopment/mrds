@@ -10,6 +10,7 @@
 #'   (Hermite polynomials), poly (simple polynomials) or NULL
 #' @param adj.order vector of order of adjustment terms to include
 #' @param adj.scale whether to scale the adjustment terms by "width" or "scale"
+#' @param adj.exp if TRUE uses exp(adj) for adjustment to keep f(x)>0
 #' @param formula formula for scale function (included for completeness only
 #'   only formula=~1 for cds)
 #' @param shape.formula formula for shape function
@@ -22,7 +23,7 @@
 #' @author Jeff Laake; Dave Miller
 #' @keywords utility
 cds <-
-		function(key=NULL,adj.series=NULL,adj.order=NULL,adj.scale="width",formula=~1,shape.formula=~1)
+		function(key=NULL,adj.series=NULL,adj.order=NULL,adj.scale="width",adj.exp=FALSE,formula=~1,shape.formula=~1)
 #
 #  cds - creates model formula list for conventional distance sampling
 #
@@ -42,6 +43,6 @@ cds <-
 # Since we only have a special case of mcds here, lets just let it
 # do the work.
 {
-	return(mcds(formula,shape.formula=shape.formula,key=key,adj.series=adj.series,adj.order=adj.order,adj.scale=adj.scale))
+	return(mcds(formula,shape.formula=shape.formula,key=key,adj.series=adj.series,adj.order=adj.order,adj.scale=adj.scale,adj.exp=adj.exp))
 }
 

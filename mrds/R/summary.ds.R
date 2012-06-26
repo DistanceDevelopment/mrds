@@ -63,24 +63,26 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
   # se is included as part of the objects, see coef.ds
   # for details
   coeff <- coef(model)
+  if(!is.null(coeff))
+     # Scale Coefficient
+        ans$coeff$key.scale <- coeff$scale
 
-  # Scale Coefficient
-  ans$coeff$key.scale <- coeff$scale
-
-  # Hazard shape parameter
-  if(ans$key%in%c("gamma","hr")){
-    ans$coeff$key.shape <- coeff$exponent
-  }
+     # Hazard shape parameter
+        if(ans$key%in%c("gamma","hr")){
+         ans$coeff$key.shape <- coeff$exponent
+        }
   
-  # Adjustment term parameter(s)
-  # See coef.ds() on how this is returned
-  # This is a vector remember, so if you are using this 
-  # you need to take that into account.
-  if(!is.null(coeff$adjustment)){
-	ans$adjustment=model$ds$aux$ddfobj$adjustment
-    ans$coeff$adj.order <- model$adj.order
-    ans$coeff$adj.parm <- coeff$adjustment
-  }
+     # Adjustment term parameter(s)
+     # See coef.ds() on how this is returned
+     # This is a vector remember, so if you are using this 
+     # you need to take that into account.
+     if(!is.null(coeff$adjustment)){
+	   ans$adjustment=model$ds$aux$ddfobj$adjustment
+       ans$coeff$adj.order <- model$adj.order
+       ans$coeff$adj.parm <- coeff$adjustment
+     }
+  else
+	  ans$coeff <- NULL
   
   # AIC
   ans$aic <- model$criterion
@@ -94,7 +96,7 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
 #  ans$average.f0=fzero/model$Nhat
 
   # 26 Jan 06 jll; added code for se of average p and f(0)
-  if(se){
+  if(se &!is.null(ans$coeff)){
     vcov <- solvecov(model$hessian)$inv
     Nhatvar.list <- DeltaMethod(model$par,NCovered,vcov,0.001,
                                  model=model,group=TRUE)
@@ -114,12 +116,12 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
 
   if(N){
     ans$Nhat <- model$Nhat
-    if(se){
+    if(se&!is.null(ans$coeff)){
        ans$Nhat.se <- sqrt(Nhatvar)
     }
   }
 
-  if(se){
+  if(se&!is.null(ans$coeff)){
     # ans$average.f0.se <- sqrt(var.fzero)
     ans$average.p.se <- sqrt(var.pbar)
   }

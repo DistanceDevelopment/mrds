@@ -91,9 +91,6 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #
 # Set up meta data values
 #
-  setdoeachint=FALSE
-  if(!is.null(meta.data$doeachint)) setdoeachint=TRUE
-
   meta.data<-assign.default.values(meta.data, left=0, width=NA, binned=FALSE, 
                                    int.range=NA, mono=FALSE, mono.strict=TRUE,
                                    point=FALSE)
@@ -166,16 +163,24 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
 #  Setup detection model
 #               
   ddfobj <- create.ddfobj(model,xmat,meta.data,control$initial) 
+  # set doeachint=TRUE if a shape formula is used
   if(!is.null(ddfobj$shape) && ncol(ddfobj$shape$dm)>1){
-    doeachint <- TRUE
-  }
-  if(!setdoeachint & !is.null(ddfobj$shape)){
     control$doeachint <- TRUE
   }
+  # set doeachint=TRUE if adj.scale="width" and key not uniform
+  if(ddfobj$type!="unif"&&!is.null(ddfobj$adjustment))
+	  if(ddfobj$adjustment$scale=="width")
+	  {
+		  cat("\nsetting doeachint to TRUE; cannot use integral scaling with adj.scale=width and non-uniform key")
+		  control$doeachint=TRUE
+	  }
   initialvalues <- c(ddfobj$shape$parameters,ddfobj$scale$parameters,
                      ddfobj$adjustment$parameters)
-  bounds <- setbounds(control$lowerbounds,control$upperbounds,
+  if(!is.null(initialvalues))
+     bounds <- setbounds(control$lowerbounds,control$upperbounds,
                       initialvalues,ddfobj)
+  else
+	 bounds <- NULL
   misc.options<-list(point=meta.data$point, int.range=meta.data$int.range,
                      showit=control$showit, doeachint=control$doeachint,
                      integral.numeric=control$integral.numeric, breaks=breaks,
@@ -189,9 +194,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
                      mono.delta=control$mono.delta,
                      debug=control$debug,nofit=control$nofit
                     )
-
   # debug - print the initial values
-  if(misc.options$showit>1){
+  if(misc.options$showit>1 && !is.null(initialvalues)){
     cat("initialvalues=",initialvalues,"\n")
   }
 
@@ -202,10 +206,13 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
                         optimx.method=control$optimx.method)
 
 #
-# Actually do the optimisation!
+# Actually do the optimisation if not just a uniform key!
 #
+  if(is.null(initialvalues))misc.options$nofit <- TRUE
   lt <- detfct.fit(ddfobj,optim.options,bounds,misc.options)
-
+#  else
+#	  lt <- list(par=NULL,value=sum(flpt.lnl(fpar=NULL,ddfobj,misc.options)),converge=0,message="")	  
+#  }
 #
 # add call and others to return values
 #
@@ -225,23 +232,27 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
   }
 
   # 4-Jan-12 dlm sometimes this fails, so wrap it up in a try()
-  result$hessian <- try(flt.var(result$ds$aux$ddfobj, misc.options))
-
+  if(is.null(lt$par))
+     lt$hessian <- NULL	  
+  else
+  {	  
+	  result$hessian <- try(flt.var(result$ds$aux$ddfobj, misc.options))
   # 23-Jan-06 jll   Changed this back to use formula in Buckland et al or it 
   # doesn't match DISTANCE unless the result is singular
-  if(class(result$hessian)=="try-error"){
+     if(class(result$hessian)=="try-error"){
     # the hessian returned from solnp() is not what we want, warn about 
     # that and don't return it
-    if(misc.options$mono){
-      cat("First partial hessian calculation failed with monotonicity enforced, no hessian\n")
-    }else{
-      cat("First partial hessian calculation failed; using second-partial hessian\n")
-      result$hessian <- lt$hessian
-    }
-  }else if(length(lt$par)>1){
-    if(class(try(solve(result$hessian),silent=TRUE))=="try-error"){
-      cat("First partial hessian is singular; using second-partial hessian\n")
-      result$hessian <- lt$hessian
+         if(misc.options$mono){
+            cat("First partial hessian calculation failed with monotonicity enforced, no hessian\n")
+         }else{
+            cat("First partial hessian calculation failed; using second-partial hessian\n")
+            result$hessian <- lt$hessian
+         }
+    }else if(length(lt$par)>1){
+       if(class(try(solve(result$hessian),silent=TRUE))=="try-error"){
+           cat("First partial hessian is singular; using second-partial hessian\n")
+           result$hessian <- lt$hessian
+       }
     }
   }
   modpaste <- paste(model)

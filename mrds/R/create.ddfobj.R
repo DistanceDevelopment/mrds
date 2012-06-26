@@ -46,17 +46,15 @@ create.ddfobj <- function(model,xmat,meta.data,initial)
   if(!is.null(modelvalues$adj.series)){
 
     if(is.null(modelvalues$adj.order)){
-      stop("You must specify an adjustment order via adj.order")
+      stop("You must specify adjustment order(s) via adj.order")
     }
-
+    if(is.null(modelvalues$adj.exp))modelvalues$adj.exp=FALSE
     ddfobj$adjustment <- list(series = modelvalues$adj.series, 
                               order = modelvalues$adj.order,
-                              scale = modelvalues$adj.scale)
+                              scale = modelvalues$adj.scale,
+					          exp=modelvalues$adj.exp)
   }else{
     ddfobj$adjustment=NULL
-  }
-  if(ddfobj$type=="unif"&is.null(ddfobj$adjustment)){
-    stop("Cannot use uniform key without adjustments")
   }
 # Assign scale and shape(if any) formulas 
   if(ddfobj$type!="unif")

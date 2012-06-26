@@ -1,5 +1,5 @@
 adjfct.poly <-
-		function(distance,scaling=1,adj.order,adj.parm=NULL)
+		function(distance,scaling=1,adj.order,adj.parm=NULL,adj.exp=FALSE)
 #
 # adjfct.poly
 #
@@ -26,7 +26,9 @@ adjfct.poly <-
 	
 	for(i in 1:length(adj.order))
 		polysum <- polysum + (adj.parm[i]*(distance/scaling)^adj.order[i])
-	
-	return(polysum)
-	
+#   if adj.exp return exp(polysum) to keep f(x)>0	
+	if(adj.exp)
+		return(exp(polysum))
+	else		
+	    return(polysum)
 }

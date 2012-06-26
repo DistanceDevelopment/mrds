@@ -116,7 +116,7 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 #
 # Set up control values
 #
-   control=assign.default.values(control,showit = FALSE, doeachint=FALSE, estimate=TRUE,refit=TRUE,nrefits=25,
+   control=assign.default.values(control,showit = 0, doeachint=FALSE, estimate=TRUE,refit=TRUE,nrefits=25,
                                   initial = NA, lowerbounds = NA, upperbounds = NA, mono.points=20)
 #
 # Assign model values; this uses temporarily defined functions glm and gam

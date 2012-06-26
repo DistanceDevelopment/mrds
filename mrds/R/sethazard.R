@@ -16,7 +16,7 @@ sethazard <- function(ddfobj,dmat,width)
       ddfobj$adjustment$parameters<-rep(NA,length(ddfobj$adjustment$order))
 
 
-    flnl(fpar, ddfobj, FALSE, misc.options=list(width=width, int.range=c(0,width),showit=FALSE,doeachint=TRUE,
+    flnl(fpar, ddfobj, FALSE, misc.options=list(width=width, int.range=c(0,width),showit=0,doeachint=TRUE,
          integral.numeric=FALSE,standardize=FALSE,fitting="none",point=FALSE))
   }
 # Using code from CDS in Distance.

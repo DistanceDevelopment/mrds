@@ -1,5 +1,5 @@
 adjfct.cos <-
-		function(distance,scaling=1,adj.order,adj.parm=NULL)
+		function(distance,scaling=1,adj.order,adj.parm=NULL,adj.exp=FALSE)
 #
 # adjfct.cos
 #
@@ -25,13 +25,9 @@ adjfct.cos <-
 	
 	for(i in 1:length(adj.order))
 		cossum <- cossum + (adj.parm[i]*cos((adj.order[i]*pi*distance)/scaling))
-	
-	### EXPERIMENTAL "feature"
-# To try and keep the likelihood returning a postive value (so that it may be log'd)
-# we make the cossum > -1 
-	
-#  if(cossum == -1)
-#    cossum <- 0
-	
-	return(cossum)
+#   if adj.exp return exp(cossum) to keep f(x)>0	
+	if(adj.exp)
+  	    return(exp(cossum))
+    else
+	 	return(cossum)
 }

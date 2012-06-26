@@ -29,8 +29,8 @@
 #'   should be evaluated
 #' @param ddfobj distance sampling object
 #' @param misc.options width-transect width (W); int.range-integration range
-#'   for observations; showit-if TRUE shows values of parameters and
-#'   log-likelihood; doeachint-if TRUE doesn't use cgftab and does each
+#'   for observations; showit- 0 to 3 controls level of iteration output; 
+#'   doeachint-if TRUE doesn't use cgftab and does each
 #'   integral; integral.numeric-if TRUE integral is computed numerically rather
 #'   than analytically
 #' @param fitting "key" if only fitting key fct parameters, "adjust" if fitting
@@ -66,10 +66,10 @@ flnl <- function(fpar, ddfobj, misc.options, fitting="all")
     }
   }else if(fitting=="adjust"){
     if(!is.null(ddfobj$shape)){
-      save.shape<-ddfobj$shape$parameters
-      ddfobj$shape$parameters=rep(NA,length(ddfobj$shape$parameters))
-      pars=getpar(ddfobj)
-      fpar[which(is.na(pars))]<-save.shape
+      save.shape <- ddfobj$shape$parameters
+      ddfobj$shape$parameters <- rep(NA,length(ddfobj$shape$parameters))
+      pars <- getpar(ddfobj)
+      fpar[which(is.na(pars))] <- save.shape
     }
 
     if(!is.null(ddfobj$scale)){
@@ -81,7 +81,7 @@ flnl <- function(fpar, ddfobj, misc.options, fitting="all")
     }
   } 		
 #  compute total negative log-likelihood
-   lnl<-sum(flpt.lnl(fpar, ddfobj, misc.options))
+   lnl <- sum(flpt.lnl(fpar, ddfobj, misc.options))
 
   # If iteration results are printed, output log-likelihood
   if(misc.options$showit==3){

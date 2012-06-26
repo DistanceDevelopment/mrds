@@ -7,8 +7,8 @@
 #' 
 #' @param ddfobj distance sampling object
 #' @param misc.options width-transect width (W); int.range-integration range
-#'   for observations; showit-if TRUE shows values of parameters and
-#'   log-likelihood; doeachint-if TRUE doesn't use cgftab and does each
+#'   for observations; showit-0 to 3 controls level of iteration printing;
+#'   doeachint-if TRUE doesn't use cgftab and does each
 #'   integral; integral.numeric-if TRUE integral is computed numerically rather
 #'   than analytically
 #' @return variance-covariance matrix of parameters in the detection function

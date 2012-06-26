@@ -4,7 +4,7 @@
 \usage{
   mcds(formula, key = NULL, adj.series = NULL,
     adj.order = c(NULL), adj.scale = "width",
-    shape.formula = ~1)
+    adj.exp = FALSE, shape.formula = ~1)
 }
 \arguments{
   \item{formula}{formula for scale function}
@@ -22,6 +22,9 @@
 
   \item{adj.scale}{whether to scale the adjustment terms by
   "width" or "scale"}
+
+  \item{adj.exp}{if TRUE uses exp(adj) for adjustment to
+  keep f(x)>0}
 
   \item{shape.formula}{formula for shape function}
 }

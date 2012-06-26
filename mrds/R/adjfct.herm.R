@@ -1,5 +1,5 @@
 adjfct.herm <-
-		function(distance,scaling=1,adj.order,adj.parm=NULL)
+		function(distance,scaling=1,adj.order,adj.parm=NULL,adj.exp=FALSE)
 #
 # adjfct.herm
 #
@@ -25,8 +25,10 @@ adjfct.herm <-
 	
 	for(i in 1:length(adj.order))
 		hermsum <- hermsum + (adj.parm[i]*hermite.poly((distance/scaling),adj.order[i]))
-	
-	return(hermsum)
-	
+#   if adj.exp return exp(hermsum) to keep f(x)>0	
+	if(adj.exp)
+		return(exp(hermsum))
+	else
+		return(hermsum)
 	
 }

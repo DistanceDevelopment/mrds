@@ -37,9 +37,10 @@ test_that("golf tee data gives the same results as Distance",{
 #                  data = egdata, method = "ds", meta.data = list(width = 4))
 #  expect_that(result.unif$par, equals(0.7005934,tolerance=1e-6))
   
-  # there should be an error if we don't supply adjustments with uniform key
-  expect_error(ddf(dsmodel = ~cds(key = "unif"), 
-                  data = egdata, method = "ds", meta.data = list(width = 4)))
+# there should be an error if we don't supply adjustments with uniform key
+# This was removed because it now works
+#  expect_error(ddf(dsmodel = ~cds(key = "unif"), 
+#                  data = egdata, method = "ds", meta.data = list(width = 4)))
 
 })
 
@@ -67,7 +68,7 @@ test.df<-function(mcds.bit,dat,width,mono=FALSE,strict=FALSE,mono.tol=1e-7,showi
   ddf(dsmodel=mcds.bit,data=dat,method="ds",
       meta.data=list(width=width,mono=mono,mono.strict=strict),
 #      control=list(mono.tol=mono.tol,showit=showit))
-      control=list(mono.tol=1e-5,mono.delta=1e-5))
+      control=list(mono.tol=1e-5,mono.delta=1e-5,showit=showit))
 }
 
 #models<-read.csv("models.csv",as.is=TRUE)
@@ -86,7 +87,7 @@ model.set<-1:nrow(models)
 #  plot(seq(0,25,len=1000),ack(seq(0,25,len=1000)))
 #  integrate(ack,upper=25,lower=0)
 
-model.set<-model.set[-c(10,11,12,14,16,21,23:29,30)]
+model.set<-model.set[-c(10,11,12,14,16,21,22,27:30)]
 
 better<-rep(0,nrow(models))
 
@@ -95,7 +96,7 @@ for(i in model.set){
   set.seed(1245)
 
   # uncomment for debug
-  #cat("model",i,":")
+  #cat("\nmodel",i,":")
 
   # construct the model
   mcds.call<-paste("~mcds(key=\"")
@@ -132,7 +133,6 @@ for(i in model.set){
 
   # actually fit some models
   if(this.model$status==1 | this.model$status==2){
-
     result<-try(test.df(eval(parse(text=mcds.call)),ltexample,width,
                     mono=mono,strict=mono.strict,showit=0))
 

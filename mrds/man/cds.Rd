@@ -3,7 +3,8 @@
 \title{CDS function definition}
 \usage{
   cds(key = NULL, adj.series = NULL, adj.order = NULL,
-    adj.scale = "width", formula = ~1, shape.formula = ~1)
+    adj.scale = "width", adj.exp = FALSE, formula = ~1,
+    shape.formula = ~1)
 }
 \arguments{
   \item{key}{string identifying key function (currently
@@ -19,6 +20,9 @@
 
   \item{adj.scale}{whether to scale the adjustment terms by
   "width" or "scale"}
+
+  \item{adj.exp}{if TRUE uses exp(adj) for adjustment to
+  keep f(x)>0}
 
   \item{formula}{formula for scale function (included for
   completeness only only formula=~1 for cds)}

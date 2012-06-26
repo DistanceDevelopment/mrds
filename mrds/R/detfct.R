@@ -21,11 +21,11 @@
 #'  keyfct.gamma apex.gamma scalevalue g0 fx fr distpdf
 #' @usage 	detfct(distance, ddfobj, select=NULL, index=NULL, width=NULL, standardize = TRUE, stdint=FALSE)
 #' 
-#'	adjfct.cos(distance, scaling = 1, adj.order, adj.parm = NULL)
+#'	adjfct.cos(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
 #' 
-#'	adjfct.poly(distance, scaling = 1, adj.order, adj.parm = NULL)
+#'	adjfct.poly(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
 #' 
-#'	adjfct.herm(distance, scaling = 1, adj.order, adj.parm = NULL)
+#'	adjfct.herm(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
 #' 
 #'	scalevalue(key.scale, z)
 #' 
@@ -57,6 +57,7 @@
 #' @param scaling the scaling for the adjustment terms 
 #' @param stdint logical used to decide whether integral is standardized
 #' @param point if TRUE, point counts; otherwise line transects
+#' @param adj.exp if TRUE uses exp(adj) for adjustment to keep f(x)>0
 #' @return 
 #'	For \code{detfct}, the value is a vector of detection probabilities for the input set of x and z.
 #'	For \code{keyfct.hn, keyfct.hz}, vector of detection probability for that key function at x.
@@ -175,6 +176,7 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
 		adj.scale=ddfobj$adjustment$scale
 		adj.order=ddfobj$adjustment$order
 		adj.parm=ddfobj$adjustment$parameters
+		adj.exp=ddfobj$adjustment$exp
 		
 		# Find out if we are scaling by width or by key scale
 		if(adj.scale == "width")
@@ -185,15 +187,13 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
 		## Decide on adjustment term and run.
 		# If we have simple polynomials
 		if(adj.series == "poly"){
-			adj.vals <- adjfct.poly(distance,scaling,adj.order,adj.parm)
-			
+		   adj.vals <- adjfct.poly(distance,scaling,adj.order,adj.parm,adj.exp)
 			# Hermite polynomials
 		}else if(adj.series == "herm"){
-			adj.vals <- adjfct.herm(distance,scaling,adj.order,adj.parm)
-			
+  		   adj.vals <- adjfct.herm(distance,scaling,adj.order,adj.parm,adj.exp)
 			# Cosine series
 		}else if(adj.series == "cos"){
-			adj.vals <- adjfct.cos(distance,scaling,adj.order,adj.parm)
+		   adj.vals <- adjfct.cos(distance,scaling,adj.order,adj.parm,adj.exp)
 		}
 		
 # If we have adjustment terms then we need to standardize the detection
@@ -214,11 +214,11 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
 			}
 			
 			if(adj.series == "poly"){
-				adj.val.0 <- adjfct.poly(rep(0,length(distance)),scaling,adj.order,adj.parm)
+				adj.val.0 <- adjfct.poly(rep(0,length(distance)),scaling,adj.order,adj.parm,adj.exp)
 			}else if(adj.series == "herm"){
-				adj.val.0 <- adjfct.herm(rep(0,length(distance)),scaling,adj.order,adj.parm)
+				adj.val.0 <- adjfct.herm(rep(0,length(distance)),scaling,adj.order,adj.parm,adj.exp)
 			}else if(adj.series == "cos"){
-				adj.val.0 <- adjfct.cos(rep(0,length(distance)),scaling,adj.order,adj.parm)
+				adj.val.0 <- adjfct.cos(rep(0,length(distance)),scaling,adj.order,adj.parm,adj.exp)
 			}
 			
 # Now return the standardized value of the detection function
@@ -228,7 +228,22 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
 			return(key.vals*(1+adj.vals))
 		
 	}else{
+# jll 26 June 2012 -- added standardization for key to handle unif key only and
+# any other non-standard keys that could be added
 # If we have no adjustment terms then just return the key value.
+	if(standardize == TRUE){
+		if(key == "hn"){
+			key.val.0 <- keyfct.hn(rep(0,length(distance)), key.scale)
+		}else if(key == "hr"){
+			key.val.0 <- keyfct.hz(rep(0,length(distance)), key.scale, key.shape)
+		}else if(key == "gamma"){
+			key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
+		}else if(key == "unif"){
+			key.val.0 <- rep(1/width,length(distance))
+		}
+# Now return the standardized value of the detection function
+		return(key.vals/key.val.0)
+	}else
 		return(key.vals)
 	}
 }

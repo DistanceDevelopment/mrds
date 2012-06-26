@@ -85,7 +85,7 @@ function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call="")
 #
 #  Set up control values
 #
-   control=assign.default.values(control,showit = FALSE, doeachint=FALSE, estimate=TRUE,refit=TRUE,nrefits=25,
+   control=assign.default.values(control,showit = 0, doeachint=FALSE, estimate=TRUE,refit=TRUE,nrefits=25,
                                        initial = NA, lowerbounds = NA, upperbounds = NA, mono.points=20)
 #
 #  Process data  
@@ -120,9 +120,14 @@ function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call="")
    npar.uncond=length(result$ds$par)
    npar=npar.uncond+length(result$mr$par)
    hessian1=result$mr$hessian
-   hessian1=cbind(hessian1,matrix(0,ncol=npar.uncond,nrow=npar-npar.uncond))
-   hessian2=cbind(matrix(0,ncol=npar-npar.uncond,nrow=npar.uncond),result$ds$hessian)
-   result$hessian=rbind(hessian1,hessian2)
+   if(npar.uncond==0)
+	   result$hessian=hessian1
+   else
+   {
+       hessian1=cbind(hessian1,matrix(0,ncol=npar.uncond,nrow=npar-npar.uncond))
+       hessian2=cbind(matrix(0,ncol=npar-npar.uncond,nrow=npar.uncond),result$ds$hessian)
+       result$hessian=rbind(hessian1,hessian2)
+   }
    result$par=coef(result)
    row.names(result$hessian)=row.names(result$par)
    colnames(result$hessian)=row.names(result$par)

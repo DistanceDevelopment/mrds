@@ -5,8 +5,17 @@ NEW FEATURES
 
 * Restructured likelihood/integration code for fitting ds models
 
-* Adjustment functions will now work with binned data 
+* Adjustment functions will now work with binned data. Code was added to assure that fields dist.begin and dist.end are available if binned=TRUE and breaks are set as well.
 
+* Added argument adj.exp which if set to TRUE will use key*exp(adj) rather than key*adj to keep f(x)>0
+
+* Added following restrictions for adjustments: if uniform key, adj.scale must be "width"; if non-uniform key and adj.scale="width", doeachint set to TRUE because scale integration will not work.
+
+* Changed code in several functions so a uniform key with no adjustment functions could be used.
+
+BUG FIXES
+
+* Fixed inconsistencies in use and documentation of showit argument
 
 
 mrds 2.0.6

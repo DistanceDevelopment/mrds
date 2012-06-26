@@ -161,7 +161,10 @@
   specifying half-width of the transect \cr \code{left}
   \tab distance specifying inner truncation value \cr
   \code{binned} \tab TRUE or FALSE to specify whether
-  distances should be binned for analysis \cr
+  distances should be binned for analysis \cr \code{breaks}
+  \tab if binned=TRUE, this is a required sequence of break
+  points that are used for plotting/gof. They should match
+  distbegin, distend values if bins are fixed \cr
   \code{int.range} \tab an integration range for detection
   probability \cr \code{mono} \tab constrain the detection
   function to be (strictly) monotonically decreasing (when

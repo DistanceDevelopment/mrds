@@ -31,10 +31,7 @@ integratepdf <-
 #  with multiple observations but otherwise the numbers must agree if both >1
 #
    if(is.vector(int.range))
-   {
-	   browser()
 	   stop("\nInternal error - int.range not a matrix")
-   }
    if(is.null(select))
    {
 	   nobs=nrow(ddfobj$xmat)

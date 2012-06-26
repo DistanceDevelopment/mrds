@@ -12,6 +12,7 @@
 #'   (Hermite polynomials), poly (simple polynomials) or NULL
 #' @param adj.order vector of order of adjustment terms to include
 #' @param adj.scale whether to scale the adjustment terms by "width" or "scale"
+#' @param adj.exp if TRUE uses exp(adj) for adjustment to keep f(x)>0
 #' @param shape.formula formula for shape function
 #' @return A formula list used to define the detection function model
 #'   \item{fct}{string "mcds"} \item{key}{key function string}
@@ -22,7 +23,7 @@
 #' @author Jeff Laake; Dave Miller
 #' @keywords utility
 mcds <-
-		function(formula,key=NULL,adj.series=NULL,adj.order=c(NULL),adj.scale="width",shape.formula=~1)
+		function(formula,key=NULL,adj.series=NULL,adj.order=c(NULL),adj.scale="width",adj.exp=FALSE,shape.formula=~1)
 #
 #  mcds - creates model formula list for multiple covariate distance sampling
 #
@@ -62,10 +63,15 @@ mcds <-
 	if(!is.null(adj.series)){
 		adj.series <- match.arg(adj.series,c("cos","herm","poly"))
 		adj.scale <- match.arg(adj.scale,c("width","scale"))
+		if(key=="unif" )
+		{
+			if(adj.scale=="scale")cat("\nsetting adj.scale to width for uniform key")
+			adj.scale="width"
+		}
 		if(adj.check.order(adj.series,adj.order))
 			stop("Problem with adjustment terms, see above errors")
 	}
 	
-	return(list(fct="mcds",formula=formula,shape.formula=shape.formula,key=substitute(key),adj.series=adj.series,adj.order=adj.order,adj.scale=adj.scale))
+	return(list(fct="mcds",formula=formula,shape.formula=shape.formula,key=substitute(key),adj.series=adj.series,adj.order=adj.order,adj.scale=adj.scale,adj.exp=adj.exp))
 	
 }

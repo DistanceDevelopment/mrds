@@ -37,7 +37,11 @@
 #' @author Jeff Laake; 
 coef.ds <- function(object,...) {
   ltmodel <- object$ds
-  vcov <- solvecov(object$hessian)$inv
+  coeff <- NULL
+  if(is.null(object$par))
+	  vcov <- NULL
+  else
+      vcov <- solvecov(object$hessian)$inv
   #vcov=matrix(1,nrow=nrow(model$hessian),ncol=nrow(model$hessian))
 
   ddfobj <- ltmodel$aux$ddfobj
