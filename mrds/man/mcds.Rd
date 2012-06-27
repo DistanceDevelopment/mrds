@@ -2,7 +2,7 @@
 \alias{mcds}
 \title{MCDS function definition}
 \usage{
-  mcds(formula, key = NULL, adj.series = NULL,
+  mcds(formula = NULL, key = NULL, adj.series = NULL,
     adj.order = c(NULL), adj.scale = "width",
     adj.exp = FALSE, shape.formula = ~1)
 }

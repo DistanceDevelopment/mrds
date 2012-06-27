@@ -5,7 +5,7 @@ NEW FEATURES
 
 * Restructured likelihood/integration code for fitting ds models
 
-* Adjustment functions will now work with binned data. Code was added to assure that fields dist.begin and dist.end are available if binned=TRUE and breaks are set as well.
+* Adjustment functions will now work with binned data. Code was added to assure that fields distbegin and distend are available if binned=TRUE and breaks are set as well.
 
 * Added argument adj.exp which if set to TRUE will use key*exp(adj) rather than key*adj to keep f(x)>0
 

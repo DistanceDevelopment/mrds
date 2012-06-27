@@ -64,6 +64,7 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
   # for details
   coeff <- coef(model)
   if(!is.null(coeff))
+  {
      # Scale Coefficient
         ans$coeff$key.scale <- coeff$scale
 
@@ -81,6 +82,7 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
        ans$coeff$adj.order <- model$adj.order
        ans$coeff$adj.parm <- coeff$adjustment
      }
+  }
   else
 	  ans$coeff <- NULL
   

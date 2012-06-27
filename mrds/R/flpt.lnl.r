@@ -45,7 +45,7 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
 	bins <- as.matrix(x[x$binned,c("distbegin","distend")])
 	allbins <- apply(cbind(bins,z[x$binned,,drop=FALSE]),1,paste,collapse="")
 	uniquevals <- !duplicated(allbins)
-	uniquebins <- unique(bins)
+	uniquebins <- bins[uniquevals,,drop=FALSE]
 	int.index <- match(allbins,apply(cbind(bins,z[x$binned,,drop=FALSE])[uniquevals,,drop=FALSE],1,paste,collapse=""))
     which.obs=x$binned
 	which.obs[!uniquevals]=FALSE
@@ -66,17 +66,17 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
 			int.range=int.range,doeachint=doeachint,standardize=FALSE,point=misc.options$point)
     else 
 	{
-		int.all=1
+		if(nrow(int.range)==1)int.range <- int.range[rep(1,nrow(x)),]
 		bins <- int.range[x$binned,,drop=FALSE]
 		allbins <- apply(cbind(bins,z[x$binned,,drop=FALSE]),1,paste,collapse="")
 		uniquevals <- !duplicated(allbins)
-		uniquebins <- unique(bins)
+		uniquebins <- bins[uniquevals,,drop=FALSE]
 		int.index <- match(allbins,apply(cbind(bins,z[x$binned,,drop=FALSE])[uniquevals,,drop=FALSE],1,paste,collapse=""))
 		which.obs=x$binned
 		which.obs[!uniquevals]=FALSE
-		int.bin <- integratepdf(ddfobj,select=which.obs,width=width,
+		int.all <- integratepdf(ddfobj,select=which.obs,width=width,
 				int.range=uniquebins,doeachint=doeachint,standardize=FALSE,point=misc.options$point)
-		int.all <- int.bin[int.index]
+		int.all <- int.all[int.index]
 	}		
 #   Replace infinite integral values		
 	if(is.vector(left))

@@ -23,7 +23,7 @@
 #' @author Jeff Laake; Dave Miller
 #' @keywords utility
 mcds <-
-		function(formula,key=NULL,adj.series=NULL,adj.order=c(NULL),adj.scale="width",adj.exp=FALSE,shape.formula=~1)
+		function(formula=NULL,key=NULL,adj.series=NULL,adj.order=c(NULL),adj.scale="width",adj.exp=FALSE,shape.formula=~1)
 #
 #  mcds - creates model formula list for multiple covariate distance sampling
 #
@@ -44,6 +44,7 @@ mcds <-
 # dlm 11/07/05	Added in handling for adjustment terms
 #
 {
+	if(is.null(formula)&&key!="unif")stop("Missing formula needed for scale") 
 	if(class(formula)!="formula")
 		if(class(try(as.formula(formula)))=="formula")
 			formula=as.formula(formula)
