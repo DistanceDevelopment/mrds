@@ -68,7 +68,15 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
   if(is.null(ddfobj$adjustment) | ddfobj$type=="unif" |
      misc.options$mono | misc.options$nofit){
 
-    if(misc.options$mono){
+
+    # if we want monotonicity, use Lorenzo's code...
+    # don't use this unless we have adjustment terms
+    if(misc.options$mono & is.null(ddfobj$adjustment)){
+      misc.options$mono<-FALSE
+      misc.options$mono.strict<-FALSE
+    }
+
+    if(misc.options$mono & ddfobj$type!="unif"){
       # get best key pars first
       save.mono<-misc.options$mono
       save.mono.strict<-misc.options$mono.strict

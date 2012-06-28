@@ -68,7 +68,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
   setupper <- bounds$setupper
 
   # grab the method(s) if we're using optimx()
-  if(!(misc.options$mono & !is.null(ddfobj$adjustment))){
+  if(!misc.options$mono){
     opt.method <- optim.options$optimx.method
     optim.options$optimx.method <- NULL
   }
@@ -117,7 +117,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
   # while parameters are bounded continue refitting and adjusting bounds
   while(bounded){
-    itconverged<-FALSE
+    itconverged <- FALSE
 
     # Continue fitting until convergence occurs as long as refitting 
     # is requested
@@ -131,18 +131,17 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       if(ddfobj$type!="unif"){
         if(ddfobj$scale$formula!="~1" & misc.options$mono){
            warning("Covariate models cannot be constrained for monotonicity.\n  Switching to unconstrained optimisation.")
-           misc.options$mono<-FALSE
-           misc.options$mono.strict<-FALSE
+           misc.options$mono <- FALSE
+           misc.options$mono.strict <- FALSE
         }
       }
 
       # if we want monotonicity, use Lorenzo's code...
-      # don't use this unless we have adjustment terms
-      if(misc.options$mono & !is.null(ddfobj$adjustment)){
+      if(misc.options$mono){
         
         # lower and upper bounds of the inequality constraints
-        lowerbounds.ic<- rep(0,2*misc.options$mono.points)
-        upperbounds.ic<- rep(1.0^6,2*misc.options$mono.points)
+        lowerbounds.ic <- rep(0,2*misc.options$mono.points)
+        upperbounds.ic <- rep(1.0^6,2*misc.options$mono.points)
 
         lt<-try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
                   ineqfun=flnl.constr, 
