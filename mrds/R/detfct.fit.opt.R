@@ -125,16 +125,16 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       # Call optimization routine to find constrained mles; upon 
       # completion add the user specified models and return the list.
 
-      # dlm Oct-11  Lorenzo's code for monotonicity doesn't
-      #             support covariates, so switch to optimx()
-      #             and warn!
-      if(ddfobj$type!="unif"){
-        if(ddfobj$scale$formula!="~1" & misc.options$mono){
-           warning("Covariate models cannot be constrained for monotonicity.\n  Switching to unconstrained optimisation.")
-           misc.options$mono <- FALSE
-           misc.options$mono.strict <- FALSE
-        }
-      }
+##      # dlm Oct-11  Lorenzo's code for monotonicity doesn't
+##      #             support covariates, so switch to optimx()
+##      #             and warn!
+##      if(ddfobj$type!="unif"){
+##        if(ddfobj$scale$formula!="~1" & misc.options$mono){
+##           warning("Covariate models cannot be constrained for monotonicity.\n  Switching to unconstrained optimisation.")
+##           misc.options$mono <- FALSE
+##           misc.options$mono.strict <- FALSE
+##        }
+##      }
 
       # if we want monotonicity, use Lorenzo's code...
       if(misc.options$mono){

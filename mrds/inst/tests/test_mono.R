@@ -16,10 +16,10 @@ test_that("parameter estimates are the same", {
 
    # data setup  
    data(book.tee.data)
-   region<<-book.tee.data$book.tee.region
-   egdata<<-book.tee.data$book.tee.dataframe
-   samples<<-book.tee.data$book.tee.samples
-   obs<<-book.tee.data$book.tee.obs
+   region<-book.tee.data$book.tee.region
+   egdata<-book.tee.data$book.tee.dataframe
+   samples<-book.tee.data$book.tee.samples
+   obs<-book.tee.data$book.tee.obs
 
    # run using optimx
    result.optimx<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1), 
@@ -42,8 +42,10 @@ test_that("parameter estimates are the same", {
    expect_that(result.mono$par, equals(result.strict$par,tolerance=1e-5))
 
    # check that the summary gives the right answers too... 
-   expect_that(summary(result.mono),prints_text("Monotonicity constraints were enforced."))
-   expect_that(summary(result.strict),prints_text("Strict monotonicity constraints were enforced."))
+   # these won't work anymore since if we don't have adjustments, we just
+   # switch to optimx()
+   #expect_that(summary(result.mono),prints_text("Monotonicity constraints were enforced."))
+   #expect_that(summary(result.strict),prints_text("Strict monotonicity constraints were enforced."))
    # check that the optimx() summary doesn't print anything about monotonicity
    expect_that(summary(result.optimx),prints_text("[^(Monotonicity constraints were enforced.)]"))
    expect_that(summary(result.optimx),prints_text("[^(Strict monotonicity constraints were enforced.)]"))
@@ -52,10 +54,10 @@ test_that("parameter estimates are the same", {
 test_that("monotonicity warnings are correct", {
    # data setup  
    data(book.tee.data)
-   region<<-book.tee.data$book.tee.region
-   egdata<<-book.tee.data$book.tee.dataframe
-   samples<<-book.tee.data$book.tee.samples
-   obs<<-book.tee.data$book.tee.obs
+   region<-book.tee.data$book.tee.region
+   egdata<-book.tee.data$book.tee.dataframe
+   samples<-book.tee.data$book.tee.samples
+   obs<-book.tee.data$book.tee.obs
 
    # if the user asks for monotonicity in a covariate model
    # we should warn and then use optimx()
@@ -71,11 +73,15 @@ test_that("monotonicity warnings are correct", {
    expect_that(result$ds$aux$mono,equals(FALSE))
    expect_that(result$ds$aux$mono.strict,equals(FALSE))
    #check that the summary doesn't say anything about monotonicity
-   expect_that(summary(result),prints_text("[^(Monotonicity constraints were enforced.)]"))
-   expect_that(summary(result),prints_text("[^(Strict monotonicity constraints were enforced.)]"))
-
-
+   expect_that(print(summary(result)),
+               prints_text("[^(Monotonicity constraints were enforced.)]"))
+   expect_that(print(summary(result)),
+             prints_text("[^(Strict monotonicity constraints were enforced.)]"))
 })
+
+
+
+
 
 context("Monotonicity: mixture tests")
 test_that("monotonic and non-monotonic fits are different for non-monotone data",{

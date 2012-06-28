@@ -69,9 +69,19 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
      misc.options$mono | misc.options$nofit){
 
 
+    # dlm Oct-11  Lorenzo's code for monotonicity doesn't
+    #             support covariates, so switch to optimx()
+    #             and warn!
+    if(ddfobj$scale$formula!="~1" & misc.options$mono){
+       warning("Covariate models cannot be constrained for monotonicity.\n  Switching to unconstrained optimisation.")
+       misc.options$mono <- FALSE
+       misc.options$mono.strict <- FALSE
+    }
+
     # if we want monotonicity, use Lorenzo's code...
     # don't use this unless we have adjustment terms
     if(misc.options$mono & is.null(ddfobj$adjustment)){
+      warning("Monotonicity constraints unnecessary with key only models.")
       misc.options$mono<-FALSE
       misc.options$mono.strict<-FALSE
     }
