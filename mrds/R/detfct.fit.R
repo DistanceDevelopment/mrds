@@ -43,24 +43,23 @@
 #'   list of formulas for detection function model (probably can remove this)
 #'   }}
 #' @author Dave Miller; Jeff Laake
-detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
-{
+detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
 # Functions Used:
 #  assign.par, detfct.fit.opt, errors, get.par 
 
   # show debug information
-  showit<-misc.options$showit
+  showit <- misc.options$showit
 
   # How small is small?
-  epsilon<-sqrt(.Machine$double.eps)
+  epsilon <- sqrt(.Machine$double.eps)
 
   # keep a history of how the optimisation is doing
   # stores: convergence status (0=GOOD), lnl, pars
-  misc.options$optim.history<-rep(NA,length(getpar(ddfobj))+2)
+  misc.options$optim.history <- rep(NA,length(getpar(ddfobj))+2)
 
   # Count how we're doing...
-  iter<-0
-  metaiter<-0
+  iter <- 0
+  metaiter <- 0
 
   # If we have no adjustments then we can just do some straight optimisation.
   # OR if we have uniform detection function
@@ -72,13 +71,15 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options)
     # dlm Oct-11  Lorenzo's code for monotonicity doesn't
     #             support covariates, so switch to optimx()
     #             and warn!
-    if(ddfobj$scale$formula!="~1" & misc.options$mono){
-       warning("Covariate models cannot be constrained for monotonicity.\n  Switching to unconstrained optimisation.")
-       misc.options$mono <- FALSE
-       misc.options$mono.strict <- FALSE
+    if(ddfobj$type!="unif"){
+      if(ddfobj$scale$formula!="~1" & misc.options$mono){
+         warning("Covariate models cannot be constrained for monotonicity.\n  Switching to unconstrained optimisation.")
+         misc.options$mono <- FALSE
+         misc.options$mono.strict <- FALSE
+      }
     }
 
-    # if we want monotonicity, use Lorenzo's code...
+    # if we want monotonicity, use Lorenzo's code ...
     # don't use this unless we have adjustment terms
     if(misc.options$mono & is.null(ddfobj$adjustment)){
       warning("Monotonicity constraints unnecessary with key only models.")

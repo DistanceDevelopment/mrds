@@ -26,23 +26,30 @@
 #' @note Internal function not meant to be called by user
 #' @author Jeff Laake
 #' @seealso \code{\link{detfct}}, \code{\link{ddf}}
-create.ddfobj <- function(model,xmat,meta.data,initial)
-{
-# Create empty object and get values from cds or mcds function
+create.ddfobj <- function(model,xmat,meta.data,initial){
+
+  # Create empty object and get values from cds or mcds function
   ddfobj <- vector("list")
   point <- meta.data$point
   modpaste <- paste(model)
   modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
+
   if(class(modelvalues)=="try-error"){
     stop("Invalid model specification: ",model)
   }
-# Specify key function type
+
+  # Specify key function type
   ddfobj$type <- modelvalues$key
-  if(ddfobj$type=="logistic")
+  
+  if(ddfobj$type=="logistic"){
     stop("Logistic detection function has been temporarily disabled")	
-  if(!ddfobj$type%in%c("gamma","hn","hr","unif"))
-    stop("Invalid value for detection key function =",ddfobj$type,"  Only hn, hr, gamma or unif allowed")
-# Set adjustment function options
+  }
+  if(!ddfobj$type%in%c("gamma","hn","hr","unif")){
+    stop("Invalid value for detection key function =",ddfobj$type,
+         "  Only hn, hr, gamma or unif allowed")
+  }
+  
+  # Set adjustment function options
   if(!is.null(modelvalues$adj.series)){
 
     if(is.null(modelvalues$adj.order)){
@@ -56,33 +63,44 @@ create.ddfobj <- function(model,xmat,meta.data,initial)
   }else{
     ddfobj$adjustment=NULL
   }
-# Assign scale and shape(if any) formulas 
-  if(ddfobj$type!="unif")
-    if(is.null(modelvalues$formula))
-      ddfobj$scale=list(formula="~1")
-    else
-      ddfobj$scale=list(formula=paste(as.character(modelvalues$formula),collapse=""))
-  if(!is.null(modelvalues$shape.formula))
+
+  # Assign scale and shape(if any) formulas 
+  if(ddfobj$type!="unif"){
+    if(is.null(modelvalues$formula)){
+      ddfobj$scale <- list(formula="~1")
+    }else{
+      ddfobj$scale <- list(formula=paste(as.character(modelvalues$formula),
+                                      collapse=""))
+    }
+  }
+
+  if(!is.null(modelvalues$shape.formula)){
     ddfobj$shape <- list(formula=paste(as.character(modelvalues$shape.formula),collapse=""))
-  else
-  if(ddfobj$type%in%c("hr","gamma"))
-    ddfobj$shape=list(formula=~1)
-  else
-    ddfobj$shape=NULL
-# Create model data frame and design matrices
-  ddfobj$xmat=create.model.frame(xmat,as.formula(ddfobj$scale$formula),meta.data,as.formula(ddfobj$shape$formula))
+  }else if(ddfobj$type%in%c("hr","gamma")){
+    ddfobj$shape <- list(formula=~1)
+  }else{
+    ddfobj$shape <- NULL
+  }
+
+  # Create model data frame and design matrices
+  ddfobj$xmat <- create.model.frame(xmat,as.formula(ddfobj$scale$formula),
+                                    meta.data,as.formula(ddfobj$shape$formula))
   if(ddfobj$type !="unif"){	
-    ddfobj$scale$dm=setcov(ddfobj$xmat,ddfobj$scale$formula)$cov
-    ddfobj$scale$parameters=rep(0,ncol(ddfobj$scale$dm))
-#   Next determine if scale covariate model is intercept only.
+    ddfobj$scale$dm <- setcov(ddfobj$xmat,ddfobj$scale$formula)$cov
+    ddfobj$scale$parameters <- rep(0,ncol(ddfobj$scale$dm))
+    # Next determine if scale covariate model is intercept only.
     ddfobj$intercept.only <- FALSE
-    if(ddfobj$scale$formula == "~1" & ( is.null(ddfobj$shape) || ddfobj$shape$formula== "~1" ))
+    if(ddfobj$scale$formula == "~1" & 
+        (is.null(ddfobj$shape) || ddfobj$shape$formula== "~1")){
       ddfobj$intercept.only<- TRUE
-  }else
+    }
+  }else{
     ddfobj$intercept.only<-TRUE
+  }
+
   if(!is.null(ddfobj$shape)){
-    ddfobj$shape$dm=setcov(ddfobj$xmat,ddfobj$shape$formula)$cov
-    ddfobj$shape$parameters=rep(0,ncol(ddfobj$shape$dm))
+    ddfobj$shape$dm <- setcov(ddfobj$xmat,ddfobj$shape$formula)$cov
+    ddfobj$shape$parameters <- rep(0,ncol(ddfobj$shape$dm))
   }
 
   # Set up integral table if this is a half-normal detection function and
