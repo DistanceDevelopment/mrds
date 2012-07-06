@@ -171,7 +171,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
   if(ddfobj$type!="unif"&&!is.null(ddfobj$adjustment))
 	  if(ddfobj$adjustment$scale=="width")
 	  {
-		  cat("\nsetting doeachint to TRUE; cannot use integral scaling with adj.scale=width and non-uniform key")
+	    # setting doeachint to TRUE; 
+		# cannot use integral scaling with adj.scale=width and non-uniform key
 		  control$doeachint=TRUE
 	  }
   initialvalues <- c(ddfobj$shape$parameters,ddfobj$scale$parameters,
