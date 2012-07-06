@@ -11,9 +11,8 @@
   compatibility.}
 }
 \description{
-  Simply prints out a brief description of the model which
-  was fitted. For more detailed information use
-  \code{\link{summary}}.
+  Simply prints out summary of the model which was fitted.
+  For more detailed information see \code{\link{summary}}.
 }
 \author{
   David L. Miller
