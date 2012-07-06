@@ -23,7 +23,7 @@ Description: This package implements mark-recapture distance sampling
     heterogeneity in double-observer distance sampling surveys". 2006.
     Biometrics 62:372-378.)
 Version: 2.0.7
-Date: 2012-06-26
+Date: 2012-07-06
 Depends:
     R (>= 2.0.0),optimx,Rsolnp
 Suggests:
