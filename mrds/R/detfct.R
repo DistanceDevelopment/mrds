@@ -105,145 +105,148 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
 # Set of observations for computation of detection function can
 # be specified with logical (select) and numeric (index) values.
 # Either or both can be specified although the latter is unlikely.
-	if(is.null(select))
-	{
-		# use all
-		if(is.null(index))
-		{
-			scale.dm=ddfobj$scale$dm
-			shape.dm=ddfobj$shape$dm
-		}
-		else
-		{
-			# use only those with specific indices
-			scale.dm=ddfobj$scale$dm[index,,drop=FALSE]
-			shape.dm=ddfobj$shape$dm[index,,drop=FALSE]
-		}
-	} else
-	{
-		# Use those with select=TRUE
-		if(is.null(index))
-		{
-			scale.dm=ddfobj$scale$dm[select,,drop=FALSE]
-			shape.dm=ddfobj$shape$dm[select,,drop=FALSE]
-		}
-		else
-		{
-			# use the numeric index within those with select=TRUE
-			scale.dm=ddfobj$scale$dm[select,,drop=FALSE][index,,drop=FALSE]
-			shape.dm=ddfobj$shape$dm[select,,drop=FALSE][index,,drop=FALSE]
-		}
-	}	  
-# Key function 
-	key=ddfobj$type
-# calculate the key scale 
-	if(stdint)
-	{
-		if(is.null(index))
-			key.scale=rep(1,nrow(scale.dm))
-		else
-			key.scale=1  
-	}else
-	{
-		if(!is.null(ddfobj$scale))
-			key.scale <- scalevalue(ddfobj$scale$parameters,scale.dm)
-	}
-# calculate the key shape
-	if(!is.null(ddfobj$shape)) 
-		key.shape <- scalevalue(ddfobj$shape$parameters,shape.dm)
-	if(key=="gamma")
-	{	  
-		key.shape=key.shape+1
-		key.shape[key.shape==1]=key.shape[key.shape==1]+0.000001
-	} 
-# 19-Jan-06 jll; added proper standardize code to get std integral.
-#  I left standardize code below in case it is needed for adjustment fcts
-#
-# Decide on keyfct.* and run.
-	if(key == "hn"){
-		key.vals <- keyfct.hn(distance, key.scale)
-	}else if(key == "hr"){
-		key.vals <- keyfct.hz(distance, key.scale, key.shape)
-	}else if(key == "unif"){
-		key.vals <- rep(1/width,length(distance))
-	}else if(key == "gamma"){
-		key.vals <- keyfct.gamma(distance, key.scale, key.shape)
-	}
-# Adjustment functions
-	# If we are using adjustment terms.
-	if(!is.null(ddfobj$adjustment)){
-		adj.series=ddfobj$adjustment$series
-		adj.scale=ddfobj$adjustment$scale
-		adj.order=ddfobj$adjustment$order
-		adj.parm=ddfobj$adjustment$parameters
-		adj.exp=ddfobj$adjustment$exp
+  if(is.null(select)){
+    # use all
+    if(is.null(index)){
+      scale.dm <- ddfobj$scale$dm
+      shape.dm <- ddfobj$shape$dm
+    }else{
+      # use only those with specific indices
+      scale.dm <- ddfobj$scale$dm[index,,drop=FALSE]
+      shape.dm <- ddfobj$shape$dm[index,,drop=FALSE]
+    }
+  }else{
+    # Use those with select=TRUE
+    if(is.null(index)){
+      scale.dm <- ddfobj$scale$dm[select,,drop=FALSE]
+      shape.dm <- ddfobj$shape$dm[select,,drop=FALSE]
+    }else{
+      # use the numeric index within those with select=TRUE
+      scale.dm <- ddfobj$scale$dm[select,,drop=FALSE][index,,drop=FALSE]
+      shape.dm <- ddfobj$shape$dm[select,,drop=FALSE][index,,drop=FALSE]
+    }
+  } 
+
+  # Key function 
+  key <- ddfobj$type
+
+  # calculate the key scale 
+  if(stdint){
+    if(is.null(index)){
+      key.scale <- rep(1,nrow(scale.dm))
+    }else{
+      key.scale <- 1
+    }
+  }else{
+    if(!is.null(ddfobj$scale)){
+      key.scale <- scalevalue(ddfobj$scale$parameters,scale.dm)
+    }
+  }
+
+  # calculate the key shape
+  if(!is.null(ddfobj$shape)){
+    key.shape <- scalevalue(ddfobj$shape$parameters,shape.dm)
+  }
+
+  if(key=="gamma"){	  
+    key.shape=key.shape+1
+    key.shape[key.shape==1]=key.shape[key.shape==1]+0.000001
+  }
+ 
+  # 19-Jan-06 jll; added proper standardize code to get std integral.
+  #  I left standardize code below in case it is needed for adjustment fcts
+  #
+  # Decide on keyfct.* and run.
+  if(key == "hn"){
+    key.vals <- keyfct.hn(distance, key.scale)
+  }else if(key == "hr"){
+    key.vals <- keyfct.hz(distance, key.scale, key.shape)
+  }else if(key == "unif"){
+    key.vals <- rep(1/width,length(distance))
+  }else if(key == "gamma"){
+    key.vals <- keyfct.gamma(distance, key.scale, key.shape)
+  }
+
+  # Adjustment functions
+  # If we are using adjustment terms.
+  if(!is.null(ddfobj$adjustment)){
+    adj.series <- ddfobj$adjustment$series
+    adj.scale <- ddfobj$adjustment$scale
+    adj.order <- ddfobj$adjustment$order
+    adj.parm <- ddfobj$adjustment$parameters
+    adj.exp <- ddfobj$adjustment$exp
+    
+    # Find out if we are scaling by width or by key scale
+    if(adj.scale == "width"){
+      scaling <- width
+    }else{
+      scaling <- key.scale
+    }
+
+    ## Decide on adjustment term and run.
+    # If we have simple polynomials
+    if(adj.series == "poly"){
+      adj.vals <- adjfct.poly(distance,scaling,adj.order,adj.parm,adj.exp)
+    # Hermite polynomials
+    }else if(adj.series == "herm"){
+      adj.vals <- adjfct.herm(distance,scaling,adj.order,adj.parm,adj.exp)
+    # Cosine series
+    }else if(adj.series == "cos"){
+      adj.vals <- adjfct.cos(distance,scaling,adj.order,adj.parm,adj.exp)
+    }
 		
-		# Find out if we are scaling by width or by key scale
-		if(adj.scale == "width")
-			scaling <- width
-		else
-			scaling <- key.scale
-		
-		## Decide on adjustment term and run.
-		# If we have simple polynomials
-		if(adj.series == "poly"){
-		   adj.vals <- adjfct.poly(distance,scaling,adj.order,adj.parm,adj.exp)
-			# Hermite polynomials
-		}else if(adj.series == "herm"){
-  		   adj.vals <- adjfct.herm(distance,scaling,adj.order,adj.parm,adj.exp)
-			# Cosine series
-		}else if(adj.series == "cos"){
-		   adj.vals <- adjfct.cos(distance,scaling,adj.order,adj.parm,adj.exp)
-		}
-		
-# If we have adjustment terms then we need to standardize the detection
-# function. So find the values for the key and adjustment terms at 0   
-		
-# dlm 25-Aug-05  This causes a division by zero error in the optimization
-#		 so lets only do it when we need to, it cancels in the
-#		 likelihood anyway.
-		if(standardize == TRUE){
-			if(key == "hn"){
-				key.val.0 <- keyfct.hn(rep(0,length(distance)), key.scale)
-			}else if(key == "hr"){
-				key.val.0 <- keyfct.hz(rep(0,length(distance)), key.scale, key.shape)
-			}else if(key == "gamma"){
-				key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
-			}else if(key == "unif"){
-				key.val.0 <- rep(1/width,length(distance))
-			}
-			
-			if(adj.series == "poly"){
-				adj.val.0 <- adjfct.poly(rep(0,length(distance)),scaling,adj.order,adj.parm,adj.exp)
-			}else if(adj.series == "herm"){
-				adj.val.0 <- adjfct.herm(rep(0,length(distance)),scaling,adj.order,adj.parm,adj.exp)
-			}else if(adj.series == "cos"){
-				adj.val.0 <- adjfct.cos(rep(0,length(distance)),scaling,adj.order,adj.parm,adj.exp)
-			}
-			
-# Now return the standardized value of the detection function
-			return((key.vals*(1+adj.vals))/(key.val.0*(1+adj.val.0)))
-			
-		}else
-			return(key.vals*(1+adj.vals))
-		
-	}else{
-# jll 26 June 2012 -- added standardization for key to handle unif key only and
-# any other non-standard keys that could be added
-# If we have no adjustment terms then just return the key value.
-	if(standardize == TRUE){
-		if(key == "hn"){
-			key.val.0 <- keyfct.hn(rep(0,length(distance)), key.scale)
-		}else if(key == "hr"){
-			key.val.0 <- keyfct.hz(rep(0,length(distance)), key.scale, key.shape)
-		}else if(key == "gamma"){
-			key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
-		}else if(key == "unif"){
-			key.val.0 <- rep(1/width,length(distance))
-		}
-# Now return the standardized value of the detection function
-		return(key.vals/key.val.0)
-	}else
-		return(key.vals)
-	}
+    # If we have adjustment terms then we need to standardize the detection
+    # function. So find the values for the key and adjustment terms at 0   
+    		
+    # dlm 25-Aug-05  This causes a division by zero error in the optimization
+    #		 so lets only do it when we need to, it cancels in the
+    #		 likelihood anyway.
+    if(standardize == TRUE){
+      if(key == "hn"){
+        key.val.0 <- keyfct.hn(rep(0,length(distance)), key.scale)
+      }else if(key == "hr"){
+        key.val.0 <- keyfct.hz(rep(0,length(distance)), key.scale, key.shape)
+      }else if(key == "gamma"){
+        key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
+      }else if(key == "unif"){
+        key.val.0 <- rep(1/width,length(distance))
+      }
+	
+      if(adj.series == "poly"){
+        adj.val.0 <- adjfct.poly(rep(0,length(distance)),scaling,
+                                 adj.order,adj.parm,adj.exp)
+      }else if(adj.series == "herm"){
+        adj.val.0 <- adjfct.herm(rep(0,length(distance)),scaling,
+                                 adj.order,adj.parm,adj.exp)
+      }else if(adj.series == "cos"){
+        adj.val.0 <- adjfct.cos(rep(0,length(distance)),scaling,
+                                adj.order,adj.parm,adj.exp)
+      }
+
+      # Now return the standardized value of the detection function
+      return((key.vals*(1+adj.vals))/(key.val.0*(1+adj.val.0)))
+
+    }else{
+      return(key.vals*(1+adj.vals))
+    }
+  }else{
+    # jll 26 June 2012 -- added standardization for key to handle unif key only
+    # and any other non-standard keys that could be added
+    # If we have no adjustment terms then just return the key value.
+    if(standardize == TRUE){
+      if(key == "hn"){
+        key.val.0 <- keyfct.hn(rep(0,length(distance)), key.scale)
+      }else if(key == "hr"){
+        key.val.0 <- keyfct.hz(rep(0,length(distance)), key.scale, key.shape)
+      }else if(key == "gamma"){
+        key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
+      }else if(key == "unif"){
+        key.val.0 <- rep(1/width,length(distance))
+      }
+      # Now return the standardized value of the detection function
+      return(key.vals/key.val.0)
+    }else{
+      return(key.vals)
+    }
+  }
 }
