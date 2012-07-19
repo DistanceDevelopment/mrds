@@ -17,8 +17,8 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
   # Setup integration ranges
   int.range <- misc.options$int.range
   if(is.vector(int.range)){
-	int.range <- matrix(int.range,nrow=1)
-	samelimits <- TRUE
+	  int.range <- matrix(int.range,nrow=1)
+	  samelimits <- TRUE
   }else{
     int.range <- int.range[2:nrow(int.range),,drop=FALSE]
     samelimits <- FALSE
@@ -32,11 +32,14 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
   doeachint <- misc.options$doeachint
   x <- ddfobj$xmat
   z <- ddfobj$scale$dm
-  if(is.null(z)) z <- matrix(1,nrow=nrow(x),ncol=1)
+  if(is.null(z)){
+    z <- matrix(1,nrow=nrow(x),ncol=1)
+  }
+
   width <- misc.options$width
   if((!is.null(ddfobj$shape) | !is.null(ddfobj$adjustment)) & !doeachint){
-	  ddfobj$cgftab <- tablecgf(ddfobj,width=width,
-			  standardize=FALSE, point=misc.options$point)
+	  ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=FALSE,
+                              point=misc.options$point)
   }
 
   # Compute log-likelihood for any binned data
@@ -58,10 +61,11 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
                             int.range=uniquebins,doeachint=doeachint,
                             standardize=FALSE,point=misc.options$point)
 
-    if(any(int.bin<0))
+    if(any(int.bin<0)){
       int.bin <- integratepdf(ddfobj,select=which.obs,width=width,
                               int.range=uniquebins,doeachint=TRUE,
                               standardize=FALSE,point=misc.options$point)
+    }
 
     if(any(int.bin<0)){
 		  warning("\nProblems with integration. integral <0. Setting prob=0\n")
@@ -77,7 +81,9 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
                               doeachint=doeachint,standardize=FALSE,
                               point=misc.options$point)
     }else{
-      if(nrow(int.range)==1) int.range <- int.range[rep(1,nrow(x)),]
+      if(nrow(int.range)==1){
+        int.range <- int.range[rep(1,nrow(x)),]
+      }
 
       bins <- int.range[x$binned,,drop=FALSE]
       allbins <- apply(cbind(bins,z[x$binned,,drop=FALSE]),1,paste,collapse="")
