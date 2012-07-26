@@ -23,20 +23,6 @@
 #' @seealso \code{\link{gstdint}}
 #' @keywords utility
 tablecgf <- function(ddfobj, width, standardize=TRUE, point=FALSE){
-#
-# Tablecgf 
-#
-# Computes spline approximation to cumulative detection function for interpolation of scale dependent integrations 
-# of the detection function.
-#
-# Arguments:
-# ddfobj         - distance sampling object
-# width          - scalar, vector or matrix of integration bounds
-# standardize    - logical used to decide whether to divide through by the function evaluated at 0 
-# point          - logical to determine if point count(TRUE) or line transect(FALSE)
-
-# Functions: gstdint 
-
   # This function was completely changed in Aug 05 to use a fixed set of 
   # grid points which seems to be more reliable and possibly a little quicker
 
