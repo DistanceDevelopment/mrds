@@ -56,134 +56,120 @@
 #' @seealso \code{\link{ddf}}, \code{\link{summary.ds}},
 #'   \code{\link{plot.ds}}
 #' @keywords utility
-predict.ds <-
-function(object,newdata=NULL,compute=FALSE,int.range=NULL,esw=FALSE,...)
-{
-#
-# predict.ds - computes fitted values for esw (esw=TRUE) or p (esw=FALSE)
-#              if model object already contains fitted values it uses those, otherwise it calculates them
-# 
-# arguments:
-#
-# object 	- ddf.ds model object
-# newdata 	- new dataframe for prediction
-# compute 	- if TRUE compute predicted values even if there are fitted values in the model
-# int.range 	- integration range for variable range analysis
-# esw		- logical that sets whether to compute esw or p
-#
-# return value
-#  esw or p for each detection
-# 
 # Uses: integratedetfct, integratedetfct.logistic
-#   
-# 
+predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
+                       esw=FALSE,...){
 	model <- object
-	ltmodel<-model$ds
+	ltmodel <- model$ds
 	x <- ltmodel$aux$ddfobj$xmat   
 	point <- ltmodel$aux$point
 	width <- ltmodel$aux$width
-#
-#   If there are no fitted values present or compute is set TRUE or
-#   a newdata frame has been used, then the predicted values must be computed.
-#
-  if(is.null(model$fitted) | compute | !is.null(newdata)){
-#
-#      Get model and extract the parameters. Note that in computing derivatives
-#      for variances, the model parameters are perturbed and may not be at
-#      mle values after fitting.
-#
-   fpar<-model$par
-	ddfobj<-ltmodel$aux$ddfobj
-	ddfobj=assign.par(ddfobj,fpar)
-	doeachint<-ltmodel$aux$doeachint
 
-#      Get integration ranges either from specified argument or from
-#      values stored in the model.
-#
-# dlm 21/07/2005	Got rid of ambiguity in control structure
+  # If there are no fitted values present or compute is set TRUE or
+  # a newdata frame has been used, then the predicted values must be computed.
+  if(is.null(model$fitted) | compute | !is.null(newdata)){
+
+    # Get model and extract the parameters. Note that in computing derivatives
+    # for variances, the model parameters are perturbed and may not be at
+    # mle values after fitting.
+    fpar <- model$par
+	  ddfobj <- ltmodel$aux$ddfobj
+	  ddfobj <- assign.par(ddfobj,fpar)
+	  doeachint <- ltmodel$aux$doeachint
+
+    # Get integration ranges either from specified argument or from
+    # values stored in the model.
     if(is.null(int.range)){
       if(is.null(ltmodel$aux$int.range)){
-        int.range <- cbind(rep(0,nrow(ddfobj$xmat)),rep(width,nrow(ddfobj$xmat)))
+        int.range <- cbind(rep(0,nrow(ddfobj$xmat)),
+                           rep(width,nrow(ddfobj$xmat)))
       }else{
         int.range <- ltmodel$aux$int.range
-		if(is.vector(int.range)) int.range <- cbind(rep(int.range[1],nrow(ddfobj$xmat)),rep(int.range[2],nrow(ddfobj$xmat)))
+	      if(is.vector(int.range)){
+          int.range <- cbind(rep(int.range[1],nrow(ddfobj$xmat)),
+                             rep(int.range[2],nrow(ddfobj$xmat)))
+        }
       }
     }
-#
-#      Extract other values from model object
-#
+
+    # Extract other values from model object
     if(!is.null(newdata)){
-
-	  if(!is.null(ddfobj$scale))
-	  {
-		  zdim=ncol(ddfobj$scale$dm)
-		  znames=colnames(ddfobj$scale$dm)
-		  ddfobj$scale$dm <- setcov(newdata, as.formula(ddfobj$scale$formula))$cov
-		  if(zdim != ncol(ddfobj$scale$dm) | !all(znames==colnames(ddfobj$scale$dm)) )
-			  stop("fields or factor levels in newdata do not match data used in estimation model for scale model\n")
-	  }		  
-	  if(!is.null(ddfobj$shape))
-	  {
-		  zdim=ncol(ddfobj$shape$dm)
-		  znames=colnames(ddfobj$shape$dm)
-		  ddfobj$shape$dm <- setcov(newdata, as.formula(ddfobj$shape$formula))$cov
-		  if(zdim != ncol(ddfobj$shape$dm) | !all(znames==colnames(ddfobj$shape$dm)))
-			  stop("fields or factor levels in newdata do not match data used in estimation model for shape model\n")
-	  }
-
-     # update xmat too
-     datalist<-process.data(newdata,object$meta.data,check=FALSE)
-     ddfobj$xmat<-datalist$xmat
+	    if(!is.null(ddfobj$scale)){
+		    zdim <- ncol(ddfobj$scale$dm)
+		    znames <- colnames(ddfobj$scale$dm)
+		    ddfobj$scale$dm <- setcov(newdata, as.formula(ddfobj$scale$formula))$cov
+		    if(zdim != ncol(ddfobj$scale$dm) | 
+           !all(znames==colnames(ddfobj$scale$dm)) ){
+			    stop("fields or factor levels in newdata do not match data used in estimation model for scale model\n")
+        }
+      }
+	  
+      if(!is.null(ddfobj$shape)){
+		    zdim <- ncol(ddfobj$shape$dm)
+		    znames <- colnames(ddfobj$shape$dm)
+		    ddfobj$shape$dm <- setcov(newdata, as.formula(ddfobj$shape$formula))$cov
+		    if(zdim != ncol(ddfobj$shape$dm) | 
+           !all(znames==colnames(ddfobj$shape$dm))){
+			    stop("fields or factor levels in newdata do not match data used in estimation model for shape model\n")
+        }
+	    }
+      # update xmat too
+      datalist <- process.data(newdata,object$meta.data,check=FALSE)
+      ddfobj$xmat <- datalist$xmat
     }
 
+    # Compute integral of fitted detection function using either logistic or
+    # non-logistic detection function.  Note that "logistic" is not currently
+    # allowed as it has not been fully tested.
 
-#
-#      Compute integral of fitted detection function using either logistic or
-#      non-logistic detection function.  Note that "logistic" is not currently
-#      allowed as it has not been fully tested.
-#
-#       if(ftype=="logistic")
-#          int1=integratedetfct.logistic (x,ltmodel$model$scalemodel,width,int.range,theta1,ltmodel$aux$integral.numeric,z)
-#       else
-  	 ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=TRUE, point=point)
-     int1 <- integratepdf(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),width=width,
-		int.range=int.range,doeachint=doeachint,standardize=TRUE,point=point)
-#    int1=integratedetfct(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),width=width,int.range=int.range,doeachint=doeachint,point=point)
-#
-#   If the predicted values don't need to be computed, then use the values in the
-#   model object (model$fitted) and change to integral (esw) values.  Note this needs to
-#   be checked to see if it works with variable ranges.
-#
-}else
-    int1=model$fitted
-#
-#   Compute either esw (int1) or p and store in fitted.
-#
-  if(esw)
-	if(!point)
-        fitted=int1*width
-    else
-	    fitted=int1*pi*width^2
-  else
-	   fitted=int1	
-#
-#   If there are no covariates and there is only one prediction, expand to a
-#   vector based on length of data object.
-#
-  if(length(fitted)==1)
-    if(is.null(newdata))
-       fitted=rep(fitted,length(x$object))
-    else
-       fitted=rep(fitted,nrow(newdata))
-#
-#   If not a new dataframe, then assign names from data stored in the model object
-#   otherwise, use those from newdata.  Then return vector of values to calling frame.
-#
-  if(is.null(newdata))
-    names(fitted)=x$object
-  else
-    names(fitted)=newdata$object
+    # if(ftype=="logistic")
+    #   int1=integratedetfct.logistic(x,ltmodel$model$scalemodel,width,
+    #                         int.range,theta1,ltmodel$aux$integral.numeric,z)
+    # else
+  	ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=TRUE, point=point)
+    int1 <- integratepdf(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),width=width,
+		                     int.range=int.range,doeachint=doeachint,
+                         standardize=TRUE,point=point)
+    # int1=integratedetfct(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),
+    #           width=width,int.range=int.range,doeachint=doeachint,point=point)
+
+    # If the predicted values don't need to be computed, then use the values 
+    # in the model object (model$fitted) and change to integral (esw) values.
+    # Note this needs to be checked to see if it works with variable ranges.
+
+  }else{
+    int1 <- model$fitted
+  }
+
+  # Compute either esw (int1) or p and store in fitted.
+  if(esw){
+	  if(!point){
+      fitted <- int1*width
+    }else{
+	    fitted <- int1*pi*width^2
+    }
+  }else{
+	   fitted <- int1	
+  }
+
+  # If there are no covariates and there is only one prediction, expand to 
+  # a vector based on length of data object.
+  if(length(fitted)==1){
+    if(is.null(newdata)){
+      fitted <- rep(fitted,length(x$object))
+    }else{
+      fitted <- rep(fitted,nrow(newdata))
+    }
+  }
+
+  # If not a new dataframe, then assign names from data stored in the model 
+  # object otherwise, use those from newdata.  Then return vector of values 
+  # to calling frame.
+  if(is.null(newdata)){
+    names(fitted) <- x$object
+  }else{
+    names(fitted) <- newdata$object
+  }
   
   return(list(fitted=fitted))
-
 }
