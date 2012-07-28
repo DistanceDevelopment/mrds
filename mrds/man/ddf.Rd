@@ -164,13 +164,14 @@
   distances should be binned for analysis \cr \code{breaks}
   \tab if binned=TRUE, this is a required sequence of break
   points that are used for plotting/gof. They should match
-  distbegin, distend values if bins are fixed \cr
-  \code{int.range} \tab an integration range for detection
-  probability \cr \code{mono} \tab constrain the detection
-  function to be (strictly) monotonically decreasing (when
-  there are no covariates) \cr \code{mono.strict} \tab when
-  TRUE (default when mono=TRUE) strict monotonicity is
-  enforced, else only weak monotonicity. \cr}
+  \code{distbegin}, \code{distend} values if bins are fixed
+  \cr \code{int.range} \tab an integration range for
+  detection probability \cr \code{mono} \tab constrain the
+  detection function to be (strictly) monotonically
+  decreasing (when there are no covariates) \cr
+  \code{mono.strict} \tab when TRUE (default when
+  mono=TRUE) strict monotonicity is enforced, else only
+  weak monotonicity. \cr}
 
   Using \code{meta.data=list(int.range=c(1,10))} is the
   same as \code{meta.data=list(left=1,width=10)}.  If

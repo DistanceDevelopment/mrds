@@ -47,39 +47,15 @@
 #' @author Jeff Laake
 #' @keywords utility
 process.data <-
-function(data,meta.data=list(),check=TRUE)
-#
-# process.data - sets up dataframe and does some basic error checking
-#
-# Arguments:
-# 
-# data       - dataframe
-# meta.data - meta.data options
-# check     - if TRUE compute # times an object was detected; if there are any
-#             that were never detected it issues an error and stops; check is
-#             always TRUE except when method="ds".
-#
-# Value:
-#
-#  list with 2 elements
-#
-#   xmat      - processed data
-#   meta.data - modified meta.data list  
-#
-#  Functions Used:  set.default.width (internal)
-#
-{
-  set.default.width=function(data,meta.data)
-#
-# set.default.width - sets default transect width when none was specified
-#
-#  Arguments:
-#
-#  data      - dataframe
-#  meta.data - meta.data list
-#
-# Values:  width of transect
-  {
+function(data,meta.data=list(),check=TRUE){
+
+  set.default.width=function(data,meta.data){
+  # set.default.width - sets default transect width when none was specified
+  
+  #  Arguments:
+  #  data      - dataframe
+  #  meta.data - meta.data list
+  # Values:  width of transect
     if(meta.data$binned)
       width <- max(c(data$distend,data$distance),na.rm=TRUE)
     else
@@ -87,133 +63,137 @@ function(data,meta.data=list(),check=TRUE)
     
     return(width)
   }
-#
-# assign dataframe to data
-#
-#
-#  Check to make sure the record structure is ok. Number of primary records = number of secondary
-#
-  if(check)
-  if(length(data$detected[data$observer==1]) != length(data$detected[data$observer==2]))
-    stop ("Number of records for primary observer not equal to number for secondary observer")
-#
-#  Create field which counts the number of times an object was detected 0,1,2
-#
+
+  # assign dataframe to data
+
+  # Check to make sure the record structure is ok. Number of primary 
+  # records = number of secondary
   if(check){
-    timesdetected <- data$detected[data$observer==1] + data$detected[data$observer==2] 
+    if(length(data$detected[data$observer==1]) != 
+        length(data$detected[data$observer==2])){
+      stop ("Number of records for primary observer not equal to number for secondary observer")
+    }
+  }
+
+  # Create field which counts the number of times an object was detected 0,1,2
+  if(check){
+    timesdetected <- data$detected[data$observer==1] + 
+                     data$detected[data$observer==2] 
     data$timesdetected <- rep(0,dim(data)[1])
     data$timesdetected[data$observer==1] <- timesdetected
     data$timesdetected[data$observer==2] <- timesdetected   
-#
-#     If any 00 (not detected by either observer), stop and issue error message
-#
-    if(any(data$timesdetected==0))
-      stop ("following objects were never detected:",paste(data$object[data$observer==1&data$timesdetected==0],collapse=","),"\n")
+
+    # If any 00 (not detected by either observer), stop and issue error message
+    if(any(data$timesdetected==0)){
+      stop("following objects were never detected:",
+            paste(data$object[data$observer==1&data$timesdetected==0],
+                  collapse=","),"\n")
+    }
   }
-#
-#  also check for mrds that the data fields have the same value for both observers
-#  for example same distance, size etc.  This is only a warning as some fields may
-#  be validly different
-#
-#  if(any(apply(data[data$observer==1,names(data)!="observer"&names(data)!="detected"],1,paste,collapse="")!=
-#    apply(data[data$observer==2,names(data)!="observer"&names(data)!="detected"],1,paste,collapse="")))
-#    errors("If analysis fails it may be due to difference in data between observer 1 and 2;\n fields such as distance, size and covariates should be the same")
-#
-#  Determine if data are binned by presence of distbegin and distend fields
-#
-  if(is.null(data$distend)|is.null(data$distbegin))
-    binned=FALSE
-  else
-    if(all(is.null(data$distend))|all(is.null(data$distbegin)))
-      binned=FALSE
-    else
-      if(any(is.null(data$distend)&!is.null(data$distbegin))|any(is.null(data$distbegin)&!is.null(data$distend)))
+
+  # also check for mrds that the data fields have the same value for both 
+  # observers for example same distance, size etc.  This is only a warning as 
+  #some fields may be validly different
+  #  if(any(apply(data[data$observer==1,names(data)!="observer"&names(data)!="detected"],1,paste,collapse="")!=
+  #    apply(data[data$observer==2,names(data)!="observer"&names(data)!="detected"],1,paste,collapse="")))
+  #    errors("If analysis fails it may be due to difference in data between observer 1 and 2;\n fields such as distance, size and covariates should be the same")
+
+  # Determine if data are binned by presence of distbegin and distend fields
+  if(is.null(data$distend)|is.null(data$distbegin)){
+    binned <- FALSE
+  }else{
+    if(all(is.null(data$distend))|all(is.null(data$distbegin))){
+      binned <- FALSE
+    }else{
+      if(any(is.null(data$distend) & !is.null(data$distbegin)) | 
+         any(is.null(data$distbegin)&!is.null(data$distend))){
         stop("Mismatched distance intervals - one or more endpoints are missing")
-      else
-#
-#  change; jll 2 June 05 deleted unnecessary restriction below
-#
-#            if(!is.null(data$distance))
-#               if(any(!is.null(data$distance[!is.null(data$distend)])))
-#                  stop("Conflicting values - both distance and distance interval were given")
-#               else
-#                  binned=TRUE
-#            else
-        binned=TRUE
+      }else{
+        binned <- TRUE
+      }
+    }
+  }
+
   if(meta.data$binned & !binned) 
 	  stop("\nbinned set to TRUE in meta.data but distbegin and distend fields are missing.\n")
-  if(!meta.data$binned & binned)
-  {
+
+  if(!meta.data$binned & binned){
 	  cat("Warning:data contain distbegin and distend fields but binned=FALSE. Analyzing as not binned\n")
-	  binned=FALSE
+	  binned <- FALSE
   }
-  meta.data$binned=binned
-  if(meta.data$binned & is.null(meta.data$breaks))
+
+  meta.data$binned <- binned
+
+  if(meta.data$binned & is.null(meta.data$breaks)){
 	  stop("\nbreaks must be set in meta.data for binned data\n")
-#
-#  Fill in distance field for binned observations and create logical variable
-#
-  data$binned=rep(FALSE,dim(data)[1])
+  }
+
+  # Fill in distance field for binned observations and create logical variable
+  data$binned <- rep(FALSE,dim(data)[1])
   if(binned){
-    meta.data$binned=TRUE
-    data$distance[!is.na(data$distend)]=(data$distbegin[!is.na(data$distend)]+data$distend[!is.na(data$distend)])/2
-    data$binned[!is.na(data$distbegin)]=TRUE
+    meta.data$binned <- TRUE
+    data$distance[!is.na(data$distend)]<-(data$distbegin[!is.na(data$distend)]+
+                                          data$distend[!is.na(data$distend)])/2
+    data$binned[!is.na(data$distbegin)] <- TRUE
   }
-#
-#  Restrict data to width interval 
-#  If no width set, use largest measured distance as width
-#
-  if(is.na(meta.data$width)) {
-    width=set.default.width(data,meta.data)
-    meta.data$width=width
+
+  # Restrict data to width interval 
+  # If no width set, use largest measured distance as width
+  if(is.na(meta.data$width)){
+    width <- set.default.width(data,meta.data)
+    meta.data$width <- width
     xmat <- data
-  }else
-#
-#  change: jll 2 June 05; ref to width changed to meta.data$width
-#  This piece of code makes sure that the set width is as large as the
-#  largest bin end point for binned data.
-#
-    if(meta.data$binned)
-      if(any(data$binned & data$distend > meta.data$width))
-        stop("Error: width must exceed largest interval end point")
-      else
-        xmat <- data[data$binned | (!data$binned&data$distance<=meta.data$width),]
-    else 
-      xmat <- data[data$distance <= meta.data$width,]
-#
-#  Determine if integration range has been specified
-#
-  if(is.null(xmat$int.begin)|is.null(xmat$int.end)){
-	  if(any(is.na(meta.data$int.range)))meta.data$int.range=c(meta.data$left,meta.data$width)
   }else{
-      meta.data$int.range=rbind(c(meta.data$left,meta.data$width),cbind(xmat$int.begin,xmat$int.end))
+    # change: jll 2 June 05; ref to width changed to meta.data$width
+    # This piece of code makes sure that the set width is as large as the
+    # largest bin end point for binned data.
+    if(meta.data$binned){
+      if(any(data$binned & data$distend > meta.data$width)){
+        stop("Error: width must exceed largest interval end point")
+      }else{
+        xmat <- data[data$binned | 
+                     (!data$binned&data$distance<=meta.data$width),]
+      }
+    }else{
+      xmat <- data[data$distance <= meta.data$width,]
+    }
   }
-#
-#  If left >0 perform left truncation by restricting values
-#
-  if(meta.data$left >0)
+
+  # Determine if integration range has been specified
+  if(is.null(xmat$int.begin)|is.null(xmat$int.end)){
+	  if(any(is.na(meta.data$int.range))){
+      meta.data$int.range <- c(meta.data$left,meta.data$width)
+    }
+  }else{
+      meta.data$int.range <- rbind(c(meta.data$left,meta.data$width),
+                                   cbind(xmat$int.begin,xmat$int.end))
+  }
+
+  # If left >0 perform left truncation by restricting values
+  if(meta.data$left >0){
     if(binned){
-      if(any(data$binned&data$distbegin < meta.data$left))
+      if(any(data$binned&data$distbegin < meta.data$left)){
         stop("Error: left must be smaller than the smallest interval begin point")
-      else
+      }else{
         xmat <- data[data$binned|(!data$binned&data$distance>=meta.data$left),]
+      }
     }else{
       xmat <- xmat[xmat$distance>=meta.data$left,]
     }
-#
-#  Cleans up factor levels 
-# 
+  }
+
+  # Clean up factor levels  
   b<- dim(xmat)[2]
   for(i in 1:b){
     if(is.factor(xmat[,i])){
       xmat[,i] <- factor (xmat[,i])
     }
   }
-#
-#  If the exclusion eliminated all of the data, stop with error message
-#
-  if(dim(xmat)[1]==0) 
+
+  # If the exclusion eliminated all of the data, stop with error message
+  if(dim(xmat)[1]==0){
     stop ("No data to analyze")
+  }
   
   return(list(xmat=xmat,meta.data=meta.data))
 }
