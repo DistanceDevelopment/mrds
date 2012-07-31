@@ -46,34 +46,18 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.io.fi <-
-function(model,data,meta.data=list(),control=list(),call="",method)
-{
-# 
-# ddf.io.fi
-#
-# Fits double-observer data with io configuration and full independence (L_omega only).
-#
-# Arguments:
-#
-#  model     - mr model object
-#  data      - dataframe
-#  meta.data - list containing settings controlling data structure
-#  control   - list containing settings controlling model fitting
-#  call      - call used for ddf
-#  method    - io or io.fi (if io this is being called as part of fitting) 
-#
-#  Functions used: assign.default.values, process.data, create.model.frame
-#                  ioglm, predict(predict.io.fi), NCovered (NCovered.io.fi)
-#
-#  Return value: model object of class "io.fi"
-#
-#  NOTE: gams are only partially implemented
-# 
-# The following are dummy glm and gam functions that are defined here to provide the
-# list of arguments for use in the real glm/gam functions.  These dummy functions are
-# removed after they are used so the real ones can be used in the model fitting.
-#
+ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
+                      call="",method){
+  # Functions used: assign.default.values, process.data, create.model.frame
+  #                 ioglm, predict(predict.io.fi), NCovered (NCovered.io.fi)
+
+  # NOTE: gams are only partially implemented
+
+  # The following are dummy glm and gam functions that are defined here to 
+  # provide the list of arguments for use in the real glm/gam functions. 
+  # These dummy functions are removed after they are used so the real ones can 
+  # be used in the model fitting.
+
 glm=function(formula,link="logit")
 {
 if(class(formula)!="formula")
@@ -177,8 +161,18 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
    fit <- suppressPackageStartupMessages(optimx(result$mr$coefficients*1.05,lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))  
    # did the model converge?
    if(fit$conv!=0){
+    # first try the old way of just setting the starting values to zero,
+    # this seems (with the crabbie data) to converge back to the values in
+    # result$mr$coefficients but without having the convergence issues
+    # NEED TO THINK ABOUT THIS MORE...
+    fit <- suppressPackageStartupMessages(optimx(result$mr$coefficients*0,lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))  
+   }
+   if(fit$conv!=0){
 	   stop("No convergence in ddf.io.fi()")
    }
+
+
+
    fit <-attr(fit,"details")[[1]]
    fit$hessian<-fit$nhatend  
    result$mr$mr$coefficients=fit$par   
