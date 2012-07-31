@@ -9,7 +9,7 @@ Title: Mark-Recapture Distance Sampling (mrds)
 LazyLoad: yes
 Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers
     <dlb@mcs.st-and.ac.uk>, Len Thomas <len@mcs.st-and.ac.uk>, David
-    Miller <dlm22@st-and.ac.uk> and Jon Bishop <jonb@mcs.st-and.ac.uk>
+    Miller <dave@ninepointeightone.net> and Jon Bishop <jonb@mcs.st-and.ac.uk>
 Description: This package implements mark-recapture distance sampling
     methods as described in D.L. Borchers, W. Zucchini and Fewster,
     R.M. (1988), "Mark-recapture models for line transect surveys",
