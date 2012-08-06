@@ -1,4 +1,4 @@
-#' Mark-Recapture Distance Sampling (MRDS) IO - FI
+' Mark-Recapture Distance Sampling (MRDS) IO - FI
 #' 
 #' Mark-Recapture Analysis of Independent Observer Configuration with Full
 #' Independence
@@ -158,16 +158,16 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 #
 #  Now use optimx with starting values perturbed by 5%
 #
-   fit <- suppressPackageStartupMessages(optimx(result$mr$coefficients*1.05,lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))  
+   fit <- suppressPackageStartupMessages(try(optimx(result$mr$coefficients*1.05,lnl.io, method="L-BFGS-B", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))))
    # did the model converge?
-   if(fit$conv!=0){
+   if(fit$conv!=0 | class(fit)=="try-error"){
     # first try the old way of just setting the starting values to zero,
     # this seems (with the crabbie data) to converge back to the values in
     # result$mr$coefficients but without having the convergence issues
     # NEED TO THINK ABOUT THIS MORE...
-    fit <- suppressPackageStartupMessages(optimx(result$mr$coefficients*0,lnl.io, method="nlminb", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))  
+   fit <- try(optimx(result$mr$coefficients*0,lnl.io, method="L-BFGS-B", hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))
    }
-   if(fit$conv!=0){
+   if(fit$conv!=0 | class(fit)=="try-error"){
 	   stop("No convergence in ddf.io.fi()")
    }
 
