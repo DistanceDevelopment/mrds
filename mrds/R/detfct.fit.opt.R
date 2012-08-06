@@ -201,7 +201,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         ddfobj=assign.par(ddfobj,lt$par)
         lt$aux$ddfobj=ddfobj
       }else{
-      # If we don't have converenge what do we do
+      # If we don't have convergence what do we do
         refit.count<-refit.count+1
         if(is.null(nrefits)|refit.count<=nrefits){
          
