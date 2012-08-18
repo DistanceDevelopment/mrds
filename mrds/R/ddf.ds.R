@@ -260,6 +260,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds"
   modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
   class(result$ds) <- c(modelvalues$fct,"ds")
 
+  result$dsmodel <- modpaste
+
   # AIC computation
   n <- length(xmat$distance)
   npar <- length(lt$par)
