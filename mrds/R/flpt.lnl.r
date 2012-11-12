@@ -17,8 +17,8 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
   # Setup integration ranges
   int.range <- misc.options$int.range
   if(is.vector(int.range)){
-	  int.range <- matrix(int.range,nrow=1)
-	  samelimits <- TRUE
+    int.range <- matrix(int.range,nrow=1)
+    samelimits <- TRUE
   }else{
     int.range <- int.range[2:nrow(int.range),,drop=FALSE]
     samelimits <- FALSE
@@ -38,22 +38,25 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
 
   width <- misc.options$width
   if((!is.null(ddfobj$shape) | !is.null(ddfobj$adjustment)) & !doeachint){
-	  ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=FALSE,
+    ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=FALSE,
                               point=misc.options$point)
   }
 
   # Compute log-likelihood for any binned data
-	lnl <- rep(0,dim(x)[1])
-	if(any(x$binned)){
+  lnl <- rep(0,dim(x)[1])
+  if(any(x$binned)){
     # Get bins and create unique set of bins/covariates and indices 
-    # (int.index) in that set
+    # (int.index) in that set
     bins <- as.matrix(x[x$binned,c("distbegin","distend")])
     allbins <- apply(cbind(bins,z[x$binned,,drop=FALSE]),1,paste,collapse="")
 
     uniquevals <- !duplicated(allbins)
     uniquebins <- bins[uniquevals,,drop=FALSE]
 
-    int.index <- match(allbins,apply(cbind(bins,z[x$binned,,drop=FALSE])[uniquevals,,drop=FALSE],1,paste,collapse=""))
+    int.index <- match(allbins,
+                       apply(cbind(bins,
+                              z[x$binned,,drop=FALSE])[uniquevals,,drop=FALSE],
+                              1,paste,collapse=""))
 
     which.obs <- x$binned
     which.obs[!uniquevals] <- FALSE
@@ -68,8 +71,8 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
     }
 
     if(any(int.bin<0)){
-		  warning("\nProblems with integration. integral <0. Setting prob=0\n")
-		  int.bin[int.bin<0] <- 0
+      warning("\nProblems with integration. integral <0. Setting prob=0\n")
+      int.bin[int.bin<0] <- 0
     }
 
     int.bin <- int.bin[int.index]
@@ -91,22 +94,25 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
       uniquevals <- !duplicated(allbins)
       uniquebins <- bins[uniquevals,,drop=FALSE]
 
-      int.index <- match(allbins,apply(cbind(bins,z[x$binned,,drop=FALSE])[uniquevals,,drop=FALSE],1,paste,collapse=""))
+      int.index <- match(allbins,
+                         apply(cbind(bins,
+                               z[x$binned,,drop=FALSE])[uniquevals,,drop=FALSE],
+                               1,paste,collapse=""))
 
       which.obs=x$binned
       which.obs[!uniquevals]=FALSE
 
       int.all <- integratepdf(ddfobj,select=which.obs,width=width,
-      		                    int.range=uniquebins,doeachint=doeachint,
+                              int.range=uniquebins,doeachint=doeachint,
                               standardize=FALSE,point=misc.options$point)
       int.all <- int.all[int.index]
-    }		
-  
-    # Replace infinite integral values		
+    }
+
+    # Replace infinite integral values
     if(is.vector(left)){
       int.all[is.infinite(int.all)]<- right - left
     }else{
-      int.all[is.infinite(int.all)]<- right[is.infinite(int.all)] - 
+      int.all[is.infinite(int.all)]<- right[is.infinite(int.all)] -
                                        left[is.infinite(int.all)]
     }
 
@@ -123,27 +129,27 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
     # Compute integrals - repeat with doeachint if not set and any 
     # integral values < 0
     int1 <- -1
-	  i <- 0
+    i <- 0
     while (any(int1 < 0) & (i < 2)){
       if(ddfobj$intercept.only & samelimits){
-			int1 <- integratepdf(ddfobj,select=c(TRUE,rep(FALSE,nrow(ddfobj$xmat))),
+        int1 <- integratepdf(ddfobj,select=c(TRUE,rep(FALSE,nrow(ddfobj$xmat))),
                            width=width,int.range=int.range,doeachint=doeachint,
                            point=misc.options$point,standardize=FALSE)
       }else{
         if(nrow(int.range)>1){
           intrange <- int.range
-			  }else{
+        }else{
           intrange <- int.range[rep(1,nrow(x)),]
         }
 
-			  int1 <- integratepdf(ddfobj,select=!x$binned,width=width,
-				  	                 int.range=intrange[!x$binned,],doeachint=doeachint,
+        int1 <- integratepdf(ddfobj,select=!x$binned,width=width,
+                             int.range=intrange[!x$binned,],doeachint=doeachint,
                              point=misc.options$point,standardize=FALSE)
-		  }
-      doeachint <- TRUE	
+        }
+      doeachint <- TRUE
       i <- i + 1
     }
-	  if(any(int1<0)){
+    if(any(int1<0)){
       stop("\n Problems with integration. One or more integrals <0")
     }
 
@@ -152,7 +158,7 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
       int1[is.infinite(int1)] <-  right - left
       int1[is.nan(int1)] <- right - left
     }else{ 
-      int1[is.infinite(int1)] <-  right[is.infinite(int1)] - 
+      int1[is.infinite(int1)] <-  right[is.infinite(int1)] -
                                   left[is.infinite(int1)]
       int1[is.nan(int1)] <- right[is.nan(int1)] - left[is.nan(int1)]
     }
