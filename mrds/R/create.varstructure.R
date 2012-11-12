@@ -104,6 +104,15 @@ function(model,region,sample,obs)
 #  Merge with data from model and limit to data appropriate for method
 #
     data=merge(data,model$data,by.x="object",by.y="object",sort=FALSE)
+
+    # if data and model$data have a size column then we lose it since they
+    # get renamed to size.x and size.y, so rescue one
+    if(!is.null(data$size.x) & !is.null(data$size.y) & is.null(data$size)){
+      data$size <- data$size.x
+      data$size.x <- NULL
+      data$size.y <- NULL
+    }
+
 #  May 2008 changed to observer =1 to avoid problems with merge; this
 #  forces abundance to always be estimated using observer 1 as the primary
     obs=1
