@@ -17,6 +17,8 @@ BUG FIXES
 
 * Fixed inconsistencies in use and documentation of showit argument
 
+* Fixed a bug where groups were not recognised in dht() when the size column occurred in both model data and observation table. (Thanks to Darren Kidney for spotting this.)
+
 
 mrds 2.0.6
 ------------
