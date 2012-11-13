@@ -13,6 +13,8 @@ NEW FEATURES
 
 * Changed code in several functions so a uniform key with no adjustment functions could be used.
 
+* New option plot=TRUE/FALSE in qqplot.ddf(), for when you only want the K-S and CvM test statistics, not plotting.
+
 BUG FIXES
 
 * Fixed inconsistencies in use and documentation of showit argument
