@@ -5,14 +5,7 @@ This package for R analyzes single or double observer distance sampling data for
 point sampling.  It is used in program [DISTANCE](http://www.ruwpa.st-and.ac.uk/distance/) as one of the analysis engines. 
 Supported double observer configurations include independent, trial and removal. All options in mrds are not yet fully supported via DISTANCE.
 
-Download [Windows package binary](https://github.com/downloads/jlaake/mrds/mrds_2.0.9.zip). From R menu, use Packages\Install from Local Zip file and browse to location of downloaded zip. As an
-alternative or for other operating systems, install the [devtools package](http://cran.r-project.org/web/packages/devtools/index.html) and use the 
-following (may require [Rtools](cran.r-project.org/bin/windows/Rtools/)):
-
-```
-library(devtools)
-install_github("mrds",user="jlaake",subdir="mrds")
-```
+Download [Windows package binary](https://github.com/downloads/jlaake/mrds/mrds_2.0.9.zip). From R menu, use Packages\Install from Local Zip file and browse to location of downloaded zip. 
 
 Download [package source files](https://github.com/jlaake/mrds/archive/master.zip)
 
