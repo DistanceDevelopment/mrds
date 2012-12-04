@@ -104,7 +104,7 @@
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
 #' @examples
-#' 
+#' \donttest{
 #' data(book.tee.data)
 #' region<<-book.tee.data$book.tee.region
 #' egdata<<-book.tee.data$book.tee.dataframe
@@ -114,7 +114,7 @@
 #' plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
-#' 
+#' }
 plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,jitter.v=rep(0,3),showpoints=TRUE,subset=NULL,pl.col=c('black'),bw.col=c(grey(0)),black.white=FALSE,pl.den=rep(20,1),pl.ang=rep(-45,1),main=NULL,...)
 {
 # @usage \method{plot}{ds}(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,jitter.v=rep(0,3),showpoints=TRUE,subset=NULL,pl.col=c('black'),bw.col=c(grey(0)),black.white=FALSE,pl.den=rep(20,1),pl.ang=rep(-45,1),...)

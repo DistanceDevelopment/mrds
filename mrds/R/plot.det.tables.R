@@ -19,7 +19,7 @@
 #' @return NULL
 #' @author Jeff Laake
 #' @examples
-#' 
+#' \donttest{
 #' data(book.tee.data)
 #' region<<-book.tee.data$book.tee.region
 #' egdata<<-book.tee.data$book.tee.dataframe
@@ -29,6 +29,7 @@
 #' tabs=det.tables(xx,breaks=c(0,.5,1,2,3,4))
 #' par(mfrow=c(2,3))
 #' plot(tabs,which=1:6,new=FALSE)
+#' }
 plot.det.tables=function(x,which=5:6,angle=-45,density=20,col1="black",col2="blue", new=TRUE,...)
 {
 	plot_seen=function(x,col1,col2,...)

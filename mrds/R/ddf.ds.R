@@ -49,7 +49,7 @@
 #' 
 #' 
 #' # ddf.ds is called when ddf is called with method="ds"
-#' 
+#' \donttest{
 #' data(book.tee.data)
 #' region<<-book.tee.data$book.tee.region
 #' egdata<<-book.tee.data$book.tee.dataframe
@@ -61,7 +61,7 @@
 #' plot(result,main="cds - observer 1")
 #' print(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),se=TRUE))
 #' print(ddf.gof(result))
-#' 
+#' }
 #' 
 ddf.ds <-function(model, data, meta.data=list(), control=list(),call,method="ds")
 {

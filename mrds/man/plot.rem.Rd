@@ -149,6 +149,7 @@ sampling model}
   for each estimated detection probability. \cr }
 }
 \examples{
+\donttest{
 data(book.tee.data)
 region<<-book.tee.data$book.tee.region
 egdata<<-book.tee.data$book.tee.dataframe
@@ -159,6 +160,7 @@ par(mfrow=c(3,2))
 plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE,new=FALSE)
 plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0,new=FALSE)
 plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1,new=FALSE)
+}
 }
 \author{
   Jeff Laake, Jon Bishop, David Borchers

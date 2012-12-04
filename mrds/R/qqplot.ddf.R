@@ -12,14 +12,14 @@
 #' called from \code{ddf.gof} to evaluate model goodness of fit.
 #'
 #' @aliases qqplot.ddf pks pcramer
-#' @usage qqplot.ddf(model, plot=TRUE...)
+#' @usage qqplot.ddf(model, plot=TRUE, ...)
 #'
 #'        pcramer(q, eps = 1e-05)
 #'
 #'        pks(Dn,n)
 #'
 #' @param model fitted distance detection function model object
-#' @param should the Q-Q plot be plotted or just report statistics?
+#' @param plot the Q-Q plot be plotted or just report statistics?
 #' @param n sample size
 #' @param Dn K-S statistic
 #' @param q CvM statistic

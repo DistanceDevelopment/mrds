@@ -24,6 +24,7 @@
   throughout a 40 m strip (20m on either side).
 }
 \examples{
+\donttest{
 data(stake77)
 # Functions to extract stake data and put in the mrds format for model fitting.
 extract.stake=function(stake,obs)
@@ -75,6 +76,7 @@ summary(io.model)
 par(mfrow=c(3,2))
 plot(io.model,breaks=seq(0,20,2),showpoints=TRUE,new=FALSE)
 ddf.gof(io.model)
+}
 }
 \references{
   Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.

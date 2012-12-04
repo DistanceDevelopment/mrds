@@ -4,7 +4,7 @@
 \alias{qqplot.ddf}
 \title{Q-Q plot, KS and CVM goodness of fit tests for distance detection functions}
 \usage{
-  qqplot.ddf(model, plot=TRUE...)
+  qqplot.ddf(model, plot=TRUE, ...)
 
   pcramer(q, eps = 1e-05)
 
@@ -14,7 +14,7 @@
   \item{model}{fitted distance detection function model
   object}
 
-  \item{should}{the Q-Q plot be plotted or just report
+  \item{plot}{the Q-Q plot be plotted or just report
   statistics?}
 
   \item{n}{sample size}

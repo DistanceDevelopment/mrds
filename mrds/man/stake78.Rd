@@ -37,6 +37,7 @@
   obvious to the observer.
 }
 \examples{
+\donttest{
 data(stake78)
 data(stake77)
 # compare distribution of distances for all stakes
@@ -93,6 +94,7 @@ summary(io.model)
 par(mfrow=c(3,2))
 plot(io.model,breaks=seq(0,20,2),showpoints=TRUE,new=FALSE)
 ddf.gof(io.model)
+}
 }
 \references{
   Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.

@@ -31,7 +31,7 @@
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
 #' @examples
-#' 
+#' \donttest{
 #' data(book.tee.data)
 #' region<<-book.tee.data$book.tee.region
 #' egdata<<-book.tee.data$book.tee.dataframe
@@ -41,7 +41,7 @@
 #' plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
-#' 
+#' }
 "plot_uncond" <-
 function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,showlines,maintitle,ylim,point=FALSE,return.lines=FALSE,angle=-45,density=20,col="black",jitter=NULL,...)
 # 

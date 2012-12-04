@@ -36,6 +36,7 @@
   within defined distance classes.
 }
 \examples{
+\donttest{
 data(book.tee.data)
 region<<-book.tee.data$book.tee.region
 egdata<<-book.tee.data$book.tee.dataframe
@@ -45,6 +46,7 @@ xx=ddf(mrmodel=~glm(formula=~distance*observer),dsmodel = ~mcds(key = "hn", form
 tabs=det.tables(xx,breaks=c(0,.5,1,2,3,4))
 par(mfrow=c(2,3))
 plot(tabs,which=1:6,new=FALSE)
+}
 }
 \author{
   Jeff Laake

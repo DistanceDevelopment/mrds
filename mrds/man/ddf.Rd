@@ -243,7 +243,7 @@ obs<<-book.tee.data$book.tee.obs
 result=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = egdata, method = "ds", meta.data = list(width = 4))
 result=ddf(mrmodel = ~glm(~distance), data = egdata, method = "io.fi", meta.data = list(width = 4))
 result=ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance), data = egdata, method = "io", meta.data = list(width = 4))
-
+\donttest{
 data(ptdata.single)
 ptdata.single$distbegin=(as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
 ptdata.single$distend=(as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
@@ -267,6 +267,7 @@ summary(model)
 par(mfrow=c(2,3))
 plot(model,main="Dual observer binned point data",new=FALSE)
 }
+}
 \author{
   Jeff Laake
 }
@@ -287,6 +288,6 @@ plot(model,main="Dual observer binned point data",new=FALSE)
   \code{\link{ddf.ds}},
   \code{\link{ddf.io}},\code{\link{ddf.io.fi}},\code{\link{ddf.trial}},\code{\link{ddf.trial.fi}},\code{\link{ddf.rem}},\code{\link{ddf.rem.fi}}
 }
-\keyword{~Statistical}
 \keyword{Models}
+\keyword{~Statistical}
 

@@ -99,7 +99,7 @@
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
 #' @examples
-#' 
+#' \donttest{
 #' data(book.tee.data)
 #' region<<-book.tee.data$book.tee.region
 #' egdata<<-book.tee.data$book.tee.dataframe
@@ -109,7 +109,7 @@
 #' plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
-#' 
+#' }
 "plot.trial" <-
 		function(x, which=1:2, breaks=NULL, nc=NULL,  maintitle="", showlines=TRUE, showpoints=TRUE, 
 				ylim=c(0,1),angle=-45,density=20,col="black",jitter=NULL,divisions=25, ...)

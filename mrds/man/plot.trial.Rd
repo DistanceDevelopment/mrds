@@ -146,6 +146,7 @@ sampling model}
   for each estimated detection probability. \cr }
 }
 \examples{
+\donttest{
 data(book.tee.data)
 region<<-book.tee.data$book.tee.region
 egdata<<-book.tee.data$book.tee.dataframe
@@ -155,6 +156,7 @@ xx=ddf(dsmodel = ~mcds(key = "hn", formula = ~sex), data = egdata[egdata$observe
 plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
 plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
 plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
+}
 }
 \author{
   Jeff Laake, Jon Bishop, David Borchers
