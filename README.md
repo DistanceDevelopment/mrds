@@ -1,4 +1,5 @@
 mrds - Mark-Recapture Distance Sampling
+=======================================
 
 This package for R analyzes single or double observer distance sampling data for line or
 point sampling.  It is used in program [DISTANCE](http://www.ruwpa.st-and.ac.uk/distance/) as one of the analysis engines. 
