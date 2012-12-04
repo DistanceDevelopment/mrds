@@ -2,11 +2,11 @@ mrds 2.0.9
 ------------
 NEW FEATURES
 
-* New option plot=TRUE/FALSE in qqplot.ddf(), for when you only want the K-S and CvM test statistics, not plotting. dll(11/13/2012)
+* New option plot=TRUE/FALSE in qqplot.ddf(), for when you only want the K-S and CvM test statistics, not plotting. dlm(11/13/2012)
 
 BUG FIXES
 
-* Fixed problem when obs dataframe in call to dht (which links observations to samples and regions) contained fields also in observation dataframe. Now only fields needed from obs are selected before merge. dll(11/13/2012)
+* Fixed problem when obs dataframe in call to dht (which links observations to samples and regions) contained fields also in observation dataframe. Now only fields needed from obs are selected before merge. dlm(11/13/2012)
 
 mrds 2.0.8
 ------------
