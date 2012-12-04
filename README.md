@@ -7,7 +7,7 @@ Supported double observer configurations include independent, trial and removal.
 
 Download [Windows package binary](https://github.com/downloads/jlaake/mrds/mrds_2.0.9.zip). From R menu, use Packages\Install from Local Zip file and browse to location of downloaded zip. As an
 alternative or for other operating systems, install the [devtools package](http://cran.r-project.org/web/packages/devtools/index.html) and use the 
-following (may require [Rtools](cran.r-project.org/bin/windows/Rtools/):
+following (may require [Rtools](cran.r-project.org/bin/windows/Rtools/)):
 
 ```
 library(devtools)
