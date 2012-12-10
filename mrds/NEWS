@@ -1,3 +1,9 @@
+mrds 2.1.0
+------------
+CHANGES
+
+* Modified DESCRIPTION so only R 2.15 or greater is allowed. Needed for optimHess jll(12/10/2012)
+
 mrds 2.0.9
 ------------
 NEW FEATURES

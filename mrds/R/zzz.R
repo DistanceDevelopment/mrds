@@ -1,12 +1,3 @@
-.onAttach<-function(library,pkgname)
-{
-  # this now conforms with new R conventions
-  # uses packageStartupMessage which can then be
-  # surpressed
-  print.mrds.version()
-}
-
-# taken from mgcv
 print.mrds.version <- function(){ 
   library(help=mrds)$info[[1]] -> linfo
 
@@ -21,4 +12,11 @@ print.mrds.version <- function(){
 
   hello <- paste("This is mrds ",version,"\nBuilt: R",built,sep="")
   packageStartupMessage(hello)
+}
+.onAttach<-function(library,pkgname)
+{
+	# this now conforms with new R conventions
+	# uses packageStartupMessage which can then be
+	# surpressed
+	print.mrds.version()
 }

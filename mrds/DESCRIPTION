@@ -22,10 +22,10 @@ Description: This package implements mark-recapture distance sampling
     J.L., Southwell, C. and Paxton, C.L.G. "Accommodating unmodelled
     heterogeneity in double-observer distance sampling surveys". 2006.
     Biometrics 62:372-378.)
-Version: 2.0.9
-Date: 2012-12-04
+Version: 2.1.0
+Date: 2012-12-10
 Depends:
-    R (>= 2.0.0),optimx,Rsolnp
+    R (>= 2.15),optimx,Rsolnp
 Suggests:
     testthat
 Collate:
