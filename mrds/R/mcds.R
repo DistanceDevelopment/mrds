@@ -57,7 +57,7 @@ mcds <-
 			else
 				stop("Invalid shape.formula") 
 	
-	key <- match.arg(key,c("hn","hr","unif","gamma"))
+	key <- match.arg(key,c("hn","hr","unif","gamma","th1","th2"))
 	if(key%in%c("hn","unif"))shape.formula=NULL
 # What to do if we have adjustment terms
 	

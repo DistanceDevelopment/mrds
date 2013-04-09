@@ -69,7 +69,7 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
         ans$coeff$key.scale <- coeff$scale
 
      # Hazard shape parameter
-        if(ans$key%in%c("gamma","hr")){
+        if(ans$key%in%c("gamma","hr","th1","th2")){
          ans$coeff$key.shape <- coeff$exponent
         }
   

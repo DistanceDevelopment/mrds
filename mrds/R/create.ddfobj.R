@@ -44,9 +44,9 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   if(ddfobj$type=="logistic"){
     stop("Logistic detection function has been temporarily disabled")	
   }
-  if(!ddfobj$type%in%c("gamma","hn","hr","unif")){
+  if(!ddfobj$type%in%c("gamma","hn","hr","unif","th1","th2")){
     stop("Invalid value for detection key function =",ddfobj$type,
-         "  Only hn, hr, gamma or unif allowed")
+         "  Only hn, hr, gamma, unif, th1, th2 allowed")
   }
   
   # Set adjustment function options
@@ -76,7 +76,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
 
   if(!is.null(modelvalues$shape.formula)){
     ddfobj$shape <- list(formula=paste(as.character(modelvalues$shape.formula),collapse=""))
-  }else if(ddfobj$type%in%c("hr","gamma")){
+  }else if(ddfobj$type%in%c("hr","gamma","th1","th2")){
     ddfobj$shape <- list(formula=~1)
   }else{
     ddfobj$shape <- NULL

@@ -4,7 +4,9 @@ model.description<-function(model){
   
   key<-switch(model$key,
               hn="Half-normal",
-              hr="Hazard-rate")
+              hr="Hazard-rate",
+			  th1="Threshold 1",
+			  th2="Threshold 2")
   if(is.null(key))key<-"Uniform"
   mod.str<-paste(key,"key function")
   if(!is.null(model$adjustment)){

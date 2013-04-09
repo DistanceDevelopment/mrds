@@ -24,7 +24,7 @@ print.summary.ds <- function (x,...){
   cat("\nDetection function parameters", "\n")
   cat("Scale Coefficients: ", "\n")
   print(x$coeff$key.scale)
-  if(x$key %in% c("gamma","hr")) {
+  if(x$key %in% c("gamma","hr","th1","th2")) {
     cat("\nShape parameters: ", "\n")
     print(x$coeff$key.shape)
   }

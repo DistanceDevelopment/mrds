@@ -96,6 +96,7 @@ Collate:
     'keyfct.gamma.R'
     'keyfct.hn.R'
     'keyfct.hz.R'
+    'keyfct.th.R'
     'logisticbyx.R'
     'logisticbyz.R'
     'logisticdetfct.R'
