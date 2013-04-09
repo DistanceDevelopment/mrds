@@ -70,9 +70,9 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
                               standardize=FALSE,point=misc.options$point)
     }
 
-    if(any(int.bin<0)){
-      warning("\nProblems with integration. integral <0. Setting prob=0\n")
-      int.bin[int.bin<0] <- 0
+    if(any(int.bin<=0)){
+      warning("\nProblems with integration. integral <=0. Setting integral to 1E-25\n")
+      int.bin[int.bin<=0] <- 1E-25
     }
 
     int.bin <- int.bin[int.index]
@@ -149,8 +149,9 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
       doeachint <- TRUE
       i <- i + 1
     }
-    if(any(int1<0)){
-      stop("\n Problems with integration. One or more integrals <0")
+    if(any(int1<=0)){
+	  int1[int1<=0]=1e-25
+      warning("\n Problems with integration. integral <=0. Setting integral to 1E-25\n")
     }
 
     # Handle some special cases that can occur 

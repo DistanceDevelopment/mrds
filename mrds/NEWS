@@ -1,3 +1,13 @@
+mrds 2.1.1
+------------
+CHANGES
+
+* Modified flpt.lnl code to set integrals to 1E-25 if <=0 
+
+NEW FEATURES
+
+* Added threshold detection functions ("th1" and "th2") which required some minor changes in other functions for summary/print.
+
 mrds 2.1.0
 ------------
 CHANGES
