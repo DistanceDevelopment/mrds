@@ -12,7 +12,7 @@
 #' @param ddfobj distance detection function specification
 #' @param select logical vector for selection of data values
 #' @param width truncation width
-#' @param int.range integration range
+#' @param int.range integration range matrix; vector is converted to matrix
 #' @param doeachint logical that specifies whether each observation integral
 #'   should be computed numerically
 #' @param standardize logical used to decide whether to divide through by the
@@ -28,8 +28,11 @@ integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
 #  It is ok to have a single observation with multiple ranges or a single range
 #  with multiple observations but otherwise the numbers must agree if both >1
 
-  if(is.vector(int.range)){
-    stop("\nInternal error - int.range not a matrix")
+  if(!is.matrix(int.range)){
+	if(is.vector(int.range) && length(int.range)==2)
+		int.range=matrix(int.range,ncol=2,nrow=1)
+	else
+        stop("\nInternal error - int.range is not a matrix and cannot be converted to the required matrix structure")
   }
   if(is.null(select)){
     nobs <- nrow(ddfobj$xmat)

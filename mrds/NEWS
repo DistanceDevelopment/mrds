@@ -4,9 +4,13 @@ CHANGES
 
 * Modified flpt.lnl code to set integrals to 1E-25 if <=0 
 
+* In integrate.pdf a vector argument for the integration range is converted to matrix if of length 2.
+
 NEW FEATURES
 
 * Added threshold detection functions ("th1" and "th2") which required some minor changes in other functions for summary/print.
+
+* Added xlab and ylab arguments to plot functions to over-ride default labels
 
 mrds 2.1.0
 ------------

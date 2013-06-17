@@ -7,7 +7,8 @@ sampling model}
     nc = NULL, maintitle = "", showlines = TRUE,
     showpoints = TRUE, ylim = c(0, 1), angle = -45,
     density = 20, col = "black", jitter = NULL,
-    divisions = 25, ...)
+    divisions = 25, xlab = "Distance",
+    ylab = "Detection probability", ...)
 }
 \arguments{
   \item{x}{fitted model from \code{ddf}}
@@ -43,6 +44,10 @@ sampling model}
 
   \item{divisions}{number of divisions for averaging line
   values; default = 25}
+
+  \item{xlab}{label for x-axis}
+
+  \item{ylab}{label for y-axis}
 
   \item{\dots}{other graphical parameters, passed to the
   plotting functions (plot, hist, lines, points, etc)}

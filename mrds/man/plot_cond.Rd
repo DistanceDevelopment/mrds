@@ -4,7 +4,8 @@
 \usage{
   plot_cond(obs, xmat, gxvalues, est, nc, breaks,
     showpoints, showlines, maintitle, ylim, angle = -45,
-    density = 20, col = "black", jitter = NULL, ...)
+    density = 20, col = "black", jitter = NULL,
+    xlab = "Distance", ylab = "Detection probability", ...)
 }
 \arguments{
   \item{obs}{obsever code}
@@ -40,6 +41,10 @@
   is applied to points by multiplying the fitted value by a
   random draw from a normal distribution with mean 1 and sd
   jitter.}
+
+  \item{xlab}{label for x-axis}
+
+  \item{ylab}{label for y-axis}
 
   \item{\dots}{other graphical parameters, passed to the
   plotting functions (plot, hist, lines, points, etc)}

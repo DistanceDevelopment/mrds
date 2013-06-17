@@ -13,7 +13,8 @@
 
   \item{width}{truncation width}
 
-  \item{int.range}{integration range}
+  \item{int.range}{integration range matrix; vector is
+  converted to matrix}
 
   \item{doeachint}{logical that specifies whether each
   observation integral should be computed numerically}

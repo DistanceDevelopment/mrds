@@ -7,7 +7,8 @@ sampling model}
     nc = NULL, maintitle = "", showlines = TRUE,
     showpoints = TRUE, ylim = c(0, 1), angle = -45,
     density = 20, col = "black", jitter = NULL,
-    divisions = 25, new = TRUE, ...)
+    divisions = 25, new = TRUE, xlab = "Distance",
+    ylab = "Detection probability", ...)
 }
 \arguments{
   \item{x}{fitted model from \code{ddf}}
@@ -46,6 +47,10 @@ sampling model}
 
   \item{new}{if TRUE, opens new device for each plot; set
   new=FALSE if you use par(mfrow=..) or layout}
+
+  \item{xlab}{label for x-axis}
+
+  \item{ylab}{label for y-axis}
 
   \item{\dots}{other graphical parameters, passed to the
   plotting functions (plot, hist, lines, points, etc)}

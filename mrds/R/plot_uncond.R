@@ -24,7 +24,9 @@
 #' @param col plotting colour 
 #' @param jitter scaling option for plotting points.  Jitter is applied to
 #'   points by multiplying the fitted value by a random draw from a normal
-#'   distribution with mean 1 and sd jitter.  
+#'   distribution with mean 1 and sd jitter. 
+#' @param xlab label for x-axis
+#' @param ylab label for y-axis 
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (plot, hist, lines, points, etc)
 #' @return NULL
@@ -43,25 +45,8 @@
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
 #' }
 "plot_uncond" <-
-function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,showlines,maintitle,ylim,point=FALSE,return.lines=FALSE,angle=-45,density=20,col="black",jitter=NULL,...)
-# 
-#  plot.uncond - plots unconditional detection function for observer=obs observations 
-#              overlays histrogram, average detection function and values for individual observations
-#
-#  Arguments:
-#  model      - ddf object
-#  obs       - value of observer for plot
-#  xmat       - data
-#  gxvalues   - detection function values 
-#  nc         - number of histrogram classes
-#  finebr     - fine break values over which line is averaged
-#  breaks     - breaks for histogram
-#  showlines  - if TRUE shows average detection function
-#  showpoints - if TRUE shows estimated detection prob for each observation
-#  maintitle  - main title (if blank no titles are output)
-#  ylim       - limits for y axis - can be changed if histogram bars exceed 1
-#  return.lines - if TRUE dataframe returned by avarage.line, containing definition of estimated line, is returned *** dlb change ***
-#  ...        - other graphical parameters, passed to the plotting functions (plot, hist, lines, points, etc)
+function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,showlines,maintitle,ylim,point=FALSE,return.lines=FALSE,angle=-45,density=20,col="black",jitter=NULL,
+		  xlab="Distance",ylab="Detection probability",...)
 #
 #  Value: if(return.lines) returns dataframe from average.line, otherwise NULL
 #
@@ -99,7 +84,7 @@ function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,showlines,maintitle
   xgrid <- line$xgrid
   maxl <- max(freq, gxvalues)
   ylim<-c(0,max(ylim,hist.obj$density)) # *** DLB change ***
-  histline(hist.obj$density,breaks=breaks,lineonly=FALSE,ylab="Detection probability",xlab="Distance",
+  histline(hist.obj$density,breaks=breaks,lineonly=FALSE,xlab=xlab,ylab=ylab,
 		     ylim=ylim,fill=TRUE,angle=angle,density=density,col=col,det.plot=TRUE,...)
   if(showlines)lines(xgrid,linevalues,...)
   if(showpoints)

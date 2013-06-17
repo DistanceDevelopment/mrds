@@ -15,7 +15,7 @@
   fitted values stored in the model object}
 
   \item{int.range}{integration range for variable range
-  analysis}
+  analysis; either vector or matrix}
 
   \item{esw}{if TRUE, returns effective strip half-width
   (or effective detection radius for points) integral 0-W

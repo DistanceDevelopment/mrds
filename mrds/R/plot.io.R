@@ -94,6 +94,8 @@
 #'   distribution with mean 1 and sd jitter.  
 #' @param divisions number of divisions for averaging line values; default = 25 
 #' @param new if TRUE, opens new device for each plot; set new=FALSE if you use par(mfrow=..) or layout
+#' @param xlab label for x-axis
+#' @param ylab label for y-axis 
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (plot, hist, lines, points, etc)
 #' @return NULL
@@ -113,7 +115,7 @@
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1,new=FALSE)
 #' }
 plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines=TRUE, showpoints=TRUE, 
-		ylim=c(0,1),angle=-45,density=20,col="black",jitter=NULL,divisions=25,new=TRUE, ...)
+		ylim=c(0,1),angle=-45,density=20,col="black",jitter=NULL,divisions=25,new=TRUE,xlab="Distance",ylab="Detection probability",...)
 {	
    model<-x
 #
@@ -164,7 +166,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
   {
 	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  plot_uncond(model,1,xmat,gxvalues=p1/delta,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
-			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,...)
+			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
   }
 #
 #  Plot secondary unconditional detection function
@@ -173,7 +175,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
   {
 	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  plot_uncond(model,2,xmat,gxvalues=p2/delta,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
-			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,...)
+			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
   }
 #
 #  Plot pooled unconditional detection function
@@ -182,7 +184,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
   {
 	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  plot_uncond(model,3,xmat,gxvalues=(p1+p2-p1*p2)/delta,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
-			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,...)
+			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
   }
 #
 #  Plot duplicate unconditional detection function
@@ -191,7 +193,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
   {
 	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  plot_uncond(model,4,xmat,gxvalues=p1*p2/delta,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
-			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,...)
+			  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
   }
 #
 #  Plot conditional detection functions
@@ -205,7 +207,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
 	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  gxvalues <-p1[xmat$detected[xmat$observer==2]==1] 
 	  plot_cond(1,data,gxvalues,list(x=est$x,p=est$p1),nc,breaks,showpoints,showlines,
-			  maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,...)
+			  maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
   }
 #
 #  Plot secondary conditional detection function
@@ -215,7 +217,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="", showlines
 	  if(new&.Platform$GUI=="Rgui")dev.new()
 	  gxvalues <-p2[xmat$detected[xmat$observer==1]==1] 
 	  plot_cond(2,data,gxvalues,list(x=est$x,p=est$p2),nc,breaks,showpoints,showlines,
-			  maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,...)
+			  maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
   }
   invisible(NULL)
 }  

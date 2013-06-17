@@ -23,7 +23,7 @@
 #' @param newdata new dataframe for prediction
 #' @param compute if TRUE compute values and don't use the fitted values stored
 #'   in the model object
-#' @param int.range integration range for variable range analysis
+#' @param int.range integration range for variable range analysis; either vector or matrix
 #' @param esw if TRUE, returns effective strip half-width (or effective
 #'   detection radius for points) integral 0-W p(y)dy; otherwise it returns
 #'   integral 0-W py)*pi(y) where pi(y)=1/W for lines and pi(y)=2r/W^2 for

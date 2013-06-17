@@ -107,7 +107,7 @@
 #' \code{breaks} \tab if binned=TRUE, this is a required sequence of break 
 #' points that are used for plotting/gof. They should match \code{distbegin}, 
 #' \code{distend} values if bins are fixed \cr
-#' \code{int.range} \tab an integration range for detection probability \cr 
+#' \code{int.range} \tab an integration range for detection probability; either a vector of 2 or matrix with 2 columns \cr 
 #' \code{mono} \tab constrain the detection function to be (strictly) 
 #' monotonically decreasing (when there are no covariates) \cr 
 #' \code{mono.strict} \tab when TRUE (default when mono=TRUE) strict 
