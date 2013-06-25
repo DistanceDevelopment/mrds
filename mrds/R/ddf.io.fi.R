@@ -216,19 +216,29 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
   # computing AIC. Note the code in predict is currently specific to logit link
   if(method=="io.fi"){
     # Compute fitted values - integral of p(x)/width    
-	  result$fitted <- predict(result,integrate=TRUE)$fitted
+	result$fitted <- predict(result,integrate=TRUE)$fitted
     result$Nhat <- NCovered(result$par,result)
 	  distances <- result$data$distance[result$data$observer==1]
-
-	  if(meta.data$point){
-		 result$lnl <- result$lnl + 
-                    sum(log(cond.det$fitted*2*distances/meta.data$width^2)) - 
-                    sum(log(result$fitted))
-	  }else{
-         result$lnl<- result$lnl + 
-                       sum(log(cond.det$fitted/meta.data$width)) - 
-                       sum(log(result$fitted))
-    }
+    if(!meta.data$binned)
+	{
+		if(meta.data$point){
+			result$lnl <- result$lnl + 
+					sum(log(cond.det$fitted*2*distances/meta.data$width^2)) - 
+					sum(log(result$fitted))
+		}else{
+			result$lnl<- result$lnl + 
+					sum(log(cond.det$fitted/meta.data$width)) - 
+					sum(log(result$fitted))
+		}
+	} else
+	{
+		for(i in 1:(nrow(xmat)/2))
+		{
+			int.val=predict(result,newdata=xmat[(2*(i-1)+1):(2*i),],int.range=as.vector(as.matrix(xmat[(2*(i-1)+1),c("distbegin","distend")])),integrate=TRUE)$fitted
+			result$lnl <- result$lnl + log(int.val)
+		}
+		result$lnl<- result$lnl- sum(log(result$fitted))
+	}
   }
 
   result$criterion <- -2*result$lnl + 2*npar

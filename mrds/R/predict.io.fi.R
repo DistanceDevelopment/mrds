@@ -35,7 +35,7 @@
 #'   \code{newdata} \cr }
 #' 
 #' For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with
-#'   integrate=TRUE, he value is a list with the elements: \tabular{ll}{
+#'   integrate=TRUE, the value is a list with the elements: \tabular{ll}{
 #'   \code{fitted} \tab vector of integrated (average) detection probabilities
 #'   for each observation in the original data or \code{newdata} \cr }
 #' 
@@ -91,9 +91,7 @@ predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
     }
     models <- list(g0model=formula,scalemodel=NULL,fullscalemodel=NULL)
 
-    # Name int.range is misleading because it is only a right-hand point 
-    # different from width;  this needs to be expanded to an interval in 
-    #the future
+    # now int.range is a vector with lower and upper bounds
     if(is.null(int.range)){
       pdot.list <- pdot.dsr.integrate.logistic(width,width, model$mr$coef, 
                      newdata,integral.numeric, FALSE, models,GAM, point=point)

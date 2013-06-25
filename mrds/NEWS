@@ -1,10 +1,15 @@
 mrds 2.1.1
 ------------
+BUG FIXES
+
+* for full independence methods, the calculation for the distance sampling component was for unbinned data only. Code has been added to compute this component correctly for binned data. This required changes to each of the ddf.x.fi routines and for the logistic integration routines.
+
 CHANGES
 
 * Modified flpt.lnl code to set integrals to 1E-25 if <=0 
 
 * In integrate.pdf a vector argument for the integration range is converted to matrix if of length 2.
+
 
 NEW FEATURES
 

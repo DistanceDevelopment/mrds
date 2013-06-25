@@ -214,10 +214,22 @@ result$mr$mr$coefficients=fit$par
     if(method=="rem.fi")
 	{
 		distances=xmat$distance[xmat$observer==1]
-  	    if(meta.data$point)
-			result$lnl<- result$lnl + sum(log(predict(result,newdat=xmat,integrate=FALSE)$fitted*2*distances/meta.data$width^2)) - sum(log(result$fitted))
-		else
-			result$lnl<- result$lnl + sum(log(predict(result,newdat=xmat,integrate=FALSE)$fitted/meta.data$width)) - sum(log(result$fitted))       
+		if(!meta.data$binned)
+		{
+			if(meta.data$point)
+				result$lnl<- result$lnl + sum(log(predict(result,newdat=xmat,integrate=FALSE)$fitted*2*distances/meta.data$width^2)) - sum(log(result$fitted))
+			else
+				result$lnl<- result$lnl + sum(log(predict(result,newdat=xmat,integrate=FALSE)$fitted/meta.data$width)) - sum(log(result$fitted))       
+		} else
+		{
+			for(i in 1:(nrow(xmat)/2))
+			{
+				int.val=predict(result,newdata=xmat[(2*(i-1)+1):(2*i),],int.range=as.vector(as.matrix(xmat[(2*(i-1)+1),c("distbegin","distend")])),integrate=TRUE)$fitted
+				result$lnl <- result$lnl + log(int.val)
+			}
+			result$lnl<- result$lnl- sum(log(result$fitted))
+		}
+			
     }
 #
 #   Compute AIC and Nhat in covered region

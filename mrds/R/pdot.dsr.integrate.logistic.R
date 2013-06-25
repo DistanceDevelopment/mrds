@@ -29,32 +29,39 @@ function(right, width, beta, x, integral.numeric, BT, models, GAM=FALSE, rem=FAL
 #
 #  If the models are non-linear in distance, numerical integation is required for int1 and int2
 #  
-   if(integral.numeric | point)
+	if(length(right)>1)
+	{
+		lower=right[1]
+		right=right[2]
+	}else
+		lower=0
+	if(integral.numeric | point)
    {
-      if(GAM)
+
+	  if(GAM|length(right)>1)
          is.constant=FALSE
       else
          is.constant=is.logistic.constant(x[x$observer==1,],models$g0model,width)
       if(is.constant)
       {
-         int1 <- rep(integratelogistic (x=(x[x$observer==1,])[1,], models, beta,right, point),dim(x[x$observer==1,])[1]) 
+         int1 <- rep(integratelogistic (x=(x[x$observer==1,])[1,], models, beta,lower=0,right, point),dim(x[x$observer==1,])[1]) 
       } else
       {
         int1 <- NULL
         for (i in 1:(dim(x[x$observer==1,])[1]))
-           int1 <- c(int1, integratelogistic (x=(x[x$observer==1,])[i,], models, beta,right,point))
+           int1 <- c(int1, integratelogistic (x=(x[x$observer==1,])[i,], models, beta,lower=lower,right,point))
       }
       if(!BT)
       {
          if(is.logistic.constant(x[x$observer==2,],models$g0model,width))
          {
-            int2 <- rep(integratelogistic (x=(x[x$observer==2,])[1,], models, beta,right, point),
+            int2 <- rep(integratelogistic (x=(x[x$observer==2,])[1,], models, beta,lower=lower,right, point),
                               dim(x[x$observer==2,])[1]) 
          } else
          {
             int2 <- NULL
             for (i in 1:(dim(x[x$observer==2,])[1]))
-                 int2 <- c(int2, integratelogistic (x=(x[x$observer==2,])[i,], models, beta,right, point))
+                 int2 <- c(int2, integratelogistic (x=(x[x$observer==2,])[i,], models, beta,lower=lower,right, point))
          }
       } 
       else
@@ -79,12 +86,12 @@ function(right, width, beta, x, integral.numeric, BT, models, GAM=FALSE, rem=FAL
         is.logistic.constant(x[x$observer==2,],models$g0model,width))
      {
          int3 <- rep(integratelogisticdup(x1=(x[x$observer==1,])[1,],
-                 x2=(x[x$observer==2,])[1,],models,beta,right, point),dim(x[x$observer==2,])[1])
+                 x2=(x[x$observer==2,])[1,],models,beta,lower=lower,right, point),dim(x[x$observer==2,])[1])
      } else
      {
          int3 <- NULL
          for (i in 1:(dim(x[x$observer==1,])[1]))
-             int3 <- c(int3, integratelogisticdup(x1=(x[x$observer==1,])[i,],x2=(x[x$observer==2,])[i,],models,beta,right, point))
+             int3 <- c(int3, integratelogisticdup(x1=(x[x$observer==1,])[i,],x2=(x[x$observer==2,])[i,],models,beta,lower=lower,right, point))
      }
      pdot <- int1 + int2 - int3
    } else

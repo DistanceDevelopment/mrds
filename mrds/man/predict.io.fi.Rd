@@ -31,7 +31,7 @@
 
   For
   \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi}
-  with integrate=TRUE, he value is a list with the
+  with integrate=TRUE, the value is a list with the
   elements: \tabular{ll}{ \code{fitted} \tab vector of
   integrated (average) detection probabilities for each
   observation in the original data or \code{newdata} \cr }
