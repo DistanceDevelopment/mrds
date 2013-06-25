@@ -10,6 +10,8 @@ CHANGES
 
 * In integrate.pdf a vector argument for the integration range is converted to matrix if of length 2.
 
+* ddf.gof will now use breaks set for binned data unless others are specified.
+
 
 NEW FEATURES
 

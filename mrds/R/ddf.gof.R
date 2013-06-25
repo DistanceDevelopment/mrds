@@ -41,9 +41,11 @@ function(model,breaks=NULL,nc=NULL,qq=TRUE,...)
 # call method specific function
 #
   if(!is.null(breaks)){
-    breaks=test.breaks(breaks,model$meta.data$left,model$meta.data$width)
-    nc=length(breaks)-1
-  }
+	breaks=test.breaks(breaks,model$meta.data$left,model$meta.data$width)
+	nc=length(breaks)-1
+  } else
+	  if(model$meta.data$binned)
+ 		breaks=model$meta.data$breaks
   result=switch(model$method,
          ds=gof.ds(model,breaks,nc),
          io=gof.io(model,breaks,nc),
