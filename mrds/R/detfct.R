@@ -41,7 +41,8 @@
 #' 
 #'	fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 #' 
-#'	distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE,point=FALSE)
+#'	distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
+#'            stdint=FALSE,point=FALSE)
 #' 
 #' @param distance  vector of distances 
 #' @param ddfobj distance sampling object (see \code{\link{create.ddfobj}}) 

@@ -14,7 +14,8 @@
 \examples{
 \donttest{
 data(ptdata.removal)
-xx=ddf(mrmodel=~glm(formula=~distance), dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.removal, method = "rem", meta.data = list(point=TRUE))
+xx=ddf(mrmodel=~glm(formula=~distance), dsmodel = ~cds(key="hn", formula = ~1),
+  data = ptdata.removal, method = "rem", meta.data = list(point=TRUE))
 summary(xx)
 plot(xx,main="Simulated point count data")
 }

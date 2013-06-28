@@ -12,7 +12,8 @@
 \examples{
 \donttest{
 data(ptdata.single)
-xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.single, method = "ds", meta.data = list(point=TRUE))
+xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.single, method = "ds",
+            meta.data = list(point=TRUE))
 summary(xx)
 plot(xx,main="Simulated point count data")
 }

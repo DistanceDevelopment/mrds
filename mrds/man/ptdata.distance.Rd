@@ -11,7 +11,8 @@
 \examples{
 \donttest{
 data(ptdata.distance)
-xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.distance, method = "ds", meta.data = list(point=TRUE))
+xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.distance, method = "ds",
+     meta.data = list(point=TRUE))
 summary(xx)
 plot(xx,main="Distance point count data")
 ddf.gof(xx)

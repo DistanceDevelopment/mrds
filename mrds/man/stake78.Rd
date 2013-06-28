@@ -75,21 +75,25 @@ extract.stake.pairs=function(stake,obs1,obs2,removal=FALSE)
 {
   obs1=paste("Obs",obs1,sep="")
   obs2=paste("Obs",obs2,sep="")
-  example=subset(stake,eval(parse(text=paste(obs1,"==1 |",obs2,"==1 ",sep=""))),select=c("PD",obs1,obs2))
+  example=subset(stake,eval(parse(text=paste(obs1,"==1 |",obs2,"==1 ",sep=""))),
+           select=c("PD",obs1,obs2))
   names(example)=c("distance","obs1","obs2")
   detected=c(example$obs1,example$obs2)
-  example=data.frame(object=rep(1:nrow(example),2),distance=rep(example$distance,2),detected=detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
+  example=data.frame(object=rep(1:nrow(example),2),distance=rep(example$distance,2),
+     detected=detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
   if(removal)example$detected[example$observer==2]=1
   return(example)
 }
 # extract data for observer 10 and fit a single observer model
 stakes=extract.stake(stake78,10)
-ds.model=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = stakes, method = "ds", meta.data = list(width = 20))
+ds.model=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = stakes, method = "ds",
+                meta.data = list(width = 20))
 plot(ds.model,breaks=seq(0,20,2),showpoints=TRUE)
 ddf.gof(ds.model)
 # extract data from observers 5 and 7 and fit an io model
 stkpairs=extract.stake.pairs(stake78,5,7,removal=FALSE)
-io.model=ddf(dsmodel = ~mcds(key = "hn", formula=~1), mrmodel=~glm(formula=~distance),data = stkpairs, method = "io")
+io.model=ddf(dsmodel = ~mcds(key = "hn", formula=~1), mrmodel=~glm(formula=~distance),
+    data = stkpairs, method = "io")
 summary(io.model)
 par(mfrow=c(3,2))
 plot(io.model,breaks=seq(0,20,2),showpoints=TRUE,new=FALSE)
