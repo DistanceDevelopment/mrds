@@ -180,9 +180,10 @@ tables.dht <- function(group){
   Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,width,point)
   Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
                                          Nhat.by.sample$Sample.Label),]
-  s.area <- ifelse(point,
-                   Nhat.by.sample$Effort.x*pi*width^2,
-                   Nhat.by.sample$Effort.x*2*width)
+  if(point)
+	  s.area <- Nhat.by.sample$Effort.x*pi*width^2
+  else
+      s.area <- Nhat.by.sample$Effort.x*2*width
 
   bysample.table <- with(Nhat.by.sample,
                          data.frame(Region = Region.Label,
