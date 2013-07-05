@@ -4,6 +4,8 @@ BUG FIXES
 
 * patched bug in dht which was returning incorrect values in bysample for sample.area and Dhat.
 
+* patched code in dht.se so it would skip over variance component for p when key=unif and p=1.
+
 mrds 2.1.2
 ------------
 BUG FIXES
