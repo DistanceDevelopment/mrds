@@ -6,6 +6,12 @@ BUG FIXES
 
 * patched code in dht.se so it would skip over variance component for p when key=unif and p=1.
 
+CHANGES
+
+* uses suppressMessages around call to optimx to remove load messages 
+
+* removed old depends statements to optimx and Rsolnp
+
 mrds 2.1.2
 ------------
 BUG FIXES
