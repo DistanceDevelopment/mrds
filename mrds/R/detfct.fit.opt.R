@@ -172,11 +172,11 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
       }else{
         # use Jeff's!
-        lt <- try(optimx(initialvalues, flnl, method=opt.method, 
+        lt <- try(suppressMessages(optimx(initialvalues, flnl, method=opt.method, 
                      control=c(optim.options,follow.on=TRUE),
                      hessian=TRUE, lower=lowerbounds,
                      upper=upperbounds,ddfobj=ddfobj, fitting=fitting,
-                     misc.options=misc.options))
+                     misc.options=misc.options)))
         lt <-attr(lt,"details")[[1]]
         lt$hessian<-lt$nhatend
       }
