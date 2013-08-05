@@ -8,7 +8,7 @@
 #' This function is called by the driver functioin \code{detfct.fit}.  This 
 #' function does the calls the optimx() function (from the package optimx).
 #' 
-#' @import optimx
+#' @import optimx Rsolnp
 #' @aliases detfct.fit.opt
 #' @param ddfobj detection function object
 #' @param optim.options control options for optim
@@ -135,7 +135,6 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 ##           misc.options$mono.strict <- FALSE
 ##        }
 ##      }
-
       # if we want monotonicity, use Lorenzo's code...
       if(misc.options$mono){
         
@@ -167,18 +166,23 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         # re-jig some stuff so that this looks like an optim result...
         lt$conv<-lt$convergence
         lt$par<-lt$pars
-        lt$value<-lt$values[length(lt$values)]
+        lt$value<- lt$values[length(lt$values)]
         lt$message<-""
 
       }else{
-        # use Jeff's!
-        lt <- try(suppressMessages(optimx(initialvalues, flnl, method=opt.method, 
+        # use Jeff's! - changes made for optimx changes; 5 Aug 2013
+        lt <- try(optimx(initialvalues, flnl, method=opt.method, 
                      control=c(optim.options,follow.on=TRUE),
                      hessian=TRUE, lower=lowerbounds,
                      upper=upperbounds,ddfobj=ddfobj, fitting=fitting,
-                     misc.options=misc.options)))
-        lt <-attr(lt,"details")[[1]]
-        lt$hessian<-lt$nhatend
+                     misc.options=misc.options))
+ 		topfit.par <- coef(lt, order="value")[1, ]
+		details <- attr(lt,"details")[1,]
+		lt <- as.list(summary(lt, order="value")[1, ])
+        lt$par <-topfit.par
+		lt$message <- ""
+        names(lt)[names(lt)=="convcode"] <- "conv" 
+        lt$hessian<-details$nhatend
       }
 
 

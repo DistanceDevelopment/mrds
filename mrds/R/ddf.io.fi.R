@@ -169,10 +169,18 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
     # only resort to optim if there was not convergence in the glm!
 
     # Now use optimx with starting values perturbed by 5%
-    fit <-suppressPackageStartupMessages(try(optimx(result$mr$coefficients*1.05,
+    fit <-try(optimx(result$mr$coefficients*1.05,
                       lnl.io, method="L-BFGS-B", hessian=TRUE,x1=xmat1,x2=xmat2,
-                      models=list(p.formula=p.formula))))
+                      models=list(p.formula=p.formula)))
     # did this model converge?
+	topfit.par <- coef(fit, order="value")[1, ]
+	details <- attr(fit,"details")[1,]
+	fit <- as.list(summary(fit, order="value")[1, ])
+	fit$par <-topfit.par
+	fit$message <- ""
+	names(fit)[names(fit)=="convcode"] <- "conv" 
+	fit$hessian<-details$nhatend
+	
     if(fit$conv!=0 | class(fit)=="try-error"){
       # first try the old way of just setting the starting values to zero,
       # this seems (with the crabbie data) to converge back to the values in
@@ -181,7 +189,13 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
       fit <- try(optimx(result$mr$coefficients*0,lnl.io, method="L-BFGS-B", 
                hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))
     }
-
+	topfit.par <- coef(fit, order="value")[1, ]
+	details <- attr(fit,"details")[1,]
+	fit <- as.list(summary(fit, order="value")[1, ])
+	fit$par <-topfit.par
+	fit$message <- ""
+	names(fit)[names(fit)=="convcode"] <- "conv" 
+	fit$hessian<-details$nhatend
     # if nothing worked...
     if(fit$conv!=0 | class(fit)=="try-error"){
 	    stop("No convergence in ddf.io.fi()")

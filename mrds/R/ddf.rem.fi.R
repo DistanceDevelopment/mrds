@@ -183,10 +183,15 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 #
 #  Now use optimx with starting values perturbed by 5%
 #
-fit <- suppressPackageStartupMessages(optimx(1.05*result$mr$coefficients,lnl.removal, method="nlminb", hessian=TRUE,  x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))
-fit <-attr(fit,"details")[[1]]
-fit$hessian<-fit$nhatend  
-result$mr$mr$coefficients=fit$par   
+   fit <- optimx(1.05*result$mr$coefficients,lnl.removal, method="nlminb", hessian=TRUE,  x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
+   topfit.par <- coef(fit, order="value")[1, ]
+   details <- attr(fit,"details")[1,]
+   fit <- as.list(summary(fit, order="value")[1, ])
+   fit$par <-topfit.par
+   fit$message <- ""
+   names(fit)[names(fit)=="convcode"] <- "conv" 
+   fit$hessian<-details$nhatend
+   result$mr$mr$coefficients=fit$par   
    result$hessian=fit$hessian	
 #
 #  Compute the L_omega portion of the likelihood value, AIC and hessian

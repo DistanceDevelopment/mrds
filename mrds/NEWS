@@ -8,9 +8,9 @@ BUG FIXES
 
 CHANGES
 
-* uses suppressMessages around call to optimx to remove load messages 
+* modified code in detfct.fit.opt and io and rem functions to adapt to changes in optimx
 
-* removed old depends statements to optimx and Rsolnp
+* removed old depends statements to optimx and Rsolnp; uses import
 
 mrds 2.1.2
 ------------

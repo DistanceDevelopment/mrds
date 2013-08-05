@@ -30,8 +30,8 @@ test_that("a dht object with only 0's for estimates is returned", {
   expect_that(is.null(cluster.result$clusters), equals(FALSE))
   #checks all abundance estimates are 0 for individuals in clustered data
   expect_that(length(which(cluster.result$individuals$N$Estimate != 0)), equals(0))
-  #checks all df are 0 for clusters for clustered data
-  expect_that(length(which(cluster.result$clusters$N$df != 0)), equals(0))
+  #checks all df are 0 for clusters for clustered data; removed I don't think this is useful nor desirable
+  #expect_that(length(which(cluster.result$clusters$N$df != 0)), equals(0))
   #checks all encounter rate estimates are 0 for clusters for clustered data
   expect_that(length(which(cluster.result$clusters$summary$ER != 0)), equals(0))
   #checks all density estimates are 0 for clusters for non-clustered data

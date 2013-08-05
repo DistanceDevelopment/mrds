@@ -304,7 +304,7 @@ function(model,region.table,samples,obs,options,numRegions,estimate.table,Nhat.b
         df=estimate.table$k
         df=sapply(df,compute.df,type=options$ervar)
         df[df<1]=1
-		if(vc1==0)
+		if(all(vc1==0))
 			estimate.table$df = df
 		else	
             estimate.table$df = estimate.table$cv^4/((diag(vc1)/estimate.table$Estimate^2)^2/(length(model$fitted) - 
@@ -317,14 +317,14 @@ function(model,region.table,samples,obs,options,numRegions,estimate.table,Nhat.b
         if(numRegions>1)
         {
             df.total=(diag(vc2)[numRegions+1])^2/sum((diag(vc2)^2/df)[1:numRegions])
-			if(vc1==0)
+			if(all(vc1==0))
 				estimate.table$df[numRegions+1] = df.total	
 			else
                estimate.table$df[numRegions+1] = estimate.table$cv[numRegions+1]^4 /
                            ((diag(vc1)[numRegions+1]/estimate.table$Estimate[numRegions+1]^2)^2/(length(model$fitted)-length(model$par)) 
                            + (diag(vc2)[numRegions+1]/estimate.table$Estimate[numRegions+1]^2)^2/df.total)
         }
-        estimate.table$df[estimate.table$df < 1] = 1
+        estimate.table$df[estimate.table$df < 1 &estimate.table$df >0] = 1
         cvalue = exp((abs(qt(0.025, estimate.table$df)) * sqrt(log(1 + estimate.table$cv^2))))
     }
     else 
