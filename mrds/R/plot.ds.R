@@ -331,9 +331,7 @@ plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,ji
 
   # Data summary plot for observer 1
   if(show[1]){
-    if(.Device=="windows"){
-      win.graph()
-    }
+    dev.new()
     histline(h1$counts,breaks=breaks,lineonly=FALSE,ylim=c(0,ymax),xlab=xlab,ylab="Frequency",fill=TRUE,angle=angval1,density=denval1,col=byval1,...)
     title(paste(p1.name,"detections"),cex.main=0.8)
   }
@@ -341,10 +339,7 @@ plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,ji
   # Detection function plot overlaid on historgram of observed 
   # distances - much of this code is taken from earlier plot.ds function.
   if(show[2]){
-    if(.Device=="windows"){
-      win.graph()
-    }
-
+	dev.new()
     # Primary detection function
     gxvalues <- detfct(xmat$distance,ddfobj,select=selected,width=width)
     ymax <- max(hist.obj$density,max(gxvalues))
