@@ -304,7 +304,7 @@ function(model,region.table,samples,obs,options,numRegions,estimate.table,Nhat.b
         df=estimate.table$k
         df=sapply(df,compute.df,type=options$ervar)
         df[df<1]=1
-		if(all(vc1==0))
+		if(is.na(vc1) || all(vc1==0))
 			estimate.table$df = df
 		else	
             estimate.table$df = estimate.table$cv^4/((diag(vc1)/estimate.table$Estimate^2)^2/(length(model$fitted) - 

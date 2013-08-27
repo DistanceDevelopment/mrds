@@ -1,3 +1,11 @@
+mrds 2.1.3-1
+----------
+BUG FIXES
+
+* patched dht.se so if vc1=NA it will not fail
+
+* patched plot.ds to only issue dev.new when not using another graphics device so it plays nice with Distance.
+
 mrds 2.1.3
 ----------
 BUG FIXES
