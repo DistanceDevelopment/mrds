@@ -72,21 +72,31 @@ det.tables=function(model,nc=NULL,breaks=NULL)
    xmat1=xmat[xmat$observer==1,]
    xmat2=xmat[xmat$observer==2,]
    obs1=with(xmat1,table(cut(distance,breaks,include.lowest=TRUE),Detected))
-   obs2=with(xmat2,table(cut(distance,breaks,include.lowest=TRUE),Detected))
-   obs3=with(xmat1[xmat1$timesdetected==2,],table(cut(distance,breaks,include.lowest=TRUE)))
+   if(substr(model$method,1,2)=="io")
+	   obs2=with(xmat2,table(cut(distance,breaks,include.lowest=TRUE),Detected))
+   else
+	   obs2=NULL
+   if(substr(model$method,1,2)=="io")
+	   obs3=with(xmat1[xmat1$timesdetected==2,],table(cut(distance,breaks,include.lowest=TRUE)))
+   else 
+	   obs3=NULL
    obs4=with(xmat1,table(cut(distance,breaks,include.lowest=TRUE)))
 #
 #  Produce tables for conditional detection for each observer
 #
    obs1_2=as.matrix(with(xmat1[xmat2$detected==1,],table(cut(distance,breaks,include.lowest=TRUE),Detected)))   
-   obs2_1=as.matrix(with(xmat2[xmat1$detected==1,],table(cut(distance,breaks,include.lowest=TRUE),Detected)))
    obs1_2=cbind(obs1_2,obs1_2[,2]/(obs1_2[,1]+obs1_2[,2]))
-   obs2_1=cbind(obs2_1,obs2_1[,2]/(obs2_1[,1]+obs2_1[,2]))
    colnames(obs1_2)[3]="Prop. detected"
-   colnames(obs2_1)[3]="Prop. detected"   
    obs1_2[is.infinite(obs1_2)]=0
-   obs2_1[is.infinite(obs2_1)]=0
-   tab=list(Observer1=obs1,Observer2=obs2,Duplicates=obs3,Pooled=obs4,Obs1_2=obs1_2,Obs2_1=obs2_1,breaks=breaks)
+   if(substr(model$method,1,2)=="io")
+   {
+	   obs2_1=as.matrix(with(xmat2[xmat1$detected==1,],table(cut(distance,breaks,include.lowest=TRUE),Detected)))
+	   obs2_1=cbind(obs2_1,obs2_1[,2]/(obs2_1[,1]+obs2_1[,2]))
+	   colnames(obs2_1)[3]="Prop. detected"   
+	   obs2_1[is.infinite(obs2_1)]=0
+   }else
+	   obs2_1=NULL
+   tab=list(method=model$method,Observer1=obs1,Observer2=obs2,Duplicates=obs3,Pooled=obs4,Obs1_2=obs1_2,Obs2_1=obs2_1,breaks=breaks)
    class(tab)="det.tables"
    return(tab)
 }
