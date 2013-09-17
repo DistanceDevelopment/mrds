@@ -1,76 +1,25 @@
 #' Plot fit of detection functions and histograms of data from distance
-#' sampling model
+#' sampling trial observer model
 #' 
 #' Plots the fitted detection functions for a distance sampling model and
 #' histograms of the distances (for unconditional detection functions) or
 #' proportion of observations detected within distance intervals (for
 #' conditional detection functions) to compare visually the fitted model and
-#' data.  The structure of the histogram can be controlled by the user-defined
+#' data.  
+#' 
+#' The structure of the histogram can be controlled by the user-defined
 #' arguments \code{nc} or \code{breaks}.  The observation specific detection
 #' probabilities along with the line representing the fitted average detection
 #' probability.
 #' 
-#' In earlier versions of this package the plot routines other than
-#' \code{plot.ds} (\code{plot.io} etc) used \code{plot.cond} and
-#' \code{plot.uncond} to construct the conditional and unconditional detection
-#' functions respectively.  This is no longer the case although the advanced
-#' user can still call \code{plot.cond} and \code{plot.uncond} if required.  It
-#' is not intended for the user to call any of \code{plot.ds},
+#' It is not intended for the user to call any of \code{plot.ds},
 #' \code{plot.trial.fi}, \code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
 #' \code{plot.io.fi} or \code{plot.io} but the arguments are documented here.
 #' Instead the generic \code{plot} command should be used and it will call the
 #' appropriate function based on the type of \code{ddf} object.
 #' 
-#' For plot routine \code{plot.ds} the \code{which} command allows the user to
-#' select which plots are returned from the following options: \tabular{ll}{
-#' \code{which} \tab \code{plot}\cr \code{1} \tab data summary plot - a
-#' histogram of the observed distances \cr \code{2} \tab a scaled histogram of
-#' detections with a line giving the detection function averaged over the
-#' estimated population levels of the covariate values, and one dot for each
-#' observation at its estimated detection probability.\cr }
-#' 
-#' For plot routines \code{plot.trial.fi} and \code{plot.trial} the following
-#' plots are available: \tabular{ll}{ \code{which} \tab \code{plot} \cr
-#' \code{1} \tab data summary plot - a histogram of the observed distances for
-#' observer 1 \cr \code{2} \tab data summary plot - a histogram of the observed
-#' distances for observer 2 \cr \code{3} \tab Observer 1 detection function - a
-#' scaled histogram of detections with fitted DS model scaled from the MR
-#' estimated g(0).  The line shows the population average detection function
-#' and the points display estimated detection probability \cr \code{4} \tab
-#' Conditional MR detection function - observer 1 given obs 2, giving the
-#' proportion of duplicates with fitted MR model averaged over population
-#' covariate vales and dots for each estimated detection probability. \cr } For
-#' plot routines \code{plot.rem.fi} and \code{plot.rem} the following plots are
-#' available: \tabular{ll}{ \code{which} \tab \code{plot} \cr \code{1} \tab
-#' data summary plot - a histogram of the observed distances for observer 1 \cr
-#' \code{2} \tab data summary plot - a histogram of the observed distances for
-#' observer 2 \cr \code{3} \tab Observer 1 detection function - a scaled
-#' histogram of detections with fitted DS model scaled from the MR estimated
-#' g(0).  The line shows the population average detection function and the
-#' points display estimated detection probability \cr \code{4} \tab Conditional
-#' MR detection function - observer 1 given obs 2, giving the proportion of
-#' duplicates with fitted MR model averaged over population covariate vales and
-#' dots for each estimated detection probability. \cr }
-#' 
-#' For plot routines \code{plot.io.fi} and \code{plot.io} the following plots
-#' are available: \tabular{ll}{ \code{which} \tab \code{plot} \cr \code{1} \tab
-#' data summary plot - a histogram of the observed distances for observer 1 \cr
-#' \code{2} \tab data summary plot - a histogram of the observed distances for
-#' observer 2 \cr \code{3} \tab Observer 1 detection function - a scaled
-#' histogram of detections with fitted DS model scaled from the MR estimated
-#' g(0).  The line shows the population average detection function and the
-#' points display estimated detection probability \cr \code{4} \tab Observer 2
-#' detection function - as for \code{plot} 3 but using the detections from
-#' Observer 2\cr \code{5} \tab Duplicates detection function - as for
-#' \code{plot} 3 but using the duplicate detections\cr \code{6} \tab Pooled
-#' detection function - as for \code{plot} 3 but using the pooled detections\cr
-#' \code{7} \tab Conditional MR detection function - observer 1 given obs 2,
-#' giving the proportion of duplicates with fitted MR model averaged over
-#' population covariate vales and dots for each estimated detection
-#' probability. \cr \code{8} \tab Conditional MR detection function - observer
-#' 2 given obs 1, giving the proportion of duplicates with fitted MR model
-#' averaged over population covariate vales and dots for each estimated
-#' detection probability. \cr }
+#' The \code{which} command allows the user to
+#' select which plots are returned. See which argument definition. 
 #' 
 #' @aliases plot.trial
 #' @method plot trial
@@ -95,16 +44,15 @@
 #' @param divisions number of divisions for averaging line values; default = 25 
 #' @param xlab label for x-axis
 #' @param ylab label for y-axis 
+#' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (plot, hist, lines, points, etc)
 #' @return NULL
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
-
-
 "plot.trial" <-
 		function(x, which=1:2, breaks=NULL, nc=NULL,  maintitle="", showlines=TRUE, showpoints=TRUE, 
-				ylim=c(0,1),angle=-45,density=20,col="black",jitter=NULL,divisions=25,xlab="Distance",ylab="Detection probability",...)
+				ylim=c(0,1),angle=-45,density=20,col="black",jitter=NULL,divisions=25,xlab="Distance",ylab="Detection probability",subtitle=TRUE,...)
 {
 # plot.trial - Provides plots of fitted functions for a trial object
 #  Uses: calcp.mrds, detfct, plot.cond, plot.uncond
@@ -147,7 +95,7 @@
      g0 <- predict(model$mr$mr,newdata=xmat.trial,type="response")
      gxvalues <- detfct.pooled.values*g0
      plot_uncond(model,1,xmat,gxvalues,nc,finebr=(width/divisions)*(0:divisions),breaks,showpoints,showlines,
-	   	  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
+	   	  maintitle,ylim,point=model$meta.data$point,angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,ylab=ylab,subtitle=subtitle,...)
   }
 # Conditional detection function plot: Obs 1 given obs 2.
 # Duplicate detections with MR model fitted and the estimated detection probability from the MR part of the model
@@ -156,10 +104,9 @@
 	 if(.Platform$GUI=="Rgui")dev.new()
 	 xmat<- data[data$observer==2&data$detected==1,]
 	 gxvalues <- predict(model$mr,newdata=xmat,type="response",integrate=FALSE)$fitted  
-	 est<-calcp.mrds(model$mr$mr$formula,model$mr$mr$family$link,model$mr$mr$coefficients,model$mr$data,vname="distance",
-			lower=left,upper=width,divisions=divisions,type=model$meta.data$point,objname="object",obsname="observer")
-  	 plot_cond(1,data,gxvalues,list(x=est$x,p=est$p1),nc,breaks,showpoints,showlines,
-			maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
+	 plot_cond(1,data,gxvalues,model,nc,breaks,finebr=(width/divisions)*(0:divisions),showpoints,showlines,
+			maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,ylab=ylab,subtitle=subtitle,...)
+	
   }
 invisible()
 }

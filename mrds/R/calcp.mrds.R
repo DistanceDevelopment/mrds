@@ -1,4 +1,4 @@
-#' Average detection probability calculation
+#' Average detection probability calculation- DEPRECATED FUNCTION NO LONGER USED
 #' 
 #' Detection probability at a distance can vary depending on the other
 #' ancillary covariates collected for an observation.  To plot a single

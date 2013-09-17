@@ -9,9 +9,10 @@
 #' @param obs obsever code
 #' @param xmat processed data
 #' @param gxvalues detection function values for each observation
-#' @param est line values constructed with calcp.mrds
+#' @param model   fitted model from \code{ddf}
 #' @param nc number of equal-width bins for histogram
 #' @param breaks user define breakpoints
+#' @param finebr fine break values over which line is averaged
 #' @param showpoints logical variable; if TRUE plots predicted value for each
 #'   observation
 #' @param showlines logical variable; if TRUE plots average predicted value line
@@ -25,6 +26,7 @@
 #'   distribution with mean 1 and sd jitter.  
 #' @param xlab label for x-axis
 #' @param ylab label for y-axis 
+#' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (plot, hist, lines, points, etc)
 #' @return NULL
@@ -43,7 +45,7 @@
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
 #' }
-"plot_cond" <-function(obs,xmat,gxvalues,est,nc,breaks,showpoints,showlines,maintitle,ylim,angle=-45,density=20,col="black",jitter=NULL,xlab="Distance",ylab="Detection probability",...)
+"plot_cond" <-function(obs,xmat,gxvalues,model,nc,breaks,finebr,showpoints,showlines,maintitle,ylim,angle=-45,density=20,col="black",jitter=NULL,xlab="Distance",ylab="Detection probability",subtitle=TRUE,...)
 {
    selection <-xmat$detected[xmat$observer!=obs]==1
    selmat <- (xmat[xmat$observer==obs,])[selection,]
@@ -58,13 +60,28 @@
    mhist$intensities<-mhist$density
    histline(mhist$density,breaks=breaks,lineonly=FALSE,xlab=xlab,ylab=ylab,ylim=ylim,
 		     fill=TRUE,angle=angle,density=density,col=col,det.plot=TRUE,...) 
+	 
+	 
    if(showlines)
-      lines(est$x,est$p,...)
+   {
+	   line=average.line.cond(finebr,obs,model)
+       linevalues <- line$values
+       xgrid <- line$xgrid
+       lines(xgrid,linevalues,...)
+   }
+	   
+#      lines(est$x,est$p,...)
    if(showpoints)
    {
 	   ifelse(is.null(jitter),jitter.p<-1,jitter.p<-rnorm(length(gxvalues),1,jitter))
 	   points(selmat$distance,gxvalues*jitter.p,...)
    }
    if(maintitle!="")
-      title(paste(maintitle, "\nConditional detection probability - Observer=",obs ," | Observer = ",3-obs),...)
+	  if(subtitle)
+         title(paste(maintitle, "\nConditional detection probability - Observer=",obs ," | Observer = ",3-obs),...)
+      else
+		  title(maintitle)
+  else
+      if(subtitle)
+	     title(paste("Conditional detection probability - Observer=",obs ," | Observer = ",3-obs),...)
 }

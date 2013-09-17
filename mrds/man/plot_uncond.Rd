@@ -6,7 +6,8 @@
     breaks, showpoints, showlines, maintitle, ylim,
     point = FALSE, return.lines = FALSE, angle = -45,
     density = 20, col = "black", jitter = NULL,
-    xlab = "Distance", ylab = "Detection probability", ...)
+    xlab = "Distance", ylab = "Detection probability",
+    subtitle = TRUE, ...)
 }
 \arguments{
   \item{model}{fitted model from \code{ddf}}
@@ -53,6 +54,8 @@
   \item{xlab}{label for x-axis}
 
   \item{ylab}{label for y-axis}
+
+  \item{subtitle}{if TRUE, shows plot type as sub-title}
 
   \item{\dots}{other graphical parameters, passed to the
   plotting functions (plot, hist, lines, points, etc)}

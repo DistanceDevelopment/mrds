@@ -1,6 +1,6 @@
 \name{calcp.mrds}
 \alias{calcp.mrds}
-\title{Average detection probability calculation}
+\title{Average detection probability calculation- DEPRECATED FUNCTION NO LONGER USED}
 \usage{
   calcp.mrds(dpformula, dplink, dppars, dpdata, vname,
     lower = 0, upper, divisions = 30, type = TRUE,

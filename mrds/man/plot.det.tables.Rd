@@ -2,7 +2,7 @@
 \alias{plot.det.tables}
 \title{Observation detection tables}
 \usage{
-  \method{plot}{det.tables} (x, which = 5:6, angle = -45,
+  \method{plot}{det.tables} (x, which = 1:6, angle = -45,
     density = 20, col1 = "black", col2 = "blue",
     new = TRUE, ...)
 }

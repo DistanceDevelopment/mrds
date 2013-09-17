@@ -27,6 +27,7 @@
 #'   distribution with mean 1 and sd jitter. 
 #' @param xlab label for x-axis
 #' @param ylab label for y-axis 
+#' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (plot, hist, lines, points, etc)
 #' @return NULL
@@ -47,7 +48,7 @@
 #' }
 "plot_uncond" <-
 function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,showlines,maintitle,ylim,point=FALSE,return.lines=FALSE,angle=-45,density=20,col="black",jitter=NULL,
-		  xlab="Distance",ylab="Detection probability",...)
+		  xlab="Distance",ylab="Detection probability",subtitle=TRUE,...)
 #
 #  Value: if(return.lines) returns dataframe from average.line, otherwise NULL
 #
@@ -93,13 +94,20 @@ function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,showlines,maintitle
 	  ifelse(is.null(jitter),jitter.p<-1,jitter.p<-rnorm(length(gxvalues),1,jitter))
 	  points(selmat$distance,gxvalues*jitter.p,...)
   }
-  if(maintitle!="")
-     if(obs<=2)
-        title(paste(maintitle, "\nObserver = ",obs, " detections"),...)
-     else
-        if(obs==3)
-           title(paste(maintitle, "\nPooled detections"),...)
-        else
-           title(paste(maintitle, "\nDuplicate detections"),...)
- if(return.lines) invisible(line) else invisible(NULL) # *** dlb change ***
+  if(!subtitle)
+  {
+	  if(maintitle!="")
+		  maintitle=title(maintitle)
+  }else
+  {
+	  if(maintitle!="") maintitle=paste(maintitle,"\n",sep="")
+	  if(obs<=2)
+		  title(paste(maintitle, "Observer = ",obs, " detections"),...)
+	  else
+	  if(obs==3)
+		  title(paste(maintitle, "Pooled detections"),...)
+	  else
+		  title(paste(maintitle, "Duplicate detections"),...)
+  }
+  if(return.lines) invisible(line) else invisible(NULL) # *** dlb change ***
 }

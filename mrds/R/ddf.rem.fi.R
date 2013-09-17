@@ -178,7 +178,7 @@ return(list(fct="gam",formula=formula,link=substitute(link)))
 #
 #  Fit the conditional detection functions using io.glm 
 #
-   suppressWarnings(result$mr <- rem.glm (xmat1,model.formula,GAM,datavec2=xmat2))
+   suppressWarnings(result$mr <- rem.glm (xmat1,model.formula,GAM,datavec2=xmat2,iterlimit=1))
 #   if(GAM)result$mr$data=xmat1
 #
 #  Now use optimx with starting values perturbed by 5%

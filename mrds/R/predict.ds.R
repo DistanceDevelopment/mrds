@@ -80,14 +80,17 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
     # Get integration ranges either from specified argument or from
     # values stored in the model.
     if(is.null(int.range)){
+	  if(is.null(newdata))
+		  nr=nrow(ddfobj$xmat)
+	  else
+		  nr=nrow(newdata)
       if(is.null(ltmodel$aux$int.range)){
-        int.range <- cbind(rep(0,nrow(ddfobj$xmat)),
-                           rep(width,nrow(ddfobj$xmat)))
+        int.range <- cbind(rep(0,nr),rep(width,nr))
       }else{
         int.range <- ltmodel$aux$int.range
 	      if(is.vector(int.range)){
-          int.range <- cbind(rep(int.range[1],nrow(ddfobj$xmat)),
-                             rep(int.range[2],nrow(ddfobj$xmat)))
+          int.range <- cbind(rep(int.range[1],nr),
+                             rep(int.range[2],nr))
         }
       }
     }

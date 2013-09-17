@@ -2,10 +2,11 @@
 \alias{plot_cond}
 \title{Plot conditional detection function from distance sampling model}
 \usage{
-  plot_cond(obs, xmat, gxvalues, est, nc, breaks,
+  plot_cond(obs, xmat, gxvalues, model, nc, breaks, finebr,
     showpoints, showlines, maintitle, ylim, angle = -45,
     density = 20, col = "black", jitter = NULL,
-    xlab = "Distance", ylab = "Detection probability", ...)
+    xlab = "Distance", ylab = "Detection probability",
+    subtitle = TRUE, ...)
 }
 \arguments{
   \item{obs}{obsever code}
@@ -15,11 +16,14 @@
   \item{gxvalues}{detection function values for each
   observation}
 
-  \item{est}{line values constructed with calcp.mrds}
+  \item{model}{fitted model from \code{ddf}}
 
   \item{nc}{number of equal-width bins for histogram}
 
   \item{breaks}{user define breakpoints}
+
+  \item{finebr}{fine break values over which line is
+  averaged}
 
   \item{showpoints}{logical variable; if TRUE plots
   predicted value for each observation}
@@ -45,6 +49,8 @@
   \item{xlab}{label for x-axis}
 
   \item{ylab}{label for y-axis}
+
+  \item{subtitle}{if TRUE, shows plot type as sub-title}
 
   \item{\dots}{other graphical parameters, passed to the
   plotting functions (plot, hist, lines, points, etc)}
