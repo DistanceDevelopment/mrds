@@ -70,7 +70,7 @@ function(datavec, fitformula, eps = 0.00001, iterlimit = 500, GAM = FALSE,
   while(i <= iterlimit & !done) {
 #  fit the glm or gam
     if(GAM) {
-      ioglm <- mgcv:::gam(formula = fitformula, family = binomial, data = datavec)
+      ioglm <- mgcv::gam(formula = fitformula, family = binomial, data = datavec)
     }else{
       ioglm <- glm(formula = fitformula, family = binomial, data = datavec)
     }
