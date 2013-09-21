@@ -186,28 +186,24 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
       # this seems (with the crabbie data) to converge back to the values in
       # result$mr$coefficients but without having the convergence issues
       # NEED TO THINK ABOUT THIS MORE...
-      fit <- try(optimx(result$mr$coefficients*0,lnl.io, method="L-BFGS-B", 
+       fit <- try(optimx(result$mr$coefficients*0,lnl.io, method="L-BFGS-B", 
                hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))
+  	   topfit.par <- coef(fit, order="value")[1, ]
+	   details <- attr(fit,"details")[1,]
+	   fit <- as.list(summary(fit, order="value")[1, ])
+	   fit$par <-topfit.par
+	   fit$message <- ""
+	   names(fit)[names(fit)=="convcode"] <- "conv" 
+	   fit$hessian<-details$nhatend
     }
-	topfit.par <- coef(fit, order="value")[1, ]
-	details <- attr(fit,"details")[1,]
-	fit <- as.list(summary(fit, order="value")[1, ])
-	fit$par <-topfit.par
-	fit$message <- ""
-	names(fit)[names(fit)=="convcode"] <- "conv" 
-	fit$hessian<-details$nhatend
-    # if nothing worked...
+   # if nothing worked...
     if(fit$conv!=0 | class(fit)=="try-error"){
 	    stop("No convergence in ddf.io.fi()")
     }else{
-      fit <- attr(fit,"details")[[1]]
-      fit$hessian <- fit$nhatend
       result$mr$mr$coefficients <- fit$par
       result$hessian <- fit$hessian
     }
   }
-
-
   # Compute the L_omega portion of the likelihood value, AIC and hessian
   cond.det <- predict(result)
   result$par <- coef(result$mr)  

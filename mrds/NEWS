@@ -6,7 +6,7 @@ CHANGES
 
 * to plot functions (other than plot.ds) added argument subtitle=TRUE (default). It can be either TRUE, FALSE. If TRUE it shows sub-titles for plot type. If FALSE, no subtitles are shown. With this argument it is possible to get subtitles without main title. 
 
-* set iterlimit=1 in call to rem.glm from ddf.rem.fi to prevent convergence issues in getting starting values.
+* set iterlimit=1 in call to rem.glm from ddf.rem.fi to prevent convergence issues in getting starting values. 
 
 * created average.line.cond and it is now used in place of calcp.mrds which was computing average line for conditional detection function by weighting values by estimated population proportions for each covariate value. It is now weighted by sample proportions (mean value). 
 
