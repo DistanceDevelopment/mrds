@@ -10,12 +10,12 @@
   \item{meta.data}{meta.data options; see \code{\link{ddf}}
   for a description}
 
-  \item{check}{if TRUE check data for errors in the mrds
-  structure; for \code{method="ds" check=FALSE}}
+  \item{check}{if \code{TRUE} check data for errors in the
+  mrds structure; for \code{method="ds" check=FALSE}}
 }
 \value{
-  \item{xmat}{processed dataframe with added fields}
-  \item{meta.data}{meta.data list}
+  \item{xmat}{processed \code{data.frame} with added
+  fields} \item{meta.data}{meta.data list}
 }
 \description{
   Sets up dataframe and does some basic error checking.
