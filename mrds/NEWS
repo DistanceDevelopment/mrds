@@ -3,6 +3,8 @@ mrds 2.1.4-1
 CHANGES
 
  * Warning now issued when truncation is set to the largest distance by default.
+ 
+ * updated dht documentation
 
 
 mrds 2.1.4
