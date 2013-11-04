@@ -61,7 +61,8 @@
   plotting functions (plot, hist, lines, points, etc)}
 }
 \value{
-  NULL
+  if \code{return.lines==TRUE} returns dataframe
+  \code{average.line} otherwise just plots
 }
 \description{
   Plots unconditional detection function for observer=obs

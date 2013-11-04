@@ -58,7 +58,7 @@ sampling independent observer model}
   plotting functions (plot, hist, lines, points, etc)}
 }
 \value{
-  NULL
+  Just plots.
 }
 \description{
   Plots the fitted detection functions for a distance

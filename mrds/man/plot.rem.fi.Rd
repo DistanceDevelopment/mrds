@@ -41,7 +41,7 @@ sampling model}
   \item{jitter}{scaling option for plotting points.  Jitter
   is applied to points by multiplying the fitted value by a
   random draw from a normal distribution with mean 1 and sd
-  jitter.}
+  jitter}
 
   \item{divisions}{number of divisions for averaging line
   values; default = 25}

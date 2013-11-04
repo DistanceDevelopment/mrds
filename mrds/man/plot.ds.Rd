@@ -8,14 +8,14 @@ sampling model}
     jitter.v = rep(0, 3), showpoints = TRUE, subset = NULL,
     pl.col = c("black"), bw.col = c(grey(0)),
     black.white = FALSE, pl.den = rep(20, 1),
-    pl.ang = rep(-45, 1), main = NULL, ...)
+    pl.ang = rep(-45, 1), main = NULL, new = TRUE, ...)
 }
 \arguments{
-  \item{x}{fitted model from \code{ddf}}
+  \item{x}{fitted model from \code{ddf}.}
 
   \item{which}{index to specify which plots should be
-  produced. 1: histogram, 2: histogram with fitted line and
-  points.}
+  produced.  1: histogram, 2: histogram with fitted line
+  and points.}
 
   \item{byvar}{name of variable to be used to color points
   - not currently implemented.}
@@ -33,37 +33,41 @@ sampling model}
   \item{jitter.v}{scaling option for plotting points.
   Jitter is applied to points by multiplying the fitted
   value by a random draw from a normal distribution with
-  mean 1 and sd jitter.v[j].  Where j=1,2 corresponds to
-  observer j and j=3 corresponds to pooled/duplicate
-  detections.}
+  mean 1 and sd \code{jitter.v[j]}.  Where \code{j=1,2}
+  corresponds to observer \code{j} and \code{j=3}
+  corresponds to pooled/duplicate detections.}
 
-  \item{showpoints}{logical variable; if TRUE plots
-  predicted value for each observation}
+  \item{showpoints}{logical variable; if \code{TRUE} plots
+  predicted value for each observation.}
 
-  \item{subset}{subset of data to plot}
+  \item{subset}{subset of data to plot.}
 
   \item{pl.col}{colours plotting colours for obs 1, obs 2
-  detections}
+  detections.}
 
   \item{bw.col}{grayscale plotting colours for obs 1, obs 2
-  detections}
+  detections.}
 
-  \item{black.white}{logical variable; if TRUE plots are
-  grayscale}
+  \item{black.white}{logical variable; if \code{TRUE} plots
+  are grayscale.}
 
   \item{pl.den}{shading density for plots of obs 1, obs 2
-  detections}
+  detections.}
 
   \item{pl.ang}{shading angle for plots of obs 1, obs 2
-  detections}
+  detections.}
 
-  \item{main}{user-specfied plot title}
+  \item{main}{user-specfied plot title.}
+
+  \item{new}{make new windows for plots?}
 
   \item{\dots}{other graphical parameters, passed to the
-  plotting functions (plot, hist, lines, points, etc)}
+  plotting functions (\code{\link{plot}},
+  \code{\link{hist}}, \code{\link{lines}},
+  \code{\link{points}}, etc).}
 }
 \value{
-  NULL
+  Just plots.
 }
 \description{
   Plots the fitted detection functions for a distance
