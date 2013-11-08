@@ -26,7 +26,8 @@
 #' @method plot io
 #' @export plot.io
 #' @param x fitted model from \code{ddf}
-#' @param which index to specify which plots should be produced. 1: uncond det fct, 2:cond det fct
+#' @param which index to specify which plots should be produced.
+#'   1: uncond det fct, 2:cond det fct
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
 #' @param maintitle main title line for each plot
@@ -57,13 +58,6 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
                     density=20,col="black",jitter=NULL,divisions=25,new=TRUE,
                     xlab="Distance",ylab="Detection probability",subtitle=TRUE,
                     ...){
-  # Guide to which
-  # 1 - Plot primary unconditional detection function
-  # 2 - Plot secondary unconditional detection function
-  # 3 - Plot pooled unconditional detection function
-  # 4 - Plot duplicate unconditional detection function
-  # 5 - Plot conditional detection functions
-  # 6 - Plot secondary conditional detection function
 
   model <- x
 
@@ -111,6 +105,8 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
     }
   }
 
+  # list of values to pass as gxvalues for unconditional plots
+  # in order as below
   gxlist <- list(p1/delta,
                  p2/delta,
                  (p1+p2-p1*p2)/delta,
@@ -126,6 +122,15 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
                 ylab=ylab,subtitle=subtitle,...)
   }
 
+  # Guide to which
+  # 1 - Plot primary unconditional detection function
+  # 2 - Plot secondary unconditional detection function
+  # 3 - Plot pooled unconditional detection function
+  # 4 - Plot duplicate unconditional detection function
+  # 5 - Plot conditional detection functions
+  # 6 - Plot secondary conditional detection function
+
+  # loop over the unconditional plots
   for(wh in seq_along(which[which<5])){
     plot_uncond_dummy(wh,gxlist[[wh]])
   }

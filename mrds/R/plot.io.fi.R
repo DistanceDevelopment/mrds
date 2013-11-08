@@ -57,16 +57,8 @@ plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
                        density=20,col="black",jitter=NULL,divisions=25,new=TRUE,
                        xlab="Distance",ylab="Detection probability",
                        subtitle=TRUE,...){
-  # Functions used: process.data, predict(predict.io.fi), plot.uncond,
-  #                 plot.cond
+  # Functions used: process.data, predict.io.fi, plot_uncond,plot_cond
 
-  # guide to which
-  # 1 - Plot primary unconditional detection function
-  # 2 - Plot secondary unconditional detection function
-  # 3 - Plot pooled unconditional detection function
-  # 4 - Plot duplicate unconditional detection function
-  # 5 - Plot conditional detection functions
-  # 6 - Plot secondary conditional detection function
 
   # Retrieve values from model object
   model <- x
@@ -118,7 +110,15 @@ plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
                  p1[xmat$detected[xmat$observer==2]==1],
                  p2[xmat$detected[xmat$observer==1]==1])
 
-  # 1:4 plots are uncond plots
+  # guide to which
+  # 1 - Plot primary unconditional detection function
+  # 2 - Plot secondary unconditional detection function
+  # 3 - Plot pooled unconditional detection function
+  # 4 - Plot duplicate unconditional detection function
+  # 5 - Plot conditional detection functions
+  # 6 - Plot secondary conditional detection function
+
+  # 1:4 plots are unconditional plots
   for(wh in seq_along(which[which<5])){
     plot_uncond_dummy(wh,gxlist[[wh]])
   }
