@@ -25,15 +25,15 @@
   \item{finebr}{fine break values over which line is
   averaged}
 
-  \item{showpoints}{logical variable; if TRUE plots
+  \item{showpoints}{logical variable; if \code{TRUE} plots
   predicted value for each observation}
 
-  \item{showlines}{logical variable; if TRUE plots average
-  predicted value line}
+  \item{showlines}{logical variable; if \code{TRUE} plots
+  average predicted value line}
 
   \item{maintitle}{main title line for each plot}
 
-  \item{ylim}{range of y axis; defaults to (0,1)}
+  \item{ylim}{range of y axis (default \code{c(0,1)})}
 
   \item{angle}{shading angle for hatching}
 

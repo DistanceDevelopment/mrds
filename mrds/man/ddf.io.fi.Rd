@@ -72,8 +72,8 @@
   Oxford University Press.
 }
 \seealso{
-  \code{\link{ddf.io}},\code{\link{summary.io.fi}},\code{\link{coef.io.fi}},\code{\link{plot.io.fi}},
-  \code{\link{gof.io.fi}},\code{\link{io.glm}}
+  \code{\link{ddf.io}},\code{\link{summary.io.fi}},\code{\link{coef.io.fi}},
+  \code{\link{plot.io.fi}},\code{\link{gof.io.fi}},\code{\link{io.glm}}
 }
 \keyword{Models}
 \keyword{Statistical}

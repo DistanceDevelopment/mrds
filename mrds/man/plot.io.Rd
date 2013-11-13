@@ -14,7 +14,7 @@ sampling independent observer model}
   \item{x}{fitted model from \code{ddf}}
 
   \item{which}{index to specify which plots should be
-  produced. 1: uncond det fct, 2:cond det fct}
+  produced.  1: uncond det fct, 2:cond det fct}
 
   \item{breaks}{user define breakpoints}
 

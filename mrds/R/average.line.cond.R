@@ -48,7 +48,7 @@ average.line.cond <- function(finebr,obs,model){
 
     # Based on model compute p(x) from conditional detection function
     if(model$method=="io" | model$method=="trial"|model$method=="rem"){
-       cond.det <- predict(model$mr,newdata=newdat,integrate=FALSE)
+      cond.det <- predict(model$mr,newdata=newdat,integrate=FALSE)
     }else{
       cond.det <- predict(model,newdata=newdat,integrate=FALSE)
     }

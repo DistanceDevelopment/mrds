@@ -1,15 +1,15 @@
 #' Mark-Recapture Distance Sampling (MRDS) IO - FI
-#' 
+#'
 #' Mark-Recapture Analysis of Independent Observer Configuration with Full
 #' Independence
-#' 
+#'
 #' The mark-recapture data derived from an independent observer distance
 #' sampling survey can be used to derive conditional detection functions
 #' (p_j(y)) for both observers (j=1,2).  They are conditional detection
 #' functions because detection probability for observer j is based on seeing or
 #' not seeing observations made by observer 3-j. Thus, p_1(y) is estimated by
-#' p_1|2(y).  
-#' 
+#' p_1|2(y).
+#'
 #' If detections by the observers are independent (full
 #' independence) then p_1(y)=p_1|2(y),p_2(y)=p_2|1(y) and for the union, full
 #' independence means that p(y)=p_1(y) + p_2(y) - p_1(y)*p_2(y) for each
@@ -20,14 +20,14 @@
 #' animal distribution.  However, that assumption is used in computing
 #' predicted detection probability which is averaged based on a uniform
 #' distribution (see eq 6.11 of Laake and Borchers 2004).
-#' 
+#'
 #' For a complete description of each of the calling arguments, see
 #' \code{\link{ddf}}.  The argument \code{model} in this function is the same
 #' as \code{mrmodel} in \code{ddf}.  The argument \code{dataname} is the name
 #' of the dataframe specified by the argument \code{data} in \code{ddf}. The
 #' arguments \code{control},\code{meta.data},and \code{method} are defined the
 #' same as in \code{ddf}.
-#' 
+#'
 #' @S3method ddf io.fi
 #' @param model mark-recapture model specification
 #' @param data analysis dataframe
@@ -39,8 +39,8 @@
 #' @return result: an io.fi model object
 #' @author Jeff Laake
 #' @seealso
-#'   \code{\link{ddf.io}},\code{\link{summary.io.fi}},\code{\link{coef.io.fi}},\code{\link{plot.io.fi}},
-#'   \code{\link{gof.io.fi}},\code{\link{io.glm}}
+#'   \code{\link{ddf.io}},\code{\link{summary.io.fi}},\code{\link{coef.io.fi}},
+#'   \code{\link{plot.io.fi}},\code{\link{gof.io.fi}},\code{\link{io.glm}}
 #' @references Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
 #'   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
@@ -55,8 +55,8 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
 
   # The following are dummy glm and gam functions that are defined here to 
   # provide the list of arguments for use in the real glm/gam functions. 
-  # These dummy functions are removed after they are used so the real ones can 
-  # be used in the model fitting.
+  # These dummy functions are removed after they are used so the real ones can 
+  # be used in the model fitting.
   glm <- function(formula,link="logit"){
     if(class(formula)!="formula"){
       if(class(try(as.formula(formula)))!="formula"){
@@ -79,9 +79,9 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
         stop("Invalid formula")
       }
     }else{
-      formula <- paste(as.character(formula),collapse="") 
+      formula <- paste(as.character(formula),collapse="")
     }
-  
+
     if(class(link)=="function"){
       link <- substitute(link)
     }
@@ -95,14 +95,14 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
   options(contrasts=c("contr.treatment","contr.poly"))
 
   # Set up meta data values
-	meta.data=assign.default.values(meta.data, left=0, width=NA, binned=FALSE, 
+  meta.data=assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
                                   int.range=NA,mono=FALSE,mono.strict=TRUE,
                                   point=FALSE)
 
   # Set up control values
-  control <- assign.default.values(control,showit = 0, doeachint=FALSE, 
+  control <- assign.default.values(control,showit = 0, doeachint=FALSE,
                                    estimate=TRUE,refit=TRUE,nrefits=25,
-                                   initial = NA, lowerbounds = NA, 
+                                   initial = NA, lowerbounds = NA,
                                    upperbounds = NA, mono.points=20)
 
   # Assign model values; this uses temporarily defined functions glm and gam
@@ -113,7 +113,7 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
   }
   rm(glm,gam)
 
-  # Process data if needed  
+  # Process data if needed
   if(is.data.frame(data)){
     data.list <- process.data(data,meta.data)
     meta.data <- data.list$meta.data
@@ -144,7 +144,7 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
   npar <- ncol(model.matrix(p.formula,xmat))
 
 #   fit=optim(par=rep(0,npar),lnl.io,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula),
-#		  hessian=TRUE,control=list(maxit=5000))
+#     hessian=TRUE,control=list(maxit=5000))
 #   fit$hessian=hessian(lnl.removal,x=fit$par,method="Richardson",x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
   GAM <- FALSE
   #if(modelvalues$fct=="gam") 
@@ -173,32 +173,32 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
                       lnl.io, method="L-BFGS-B", hessian=TRUE,x1=xmat1,x2=xmat2,
                       models=list(p.formula=p.formula)))
     # did this model converge?
-	topfit.par <- coef(fit, order="value")[1, ]
-	details <- attr(fit,"details")[1,]
-	fit <- as.list(summary(fit, order="value")[1, ])
-	fit$par <-topfit.par
-	fit$message <- ""
-	names(fit)[names(fit)=="convcode"] <- "conv" 
-	fit$hessian<-details$nhatend
-	
+    topfit.par <- coef(fit, order="value")[1, ]
+    details <- attr(fit,"details")[1,]
+    fit <- as.list(summary(fit, order="value")[1, ])
+    fit$par <- topfit.par
+    fit$message <- ""
+    names(fit)[names(fit)=="convcode"] <- "conv"
+    fit$hessian<-details$nhatend
+
     if(fit$conv!=0 | class(fit)=="try-error"){
       # first try the old way of just setting the starting values to zero,
       # this seems (with the crabbie data) to converge back to the values in
       # result$mr$coefficients but without having the convergence issues
       # NEED TO THINK ABOUT THIS MORE...
-       fit <- try(optimx(result$mr$coefficients*0,lnl.io, method="L-BFGS-B", 
-               hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))
-  	   topfit.par <- coef(fit, order="value")[1, ]
-	   details <- attr(fit,"details")[1,]
-	   fit <- as.list(summary(fit, order="value")[1, ])
-	   fit$par <-topfit.par
-	   fit$message <- ""
-	   names(fit)[names(fit)=="convcode"] <- "conv" 
-	   fit$hessian<-details$nhatend
+      fit <- try(optimx(result$mr$coefficients*0,lnl.io, method="L-BFGS-B", 
+              hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))
+      topfit.par <- coef(fit, order="value")[1, ]
+      details <- attr(fit,"details")[1,]
+      fit <- as.list(summary(fit, order="value")[1, ])
+      fit$par <- topfit.par
+      fit$message <- ""
+      names(fit)[names(fit)=="convcode"] <- "conv"
+      fit$hessian<-details$nhatend
     }
-   # if nothing worked...
+    # if nothing worked...
     if(fit$conv!=0 | class(fit)=="try-error"){
-	    stop("No convergence in ddf.io.fi()")
+      stop("No convergence in ddf.io.fi()")
     }else{
       result$mr$mr$coefficients <- fit$par
       result$hessian <- fit$hessian
@@ -211,44 +211,44 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
   p1 <- cond.det$p1
   p2 <- cond.det$p2
   p.c.omega <- p1^result$mr$data$detected[result$mr$data$observer==1]*
-		   (1-p1)^(1-result$mr$data$detected[result$mr$data$observer==1])*
-		   p2^result$mr$data$detected[result$mr$data$observer==2]*
-		   (1-p2)^(1-result$mr$data$detected[result$mr$data$observer==2]) 
+       (1-p1)^(1-result$mr$data$detected[result$mr$data$observer==1])*
+       p2^result$mr$data$detected[result$mr$data$observer==2]*
+       (1-p2)^(1-result$mr$data$detected[result$mr$data$observer==2])
 
-  result$lnl <- sum(log(p.c.omega)) - sum(log(cond.det$fitted))      
+  result$lnl <- sum(log(p.c.omega)) - sum(log(cond.det$fitted))
 
-  #if(GAM) 
+  #if(GAM)
   #   result$hessian <- result$mr$Vp
   #else
-  #   result$hessian <- solve(summary(result$mr)$cov.unscaled) 
+  #   result$hessian <- solve(summary(result$mr)$cov.unscaled)
 
   # If this is method=io.fi then compute lnl for L_y and add to L_omega before
   # computing AIC. Note the code in predict is currently specific to logit link
   if(method=="io.fi"){
-    # Compute fitted values - integral of p(x)/width    
-	result$fitted <- predict(result,integrate=TRUE)$fitted
+    # Compute fitted values - integral of p(x)/width
+    result$fitted <- predict(result,integrate=TRUE)$fitted
     result$Nhat <- NCovered(result$par,result)
-	  distances <- result$data$distance[result$data$observer==1]
-    if(!meta.data$binned)
-	{
-		if(meta.data$point){
-			result$lnl <- result$lnl + 
-					sum(log(cond.det$fitted*2*distances/meta.data$width^2)) - 
-					sum(log(result$fitted))
-		}else{
-			result$lnl<- result$lnl + 
-					sum(log(cond.det$fitted/meta.data$width)) - 
-					sum(log(result$fitted))
-		}
-	} else
-	{
-		for(i in 1:(nrow(xmat)/2))
-		{
-			int.val=predict(result,newdata=xmat[(2*(i-1)+1):(2*i),],int.range=as.vector(as.matrix(xmat[(2*(i-1)+1),c("distbegin","distend")])),integrate=TRUE)$fitted
-			result$lnl <- result$lnl + log(int.val)
-		}
-		result$lnl<- result$lnl- sum(log(result$fitted))
-	}
+    distances <- result$data$distance[result$data$observer==1]
+    if(!meta.data$binned){
+      if(meta.data$point){
+        result$lnl <- result$lnl +
+            sum(log(cond.det$fitted*2*distances/meta.data$width^2)) -
+            sum(log(result$fitted))
+      }else{
+        result$lnl<- result$lnl +
+            sum(log(cond.det$fitted/meta.data$width)) -
+            sum(log(result$fitted))
+      }
+    }else{
+      for(i in 1:(nrow(xmat)/2)){
+        int.val <- predict(result,newdata=xmat[(2*(i-1)+1):(2*i),],
+                           int.range=as.vector(as.matrix(xmat[(2*(i-1)+1),
+                                               c("distbegin","distend")])),
+                           integrate=TRUE)$fitted
+        result$lnl <- result$lnl + log(int.val)
+      }
+      result$lnl<- result$lnl- sum(log(result$fitted))
+    }
   }
 
   result$criterion <- -2*result$lnl + 2*npar
@@ -261,57 +261,57 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
 }
 
 io.p01 <- function(xmat1,xmat2,beta){
-	p1 <- plogis(xmat1%*%beta)
-	p2 <- plogis(xmat2%*%beta)
-	return(p2*(1-p1))
+  p1 <- plogis(xmat1%*%beta)
+  p2 <- plogis(xmat2%*%beta)
+  return(p2*(1-p1))
 }
 io.p10 <- function(xmat1,xmat2,beta){
-	p1 <- plogis(xmat1%*%beta)
-	p2 <- plogis(xmat2%*%beta)
-	return(p1*(1-p2))
+  p1 <- plogis(xmat1%*%beta)
+  p2 <- plogis(xmat2%*%beta)
+  return(p1*(1-p2))
 }
 
 io.p11 <- function(xmat1,xmat2,beta){
-	p1 <- plogis(xmat1%*%beta)
-	p2 <- plogis(xmat2%*%beta)
-	return(p1*p2)
+  p1 <- plogis(xmat1%*%beta)
+  p2 <- plogis(xmat2%*%beta)
+  return(p1*p2)
 }
 
 io.pdot<-function(xmat1,xmat2,beta){
-	p1 <- plogis(xmat1%*%beta)
-	p2 <- plogis(xmat2%*%beta)
-	return(p1+p2-p1*p2)
+  p1 <- plogis(xmat1%*%beta)
+  p2 <- plogis(xmat2%*%beta)
+  return(p1+p2-p1*p2)
 }
+
 p.io <- function(par,x1,x2,models){
   # create design matrix for p1,p2 and delta
-	x <- rbind(x1,x2)
-	dmrows <- nrow(x1)
-	xmat <- model.matrix(models$p.formula,x)
-	xmat1 <- xmat[1:dmrows,,drop=FALSE]
-	xmat2 <- xmat[(dmrows+1):(2*dmrows),,drop=FALSE]
-	p01 <- io.p01(xmat1,xmat2,beta=par)
-	p10 <- io.p10(xmat1,xmat2,beta=par)
-	p11 <- io.p11(xmat1,xmat2,beta=par)
-	pdot <- io.pdot(xmat1,xmat2,beta=par)
-	return(list(p11=as.vector(p11),
+  x <- rbind(x1,x2)
+  dmrows <- nrow(x1)
+  xmat <- model.matrix(models$p.formula,x)
+  xmat1 <- xmat[1:dmrows,,drop=FALSE]
+  xmat2 <- xmat[(dmrows+1):(2*dmrows),,drop=FALSE]
+  p01 <- io.p01(xmat1,xmat2,beta=par)
+  p10 <- io.p10(xmat1,xmat2,beta=par)
+  p11 <- io.p11(xmat1,xmat2,beta=par)
+  pdot <- io.pdot(xmat1,xmat2,beta=par)
+  return(list(p11=as.vector(p11),
               p01=as.vector(p01),
               p10=as.vector(p10),
               pdot=as.vector(pdot)))
 }
 
 lnl.io <- function(par,x1,x2,models){
-  # Compute probabilities 
-	p.list <- p.io(par,x1,x2,models)
-	p11 <- p.list$p11
-	p01 <- p.list$p01
-	p10 <- p.list$p10
-	p01[p01==0] <- 1e-6
-	p10[p10==0] <- 1e-6
+  # Compute probabilities
+  p.list <- p.io(par,x1,x2,models)
+  p11 <- p.list$p11
+  p01 <- p.list$p01
+  p10 <- p.list$p10
+  p01[p01==0] <- 1e-6
+  p10[p10==0] <- 1e-6
   # Compute log-likelihood value
-	lnl <- sum((1-x1$detected)*x2$detected*log(p01)) + 
+  lnl <- sum((1-x1$detected)*x2$detected*log(p01)) +
           sum((1-x2$detected)*x1$detected*log(p10))+
-			    sum(x1$detected*x2$detected*log(p11)) - 
+          sum(x1$detected*x2$detected*log(p11)) -
           sum(log(p.list$pdot))
-	return(-lnl)
+  return(-lnl)
 }
-

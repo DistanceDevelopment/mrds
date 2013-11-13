@@ -1,6 +1,6 @@
 \name{predict.io}
 \alias{predict.io}
-\title{Predictions from distance sampling io models}
+\title{Predictions from distance sampling independent observer (\code{io}) models}
 \usage{
   \method{predict}{io} (object, newdata = NULL,
     compute = FALSE, int.range = NULL, ...)
@@ -27,7 +27,7 @@
 
   For
   \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi}
-  with integrate=TRUE, he value is a list with the
+  with integrate=TRUE, the value is a list with the
   elements: \tabular{ll}{ \code{fitted} \tab vector of
   integrated (average) detection probabilities for each
   observation in the original data or \code{newdata} \cr }
@@ -54,20 +54,21 @@
   function.  The latter 2 are specific to certain
   functions. The effective strip half-width (esw) is the
   integral of the fitted detection function over the range
-  of the sampled area (either 0 to W or the specified
-  \code{int.range}).  The predicted detection probability
-  is the average probability which is simply the integral
-  divided by the distance range.  The fitted detection
-  probabilities are stored in the \code{model} object and
-  these are used unless \code{compute=TRUE} or
+  of the sampled area (either 0 to \code{width} or the
+  specified \code{int.range}). The predicted detection
+  probability is the average probability which is simply
+  the integral divided by the distance range. The fitted
+  detection probabilities are stored in the \code{model}
+  object and these are used unless \code{compute=TRUE} or
   \code{newdata} is specified. \code{compute=TRUE} is used
   to estimate numerical derivatives for use in delta method
-  approximations to the variance.  For \code{method="io.fi"
-  or ="trial.fi"} if \code{integrate=FALSE}, \code{predict}
-  returns the value of the conditional detection
-  probability and if \code{integrate=TRUE}, it returns the
-  average conditional detection probability by integrating
-  over x(distance) with respect to a uniform distribution.
+  approximations to the variance.  For
+  \code{method="io.fi"} or \code{method="trial.fi"} if
+  \code{integrate=FALSE}, \code{predict} returns the value
+  of the conditional detection probability and if
+  \code{integrate=TRUE}, it returns the average conditional
+  detection probability by integrating over distance with
+  respect to a uniform distribution.
 }
 \note{
   Each function is called by the generic function

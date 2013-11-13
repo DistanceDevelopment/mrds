@@ -39,11 +39,10 @@
   For \code{predict.io.fi}, \code{predict.trial.fi}, or
   \code{predict.rem.fi} with \code{integrate=FALSE}, the
   value is a list with the following elements:
-  \tabular{ll}{ \code{fitted} \tab p(y) values \cr
-  \code{p1} \tab p_1|2(y) (conditional detection
-  probability for observer 1) \cr \code{p2} \tab p_2|1(y)
-  (conditional detection probability for observer 2) \cr
-  \code{fitted} \tab
+  \tabular{ll}{ \code{p1} \tab p_1|2(y) (conditional
+  detection probability for observer 1) \cr \code{p2} \tab
+  p_2|1(y) (conditional detection probability for observer
+  2) \cr \code{fitted} \tab
   p_.(y)=p_1|2(y)+p_2|1(y)-p_1|2(y)*p_2|1(y) (conditional
   detection probability of being seen by either observer)
   \cr }
