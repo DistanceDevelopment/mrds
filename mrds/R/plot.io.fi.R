@@ -1,5 +1,5 @@
 #' Plot fit of detection functions and histograms of data from distance
-#' sampling independent observer model
+#' sampling independent observer model with full independence (\code{io.fi})
 #'
 #' Plots the fitted detection functions for a distance sampling model and
 #' histograms of the distances (for unconditional detection functions) or
@@ -26,7 +26,13 @@
 #' @method plot io.fi
 #' @export
 #' @param x fitted model from \code{ddf}
-#' @param which index to specify which plots should be produced. 1: uncond det fct, 2:cond det fct
+#' @param which index to specify which plots should be produced.
+#'  \tabular{ll}{1 \tab Plot primary unconditional detection function \cr
+#'               2 \tab Plot secondary unconditional detection function \cr
+#'               3 \tab Plot pooled unconditional detection function \cr
+#'               4 \tab Plot duplicate unconditional detection function \cr
+#'               5 \tab Plot primary conditional detection function \cr
+#'               6 \tab Plot secondary conditional detection function \cr}
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
 #' @param maintitle main title line for each plot
@@ -51,7 +57,6 @@
 #' @return Just plots.
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
-
 plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
                        showlines=TRUE, showpoints=TRUE,ylim=c(0,1),angle=-45,
                        density=20,col="black",jitter=NULL,divisions=25,new=TRUE,

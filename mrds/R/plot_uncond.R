@@ -84,6 +84,8 @@ plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
   hist.obj$intensities <- hist.obj$density
   freq <- hist.obj$density
   hist.obj$equidist <- FALSE
+
+
   line <- average.line(finebr,obs,model)
   linevalues <- line$values
   xgrid <- line$xgrid

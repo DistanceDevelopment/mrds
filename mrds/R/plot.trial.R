@@ -26,7 +26,9 @@
 #' @S3method plot trial
 #' @export
 #' @param x fitted model from \code{ddf}
-#' @param which index to specify which plots should be produced. 1: uncond det fct, 2:cond det fct
+#' @param which index to specify which plots should be produced.
+#'  \tabular{ll}{1 \tab Unconditional detection function for observer 1 \cr
+#'               2 \tab Conditional detection function plot (1|2)\cr}
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
 #' @param maintitle main title line for each plot

@@ -26,7 +26,10 @@
 #' @method plot rem
 #' @export plot.rem
 #' @param x fitted model from \code{ddf}
-#' @param which index to specify which plots should be produced. 1: observer 1, 2: pooled, 3:cond det fct observer 1|2
+#' @param which index to specify which plots should be produced.
+#'  \tabular{ll}{1 \tab Plot primary unconditional detection function \cr
+#'               2 \tab Plot pooled unconditional detection function \cr
+#'               3 \tab Plot conditional (1|2) detection function \cr}
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
 #' @param maintitle main title line for each plot

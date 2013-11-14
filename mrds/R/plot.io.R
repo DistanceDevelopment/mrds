@@ -1,5 +1,5 @@
 #' Plot fit of detection functions and histograms of data from distance
-#' sampling independent observer model
+#' sampling independent observer (\code{io}) model
 #'
 #' Plots the fitted detection functions for a distance sampling model and
 #' histograms of the distances (for unconditional detection functions) or
@@ -18,8 +18,8 @@
 #' Instead the generic \code{plot} command should be used and it will call the
 #' appropriate function based on the type of \code{ddf} object.
 #'
-#' The \code{which} command allows the user to
-#' select which plots are returned. See which argument definition.
+#' The \code{which} command allows the user to select \code{which} plots are
+#' returned. See which argument definition.
 #'
 #' @aliases plot.io
 #' @S3method plot io
@@ -27,7 +27,12 @@
 #' @export plot.io
 #' @param x fitted model from \code{ddf}
 #' @param which index to specify which plots should be produced.
-#'   1: uncond det fct, 2:cond det fct
+#'  \tabular{ll}{1 \tab Plot primary unconditional detection function \cr
+#'               2 \tab Plot secondary unconditional detection function \cr
+#'               3 \tab Plot pooled unconditional detection function \cr
+#'               4 \tab Plot duplicate unconditional detection function \cr
+#'               5 \tab Plot primary conditional detection function\cr
+#'               6 \tab Plot secondary conditional detection function \cr}
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
 #' @param maintitle main title line for each plot
@@ -49,7 +54,7 @@
 #' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (plot, hist, lines, points, etc)
-#' @return NULL
+#' @return Just plots
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
 
@@ -66,7 +71,6 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
   xmat.p0$offsetvalue <- 0
   xmat.p0$distance <- 0
   ddfobj <- model$ds$ds$aux$ddfobj
-  point <- model$ds$ds$aux$point
   if(ddfobj$type=="gamma"){
     key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
     key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
@@ -83,6 +87,14 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
   delta <- cond.det$fitted/(p0*detfct.pooled.values)
   p1 <- cond.det$p1
   p2 <- cond.det$p2
+
+  # list of values to pass as gxvalues for unconditional plots
+  # in order as below
+  # gxvalues are the points shown in the plots
+  gxlist <- list(p1/delta,
+                 p2/delta,
+                 (p1+p2-p1*p2)/delta,
+                 p1*p2/delta)
 
   # If number of classes for histogram intervals was not set compute
   # a reasonable default
@@ -105,14 +117,9 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
     }
   }
 
-  # list of values to pass as gxvalues for unconditional plots
-  # in order as below
-  gxlist <- list(p1/delta,
-                 p2/delta,
-                 (p1+p2-p1*p2)/delta,
-                 p1*p2/delta)
 
-  # dummy function
+  # rather than duplicating this code 6 times, each for a different set of
+  # gxvalues, use a dummy function and iterate over gxlist
   plot_uncond_dummy <- function(obs,gxvalues,...){
     if(new&.Platform$GUI=="Rgui")dev.new()
     plot_uncond(model,obs,xmat,gxvalues=gxvalues,nc,
@@ -135,7 +142,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
     plot_uncond_dummy(wh,gxlist[[wh]])
   }
 
-  # Plot conditional detection functions
+  # Plot conditional detection function (1|2)
   data <- model$mr$mr$data
   data$offsetvalue <- 0
   if(is.element(5,which)){
@@ -147,7 +154,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
               xlab=xlab,ylab=ylab,subtitle=subtitle,...)
   }
 
-  # Plot secondary conditional detection function
+  # Plot secondary conditional detection function (2|1)
   if(is.element(6,which)){
     if(new&.Platform$GUI=="Rgui")dev.new()
     gxvalues <-p2[xmat$detected[xmat$observer==1]==1]

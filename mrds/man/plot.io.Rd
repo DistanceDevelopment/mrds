@@ -1,7 +1,7 @@
 \name{plot.io}
 \alias{plot.io}
 \title{Plot fit of detection functions and histograms of data from distance
-sampling independent observer model}
+sampling independent observer (\code{io}) model}
 \usage{
   \method{plot}{io} (x, which = 1:6, breaks = NULL,
     nc = NULL, maintitle = "", showlines = TRUE,
@@ -14,7 +14,13 @@ sampling independent observer model}
   \item{x}{fitted model from \code{ddf}}
 
   \item{which}{index to specify which plots should be
-  produced.  1: uncond det fct, 2:cond det fct}
+  produced.  \tabular{ll}{1 \tab Plot primary unconditional
+  detection function \cr 2 \tab Plot secondary
+  unconditional detection function \cr 3 \tab Plot pooled
+  unconditional detection function \cr 4 \tab Plot
+  duplicate unconditional detection function \cr 5 \tab
+  Plot primary conditional detection function\cr 6 \tab
+  Plot secondary conditional detection function \cr}}
 
   \item{breaks}{user define breakpoints}
 
@@ -58,7 +64,7 @@ sampling independent observer model}
   plotting functions (plot, hist, lines, points, etc)}
 }
 \value{
-  NULL
+  Just plots
 }
 \description{
   Plots the fitted detection functions for a distance
@@ -83,8 +89,9 @@ sampling independent observer model}
   should be used and it will call the appropriate function
   based on the type of \code{ddf} object.
 
-  The \code{which} command allows the user to select which
-  plots are returned. See which argument definition.
+  The \code{which} command allows the user to select
+  \code{which} plots are returned. See which argument
+  definition.
 }
 \author{
   Jeff Laake, Jon Bishop, David Borchers
