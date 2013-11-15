@@ -9,10 +9,7 @@ test_that("average.line for plot.io is correct (unconditional df)",{
 
   # load some data as usual
   data(book.tee.data)
-  region <- book.tee.data$book.tee.region
   egdata <- book.tee.data$book.tee.dataframe
-  samples <- book.tee.data$book.tee.samples
-  obs <- book.tee.data$book.tee.obs
 
   # fit the model
   result <- ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance),
