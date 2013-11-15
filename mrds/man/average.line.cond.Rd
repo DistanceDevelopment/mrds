@@ -14,9 +14,10 @@
   \item{model}{ddf model object}
 }
 \value{
-  list with 2 elements \item{xgrid}{vector of gridded
-  distance values} \item{values }{vector of average
-  detection fct values at the xgrid values }
+  list with 2 elements: \tabular{ll}{\code{xgrid} \tab
+  vector of gridded distance values \cr \code{values} \tab
+  vector of average detection function values at the
+  \code{xgrid} values\cr}
 }
 \description{
   For models with covariates the detection probability for
@@ -27,8 +28,8 @@
   estimated detection probabilities.
 }
 \note{
-  Internal function called from plot functions for ddf
-  objects
+  Internal function called from plot functions for
+  \code{ddf} objects
 }
 \author{
   Jeff Laake

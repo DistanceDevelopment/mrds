@@ -50,7 +50,7 @@
 #' @param ylab label for y-axis
 #' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
-#'   (plot, hist, lines, points, etc)
+#'   (\code{plot}, \code{hist}, \code{lines}, \code{points}, etc)
 #' @return NULL
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
@@ -67,7 +67,6 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   xmat.p0$offsetvalue <- 0
   xmat.p0$distance <- 0
   ddfobj <- model$ds$ds$aux$ddfobj
-  point <- model$ds$ds$aux$point
   if(ddfobj$type=="gamma"){
     key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
     key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
@@ -84,7 +83,7 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   p1 <- cond.det$p1
   p2 <- cond.det$p2
 
-  # If number of classes for histogram intervals was not set compute 
+  # If number of classes for histogram intervals was not set compute
   # a reasonable default
   if(is.null(nc)){
     nc <- round(sqrt(length(xmat$distance[xmat$observer==2&xmat$detected==1])))
@@ -108,7 +107,7 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
     plot_uncond(model,1,xmat,gxvalues=p1/delta,nc,
                 finebr=(width/divisions)*(0:divisions),
                 breaks,showpoints,showlines,maintitle,ylim,
-                point=model$meta.data$point,angle=angle,density=density,
+                angle=angle,density=density,
                 col=col,jitter=jitter,xlab=xlab,ylab=ylab,subtitle=subtitle,...)
   }
 
@@ -117,7 +116,7 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
     if(new& .Platform$GUI=="Rgui")dev.new()
     plot_uncond(model,3,xmat,gxvalues=(p1+p2*(1-p1))/delta,nc,
                 finebr=(width/divisions)*(0:divisions),breaks,showpoints,
-                showlines,maintitle,ylim,point=model$meta.data$point,
+                showlines,maintitle,ylim,
                 angle=angle,density=density,col=col,jitter=jitter,
                 xlab=xlab,ylab=ylab,subtitle=subtitle,...)
   }

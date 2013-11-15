@@ -10,10 +10,11 @@
 #'   values are averaged and plotted
 #' @param obs value of observer for averaging (1-2 individual observers)
 #' @param model ddf model object
-#' @return list with 2 elements \item{xgrid}{vector of gridded distance values}
-#'   \item{values }{vector of average detection fct values at the xgrid values
-#'   }
-#' @note Internal function called from plot functions for ddf objects
+#' @return list with 2 elements:
+#'   \tabular{ll}{\code{xgrid} \tab vector of gridded distance values \cr
+#'   \code{values} \tab vector of average detection function values at
+#'    the \code{xgrid} values\cr}
+#' @note Internal function called from plot functions for \code{ddf} objects
 #' @author Jeff Laake
 #' @keywords utility
 average.line.cond <- function(finebr,obs,model){
@@ -25,7 +26,7 @@ average.line.cond <- function(finebr,obs,model){
   if(model$method%in%c("io","trial")){
     newdat <- model$mr$mr$data
   }else{
-    # if(model$method=="trial" | model$method=="trial.fi"){ 
+    # if(model$method=="trial" | model$method=="trial.fi"){
     #   newdat=process.data(model$data,model$meta.data)$xmat
     #   newdat=newdat[newdat$observer!=obs & newdat$detected==1,]
     # }else

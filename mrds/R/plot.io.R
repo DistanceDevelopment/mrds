@@ -50,10 +50,10 @@
 #' @param divisions number of divisions for averaging line values; default = 25
 #' @param new if TRUE, opens new device for each plot; set new=FALSE if you use par(mfrow=..) or layout
 #' @param xlab label for x-axis
-#' @param ylab label for y-axis 
+#' @param ylab label for y-axis
 #' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
-#'   (plot, hist, lines, points, etc)
+#'   (\code{plot}, \code{hist}, \code{lines}, \code{points}, etc)
 #' @return Just plots
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
@@ -117,14 +117,13 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
     }
   }
 
-
   # rather than duplicating this code 6 times, each for a different set of
   # gxvalues, use a dummy function and iterate over gxlist
   plot_uncond_dummy <- function(obs,gxvalues,...){
     if(new&.Platform$GUI=="Rgui")dev.new()
-    plot_uncond(model,obs,xmat,gxvalues=gxvalues,nc,
-                finebr=(width/divisions)*(0:divisions),breaks,showpoints,
-                showlines,maintitle,ylim,point=model$meta.data$point,
+    plot_uncond(model, obs, xmat, gxvalues=gxvalues, nc,
+                finebr=(width/divisions)*(0:divisions), breaks, showpoints,
+                showlines, maintitle, ylim,
                 angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,
                 ylab=ylab,subtitle=subtitle,...)
   }
@@ -139,7 +138,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
 
   # loop over the unconditional plots
   for(wh in seq_along(which[which<5])){
-    plot_uncond_dummy(wh,gxlist[[wh]])
+    plot_uncond_dummy(wh,gxlist[[wh]],...)
   }
 
   # Plot conditional detection function (1|2)
@@ -157,7 +156,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
   # Plot secondary conditional detection function (2|1)
   if(is.element(6,which)){
     if(new&.Platform$GUI=="Rgui")dev.new()
-    gxvalues <-p2[xmat$detected[xmat$observer==1]==1]
+    gxvalues <- p2[xmat$detected[xmat$observer==1]==1]
     plot_cond(2,data,gxvalues,model,nc,breaks,
               finebr=(width/divisions)*(0:divisions),showpoints,showlines,
               maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,

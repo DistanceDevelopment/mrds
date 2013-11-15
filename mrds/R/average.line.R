@@ -12,9 +12,10 @@
 #' @param obs value of observer for averaging (1-2 individual observers; 3
 #'   duplicates; 4 pooled observation team)
 #' @param model ddf model object
-#' @return list with 2 elements \item{xgrid}{vector of gridded distance values}
-#'   \item{values }{vector of average detection fct values at the xgrid values
-#'   }
+#' @return list with 2 elements
+#'   \tabular{ll}{\code{xgrid} \tab vector of gridded distance values\cr
+#'   \code{values} \tab vector of average detection function values at
+#'        the \code{xgrid} values\cr}
 #' @note Internal function called from plot functions for ddf objects
 #' @author Jeff Laake
 #' @keywords utility

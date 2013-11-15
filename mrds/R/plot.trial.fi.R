@@ -49,7 +49,7 @@
 #' @param ylab label for y-axis
 #' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
-#'   (plot, hist, lines, points, etc)
+#'   (\code{plot}, \code{hist}, \code{lines}, \code{points}, etc)
 #' @return NULL
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
@@ -95,7 +95,7 @@ plot.trial.fi <- function(x, which=1:2, breaks=NULL, nc=NULL, maintitle="",
     if(.Platform$GUI=="Rgui")dev.new()
     plot_uncond(model,1,xmat,gxvalues,nc,
                 finebr=(width/divisions)*(0:divisions),breaks,showpoints,
-                showlines,maintitle,ylim,point=model$meta.data$point,
+                showlines,maintitle,ylim,
                 angle=angle,density=density,col=col,jitter=jitter,
                 xlab=xlab,ylab=ylab,subtitle=subtitle,...)
   }

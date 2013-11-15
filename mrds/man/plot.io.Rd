@@ -61,7 +61,8 @@ sampling independent observer (\code{io}) model}
   \item{subtitle}{if TRUE, shows plot type as sub-title}
 
   \item{\dots}{other graphical parameters, passed to the
-  plotting functions (plot, hist, lines, points, etc)}
+  plotting functions (\code{plot}, \code{hist},
+  \code{lines}, \code{points}, etc)}
 }
 \value{
   Just plots

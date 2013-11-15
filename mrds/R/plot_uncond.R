@@ -5,7 +5,7 @@
 #' observations data.
 #'
 #' @aliases plot_uncond
-#' @param model   fitted model from \code{ddf}
+#' @param model fitted model from \code{ddf}
 #' @param obs value of observer for plot
 #' @param xmat processed data
 #' @param gxvalues detection function values for each observation
@@ -17,7 +17,6 @@
 #' @param showlines logical variable; if TRUE plots average predicted value line
 #' @param maintitle main title line for each plot
 #' @param ylim range of y axis; defaults to (0,1)
-#' @param point point count data if TRUE
 #' @param return.lines if TRUE, returns values for line
 #' @param angle shading angle for hatching
 #' @param density shading density for hatching
@@ -29,7 +28,7 @@
 #' @param ylab label for y-axis
 #' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
-#'   (plot, hist, lines, points, etc)
+#'   (\code{plot}, \code{hist}, \code{lines}, \code{points}, etc)
 #' @return if \code{return.lines==TRUE} returns dataframe \code{average.line}
 #'  otherwise just plots
 #' @author Jeff Laake, Jon Bishop, David Borchers
@@ -48,7 +47,7 @@
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
 #' }
 plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
-                        showlines,maintitle,ylim,point=FALSE,return.lines=FALSE,
+                        showlines,maintitle,ylim,return.lines=FALSE,
                         angle=-45,density=20,col="black",jitter=NULL,
                         xlab="Distance",ylab="Detection probability",
                         subtitle=TRUE,...){
@@ -70,8 +69,10 @@ plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
       det.detected <- selmat$timesdetected==2
     }
   }
-  hist.obj <- hist(selmat$distance[det.detected], breaks=breaks, plot = FALSE)
-  if(!point){
+
+  hist.obj <- hist(selmat$distance[det.detected], breaks=breaks, plot=FALSE)
+
+  if(!model$meta.data$point){
     expected.counts <- (breaks[2:(nc+1)]-breaks[1:nc])*
                          (model$Nhat/breaks[nc+1])
   }else{
@@ -85,7 +86,6 @@ plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
   freq <- hist.obj$density
   hist.obj$equidist <- FALSE
 
-
   line <- average.line(finebr,obs,model)
   linevalues <- line$values
   xgrid <- line$xgrid
@@ -93,8 +93,8 @@ plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
   ylim <- c(0,max(ylim,hist.obj$density))
 
   histline(hist.obj$density,breaks=breaks,lineonly=FALSE,xlab=xlab,ylab=ylab,
-         ylim=ylim,fill=TRUE,angle=angle,density=density,col=col,
-         det.plot=TRUE,...)
+           ylim=ylim,fill=TRUE, angle=angle,density=density,col=col,
+           det.plot=TRUE,...)
 
   if(showlines) lines(xgrid,linevalues,...)
 

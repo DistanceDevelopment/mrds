@@ -28,7 +28,7 @@
 #' @param ylab label for y-axis
 #' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
-#'   (plot, hist, lines, points, etc)
+#'   (\code{plot}, \code{hist}, \code{lines}, \code{points}, etc)
 #' @return NULL
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
@@ -68,7 +68,7 @@ plot_cond <- function(obs,xmat,gxvalues,model,nc,breaks,finebr,showpoints,
   mhist$equidist <- FALSE
   mhist$intensities <- mhist$density
   histline(mhist$density,breaks=breaks,lineonly=FALSE,xlab=xlab,ylab=ylab,
-           ylim=ylim,fill=TRUE,angle=angle,density=density,col=col,
+           ylim=ylim,fill=TRUE, angle=angle,density=density,col=col,
            det.plot=TRUE,...)
 
   # plot the detection function
