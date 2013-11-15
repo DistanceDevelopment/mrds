@@ -9,7 +9,7 @@
 \alias{NCovered.trial.fi}
 \title{Compute estimated abundance in covered (sampled) region}
 \usage{
-  NCovered(par, model = NULL, group = TRUE)
+NCovered(par, model = NULL, group = TRUE)
 }
 \arguments{
   \item{par}{parameter values (used when computing

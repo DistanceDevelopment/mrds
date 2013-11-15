@@ -2,7 +2,7 @@
 \alias{DeltaMethod}
 \title{Numeric Delta Method approximation for the variance-covariance matrix}
 \usage{
-  DeltaMethod(par, fct, vcov, delta, ...)
+DeltaMethod(par, fct, vcov, delta, ...)
 }
 \arguments{
   \item{par}{vector of parameter values at which estimates

@@ -1,16 +1,14 @@
 #' Fit detection function using key-adjustment functions
-#' 
-#' Fit detection function to observed distances
-#' using the key-adjustment
+#'
+#' Fit detection function to observed distances using the key-adjustment
 #' function approach.  If adjustment functions are included it will alternate
 #' between fitting parameters of key and adjustment functions and then all
 #' parameters much like the approach in the CDS and MCDS Distance FORTRAN code.
 #' To do so it calls \code{detfct.fit.opt} which uses the R optim function
 #' which does not allow non-linear constraints so inclusion of adjustments does
 #' allow the detection function to be non-monotone.
-#' 
-#' 
-#' @aliases detfct.fit 
+#'
+#' @aliases detfct.fit
 #' @param ddfobj detection function object
 #' @param optim.options control options for optim
 #' @param bounds bounds for the parameters
@@ -33,7 +31,7 @@
 #'   maxiter: maximum iterations used \item refit: if TRUE, detection function
 #'   will be fitted more than once if parameters are at a boundary or when
 #'   convergence is not achieved \item nrefits: number of refittings \item
-#'   parscale: parameter scale values 
+#'   parscale: parameter scale values
 #'   \item mono: if TRUE montonicity will be enforced \item
 #'   mono.strict: if TRUE, then strict monotonicity is enforced; otherwise weak
 #'   \item width: radius of point count or half-width of strip \item
@@ -44,8 +42,7 @@
 #'   }}
 #' @author Dave Miller; Jeff Laake
 detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
-# Functions Used:
-#  assign.par, detfct.fit.opt, errors, get.par 
+  # Functions Used: assign.par, detfct.fit.opt, errors, get.par
 
   # show debug information
   showit <- misc.options$showit
@@ -66,26 +63,6 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
   # OR if we're enforcing monotonicity
   if(is.null(ddfobj$adjustment) | ddfobj$type=="unif" |
      misc.options$mono | misc.options$nofit){
-
-
-    # dlm Oct-11  Lorenzo's code for monotonicity doesn't
-    #             support covariates, so switch to optimx()
-    #             and warn!
-    if(ddfobj$type!="unif"){
-      if(ddfobj$scale$formula!="~1" & misc.options$mono){
-         warning("Covariate models cannot be constrained for monotonicity.\n  Switching to unconstrained optimisation.")
-         misc.options$mono <- FALSE
-         misc.options$mono.strict <- FALSE
-      }
-    }
-
-    # if we want monotonicity, use Lorenzo's code ...
-    # don't use this unless we have adjustment terms
-    if(misc.options$mono & is.null(ddfobj$adjustment)){
-      warning("Monotonicity constraints unnecessary with key only models.")
-      misc.options$mono<-FALSE
-      misc.options$mono.strict<-FALSE
-    }
 
     if(misc.options$mono & ddfobj$type!="unif"){
       # get best key pars first
@@ -123,15 +100,15 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
     # Fudge to make this work the first time.
     firstrun<-TRUE
 
-    while((iter < misc.options$maxiter) && 
-           (all((abs(initialvalues-lastvalues)/(epsilon+abs(lastvalues))) < 
+    while((iter < misc.options$maxiter) &&
+           (all((abs(initialvalues-lastvalues)/(epsilon+abs(lastvalues))) <
                (epsilon/sqrt(nrow(ddfobj$xmat)))) |
-          		firstrun)){
+              firstrun)){
 
       # Variable to count sub iterations... :)
       metaiter<-0
       firstrun<-FALSE
-	   	
+
       # loop through fitting the adjustment, key and full detection function
       for(fitting in c("adjust","key","all")){
 
@@ -154,7 +131,7 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
 
         # report failure
         if(all(class(lt)=="try-error")){
-          if(showit==3){ 
+          if(showit==3){
             errors(paste("iteration ",iter,", fitting ",
                          fitting," failed.",sep=""),preamble="Info")
           }
@@ -162,10 +139,10 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
             stop("*** Warning: fitting failed! Try again with better initial values.\n")
           }
         }else{
-          # update bounds 
+          # update bounds
           bounds<-lt$bounds
 
-          if(showit==3){ 
+          if(showit==3){
             errors(paste("iteration ",iter,".",metaiter,
                          ":\nConverge = ",lt$converge,
                          "\nlnl = ",lt$value,
@@ -176,7 +153,7 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
           # were any of the pars NA?
           # if so, reset to initialvalues
           if(any(is.na(lt$par))){
-            lt$par[is.na(lt$par)]<-initialvalues[is.na(lt$par)]  
+            lt$par[is.na(lt$par)]<-initialvalues[is.na(lt$par)]
           }
           # Rebuild initialvalues again
           ddfobj <- assign.par(ddfobj,lt$par)
@@ -194,11 +171,11 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
 
       iter<-iter+1
     }
-	  
+
     if(iter>misc.options$maxiter)
       errors(paste("Maximum iterations exceeded!",
                    iter,">",misc.options$maxiter,sep=""),preamble="Info")
-     
+
     if(showit>=2){
       errors(paste("Convergence!\nIteration ",iter,".",metaiter,
                    "\nConverge = ",lt$converge,"\nlnl = ",lt$value,

@@ -2,7 +2,7 @@
 \alias{covered.region.dht}
 \title{Covered region estimate of abundance from Horvitz-Thompson-like estimator}
 \usage{
-  covered.region.dht(obs, samples, group)
+covered.region.dht(obs, samples, group)
 }
 \arguments{
   \item{obs}{observations table}

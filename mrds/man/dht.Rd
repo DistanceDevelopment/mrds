@@ -2,9 +2,8 @@
 \alias{dht}
 \title{Density and abundance estimates and variances}
 \usage{
-  dht(model, region.table, sample.table, obs.table = NULL,
-    subset = NULL, se = TRUE, bootstrap = FALSE,
-    options = list())
+dht(model, region.table, sample.table, obs.table = NULL, subset = NULL,
+  se = TRUE, bootstrap = FALSE, options = list())
 }
 \arguments{
   \item{model}{ddf model object}

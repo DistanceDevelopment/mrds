@@ -2,7 +2,7 @@
 \alias{gof.ds}
 \title{Compute chi-square goodness-of-fit test for ds models}
 \usage{
-  gof.ds(model, breaks = NULL, nc = NULL)
+gof.ds(model, breaks = NULL, nc = NULL)
 }
 \arguments{
   \item{model}{\code{ddf} model object}

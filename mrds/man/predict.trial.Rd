@@ -2,8 +2,8 @@
 \alias{predict.trial}
 \title{Predictions from distance sampling trial models}
 \usage{
-  \method{predict}{trial} (object, newdata = NULL,
-    compute = FALSE, int.range = NULL, ...)
+\method{predict}{trial}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, ...)
 }
 \arguments{
   \item{object}{\code{ddf} model object}

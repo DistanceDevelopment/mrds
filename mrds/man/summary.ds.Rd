@@ -2,7 +2,7 @@
 \alias{summary.ds}
 \title{Summary of distance detection function model object}
 \usage{
-  \method{summary}{ds} (object, se = TRUE, N = TRUE, ...)
+\method{summary}{ds}(object, se = TRUE, N = TRUE, ...)
 }
 \arguments{
   \item{object}{a \code{ddf} model object}

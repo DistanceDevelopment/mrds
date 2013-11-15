@@ -3,7 +3,7 @@
 \title{Computes abundance estimates at specified parameter values using
 Horvitz-Thompson-like estimator}
 \usage{
-  dht.deriv(par, model, obs, samples, options = list())
+dht.deriv(par, model, obs, samples, options = list())
 }
 \arguments{
   \item{par}{detection function parameter values}

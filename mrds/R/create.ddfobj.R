@@ -1,10 +1,9 @@
 #' Create detection function object
-#' 
+#'
 #' Creates and populates a specific list structure to define a detection
 #' function object and its data. The \code{ddfobj} is used throughout the
 #' package as a calling argument to various functions.
-#' 
-#' 
+#'
 #' @param model model list with key function and possibly adjustment functions,
 #'   scale formula, and shape formula
 #' @param xmat model data frame
@@ -40,31 +39,34 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
 
   # Specify key function type
   ddfobj$type <- modelvalues$key
-  
+
   if(ddfobj$type=="logistic"){
-    stop("Logistic detection function has been temporarily disabled")	
+    stop("Logistic detection function has been temporarily disabled")
   }
+
   if(!ddfobj$type%in%c("gamma","hn","hr","unif","th1","th2")){
     stop("Invalid value for detection key function =",ddfobj$type,
          "  Only hn, hr, gamma, unif, th1, th2 allowed")
   }
-  
+
   # Set adjustment function options
   if(!is.null(modelvalues$adj.series)){
 
     if(is.null(modelvalues$adj.order)){
       stop("You must specify adjustment order(s) via adj.order")
     }
-    if(is.null(modelvalues$adj.exp))modelvalues$adj.exp=FALSE
-    ddfobj$adjustment <- list(series = modelvalues$adj.series, 
-                              order = modelvalues$adj.order,
-                              scale = modelvalues$adj.scale,
-					          exp=modelvalues$adj.exp)
+
+    if(is.null(modelvalues$adj.exp)) modelvalues$adj.exp <- FALSE
+
+    ddfobj$adjustment <- list(series = modelvalues$adj.series,
+                              order  = modelvalues$adj.order,
+                              scale  = modelvalues$adj.scale,
+                              exp    = modelvalues$adj.exp)
   }else{
-    ddfobj$adjustment=NULL
+    ddfobj$adjustment <- NULL
   }
 
-  # Assign scale and shape(if any) formulas 
+  # Assign scale and shape (if any) formulae
   if(ddfobj$type!="unif"){
     if(is.null(modelvalues$formula)){
       ddfobj$scale <- list(formula="~1")
@@ -75,7 +77,8 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   }
 
   if(!is.null(modelvalues$shape.formula)){
-    ddfobj$shape <- list(formula=paste(as.character(modelvalues$shape.formula),collapse=""))
+    ddfobj$shape <- list(formula=paste(as.character(modelvalues$shape.formula),
+                                       collapse=""))
   }else if(ddfobj$type%in%c("hr","gamma","th1","th2")){
     ddfobj$shape <- list(formula=~1)
   }else{
@@ -85,17 +88,17 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   # Create model data frame and design matrices
   ddfobj$xmat <- create.model.frame(xmat,as.formula(ddfobj$scale$formula),
                                     meta.data,as.formula(ddfobj$shape$formula))
-  if(ddfobj$type !="unif"){	
+  if(ddfobj$type !="unif"){
     ddfobj$scale$dm <- setcov(ddfobj$xmat,ddfobj$scale$formula)$cov
     ddfobj$scale$parameters <- rep(0,ncol(ddfobj$scale$dm))
     # Next determine if scale covariate model is intercept only.
     ddfobj$intercept.only <- FALSE
-    if(ddfobj$scale$formula == "~1" & 
+    if(ddfobj$scale$formula == "~1" &
         (is.null(ddfobj$shape) || ddfobj$shape$formula== "~1")){
-      ddfobj$intercept.only<- TRUE
+      ddfobj$intercept.only <- TRUE
     }
   }else{
-    ddfobj$intercept.only<-TRUE
+    ddfobj$intercept.only <- TRUE
   }
 
   if(!is.null(ddfobj$shape)){
@@ -106,35 +109,61 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   # Set up integral table if this is a half-normal detection function and
   # it is not an intercept.only and likelihood will incorporate integrals
   if(ddfobj$type%in%c("hn","unif")){
-    ddfobj$cgftab <- tablecgf(ddfobj=ddfobj,width=meta.data$width,point=point,standardize=FALSE)
+    ddfobj$cgftab <- tablecgf(ddfobj=ddfobj, width=meta.data$width,
+                              point=point, standardize=FALSE)
   }else{
     ddfobj$cgftab <- NULL
   }
-	
-  # Compute initialvalues unless uniform 
+
+  # Compute initialvalues unless uniform
   initialvalues <- setinitial.ds(ddfobj,width=meta.data$width,initial,point)
-	
+
   # Delete columns of dm that end up as NA from initialvalues
   if(!is.null(ddfobj$scale)){
     if(!ddfobj$intercept.only){
-      if(any(is.na(initialvalues$scale)))
+      if(any(is.na(initialvalues$scale))){
         errors("Model is not full rank - not all parameters are estimable.")
+      }
       ddfobj$scale$dm[,!is.na(initialvalues$scale)]
     }
-    ddfobj$scale$parameters=initialvalues$scale[!is.na(initialvalues$scale)]
+    ddfobj$scale$parameters <- initialvalues$scale[!is.na(initialvalues$scale)]
   }
-  if(!is.null(ddfobj$shape))
-    ddfobj$shape$parameters=initialvalues$shape
-  if(!is.null(ddfobj$adjustment))
-    ddfobj$adjustment$parameters=initialvalues$adjustment
-# Add restriction to prevent adjustments if scale formula isn't ~1
-  if(!is.null(ddfobj$adjustment) & ddfobj$type!="unif")
-  {
-	  if(ddfobj$scale$formula != ~1)
-		  stop("\nAdjustment functions cannot be used with scale covariates")
-	  else
-		  if(!is.null(ddfobj$shape))
-			  if(ddfobj$shape$formula != ~1) stop("\nAdjustment functions cannot be used with shape covariates")
-  }			  
+
+  if(!is.null(ddfobj$shape)){
+    ddfobj$shape$parameters <- initialvalues$shape
+  }
+
+  if(!is.null(ddfobj$adjustment)){
+    ddfobj$adjustment$parameters <- initialvalues$adjustment
+  }
+
+  # Add restriction to prevent adjustments if scale formula isn't ~1
+  if(!is.null(ddfobj$adjustment) & ddfobj$type!="unif"){
+    if(ddfobj$scale$formula != ~1){
+      stop("\nAdjustment functions cannot be used with scale covariates")
+    }else{
+      if(!is.null(ddfobj$shape)){
+        if(ddfobj$shape$formula != ~1){
+          stop("\nAdjustment functions cannot be used with shape covariates")
+        }
+      }
+    }
+  }
+
+  ## check that we didn't specify a model that doesn't make sense
+
+  # can't constrain monotonicity with covariates
+  # don't use monotonicity unless we have adjustment terms
+  if(meta.data$mono){
+    if(ddfobj$scale$formula!="~1"){
+       stop("Covariate models cannot be constrained for monotonicity.")
+    }
+
+    if(is.null(ddfobj$adjustment)){
+      stop("Monotonicity constraints unnecessary with key only models.")
+    }
+  }
+
+
   return(ddfobj)
 }

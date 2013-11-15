@@ -11,23 +11,23 @@ test_that("easy mixture",{
    set.seed(3141)
 
    # simulate some data
-   dat<-sim.mix(500,c(0.7,0.05),c(0.6,0.4),4,means=c(0,0))
-   dat<-data.frame(distance=dat,object=1:length(dat),observed=rep(1,length(dat)))
-
-   trunc<-2
-
-   # fit without constraint
-   result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-                 data=dat, method = "ds", 
-                 meta.data=list(width=trunc,mono=FALSE))
-
-   result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-                 data=dat, method = "ds", 
-                 meta.data=list(width=trunc,mono=TRUE))
-
-   result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-                 data=dat, method = "ds", 
-                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+#   dat<-sim.mix(500,c(0.7,0.05),c(0.6,0.4),4,means=c(0,0))
+#   dat<-data.frame(distance=dat,object=1:length(dat),observed=rep(1,length(dat)))
+#
+#   trunc<-2
+#
+#   # fit without constraint
+#   result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
+#                 data=dat, method = "ds", 
+#                 meta.data=list(width=trunc,mono=FALSE))
+#
+#   result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
+#                 data=dat, method = "ds", 
+#                 meta.data=list(width=trunc,mono=TRUE))
+#
+#   result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
+#                 data=dat, method = "ds", 
+#                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
 })
 
 test_that("less easy mixture -- mode away from zero",{
@@ -36,40 +36,40 @@ test_that("less easy mixture -- mode away from zero",{
    #rngsave<-.Random.seed
    set.seed(3141)
    # simulate some data
-   dat<-sim.mix(500,c(0.3,1),c(0.6,0.4),10,means=c(3,0))
-
-
-   dat<-data.frame(distance=dat,object=1:length(dat),observed=rep(1,length(dat)))
-
-   trunc<-4.5
-
-   # fit cosine adjsutment 
-   result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-                 data=dat, method = "ds", 
-                 meta.data=list(width=trunc,mono=FALSE))
-
-   result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-                 data=dat, method = "ds", 
-                 meta.data=list(width=trunc,mono=TRUE))
-
-   result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-                 data=dat, method = "ds", 
-                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
-
-
-
-   # hazard rate
-   result.n<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-                 data=dat, method = "ds", 
-                 meta.data=list(width=trunc,mono=FALSE))
-
-   result.s<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-                 data=dat, method = "ds", 
-                 meta.data=list(width=trunc,mono=TRUE))
-
-   result.w<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-                 data=dat, method = "ds", 
-                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+#   dat<-sim.mix(500,c(0.3,1),c(0.6,0.4),10,means=c(3,0))
+#
+#
+#   dat<-data.frame(distance=dat,object=1:length(dat),observed=rep(1,length(dat)))
+#
+#   trunc<-4.5
+#
+#   # fit cosine adjsutment 
+#   result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
+#                 data=dat, method = "ds", 
+#                 meta.data=list(width=trunc,mono=FALSE))
+#
+#   result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
+#                 data=dat, method = "ds", 
+#                 meta.data=list(width=trunc,mono=TRUE))
+#
+#   result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
+#                 data=dat, method = "ds", 
+#                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+#
+#
+#
+#   # hazard rate
+#   result.n<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
+#                 data=dat, method = "ds", 
+#                 meta.data=list(width=trunc,mono=FALSE))
+#
+#   result.s<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
+#                 data=dat, method = "ds", 
+#                 meta.data=list(width=trunc,mono=TRUE))
+#
+#   result.w<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
+#                 data=dat, method = "ds", 
+#                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
 
 })
 

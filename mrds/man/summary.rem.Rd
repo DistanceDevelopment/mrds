@@ -2,7 +2,7 @@
 \alias{summary.rem}
 \title{Summary of distance detection function model object}
 \usage{
-  \method{summary}{rem} (object, se = TRUE, ...)
+\method{summary}{rem}(object, se = TRUE, ...)
 }
 \arguments{
   \item{object}{a \code{ddf} model object}

@@ -2,8 +2,7 @@
 \alias{setbounds}
 \title{Set parameter bounds}
 \usage{
-  setbounds(lowerbounds, upperbounds, initialvalues,
-    ddfobj)
+setbounds(lowerbounds, upperbounds, initialvalues, ddfobj)
 }
 \arguments{
   \item{lowerbounds}{vector of lower bounds}

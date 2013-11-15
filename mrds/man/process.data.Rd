@@ -2,7 +2,7 @@
 \alias{process.data}
 \title{Process data for fitting distance sampling detection function}
 \usage{
-  process.data(data, meta.data = list(), check = TRUE)
+process.data(data, meta.data = list(), check = TRUE)
 }
 \arguments{
   \item{data}{dataframe object}

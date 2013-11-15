@@ -2,7 +2,7 @@
 \alias{adj.check.order}
 \title{Check order of adjustment terms}
 \usage{
-  adj.check.order(adj.series, adj.order)
+adj.check.order(adj.series, adj.order)
 }
 \arguments{
   \item{adj.series}{Adjustment series used

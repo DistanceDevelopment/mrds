@@ -2,7 +2,7 @@
 \alias{p.det}
 \title{Double-platform detection probability}
 \usage{
-  p.det(dpformula, dplink, dppars, dpdata)
+p.det(dpformula, dplink, dppars, dpdata)
 }
 \arguments{
   \item{dpformula}{formula for detection function}

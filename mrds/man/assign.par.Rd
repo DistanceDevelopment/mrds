@@ -2,7 +2,7 @@
 \alias{assign.par}
 \title{Extraction and assignment of parameters to vector}
 \usage{
-  assign.par(ddfobj, fpar)
+assign.par(ddfobj, fpar)
 }
 \arguments{
   \item{ddfobj}{distance sampling object (see

@@ -2,7 +2,7 @@
 \alias{print.ddf}
 \title{Simple pretty printer for distance sampling analyses}
 \usage{
-  \method{print}{ddf} (x, ...)
+\method{print}{ddf}(x, ...)
 }
 \arguments{
   \item{x}{a \code{ddf} object}

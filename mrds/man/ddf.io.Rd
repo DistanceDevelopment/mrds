@@ -2,8 +2,8 @@
 \alias{ddf.io}
 \title{Mark-Recapture Distance Sampling (MRDS) IO - PI}
 \usage{
-  ddf.io(dsmodel, mrmodel, data, meta.data = list(),
-    control = list(), call = "")
+ddf.io(dsmodel, mrmodel, data, meta.data = list(), control = list(),
+  call = "")
 }
 \arguments{
   \item{dsmodel}{distance sampling model specification;

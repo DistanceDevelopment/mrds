@@ -2,8 +2,7 @@
 \alias{tablecgf}
 \title{Spline approximation to scale dependent integration of detection function}
 \usage{
-  tablecgf(ddfobj, width, standardize = TRUE,
-    point = FALSE)
+tablecgf(ddfobj, width, standardize = TRUE, point = FALSE)
 }
 \arguments{
   \item{ddfobj}{distance detection function specification}

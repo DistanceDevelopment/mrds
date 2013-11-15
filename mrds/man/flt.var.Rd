@@ -2,7 +2,7 @@
 \alias{flt.var}
 \title{Hessian computation for fitted distance detection function model parameters}
 \usage{
-  flt.var(ddfobj, misc.options)
+flt.var(ddfobj, misc.options)
 }
 \arguments{
   \item{ddfobj}{distance sampling object}

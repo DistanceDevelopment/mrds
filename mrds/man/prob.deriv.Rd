@@ -2,8 +2,7 @@
 \alias{prob.deriv}
 \title{Derivatives for variance of average p and average p(0) variance}
 \usage{
-  prob.deriv(par, model, parfct, observer = NULL,
-    fittedmodel = NULL)
+prob.deriv(par, model, parfct, observer = NULL, fittedmodel = NULL)
 }
 \arguments{
   \item{par}{detection function parameter values}

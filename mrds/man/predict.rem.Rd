@@ -2,8 +2,8 @@
 \alias{predict.rem}
 \title{Predictions from distance sampling rem models}
 \usage{
-  \method{predict}{rem} (object, newdata = NULL,
-    compute = FALSE, int.range = NULL, ...)
+\method{predict}{rem}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, ...)
 }
 \arguments{
   \item{object}{\code{ddf} model object}

@@ -3,7 +3,7 @@
 \title{Cumulative distribution function (cdf) for fitted distance sampling
 detection function}
 \usage{
-  cdf.ds(model, newdata = NULL)
+cdf.ds(model, newdata = NULL)
 }
 \arguments{
   \item{model}{fitted distance sampling model}

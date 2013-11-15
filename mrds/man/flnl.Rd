@@ -3,7 +3,7 @@
 \alias{flpt.lnl}
 \title{Log-likelihood computation for distance sampling data}
 \usage{
-  flnl(fpar, ddfobj, misc.options, fitting = "all")
+flnl(fpar, ddfobj, misc.options, fitting = "all")
 }
 \arguments{
   \item{fpar}{parameter values for detection function at
@@ -50,12 +50,12 @@
   \code{fx}=g(x)/mu (where g(x) is the detection function);
   whereas, f(r)=r*g(r)/mu where mu in both cases is the
   normalizing constant.  Both functions are in source code
-  file for \code{link{detfct}} and are called from distpdf
-  and the integral calculations are made with
-  \code{\link{integratepdf}} and \code{\link{tablecgf}} is
-  used to create a "lookup" table of sorts for standardized
-  integral values that can be scaled much like standard
-  normal distribution.
+  file for \code{link{detfct}} and are called from
+  \code{distpdf} and the integral calculations are made
+  with \code{\link{integratepdf}} and
+  \code{\link{tablecgf}} is used to create a "lookup" table
+  of sorts for standardized integral values that can be
+  scaled much like standard normal distribution.
 }
 \note{
   These are internal functions used by \code{\link{ddf.ds}}
@@ -64,7 +64,7 @@
   are documented here for completeness.
 }
 \author{
-  Jeff Laake
+  Jeff Laake, David L Miller
 }
 \seealso{
   \code{\link{flt.var}}, \code{\link{detfct}}

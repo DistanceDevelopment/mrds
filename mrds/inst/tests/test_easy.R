@@ -87,7 +87,7 @@ model.set<-1:nrow(models)
 #  plot(seq(0,25,len=1000),ack(seq(0,25,len=1000)))
 #  integrate(ack,upper=25,lower=0)
 
-model.set<-model.set[-c(10,11,12,14,16,21,22,27:30)]
+model.set<-model.set[-c(1,10,11,12,14,16,21,22,27:30)]
 
 better<-rep(0,nrow(models))
 

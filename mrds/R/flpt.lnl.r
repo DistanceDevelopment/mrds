@@ -1,15 +1,15 @@
 flpt.lnl <- function(fpar,ddfobj,misc.options){
 
-  # flpt.lnl - computes negative log-likelihood values of line or point 
+  # flpt.lnl - computes negative log-likelihood values of line or point
   # transect binned/unbinned distances
   #
   # Arguments: see flnl for description of arguments
-  # 
+  #
   # value: vector of negative log-likelihood values for observations at current
   #        set of parameters (fpar)
   #
-  # Functions Used: assign.par, tablecgf, predict(predict.smooth.spline), 
-  # detfct, integratedetfct, integratedetfct.logistic
+  # Functions Used: assign.par, tablecgf, predict(predict.smooth.spline),
+  # detfct, integratedetfct, integratedetfct.logistic
 
   # Assign parameter values into ddfobj
   ddfobj <- assign.par(ddfobj,fpar)
@@ -150,15 +150,15 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
       i <- i + 1
     }
     if(any(int1<=0)){
-	  int1[int1<=0]=1e-25
+    int1[int1<=0]=1e-25
       warning("\n Problems with integration. integral <=0. Setting integral to 1E-25\n")
     }
 
-    # Handle some special cases that can occur 
+    # Handle some special cases that can occur
     if(is.vector(left)){
       int1[is.infinite(int1)] <-  right - left
       int1[is.nan(int1)] <- right - left
-    }else{ 
+    }else{
       int1[is.infinite(int1)] <-  right[is.infinite(int1)] -
                                   left[is.infinite(int1)]
       int1[is.nan(int1)] <- right[is.nan(int1)] - left[is.nan(int1)]

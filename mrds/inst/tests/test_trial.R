@@ -18,7 +18,7 @@ test_that("detected and missed are the same in summary and det.tables", {
 
    # no zeros, just check it works anyway
    xx<-ddf(mrmodel=~glm(formula=~distance),
-           dsmodel = ~mcds(key = "hn", formula = ~sex), 
+           dsmodel = ~mcds(key = "hn", formula = ~sex),
            data = egdata, method = "trial.fi", meta.data = list(width = 4))
 
    tabs<-det.tables(xx,breaks=c(0,.5,1,2,3,4))
@@ -33,7 +33,7 @@ test_that("detected and missed are the same in summary and det.tables", {
    # there are no zeros, so fix that and re-run the model
    egdata$distance[egdata$distance==0.02]<-0
    xx<-ddf(mrmodel=~glm(formula=~distance),
-           dsmodel = ~mcds(key = "hn", formula = ~sex), 
+           dsmodel = ~mcds(key = "hn", formula = ~sex),
            data = egdata, method = "trial.fi", meta.data = list(width = 4))
    tabs<-det.tables(xx,breaks=c(0,.5,1,2,3,4))
    summ<-summary(xx)

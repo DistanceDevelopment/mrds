@@ -2,7 +2,7 @@
 \alias{average.line}
 \title{Average detection function line for plotting}
 \usage{
-  average.line(finebr, obs, model)
+average.line(finebr, obs, model)
 }
 \arguments{
   \item{finebr}{set of fine breaks in distance over which

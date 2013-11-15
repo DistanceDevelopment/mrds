@@ -2,7 +2,7 @@
 \alias{average.line.cond}
 \title{Average conditional detection function line for plotting}
 \usage{
-  average.line.cond(finebr, obs, model)
+average.line.cond(finebr, obs, model)
 }
 \arguments{
   \item{finebr}{set of fine breaks in distance over which

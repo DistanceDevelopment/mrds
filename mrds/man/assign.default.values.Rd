@@ -2,7 +2,7 @@
 \alias{assign.default.values}
 \title{Assign default values to list elements that have not been already assigned}
 \usage{
-  assign.default.values(x, ...)
+assign.default.values(x, ...)
 }
 \arguments{
   \item{x}{generic list}

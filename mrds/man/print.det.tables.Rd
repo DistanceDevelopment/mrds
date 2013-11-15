@@ -2,7 +2,7 @@
 \alias{print.det.tables}
 \title{Prints results of observer detection tables}
 \usage{
-  \method{print}{det.tables} (x, ...)
+\method{print}{det.tables}(x, ...)
 }
 \arguments{
   \item{x}{result of call to ddf}
