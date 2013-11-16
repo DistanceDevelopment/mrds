@@ -3,7 +3,7 @@
 \alias{flpt.lnl}
 \title{Log-likelihood computation for distance sampling data}
 \usage{
-  flnl(fpar, ddfobj, misc.options, fitting = "all")
+flnl(fpar, ddfobj, misc.options, fitting = "all")
 }
 \arguments{
   \item{fpar}{parameter values for detection function at

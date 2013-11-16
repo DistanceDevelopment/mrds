@@ -2,7 +2,7 @@
 \alias{detfct.fit}
 \title{Fit detection function using key-adjustment functions}
 \usage{
-  detfct.fit(ddfobj, optim.options, bounds, misc.options)
+detfct.fit(ddfobj, optim.options, bounds, misc.options)
 }
 \arguments{
   \item{ddfobj}{detection function object}

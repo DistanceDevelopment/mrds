@@ -9,13 +9,13 @@
 \alias{coefficients}
 \title{Extract coefficients}
 \usage{
-  \method{coef}{ds}(object,...)
-    \method{coef}{io}(object,...)
-    \method{coef}{io.fi}(object,...)
-    \method{coef}{trial}(object,...)
-    \method{coef}{trial.fi}(object,...)
-    \method{coef}{rem}(object,...)
-    \method{coef}{rem.fi}(object,...)
+\method{coef}{ds}(object,...)
+       \method{coef}{io}(object,...)
+       \method{coef}{io.fi}(object,...)
+       \method{coef}{trial}(object,...)
+       \method{coef}{trial.fi}(object,...)
+       \method{coef}{rem}(object,...)
+       \method{coef}{rem.fi}(object,...)
 }
 \arguments{
   \item{object}{ddf model object of class "ds", "io",

@@ -2,7 +2,7 @@
 \alias{summary.trial}
 \title{Summary of distance detection function model object}
 \usage{
-  \method{summary}{trial} (object, se = TRUE, ...)
+\method{summary}{trial}(object, se = TRUE, ...)
 }
 \arguments{
   \item{object}{a \code{ddf} model object}

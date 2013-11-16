@@ -2,7 +2,7 @@
 \alias{setcov}
 \title{Creates design matrix for covariates in detection function}
 \usage{
-  setcov(dmat, model)
+setcov(dmat, model)
 }
 \arguments{
   \item{dmat}{data matrix}

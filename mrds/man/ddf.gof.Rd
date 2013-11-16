@@ -9,7 +9,7 @@
 \alias{gof.trial.fi}
 \title{Goodness of fit tests for distance sampling models}
 \usage{
-  ddf.gof(model, breaks = NULL, nc = NULL, qq = TRUE, ...)
+ddf.gof(model, breaks = NULL, nc = NULL, qq = TRUE, ...)
 }
 \arguments{
   \item{model}{ddf model object}

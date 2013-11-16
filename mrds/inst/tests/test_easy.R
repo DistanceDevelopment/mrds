@@ -71,7 +71,6 @@ test.df<-function(mcds.bit,dat,width,mono=FALSE,strict=FALSE,mono.tol=1e-7,showi
       control=list(mono.tol=1e-5,mono.delta=1e-5,showit=showit))
 }
 
-#models<-read.csv("models.csv",as.is=TRUE)
 models<-ltmodels
 model.set<-1:nrow(models)
 

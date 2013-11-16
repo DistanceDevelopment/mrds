@@ -56,19 +56,19 @@ extract.stake=function(stake,obs)
      return(example)
  }
  if(obs!="all")
-	 return(extract.obs(obs=obs))
+  return(extract.obs(obs=obs))
  else
  {
-	 example=NULL
+  example=NULL
      for(i in 1:(ncol(stake)-2))
-	 {
-		 df=extract.obs(obs=i)
-		 df$person=i
-		 example=rbind(example,df)
-	 }
-	 example$person=factor(example$person)
-	 example$object=1:nrow(example)
-	 return(example)
+  {
+    df=extract.obs(obs=i)
+    df$person=i
+    example=rbind(example,df)
+  }
+  example$person=factor(example$person)
+  example$object=1:nrow(example)
+  return(example)
  }
 }
 extract.stake.pairs=function(stake,obs1,obs2,removal=FALSE)

@@ -2,9 +2,8 @@
 \alias{predict.io.fi}
 \title{Predictions from distance sampling io.fi models}
 \usage{
-  \method{predict}{io.fi} (object, newdata = NULL,
-    compute = FALSE, int.range = NULL, integrate = FALSE,
-    ...)
+\method{predict}{io.fi}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, integrate = FALSE, ...)
 }
 \arguments{
   \item{object}{\code{ddf} model object}

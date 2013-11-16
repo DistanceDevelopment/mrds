@@ -2,9 +2,8 @@
 \alias{plot.det.tables}
 \title{Observation detection tables}
 \usage{
-  \method{plot}{det.tables} (x, which = 1:6, angle = -45,
-    density = 20, col1 = "black", col2 = "blue",
-    new = TRUE, ...)
+\method{plot}{det.tables}(x, which = 1:6, angle = -45, density = 20,
+  col1 = "black", col2 = "blue", new = TRUE, ...)
 }
 \arguments{
   \item{x}{object of class det.tables}

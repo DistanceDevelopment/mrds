@@ -4,7 +4,7 @@
 Allows one to simulate line transect distance sampling data using
 a mixture of half-normal detection functions.}
 \usage{
-  sim.mix(n, sigma, mix.prop, width, means = 0)
+sim.mix(n, sigma, mix.prop, width, means = 0)
 }
 \arguments{
   \item{n}{number of samples to generate}

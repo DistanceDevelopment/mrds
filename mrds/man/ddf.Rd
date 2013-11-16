@@ -2,8 +2,8 @@
 \alias{ddf}
 \title{Distance Detection Function Fitting}
 \usage{
-  ddf(dsmodel = call(), mrmodel = call(), data,
-    method = "ds", meta.data = list(), control = list())
+ddf(dsmodel = call(), mrmodel = call(), data, method = "ds",
+  meta.data = list(), control = list())
 }
 \arguments{
   \item{dsmodel}{distance sampling model specification}
@@ -323,6 +323,6 @@ plot(model,main="Dual observer binned point data",new=FALSE)
   \code{\link{ddf.ds}},
   \code{\link{ddf.io}},\code{\link{ddf.io.fi}},\code{\link{ddf.trial}},\code{\link{ddf.trial.fi}},\code{\link{ddf.rem}},\code{\link{ddf.rem.fi}}
 }
-\keyword{~Statistical}
 \keyword{Models}
+\keyword{~Statistical}
 

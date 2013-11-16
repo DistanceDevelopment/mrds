@@ -34,25 +34,20 @@ summary.io <- function(object,se=TRUE,...){
   n <- nrow(ddfobj$xmat)
   ans <- list(mr.summary  = summary(model$mr,se=se,N=FALSE,model,ddfobj),
               ds.summary  = summary(model$ds,se=se,N=FALSE),
-              Nhat        = model$Nhat,AIC=model$criterion,
+              Nhat        = model$Nhat,
+              AIC         = model$criterion,
               average.p   = n/model$Nhat,
               mono        = model$ds$aux$mono,
               mono.strict = model$ds$aux$mono.strict)
 
+  # calculate standard errors for p and Nhat (covered area)
   if(se){
-    vcov <- solvecov(model$hessian)$inv
-    Nhatvar.list <- DeltaMethod(model$par,NCovered,vcov,.001,
-                                model=model,group=TRUE)
-    Nhatvar <- Nhatvar.list$variance + sum((1-model$fitted)/model$fitted^2)
-    cvN <- sqrt(Nhatvar)/model$Nhat
-    var.pbar.list <- prob.se(model,avgp,vcov)
-    covar <- t(Nhatvar.list$partial)%*%vcov%*%var.pbar.list$partial+
-                var.pbar.list$covar
-    var.pbar <- ans$average.p^2*(cvN^2 + var.pbar.list$var/n^2
-                                 -2*covar/(n*model$Nhat))
-    ans$average.p.se <- sqrt(var.pbar)
-    ans$Nhat.se <- sqrt(Nhatvar)
-    ans$cv <- cvN
+    se.obj <- calc.se.Np(model, avgp, n, ans$average.p)
+
+    ans$average.p.se <- se.obj$average.p.se
+    ans$Nhat.se <- se.obj$Nhat.se
+
+    ans$cv <- ans$Nhat.se/model$Nhat
   }
   class(ans) <- "summary.io"
   return(ans)

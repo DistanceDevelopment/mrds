@@ -2,7 +2,7 @@
 \alias{create.ddfobj}
 \title{Create detection function object}
 \usage{
-  create.ddfobj(model, xmat, meta.data, initial)
+create.ddfobj(model, xmat, meta.data, initial)
 }
 \arguments{
   \item{model}{model list with key function and possibly

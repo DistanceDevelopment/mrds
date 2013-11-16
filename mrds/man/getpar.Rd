@@ -2,7 +2,7 @@
 \alias{getpar}
 \title{Extraction and assignment of parameters to vector}
 \usage{
-  getpar(ddfobj, fitting = "all", index = FALSE)
+getpar(ddfobj, fitting = "all", index = FALSE)
 }
 \arguments{
   \item{ddfobj}{distance sampling object (see

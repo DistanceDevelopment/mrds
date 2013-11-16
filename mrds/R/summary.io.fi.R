@@ -36,24 +36,21 @@ summary.io.fi <- function(object,se=TRUE,N=TRUE,fittedmodel=NULL,
   model <- object
   avgp <- function(model,pdot,...){return(pdot)}
 
-  avgp0=function(model,pdot,observer,...){
-    if(observer==1){
-      return(pdot$p1)
-    }else{
-      if(observer==2){
-        return(pdot$p2)
-      }else{
-        return(pdot$fitted)
-      }
-    }
+  avgp0 <- function(model,pdot,observer,...){
+    switch(observer,
+           pdot$p1,     # observer = 1
+           pdot$p2,     # observer = 2
+           pdot$fitted) # observer = 3
   }
 
   newdat <- model$mr$data
   newdat$distance <- rep(0,length(newdat$distance))
+
+  # get the apex for the gamma function
   if(!is.null(ddfobj) && ddfobj$type=="gamma"){
     key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
     key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
-    newdat$distance=rep(apex.gamma(key.scale,key.shape),2)
+    newdat$distance <- rep(apex.gamma(key.scale,key.shape),2)
   }
 
   newdat$offsetvalue <- 0
@@ -65,7 +62,9 @@ summary.io.fi <- function(object,se=TRUE,N=TRUE,fittedmodel=NULL,
     pdot <- fittedmodel$fitted
     Nhat <- fittedmodel$Nhat
   }
+
   n <- length(newdat$distance)/2
+
   timesdetected <- newdat$detected[newdat$observer==1] +
                    newdat$detected[newdat$observer==2]
 
@@ -77,16 +76,22 @@ summary.io.fi <- function(object,se=TRUE,N=TRUE,fittedmodel=NULL,
   average.p0.2 <- sum(avgp0(model,pred.at0,observer=2)/pdot)
   average.p0 <- sum(avgp0(model,pred.at0,observer=3)/pdot)
 
-  ans <- list(n=n,n1=n1,n2=n2,n3=n3,
-              average.p0.1=average.p0.1/Nhat,average.p0.2=average.p0.2/Nhat,
-              average.p0=average.p0/Nhat,
-              cond.det.coef=coef(model),aic=model$criterion)
+  ans <- list(n             = n,
+              n1            = n1,
+              n2            = n2,
+              n3            = n3,
+              average.p0.1  = average.p0.1/Nhat,
+              average.p0.2  = average.p0.2/Nhat,
+              average.p0    = average.p0/Nhat,
+              cond.det.coef = coef(model),
+              aic           = model$criterion)
+
   # Output estimates relevant to abundance estimation.
   # Note: that these estimates are for the surveyed strip only and are
   # not expanded to some larger region that was sampled.
   if(N){
-    ans$average.p=n/Nhat
-    ans$Nhat=Nhat
+    ans$average.p <- n/Nhat
+    ans$Nhat <- Nhat
   }
 
   # Compute se for N and p's; the logical N is set when summary.io.fi is being
@@ -96,56 +101,50 @@ summary.io.fi <- function(object,se=TRUE,N=TRUE,fittedmodel=NULL,
   # when method="io", fittedmodel contains the io model object and is not NULL
   if(se){
     if(N | is.null(fittedmodel)){
-      vcov <- solvecov(model$hessian)$inv
-      Nhatvar.list <- DeltaMethod(model$par,NCovered,vcov,.001,
-                                  model=model,group=TRUE)
-      Nhatvar <- Nhatvar.list$variance + sum((1-model$fitted)/model$fitted^2)
-      cvN <- sqrt(Nhatvar)/Nhat
-      var.pbar.list <- prob.se(model,avgp,vcov)
-      covar <- t(Nhatvar.list$partial)%*%vcov%*%var.pbar.list$partial+
-                var.pbar.list$covar
-      var.pbar <- ans$average.p^2*(cvN^2 + var.pbar.list$var/n^2
-                                     -2*covar/(n*Nhat))
-      ans$average.p.se <- sqrt(var.pbar)
-      ans$Nhat.se <- sqrt(Nhatvar)
-      ans$cv <- cvN
+      se.obj <- calc.se.Np(model, avgp, n, ans$average.p)
+      ans$average.p.se <- se.obj$average.p.se
+      ans$Nhat.se <- se.obj$Nhat.se
+      ans$cv <- se.obj$Nhat.se/Nhat
+      cvN <- ans$cv
+      Nhatvar.list <- se.obj$Nhatvar.list
+      vcov <- se.obj$vcov
     }
 
-    # If there is a nested model, compute the Nhat from the fitted model 
+    # If there is a nested model, compute the Nhat from the fitted model
     # and use its variance and vector of partials.
     if(!is.null(fittedmodel)){
       Nhat <- fittedmodel$Nhat
       vcov <- solvecov(fittedmodel$hessian)$inv
       Nhatvar.list <- DeltaMethod(fittedmodel$par,NCovered,vcov,.001,
                                   model=fittedmodel,group=TRUE)
-      Nhatvar  <- Nhatvar.list$variance +
+      Nhatvar <- Nhatvar.list$variance +
                    sum((1-fittedmodel$fitted)/fittedmodel$fitted^2)
       cvN <- sqrt(Nhatvar)/Nhat
     }
+
     # Compute se of p_1(0), p_2(0) and p_1(0)+p_2(0)-p_2(0)*p_1(0)
-    var.pbar.list <- prob.se(model,avgp0,vcov,observer=1,fittedmodel)
-    covar <- t(Nhatvar.list$partial)%*%vcov%*%var.pbar.list$partial+
-              var.pbar.list$covar
-    var.pbar <- ans$average.p0.1^2*(cvN^2 + var.pbar.list$var/average.p0.1^2
-                                    -2*covar/(average.p0.1*Nhat))
-    ans$average.p0.1.se <- sqrt(var.pbar)
-    var.pbar.list <- prob.se(model,avgp0,vcov,observer=2,fittedmodel)
-    covar <- t(Nhatvar.list$partial)%*%vcov%*%var.pbar.list$partial+
-              var.pbar.list$covar
-    var.pbar <- ans$average.p0.2^2*(cvN^2 + var.pbar.list$var/average.p0.2^2
-                                    -2*covar/(average.p0.2*Nhat))
-    ans$average.p0.2.se <- sqrt(var.pbar)
-    var.pbar.list <- prob.se(model,avgp0,vcov,observer=3,fittedmodel)
-    covar <- t(Nhatvar.list$partial)%*%vcov%*%var.pbar.list$partial+
-              var.pbar.list$covar
-    var.pbar <- ans$average.p0^2*(cvN^2 + var.pbar.list$var/average.p0^2
-                                    -2*covar/(average.p0*Nhat))
-    ans$average.p0.se <- sqrt(var.pbar)
+    p.se <- function(model,avgp0,vcov,obs,fittedmodel,Nhatvar.list,this.p,
+                     cvN,Nhat,ansthis.p){
+      var.pbar.list <- prob.se(model,avgp0,vcov,observer=obs,fittedmodel)
+      covar <- t(Nhatvar.list$partial) %*% vcov %*% var.pbar.list$partial +
+                var.pbar.list$covar
+      var.pbar <- ansthis.p^2 * (cvN^2 + var.pbar.list$var/this.p^2 -
+                              2*covar/(this.p*Nhat))
+      return(sqrt(var.pbar))
+    }
+
+    # this ansthis.p stuff is not okay, need to deal with that
+    ans$average.p0.1.se <- p.se(model,avgp0,vcov,1,fittedmodel,Nhatvar.list,
+                                average.p0.1,cvN,Nhat,ans$average.p0.1)
+    ans$average.p0.2.se <- p.se(model,avgp0,vcov,2,fittedmodel,Nhatvar.list,
+                                average.p0.2,cvN,Nhat,ans$average.p0.2)
+    ans$average.p0.se   <- p.se(model,avgp0,vcov,3,fittedmodel,Nhatvar.list,
+                                average.p0,cvN,Nhat,ans$average.p0)
   }
 
   ans$mono <- model$ds$aux$mono
   ans$mono.strict <- model$ds$aux$mono.strict
 
-  class(ans)="summary.io.fi"
+  class(ans) <- "summary.io.fi"
   return(ans)
 }

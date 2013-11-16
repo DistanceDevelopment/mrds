@@ -2,7 +2,7 @@
 \alias{logit}
 \title{Logit function}
 \usage{
-  logit(p)
+logit(p)
 }
 \arguments{
   \item{p}{probability}

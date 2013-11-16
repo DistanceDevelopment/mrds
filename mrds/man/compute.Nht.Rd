@@ -2,7 +2,7 @@
 \alias{compute.Nht}
 \title{Horvitz-Thompson estimates 1/p_i or s_i/p_i}
 \usage{
-  compute.Nht(pdot, group = TRUE, size = NULL)
+compute.Nht(pdot, group = TRUE, size = NULL)
 }
 \arguments{
   \item{pdot}{vector of estimated detection probabilities}

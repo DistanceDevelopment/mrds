@@ -2,7 +2,7 @@
 \alias{print.ddf.gof}
 \title{Prints results of goodness of fit tests for detection functions}
 \usage{
-  \method{print}{ddf.gof} (x, ...)
+\method{print}{ddf.gof}(x, ...)
 }
 \arguments{
   \item{x}{result of call to \code{\link{ddf.gof}}}

@@ -2,8 +2,8 @@
 \alias{ddf.rem.fi}
 \title{Mark-Recapture Distance Sampling (MRDS) Removal - FI}
 \usage{
-  ddf.rem.fi(model, data, meta.data = list(),
-    control = list(), call = "", method)
+ddf.rem.fi(model, data, meta.data = list(), control = list(), call = "",
+  method)
 }
 \arguments{
   \item{model}{mark-recapture model specification}

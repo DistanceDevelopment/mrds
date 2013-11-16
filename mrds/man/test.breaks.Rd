@@ -2,7 +2,7 @@
 \alias{test.breaks}
 \title{Test validity for histogram breaks(cutpoints)}
 \usage{
-  test.breaks(breaks, left, width)
+test.breaks(breaks, left, width)
 }
 \arguments{
   \item{breaks}{vector of cutpoints (breaks) for distance

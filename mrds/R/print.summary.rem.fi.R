@@ -1,10 +1,10 @@
 #' Print summary of distance detection function model object
-#' 
+#'
 #' Provides a brief summary of data and fitted detection probability model
 #' parameters, model selection criterion, and optionally abundance in the
 #' covered (sampled) region and its standard error. What is printed depends
 #' on the corresponding call to summary.
-#' 
+#'
 #' @S3method print summary.rem.fi
 #' @aliases print.summary.rem.fi
 #' @method print summary.rem.fi
@@ -14,20 +14,8 @@
 #' @author Jeff Laake
 #' @seealso \code{\link{summary.rem.fi}}
 #' @keywords utility
-print.summary.rem.fi <-
-function(x,...)
-{
-#
-# print.summary.rem.fi
-#
-# Provides a summary of parameters and estimates from the output of trial.fi object
-#
-# Arguments:
-#
-# x      - list object from summary.rem.fi
-#
-# Value: Null
-#
+print.summary.rem.fi <- function(x,...){
+
   cat("\nSummary for rem.fi object \n")
   cat("Number of observations               : ", x$n,"\n")
   cat("Number seen by primary               : ", x$n1,"\n")
@@ -38,25 +26,20 @@ function(x,...)
   print(x$cond.det.coef)
 
   cat("\n")
-  if(!is.null(x$Nhat))
-  {
-      parameters=data.frame(Estimate=c(x$average.p,x$average.p0.1,x$Nhat))
-      row.names(parameters)=c("Average p","Average primary p(0)","N in covered region")
-      if(!is.null(x$average.p.se))
-      {
-          parameters$SE=c(x$average.p.se,x$average.p0.1.se,x$Nhat.se)
-          parameters$CV=parameters$SE/parameters$Estimate
-      }
-  }
-  else
-  {
-      parameters=data.frame(Estimate=c(x$average.p0.1))
-      row.names(parameters)=c("Average primary p(0)")
-      if(!is.null(x$average.p0.1.se))
-      {
-          parameters$SE=c(x$average.p0.1.se)
-          parameters$CV=parameters$SE/parameters$Estimate
-      }
+  if(!is.null(x$Nhat)){
+    parameters <- data.frame(Estimate=c(x$average.p,x$average.p0.1,x$Nhat))
+    row.names(parameters) <- c("Average p","Average primary p(0)","N in covered region")
+    if(!is.null(x$average.p.se)){
+      parameters$SE <- c(x$average.p.se,x$average.p0.1.se,x$Nhat.se)
+      parameters$CV <- parameters$SE/parameters$Estimate
+    }
+  }else{
+    parameters <- data.frame(Estimate=c(x$average.p0.1))
+    row.names(parameters) <- c("Average primary p(0)")
+    if(!is.null(x$average.p0.1.se)){
+        parameters$SE <- c(x$average.p0.1.se)
+        parameters$CV <- parameters$SE/parameters$Estimate
+    }
   }
   print(parameters)
   invisible(NULL)

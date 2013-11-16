@@ -3,7 +3,7 @@
 library(testthat)
 library(mrds)
 
-context("trial and trial.io")
+context("trial and trial.fi")
 
 # bug from Louise Burt 31/10/11
 test_that("detected and missed are the same in summary and det.tables", {

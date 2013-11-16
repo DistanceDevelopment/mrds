@@ -15,34 +15,30 @@
 \alias{scalevalue}
 \title{Detection functions}
 \usage{
-  detfct(distance, ddfobj, select=NULL, index=NULL,
-    width=NULL, standardize = TRUE, stdint=FALSE)
+detfct(distance, ddfobj, select=NULL, index=NULL, width=NULL, standardize = TRUE, stdint=FALSE)
 
-  adjfct.cos(distance, scaling = 1, adj.order, adj.parm =
-    NULL, adj.exp=FALSE)
+	adjfct.cos(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
 
-  adjfct.poly(distance, scaling = 1, adj.order, adj.parm =
-    NULL, adj.exp=FALSE)
+	adjfct.poly(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
 
-  adjfct.herm(distance, scaling = 1, adj.order, adj.parm =
-    NULL, adj.exp=FALSE)
+	adjfct.herm(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
 
-  scalevalue(key.scale, z)
+	scalevalue(key.scale, z)
 
-  keyfct.hn(distance, key.scale)
+ keyfct.hn(distance, key.scale)
 
-  keyfct.hz(distance, key.scale, key.shape)
+	keyfct.hz(distance, key.scale, key.shape)
 
-  keyfct.gamma(distance, key.scale, key.shape)
+	keyfct.gamma(distance, key.scale, key.shape)
 
-  apex.gamma(key.scale, key.shape)
+	apex.gamma(key.scale, key.shape)
 
-  fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
+	fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 
-  fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
+	fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 
-  distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
-    stdint=FALSE,point=FALSE)
+	distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
+           stdint=FALSE,point=FALSE)
 }
 \arguments{
   \item{distance}{vector of distances}

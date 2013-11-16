@@ -2,8 +2,8 @@
 \alias{ddf.ds}
 \title{CDS/MCDS Distance Detection Function Fitting}
 \usage{
-  ddf.ds(model, data, meta.data = list(), control = list(),
-    call, method = "ds")
+ddf.ds(model, data, meta.data = list(), control = list(), call,
+  method = "ds")
 }
 \arguments{
   \item{model}{model list with key function and scale
@@ -64,15 +64,17 @@
 # ddf.ds is called when ddf is called with method="ds"
 \donttest{
 data(book.tee.data)
-region<<-book.tee.data$book.tee.region
-egdata<<-book.tee.data$book.tee.dataframe
-samples<<-book.tee.data$book.tee.samples
-obs<<-book.tee.data$book.tee.obs
-result=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = egdata[egdata$observer ==
-    1, ], method = "ds", meta.data = list(width = 4))
+region <- book.tee.data$book.tee.region
+egdata <- book.tee.data$book.tee.dataframe
+samples <- book.tee.data$book.tee.samples
+obs <- book.tee.data$book.tee.obs
+result <- ddf(dsmodel = ~mcds(key = "hn", formula = ~1),
+              data = egdata[egdata$observer==1, ], method = "ds",
+              meta.data = list(width = 4))
 summary(result,se=TRUE)
 plot(result,main="cds - observer 1")
-print(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),se=TRUE))
+print(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),
+          se=TRUE))
 print(ddf.gof(result))
 }
 }
@@ -93,8 +95,9 @@ print(ddf.gof(result))
   University Press.
 }
 \seealso{
-  \code{\link{flnl}},
-  \code{\link{summary.ds}},\code{\link{coef.ds}},\code{\link{plot.ds}},\code{\link{gof.ds}}
+  \code{\link{flnl}}, \code{\link{summary.ds}},
+  \code{\link{coef.ds}},
+  \code{\link{plot.ds}},\code{\link{gof.ds}}
 }
 \keyword{Models}
 \keyword{Statistical}

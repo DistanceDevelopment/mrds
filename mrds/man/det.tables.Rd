@@ -2,7 +2,7 @@
 \alias{det.tables}
 \title{Observation detection tables}
 \usage{
-  det.tables(model, nc = NULL, breaks = NULL)
+det.tables(model, nc = NULL, breaks = NULL)
 }
 \arguments{
   \item{model}{fitted model from \code{ddf}}

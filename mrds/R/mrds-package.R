@@ -36,8 +36,8 @@ NULL
 #' green; 1 - yellow. Exposure was either low (0) or high(1) depending on
 #' height of tee above the ground. size was the number of tees in an observed
 #' cluster.
-#' 
-#' 
+#'
+#'
 #' @name book.tee.data
 #' @docType data
 #' @format The format is: List of 4 $ book.tee.dataframe:'data.frame': 324 obs.
@@ -59,11 +59,11 @@ NULL
 NULL
 
 #' Pronghorn aerial survey data from Wyoming
-#' 
+#'
 #' Detections of pronghorn from fixed-wing aerial surveys in Southeastern
 #' Wyoming using four angular bins defined by strut marks. Illustrates data
 #' where altitude above ground level (AGL) varies during the survey.
-#' 
+#'
 #' Each record is an observed cluster of pronghorn.  The data provide the
 #' stratum for the observation, the direction of travel, the AGL at the time of
 #' the observation, the angular bin which contained the center of the pronghorn
@@ -74,7 +74,7 @@ NULL
 #' above ground level. The inner band is considered a blind region due to
 #' obstruction of view beneath the plane; thus th the line is offset 65 meters
 #' from underneath the plane.
-#' 
+#'
 #' @name pronghorn
 #' @docType data
 #' @format A data frame with 660 observations on the following 5 variables.
@@ -95,12 +95,11 @@ NULL
 
 
 #' Wooden stake data from 1977 survey
-#' 
+#'
 #' Multiple surveys by different observers of a single 1km transect containing
 #' 150 wooden stakes placed randomly throughout a 40 m strip (20m on either
 #' side).
-#' 
-#' 
+#'
 #' @name stake77
 #' @docType data
 #' @format A data frame with 150 observations on the following 10 variables.
@@ -135,19 +134,19 @@ NULL
 #'      return(example)
 #'  }
 #'  if(obs!="all")
-#' 	 return(extract.obs(obs=obs))
+#'   return(extract.obs(obs=obs))
 #'  else
 #'  {
-#' 	 example=NULL
+#'   example=NULL
 #'      for(i in 1:(ncol(stake)-2))
-#' 	 {
-#' 		 df=extract.obs(obs=i)
-#' 		 df$person=i
-#' 		 example=rbind(example,df)
-#' 	 }		 
-#' 	 example$person=factor(example$person)
-#' 	 example$object=1:nrow(example)
-#' 	 return(example)
+#'   {
+#'     df=extract.obs(obs=i)
+#'     df$person=i
+#'     example=rbind(example,df)
+#'   }     
+#'   example$person=factor(example$person)
+#'   example$object=1:nrow(example)
+#'   return(example)
 #'  }   
 #' }
 #' extract.stake.pairs=function(stake,obs1,obs2,removal=FALSE)
@@ -235,19 +234,19 @@ NULL
 #'      return(example)
 #'  }
 #'  if(obs!="all")
-#' 	 return(extract.obs(obs=obs))
+#'   return(extract.obs(obs=obs))
 #'  else
 #'  {
-#' 	 example=NULL
+#'   example=NULL
 #'      for(i in 1:(ncol(stake)-2))
-#' 	 {
-#' 		 df=extract.obs(obs=i)
-#' 		 df$person=i
-#' 		 example=rbind(example,df)
-#' 	 }		 
-#' 	 example$person=factor(example$person)
-#' 	 example$object=1:nrow(example)
-#' 	 return(example)
+#'   {
+#'     df=extract.obs(obs=i)
+#'     df$person=i
+#'     example=rbind(example,df)
+#'   }     
+#'   example$person=factor(example$person)
+#'   example$object=1:nrow(example)
+#'   return(example)
 #'  }   
 #' }
 #' extract.stake.pairs=function(stake,obs1,obs2,removal=FALSE)

@@ -4,11 +4,11 @@
 \alias{qqplot.ddf}
 \title{Q-Q plot, KS and CVM goodness of fit tests for distance detection functions}
 \usage{
-  qqplot.ddf(model, plot=TRUE, ...)
+qqplot.ddf(model, plot=TRUE, ...)
 
-  pcramer(q, eps = 1e-05)
+       pcramer(q, eps = 1e-05)
 
-  pks(Dn,n)
+       pks(Dn,n)
 }
 \arguments{
   \item{model}{fitted distance detection function model

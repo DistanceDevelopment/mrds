@@ -3,8 +3,8 @@
 \alias{setinitial.ds}
 \title{Set initial values for detection function based on distance sampling}
 \usage{
-  setinitial.ds(ddfobj,width,initial,point)
-    sethazard(ddfobj,dmat,width)
+setinitial.ds(ddfobj,width,initial,point)
+       sethazard(ddfobj,dmat,width)
 }
 \arguments{
   \item{ddfobj}{distance detection function object}

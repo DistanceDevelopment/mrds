@@ -2,9 +2,8 @@
 \alias{predict.trial.fi}
 \title{Predictions from distance sampling trial.fi models}
 \usage{
-  \method{predict}{trial.fi} (object, newdata = NULL,
-    compute = FALSE, int.range = NULL, integrate = FALSE,
-    ...)
+\method{predict}{trial.fi}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, integrate = FALSE, ...)
 }
 \arguments{
   \item{object}{\code{ddf} model object}

@@ -2,9 +2,8 @@
 \alias{predict.rem.fi}
 \title{Predictions from distance sampling rem.fi models}
 \usage{
-  \method{predict}{rem.fi} (object, newdata = NULL,
-    compute = FALSE, int.range = NULL, integrate = FALSE,
-    ...)
+\method{predict}{rem.fi}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, integrate = FALSE, ...)
 }
 \arguments{
   \item{object}{\code{ddf} model object}

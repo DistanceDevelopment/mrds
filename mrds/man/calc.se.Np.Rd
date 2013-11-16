@@ -1,0 +1,23 @@
+\name{calc.se.Np}
+\alias{calc.se.Np}
+\title{Find se of average p and N}
+\usage{
+calc.se.Np(model, avgp, n, average.p)
+}
+\arguments{
+  \item{model}{a \code{ddf} model object}
+
+  \item{avgp}{average p function}
+
+  \item{n}{sample size}
+
+  \item{average.p}{the average probability of detection for
+  the model}
+}
+\description{
+  Find se of average p and N
+}
+\author{
+  David L. Miller
+}
+

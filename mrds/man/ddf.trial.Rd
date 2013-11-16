@@ -2,8 +2,8 @@
 \alias{ddf.trial}
 \title{Mark-Recapture Distance Sampling (MRDS) Trial Configuration - PI}
 \usage{
-  ddf.trial(dsmodel, mrmodel, data, meta.data = list(),
-    control = list(), call = "")
+ddf.trial(dsmodel, mrmodel, data, meta.data = list(), control = list(),
+  call = "")
 }
 \arguments{
   \item{dsmodel}{distance sampling model specification;

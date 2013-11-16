@@ -2,7 +2,7 @@
 \alias{survey.region.dht}
 \title{Extrapolate Horvitz-Thompson abundance estimates to entire surveyed region}
 \usage{
-  survey.region.dht(Nhat.by.sample, samples, width, point)
+survey.region.dht(Nhat.by.sample, samples, width, point)
 }
 \arguments{
   \item{Nhat.by.sample}{dataframe of abundance by sample}

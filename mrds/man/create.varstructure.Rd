@@ -2,7 +2,7 @@
 \alias{create.varstructure}
 \title{Creates structures needed to compute abundance and variance}
 \usage{
-  create.varstructure(model, region, sample, obs)
+create.varstructure(model, region, sample, obs)
 }
 \arguments{
   \item{model}{fitted ddf object}

@@ -2,8 +2,7 @@
 \alias{create.model.frame}
 \title{Create a model frame for ddf fitting}
 \usage{
-  create.model.frame(xmat, scale.formula, meta.data,
-    shape.formula = NULL)
+create.model.frame(xmat, scale.formula, meta.data, shape.formula = NULL)
 }
 \arguments{
   \item{xmat}{dataframe for ddf}

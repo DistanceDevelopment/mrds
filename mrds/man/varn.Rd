@@ -3,9 +3,9 @@
 \alias{varn}
 \title{Computes empirical variance of encounter rate}
 \usage{
-  varn(lvec,nvec,type)
+varn(lvec,nvec,type)
 
-  covn(lvec, groups1, groups2, type)
+         covn(lvec, groups1, groups2, type)
 }
 \arguments{
   \item{lvec}{vector of sample measurements (e.g., line
