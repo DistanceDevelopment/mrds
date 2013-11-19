@@ -1,12 +1,11 @@
 #' Computes abundance estimates at specified parameter values using
 #' Horvitz-Thompson-like estimator
-#' 
+#'
 #' Computes abundance at specified values of parameters for numerical
 #' computation of first derivative with respect to parameters in detection
 #' function.  An internal function called by DeltaMethod which is invoked by
 #' dht.se
-#' 
-#' 
+#'
 #' @param par detection function parameter values
 #' @param model ddf model object
 #' @param obs observations table
@@ -18,77 +17,53 @@
 #' @author Jeff Laake
 #' @seealso \code{\link{dht}}, \code{\link{dht.se}}, \code{\link{DeltaMethod}}
 #' @keywords utility
-dht.deriv <-
-function(par,model,obs,samples,options=list())
-#
-# dht.deriv - used in call to DeltaMethod from dht.se to compute
-#             values of abundance estimates as parameters are modified to
-#             get first derivatives
-#
-# Arguments:
-#
-# par     - detection function parameter values
-# model   - ddf model object
-# obs     - observations
-# samples - samples
-# options - list of options as specified in dht
-#
-# Value:
-#
-# Vector of abundance estimates at values of parameters specified in par
-#
-# Functions Used:  predict, covered.region.dht, survey.region.dht
-#
-{
-#
-#  Depending on model method store new parameter values
-#  change 1/1/05 jll: used coefficients instead of coef; needed for trial.fi and io.fi 
-#
-   model$par=par
-   if(model$method!="ds")
-     if(model$method=="io" | model$method=="trial")
-     {
-         model$mr$mr$coefficients=model$par[1:length(model$mr$mr$coefficients)]
-         model$ds$par=model$par[(length(model$mr$mr$coefficients)+1):length(par)]
-     } else
-         model$mr$coefficients=model$par
-#
-#   Get new predicted detection probabilities and put with observations
-#   1/1/05 jll; change made to fi methods. need integrate=FALSE
-#   1/24/06 jll; must have been on glue when I made the 1/1/05 change; clearly
-#   not what I wanted.  You would only not integrate if you didn't want to assume
-#   1/w; otherwise, always want to integrate to get average detection probability
-#    if(model$method=="ds" | model$method=="io" | model$method=="trial")
-     pdot=predict(model,integrate=TRUE,compute=TRUE)
-#    else
-#       pdot=predict(model,integrate=FALSE,compute=TRUE)
-    if(!is.null(pdot$fitted))
-        pdot=pdot$fitted
-#*** begin Changes by LJT 19_8_04
-#   probably should stop here if pdot$fitted is null?
-#   anyway...
-#   the code below would not work if there is a pdot column there already, so remove
-    obs$pdot<-NULL
-#   the following statement does not work when obs contains only a subset of the 
-#    objects in model
-#    obs$pdot=pdot
-#   so, replaced it with
-    obs=merge(obs,data.frame(object=as.numeric(names(model$fitted)),pdot=pdot))
-#*** end Changes by LJT 19_8_04
-#
-#   Compute covered region abundances by sample depending on value of group
-#
-    Nhat.by.sample=covered.region.dht(obs,samples,options$group)
-#
-#   Scale up abundances to survey region 
-#
-    Nhat.by.sample=survey.region.dht(Nhat.by.sample, samples, model$meta.data$width*options$convert.units,model$meta.data$point)
-    Nhat.by.region=by(Nhat.by.sample$Nhat,Nhat.by.sample$Region.Label,sum)
-#
-#   Return vector of predicted abundances
-#
-if(length(Nhat.by.region)>1)
+dht.deriv <- function(par,model,obs,samples,options=list()){
+  # Functions Used:  predict, covered.region.dht, survey.region.dht
+
+  #  Depending on model method store new parameter values
+  #  uses coefficients instead of coef; needed for trial.fi and io.fi 
+  model$par=par
+  if(model$method!="ds"){
+    if(model$method=="io" | model$method=="trial"){
+      model$mr$mr$coefficients <- model$par[1:length(model$mr$mr$coefficients)]
+      model$ds$par <-model$par[(length(model$mr$mr$coefficients)+1):length(par)]
+    }else{
+      model$mr$coefficients <- model$par
+    }
+  }
+
+  # Get new predicted detection probabilities and put with observations
+  # 1/1/05 jll; change made to fi methods. need integrate=FALSE
+  # 1/24/06 jll; must have been on glue when I made the 1/1/05 change; clearly
+  # not what I wanted.  You would only not integrate if you didn't want to
+  # assume 1/w; otherwise, always want to integrate to get average detection
+  # probability
+  pdot <- predict(model,integrate=TRUE,compute=TRUE)
+
+  if(!is.null(pdot$fitted)){
+    pdot <- pdot$fitted
+  }
+
+  # probably should stop here if pdot$fitted is null? anyway...
+  # code below would not work if there is a pdot column there already, so remove
+  obs$pdot <- NULL
+
+  obs <- merge(obs,data.frame(object=as.numeric(names(model$fitted)),pdot=pdot))
+
+  # Compute covered region abundances by sample depending on value of group
+  Nhat.by.sample <- covered.region.dht(obs,samples,options$group)
+
+  # Scale up abundances to survey region
+  Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,
+                                   model$meta.data$width*options$convert.units,
+                                   model$meta.data$point)
+  Nhat.by.region <- by(Nhat.by.sample$Nhat,Nhat.by.sample$Region.Label,sum)
+
+  # Return vector of predicted abundances
+
+  if(length(Nhat.by.region)>1){
     return(c(as.vector(Nhat.by.region),sum(as.vector(Nhat.by.region))))
-else
+  }else{
     return(as.vector(Nhat.by.region))
+  }
 }
