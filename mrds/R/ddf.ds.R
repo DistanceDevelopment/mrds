@@ -63,30 +63,24 @@
 #'           se=TRUE))
 #' print(ddf.gof(result))
 #' }
-#'
-ddf.ds <-function(model, data, meta.data=list(), control=list(),
-                  call,method="ds"){
-# Functions Used:
-#        assign.default.values, process.data, create.ddfobj, setbounds,
-#        detfct.fit, flt.var, predict(predict.ds), NCovered(NCovered.ds)
-#
-#   Code structure for optimization:
-#
-#    ddf.ds --> detfct.fit --> detfct.fit.opt --> optimx or solnp --> flnl
-#
-#      flnl--> flpt.lnl --> distpdf ---> detfct
-#                           tablecgf --> gstdint --> integratepdf ---> distpdf
-#                           integratedpdf --> distpdf
-#
-# Detection function and options are described in ddfobj which is created
-# by create.ddfobj. That function creates list structure and sets up initial
-# values.
+ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
+                  method="ds"){
+  #   Code structure for optimization with optim
+  #
+  # ddf.ds --> detfct.fit --> detfct.fit.opt --> optimx or solnp --> flnl
+  #
+  # flnl--> flpt.lnl --> distpdf ---> detfct
+  #                      tablecgf --> gstdint --> integratepdf ---> distpdf
+  #                      integratedpdf --> distpdf
+  #
+  # Detection function and options are described in ddfobj which is
+  # created by create.ddfobj. That function creates list structure and
+  # sets up initial values.
 
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
                                      int.range=NA, mono=FALSE, mono.strict=TRUE,
                                      point=FALSE)
-
   # Set up control values
   control <- assign.default.values(control, showit=0, doeachint=FALSE,
                                    estimate=TRUE, refit=TRUE, nrefits=25,
@@ -147,7 +141,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),
   }
 
   # Setup detection model
-  ddfobj <- create.ddfobj(model,xmat,meta.data,control$initial) 
+  ddfobj <- create.ddfobj(model,xmat,meta.data,control$initial)
+
   # set doeachint=TRUE if a shape formula is used
   if(!is.null(ddfobj$shape) && ncol(ddfobj$shape$dm)>1){
     control$doeachint <- TRUE
@@ -183,6 +178,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),
                      mono.delta=control$mono.delta,
                      debug=control$debug,nofit=control$nofit
                     )
+
   # debug - print the initial values
   if(misc.options$showit>1 && !is.null(initialvalues)){
     cat("initialvalues=",initialvalues,"\n")
@@ -194,15 +190,16 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),
                         optimx.method=control$optimx.method)
 
   # Actually do the optimisation if not just a uniform key!
-  if(is.null(initialvalues))misc.options$nofit <- TRUE
+  if(is.null(initialvalues)) misc.options$nofit <- TRUE
+
   lt <- detfct.fit(ddfobj,optim.options,bounds,misc.options)
 
   # add call and others to return values
   stored_data <- data[row.names(data)%in%row.names(xmat),]
   stored_data$detected <- 1
   result <- list(call=call, data=stored_data, model=substitute(model),
-                 meta.data=meta.data,control=control, method=method,
-                 ds=lt,par=lt$par,lnl=-lt$value)
+                 meta.data=meta.data, control=control, method=method,
+                 ds=lt, par=lt$par, lnl=-lt$value)
 
   # if there was no convergence, return the fitting object incase it's useful
   # it won't be of the correct class or have the correct elements
@@ -218,10 +215,10 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),
      lt$hessian <- NULL
   }else{
     result$hessian <- try(flt.var(result$ds$aux$ddfobj, misc.options))
-    # use formula in Buckland et al or it doesn't match DISTANCE
-    #unless the result is singular
+    # Uses formula in Buckland et al or it doesn't match DISTANCE output
+    # unless the result is singular
     if(class(result$hessian)=="try-error"){
-      # the hessian returned from solnp() is not what we want, warn about 
+      # the hessian returned from solnp() is not what we want, warn about
       # that and don't return it
       if(misc.options$mono){
         cat("First partial hessian calculation failed with monotonicity enforced, no hessian\n")
@@ -249,7 +246,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(),
   result$criterion <- 2*lt$value + 2*npar
 
   class(result) <- c("ds","ddf")
-  
+
   if(is.null(lt$message)){
     result$ds$message <- ""
   }

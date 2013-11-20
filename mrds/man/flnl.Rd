@@ -64,7 +64,7 @@ flnl(fpar, ddfobj, misc.options, fitting = "all")
   are documented here for completeness.
 }
 \author{
-  Jeff Laake
+  Jeff Laake, David L Miller
 }
 \seealso{
   \code{\link{flt.var}}, \code{\link{detfct}}

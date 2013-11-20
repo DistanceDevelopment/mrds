@@ -70,7 +70,6 @@ test_that("less easy mixture -- mode away from zero",{
 ##!##   result.w<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
 ##!##                 data=dat, method = "ds", 
 ##!##                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
-
 })
 
 #test_that("less easy mixture -- spike",{

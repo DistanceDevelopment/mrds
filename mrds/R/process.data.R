@@ -67,9 +67,9 @@ process.data <- function(data,meta.data=list(),check=TRUE){
   # Check to make sure the record structure is ok. Number of primary
   # records = number of secondary
   if(check){
-    if(length(data$detected[data$observer==1]) != 
+    if(length(data$detected[data$observer==1]) !=
         length(data$detected[data$observer==2])){
-      stop ("number of records for primary observer not equal to number for secondary observer")
+      stop("number of records for primary observer not equal to number for secondary observer")
     }
   }
 
@@ -183,7 +183,7 @@ process.data <- function(data,meta.data=list(),check=TRUE){
   }
 
   # Clean up factor levels
-  b<- dim(xmat)[2]
+  b <- dim(xmat)[2]
   for(i in 1:b){
     if(is.factor(xmat[,i])){
       xmat[,i] <- factor (xmat[,i])

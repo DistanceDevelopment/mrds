@@ -50,146 +50,146 @@
   {
   ntot <- sum(nvec)
   L <- sum(lvec)
-	k <- length(lvec)
-	########################################################################
-	########################################################################
-	## Go through the estimators one by one.
-	## R2, R3, R4, S1, S2, O1, O2, O3
-	########################################################################
+  k <- length(lvec)
+  ########################################################################
+  ########################################################################
+  ## Go through the estimators one by one.
+  ## R2, R3, R4, S1, S2, O1, O2, O3
+  ########################################################################
 
   if (!(type %in% c("R2","R3","R4","S1","S2","O1","O2","O3")))
     stop (paste("Encounter rate variance type '",type,"' is not recognized.",sep=""))
 
-	########################################################################
-	## First the estimators based on the assumption of a random sample
-	## of lines: R2, R3, R4:
-	########################################################################
-	## Estimator R2: var.R2, sd.R2
-	##############################
-	if(type=="R2")
-	{
-	   var.R2 <- (k * sum(lvec^2 * (nvec/lvec - ntot/L)^2))/(L^2 * (k -1))
-	   return(var.R2)
+  ########################################################################
+  ## First the estimators based on the assumption of a random sample
+  ## of lines: R2, R3, R4:
+  ########################################################################
+  ## Estimator R2: var.R2, sd.R2
+  ##############################
+  if(type=="R2")
+  {
+     var.R2 <- (k * sum(lvec^2 * (nvec/lvec - ntot/L)^2))/(L^2 * (k -1))
+     return(var.R2)
   }
-	########################################################################
-	## Estimator R3: var.R3, sd.R3
-	##############################
-	if(type=="R3")
-	{
-   	var.R3 <- 1/(L * (k - 1)) * sum(lvec * (nvec/lvec - ntot/L)^2)
- 	  return(var.R3)
+  ########################################################################
+  ## Estimator R3: var.R3, sd.R3
+  ##############################
+  if(type=="R3")
+  {
+    var.R3 <- 1/(L * (k - 1)) * sum(lvec * (nvec/lvec - ntot/L)^2)
+    return(var.R3)
   }
-	########################################################################
-	## Estimator R4: var.R4, sd.R4
-	##############################
-	## Using approximation to Negbin variance (the apparent contagion model)
-	## using phi = 2 + eps
-	if(type=="R4")
-	{
-	  if(all(lvec==mean(lvec)))
-	     phi = (2-2/k)/(1-2/k)
+  ########################################################################
+  ## Estimator R4: var.R4, sd.R4
+  ##############################
+  ## Using approximation to Negbin variance (the apparent contagion model)
+  ## using phi = 2 + eps
+  if(type=="R4")
+  {
+    if(all(lvec==mean(lvec)))
+       phi = (2-2/k)/(1-2/k)
     else
     {
-   	   S <- sum(lvec^2)
-	     C <- sum(lvec^3)
-	     logvec <- log(lvec)
-	     D1 <- sum(lvec * logvec)
-	     D2 <- sum(lvec^2 * logvec)
-	     D3 <- sum(lvec^3 * logvec)
-	     eps.top <- 2 * (S^2 - L * C)
-	     eps.bottom <- L * S * D1 - 2 * S * D2 + 2 * L * D3 - L^2 * D2
-	     eps <- eps.top/eps.bottom
-	     phi <- 2 + eps
+       S <- sum(lvec^2)
+       C <- sum(lvec^3)
+       logvec <- log(lvec)
+       D1 <- sum(lvec * logvec)
+       D2 <- sum(lvec^2 * logvec)
+       D3 <- sum(lvec^3 * logvec)
+       eps.top <- 2 * (S^2 - L * C)
+       eps.bottom <- L * S * D1 - 2 * S * D2 + 2 * L * D3 - L^2 * D2
+       eps <- eps.top/eps.bottom
+       phi <- 2 + eps
     }
-	  alpha <- 1/sum(lvec^phi * (L/lvec - 1))
-	  var.R4 <- alpha * sum(lvec^phi * (nvec/lvec - ntot/L)^2)
-	  return(var.R4)
+    alpha <- 1/sum(lvec^phi * (L/lvec - 1))
+    var.R4 <- alpha * sum(lvec^phi * (nvec/lvec - ntot/L)^2)
+    return(var.R4)
   }
-	###################################################################
-	## Now the stratified estimators with non-overlapping strata:
-	## S1 and S2:
-	##
-	## First group the lines into strata, so that all strata have
-	## two lines but if the last stratum has three if necessary:
-	##
-	H <- floor(k/2)
-	k.h <- rep(2, H)
-	if(k %% 2 > 0)
-		k.h[H] <- 3
-	end.strat <- cumsum(k.h)
-	begin.strat <- cumsum(k.h) - k.h + 1
-	########################################################################
-	## Estimators S1 and S2: var.S1, sd.S1 ; var.S2, sd.S2
-	########################################################################
-	##
+  ###################################################################
+  ## Now the stratified estimators with non-overlapping strata:
+  ## S1 and S2:
+  ##
+  ## First group the lines into strata, so that all strata have
+  ## two lines but if the last stratum has three if necessary:
+  ##
+  H <- floor(k/2)
+  k.h <- rep(2, H)
+  if(k %% 2 > 0)
+    k.h[H] <- 3
+  end.strat <- cumsum(k.h)
+  begin.strat <- cumsum(k.h) - k.h + 1
+  ########################################################################
+  ## Estimators S1 and S2: var.S1, sd.S1 ; var.S2, sd.S2
+  ########################################################################
+  ##
   if(type=="S1" | type=="S2")
   {
-	  sum.S1 <- 0
-	  sum.S2 <- 0
-	  for(h in 1:H) {
-		  nvec.strat <- nvec[begin.strat[h]:end.strat[h]]
-		  lvec.strat <- lvec[begin.strat[h]:end.strat[h]]
-		  nbar.strat <- mean(nvec.strat)
-		  lbar.strat <- mean(lvec.strat)
-		  ##########################
-		  ## S1 calculations:
-		  inner.strat.S1 <- sum((nvec.strat - nbar.strat - (ntot/L) *
-			  (lvec.strat - lbar.strat))^2)
-		  sum.S1 <- sum.S1 + k.h[h]/(k.h[h] - 1) * inner.strat.S1
-		  ##########################
-		  ## S2 calculations: note that we use estimator R2 within
-		  ## each stratum:
-	  	L.strat <- sum(lvec.strat)
-		  var.strat.S2 <- k.h[h]/(L.strat^2 * (k.h[h] - 1)) * sum(
-			  lvec.strat^2 * (nvec.strat/lvec.strat - nbar.strat/lbar.strat)^2)
-  		sum.S2 <- sum.S2 + L.strat^2 * var.strat.S2
-	  }
-  	if(type=="S1")
+    sum.S1 <- 0
+    sum.S2 <- 0
+    for(h in 1:H) {
+      nvec.strat <- nvec[begin.strat[h]:end.strat[h]]
+      lvec.strat <- lvec[begin.strat[h]:end.strat[h]]
+      nbar.strat <- mean(nvec.strat)
+      lbar.strat <- mean(lvec.strat)
+      ##########################
+      ## S1 calculations:
+      inner.strat.S1 <- sum((nvec.strat - nbar.strat - (ntot/L) *
+        (lvec.strat - lbar.strat))^2)
+      sum.S1 <- sum.S1 + k.h[h]/(k.h[h] - 1) * inner.strat.S1
+      ##########################
+      ## S2 calculations: note that we use estimator R2 within
+      ## each stratum:
+      L.strat <- sum(lvec.strat)
+      var.strat.S2 <- k.h[h]/(L.strat^2 * (k.h[h] - 1)) * sum(
+        lvec.strat^2 * (nvec.strat/lvec.strat - nbar.strat/lbar.strat)^2)
+      sum.S2 <- sum.S2 + L.strat^2 * var.strat.S2
+    }
+    if(type=="S1")
     {
- 	    var.S1 <- sum.S1/L^2
+      var.S1 <- sum.S1/L^2
       return(var.S1)
     }
     else
     {
-	    var.S2 <- sum.S2/L^2
+      var.S2 <- sum.S2/L^2
       return(var.S2)
     }
   }
-	###################################################################
-	## Now the stratified estimators with overlapping strata:
-	## O1, O2, O3:
-	##
-	lvec.1 <- lvec[ - k]
-	lvec.2 <- lvec[-1]
-	nvec.1 <- nvec[ - k]
-	nvec.2 <- nvec[-1]
-	ervec.1 <- nvec.1/lvec.1
-	ervec.2 <- nvec.2/lvec.2
-	########################################################################
-	## Estimator O1: var.O1, sd.O1
-	##############################
+  ###################################################################
+  ## Now the stratified estimators with overlapping strata:
+  ## O1, O2, O3:
+  ##
+  lvec.1 <- lvec[ - k]
+  lvec.2 <- lvec[-1]
+  nvec.1 <- nvec[ - k]
+  nvec.2 <- nvec[-1]
+  ervec.1 <- nvec.1/lvec.1
+  ervec.2 <- nvec.2/lvec.2
+  ########################################################################
+  ## Estimator O1: var.O1, sd.O1
+  ##############################
   if(type=="O1")
   {
      overlap.varterm <- (nvec.1 - nvec.2 - ntot/L * (lvec.1 - lvec.2))^2
-	   var.O1 <- k/(2 * L^2 * (k - 1)) * sum(overlap.varterm)
-	   return(var.O1)
+     var.O1 <- k/(2 * L^2 * (k - 1)) * sum(overlap.varterm)
+     return(var.O1)
   }
-	########################################################################
-	## Estimator O2: var.O2, sd.O2
-	##############################
+  ########################################################################
+  ## Estimator O2: var.O2, sd.O2
+  ##############################
   if(type=="O2")
   {
-  	V.overlap.R2 <- ((lvec.1 * lvec.2)/(lvec.1 + lvec.2))^2 * (ervec.1-ervec.2)^2
-	  var.O2 <- (2 * k)/(L^2 * (k - 1)) * sum(V.overlap.R2)
+    V.overlap.R2 <- ((lvec.1 * lvec.2)/(lvec.1 + lvec.2))^2 * (ervec.1-ervec.2)^2
+    var.O2 <- (2 * k)/(L^2 * (k - 1)) * sum(V.overlap.R2)
     return(var.O2)
   }
-	########################################################################
-	## Estimator O3: var.O3, sd.O3
-	##############################
+  ########################################################################
+  ## Estimator O3: var.O3, sd.O3
+  ##############################
   if(type=="O3")
   {
-  	V.overlap.R3 <- ((lvec.1 * lvec.2)/(lvec.1 + lvec.2)) * (ervec.1 -ervec.2)^2
-	  var.O3 <- 1/(L * (k - 1)) * sum(V.overlap.R3)
+    V.overlap.R3 <- ((lvec.1 * lvec.2)/(lvec.1 + lvec.2)) * (ervec.1 -ervec.2)^2
+    var.O3 <- 1/(L * (k - 1)) * sum(V.overlap.R3)
     return(var.O3)
   }
 }
@@ -208,7 +208,7 @@ function (lvec, groups1, groups2, type)
     er2 <- n2/L
 ### JLL 28-Sept-09
     k=length(lvec)
-	  if(type=="R3")
+    if(type=="R3")
       varer <- sum(lvec * (groups1/lvec - er1)*(groups2/lvec-er2))/(L*(k-1))
     else
       varer <- k*sum(lvec^2 * (groups1/lvec - er1)*(groups2/lvec-er2))/(L^2*(k-1))
