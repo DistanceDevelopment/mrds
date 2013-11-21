@@ -14,12 +14,12 @@ errors(errmsg = NULL, errmode = "report", preamble = "Warning")
   message}
 }
 \value{
-  None
+None
 }
 \description{
-  Writes error messages for various errors that can occur
+Writes error messages for various errors that can occur
 }
 \author{
-  Dave Miller
+Dave Miller
 }
 

@@ -14,14 +14,14 @@
   \item{Obs7}{0/1 whether missed/seen by observer 7}
   \item{Obs8}{0/1 whether missed/seen by observer 8} }}
 \source{
-  Laake, J. 1978. Line transect estimators robust to animal
-  movement.  M.S. Thesis. Utah State University, Logan,
-  Utah. 55p.
+Laake, J. 1978. Line transect estimators robust to animal
+movement.  M.S. Thesis. Utah State University, Logan, Utah.
+55p.
 }
 \description{
-  Multiple surveys by different observers of a single 1km
-  transect containing 150 wooden stakes placed randomly
-  throughout a 40 m strip (20m on either side).
+Multiple surveys by different observers of a single 1km
+transect containing 150 wooden stakes placed randomly
+throughout a 40 m strip (20m on either side).
 }
 \examples{
 \donttest{
@@ -83,9 +83,9 @@ ddf.gof(io.model)
 }
 }
 \references{
-  Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.
-  Estimation of Density from Line Transect Sampling of
-  Biological Populations. Wildlife Monographs:7-202.
+Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.
+Estimation of Density from Line Transect Sampling of
+Biological Populations. Wildlife Monographs:7-202.
 }
 \keyword{datasets}
 

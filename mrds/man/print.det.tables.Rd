@@ -11,16 +11,16 @@
   print}
 }
 \value{
-  None
+None
 }
 \description{
-  Provides formatted output for detection tables
+Provides formatted output for detection tables
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  \code{\link{plot.det.tables}}
+\code{\link{plot.det.tables}}
 }
 \keyword{utility}
 

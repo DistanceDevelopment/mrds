@@ -66,33 +66,32 @@ sampling model}
   \code{\link{points}}, etc).}
 }
 \value{
-  Just plots.
+Just plots.
 }
 \description{
-  Plots the fitted detection functions for a distance
-  sampling model and histograms of the distances (for
-  unconditional detection functions) or proportion of
-  observations detected within distance intervals (for
-  conditional detection functions) to compare visually the
-  fitted model and data.
+Plots the fitted detection functions for a distance
+sampling model and histograms of the distances (for
+unconditional detection functions) or proportion of
+observations detected within distance intervals (for
+conditional detection functions) to compare visually the
+fitted model and data.
 }
 \details{
-  The structure of the histogram can be controlled by the
-  user-defined arguments \code{nc} or \code{breaks}.  The
-  observation specific detection probabilities along with
-  the line representing the fitted average detection
-  probability.
+The structure of the histogram can be controlled by the
+user-defined arguments \code{nc} or \code{breaks}.  The
+observation specific detection probabilities along with the
+line representing the fitted average detection probability.
 
-  It is not intended for the user to call any of
-  \code{plot.ds}, \code{plot.trial.fi},
-  \code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
-  \code{plot.io.fi} or \code{plot.io} but the arguments are
-  documented here. Instead the generic \code{plot} command
-  should be used and it will call the appropriate function
-  based on the type of \code{ddf} object.
+It is not intended for the user to call any of
+\code{plot.ds}, \code{plot.trial.fi},
+\code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
+\code{plot.io.fi} or \code{plot.io} but the arguments are
+documented here. Instead the generic \code{plot} command
+should be used and it will call the appropriate function
+based on the type of \code{ddf} object.
 
-  The \code{which} command allows the user to select which
-  plots are returned. See which argument definition.
+The \code{which} command allows the user to select which
+plots are returned. See which argument definition.
 }
 \examples{
 \donttest{
@@ -110,7 +109,7 @@ plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
 }
 }
 \author{
-  Jeff Laake, Jon Bishop, David Borchers
+Jeff Laake, Jon Bishop, David Borchers
 }
 \keyword{plot}
 

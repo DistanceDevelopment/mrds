@@ -11,18 +11,18 @@
   print}
 }
 \value{
-  None
+None
 }
 \description{
-  Provides formatted output for results of goodness of fit
-  tests: chi-square, Kolmogorv-Smirnov and Cramer-von Mises
-  test as approrpriate.
+Provides formatted output for results of goodness of fit
+tests: chi-square, Kolmogorv-Smirnov and Cramer-von Mises
+test as approrpriate.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  \code{\link{ddf.gof}}
+\code{\link{ddf.gof}}
 }
 \keyword{utility}
 

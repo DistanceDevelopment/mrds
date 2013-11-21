@@ -15,28 +15,28 @@ flt.var(ddfobj, misc.options)
   rather than analytically}
 }
 \value{
-  variance-covariance matrix of parameters in the detection
-  function
+variance-covariance matrix of parameters in the detection
+function
 }
 \description{
-  Computes hessian to be used for variance-covariance
-  matrix.  The hessian is the outer product of the vector
-  of first partials (see pg 62 of Buckland et al 2002).
+Computes hessian to be used for variance-covariance matrix.
+The hessian is the outer product of the vector of first
+partials (see pg 62 of Buckland et al 2002).
 }
 \note{
-  This is an internal function used by \code{\link{ddf.ds}}
-  to fit distance sampling detection functions.  It is not
-  intended for the user to invoke this function but it is
-  documented here for completeness.
+This is an internal function used by \code{\link{ddf.ds}}
+to fit distance sampling detection functions.  It is not
+intended for the user to invoke this function but it is
+documented here for completeness.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \references{
-  Buckland et al. 2002
+Buckland et al. 2002
 }
 \seealso{
-  \code{\link{flnl}},\code{\link{flpt.lnl}},\code{\link{ddf.ds}}
+\code{\link{flnl}},\code{\link{flpt.lnl}},\code{\link{ddf.ds}}
 }
 \keyword{utility}
 

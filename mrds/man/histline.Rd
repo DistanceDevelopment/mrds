@@ -31,15 +31,15 @@ histline(height, breaks, lineonly = FALSE, outline = FALSE, fill = FALSE,
   (fill==TRUE}
 }
 \value{
-  None
+None
 }
 \description{
-  Takes bar heights (height) and cutpoints (breaks), and
-  constructs a line-only histogram from them using the
-  function plot() (if lineonly==FALSE) or lines() (if
-  lineonly==TRUE).
+Takes bar heights (height) and cutpoints (breaks), and
+constructs a line-only histogram from them using the
+function plot() (if lineonly==FALSE) or lines() (if
+lineonly==TRUE).
 }
 \author{
-  ???
+???
 }
 

@@ -11,20 +11,20 @@
   consistency}
 }
 \value{
-  NULL
+NULL
 }
 \description{
-  Provides a brief summary of data and fitted detection
-  probability model parameters, model selection criterion,
-  and optionally abundance in the covered (sampled) region
-  and its standard error. What is printed depends on the
-  corresponding call to summary.
+Provides a brief summary of data and fitted detection
+probability model parameters, model selection criterion,
+and optionally abundance in the covered (sampled) region
+and its standard error. What is printed depends on the
+corresponding call to summary.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  \code{\link{summary.trial.fi}}
+\code{\link{summary.trial.fi}}
 }
 \keyword{utility}
 

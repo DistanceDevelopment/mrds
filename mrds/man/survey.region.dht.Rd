@@ -14,19 +14,19 @@ survey.region.dht(Nhat.by.sample, samples, width, point)
   \item{point}{if TRUE point count otherwise line transect}
 }
 \value{
-  Revised Nhat.by.sample dataframe containing estimates
-  extrapolated to survey region
+Revised Nhat.by.sample dataframe containing estimates
+extrapolated to survey region
 }
 \description{
-  Extrapolate Horvitz-Thompson abundance estimates to
-  entire surveyed region
+Extrapolate Horvitz-Thompson abundance estimates to entire
+surveyed region
 }
 \note{
-  Internal function called by \code{\link{dht}} and related
-  functions.
+Internal function called by \code{\link{dht}} and related
+functions.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{utility}
 

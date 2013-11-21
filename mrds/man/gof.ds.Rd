@@ -12,12 +12,12 @@ gof.ds(model, breaks = NULL, nc = NULL)
   \item{nc}{number of distance classes}
 }
 \value{
-  list with chi-square value, df and p-value
+list with chi-square value, df and p-value
 }
 \description{
-  Compute chi-square goodness-of-fit test for ds models
+Compute chi-square goodness-of-fit test for ds models
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 

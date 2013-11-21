@@ -25,20 +25,20 @@ ddf.gof(model, breaks = NULL, nc = NULL, qq = TRUE, ...)
   function}
 }
 \value{
-  List of class 'ddf.gof' containing \item{chi-square
-  }{Goodness of fit test statistic} \item{df }{Degrees of
-  freedom associated with test statistic} \item{p-value
-  }{Significance level of test statistic}
+List of class 'ddf.gof' containing \item{chi-square
+}{Goodness of fit test statistic} \item{df }{Degrees of
+freedom associated with test statistic} \item{p-value
+}{Significance level of test statistic}
 }
 \description{
-  Generic function that computes chi-square goodness of fit
-  test for ddf models
+Generic function that computes chi-square goodness of fit
+test for ddf models
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  \code{\link{qqplot.ddf}}
+\code{\link{qqplot.ddf}}
 }
 \keyword{utility}
 

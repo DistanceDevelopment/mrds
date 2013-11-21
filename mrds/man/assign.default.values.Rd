@@ -11,15 +11,15 @@ assign.default.values(x, ...)
   that are used to assign values}
 }
 \value{
-  x - list with filled values
+x - list with filled values
 }
 \description{
-  Assigns default values for \code{argument} in list
-  \code{x} from \code{argument=value} pairs in \dots{} if
-  \code{x$argument} doesn't already exist
+Assigns default values for \code{argument} in list \code{x}
+from \code{argument=value} pairs in \dots{} if
+\code{x$argument} doesn't already exist
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{~utility}
 

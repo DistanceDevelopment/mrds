@@ -18,12 +18,12 @@
   [1:162] 1 2 3 21 22 23 24 59 60 61 ...  ..$ Region.Label: int [1:162] 1 1
   1 1 1 1 1 1 1 1 ...  ..$ Sample.Label: int [1:162] 1 1 1 1 1 1 1 1 1 1 ...}
 \description{
-  Double platform data collected in a line transect survey
-  of golf tees by 2 observers at St. Andrews. Field sex was
-  actually colour of the golf tee: 0 - green; 1 - yellow.
-  Exposure was either low (0) or high(1) depending on
-  height of tee above the ground. size was the number of
-  tees in an observed cluster.
+Double platform data collected in a line transect survey of
+golf tees by 2 observers at St. Andrews. Field sex was
+actually colour of the golf tee: 0 - green; 1 - yellow.
+Exposure was either low (0) or high(1) depending on height
+of tee above the ground. size was the number of tees in an
+observed cluster.
 }
 \keyword{datasets}
 

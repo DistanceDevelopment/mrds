@@ -58,13 +58,13 @@ plot_uncond(model, obs, xmat, gxvalues, nc, finebr, breaks, showpoints,
   \code{lines}, \code{points}, etc)}
 }
 \value{
-  if \code{return.lines==TRUE} returns dataframe
-  \code{average.line} otherwise just plots
+if \code{return.lines==TRUE} returns dataframe
+\code{average.line} otherwise just plots
 }
 \description{
-  Plots unconditional detection function for observer=obs
-  observations overlays histrogram, average detection
-  function and values for individual observations data.
+Plots unconditional detection function for observer=obs
+observations overlays histrogram, average detection
+function and values for individual observations data.
 }
 \examples{
 \donttest{
@@ -81,7 +81,7 @@ plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
 }
 }
 \author{
-  Jeff Laake, Jon Bishop, David Borchers
+Jeff Laake, Jon Bishop, David Borchers
 }
 \keyword{plot}
 

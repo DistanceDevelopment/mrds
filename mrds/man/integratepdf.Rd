@@ -26,22 +26,22 @@ integratepdf(ddfobj, select, width, int.range, doeachint = FALSE,
   line transect(FALSE)}
 }
 \value{
-  vector of integral values - one for each observation
+vector of integral values - one for each observation
 }
 \description{
-  Computes integral of pdf of observed distances over x for
-  each observation.  The method of computation depends on
-  argument switches set and the type of detection function.
+Computes integral of pdf of observed distances over x for
+each observation.  The method of computation depends on
+argument switches set and the type of detection function.
 }
 \details{
-  If either doeachint is set or there is only one integral
-  then they are computed using integrate; otherwise, it
-  uses the cgftab which is a spline fitted to a table of
-  standardized integrals and the value is interpolated from
-  the spline for each observation.
+If either doeachint is set or there is only one integral
+then they are computed using integrate; otherwise, it uses
+the cgftab which is a spline fitted to a table of
+standardized integrals and the value is interpolated from
+the spline for each observation.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{utility}
 

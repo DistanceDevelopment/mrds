@@ -6,7 +6,7 @@
   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
   detected: numeric 0/1  $ object: sequential object number $Sample.Label: point label $ Region.Label: single region label}
 \description{
-  Single observer point count data example from Distance
+Single observer point count data example from Distance
 }
 \examples{
 \donttest{

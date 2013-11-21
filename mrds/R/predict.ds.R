@@ -1,32 +1,38 @@
-#' Predictions from distance sampling ds models
-#' 
-#' Predict detection probabilities (or esw) values from a fitted
-#' distance sampling model using either the original data or a new dataframe.
-#' 
+#' Predictions from \code{mrds} models
+#'
+#' Predict detection probabilities (or effective strip widths) values from a
+#' fitted distance sampling model using either the original data or a new
+#' dataframe.
+#'
 #' The first 4 arguments are the same in each predict function.  The latter 2
 #' are specific to certain functions. The effective strip half-width (esw) is
 #' the integral of the fitted detection function over the range of the sampled
 #' area (either 0 to W or the specified \code{int.range}).  The predicted
 #' detection probability is the average probability which is simply the
-#' integral divided by the distance range.  The fitted detection probabilities
-#' are stored in the \code{model} object and these are used unless
-#' \code{compute=TRUE} or \code{newdata} is specified. \code{compute=TRUE} is
-#' used to estimate numerical derivatives for use in delta method
-#' approximations to the variance.  For \code{method="io.fi" or ="trial.fi"} if
+#' integral divided by the distance range.
+#'
+#' Fitted detection probabilities are stored in the \code{model} object and
+#' these are used unless \code{compute=TRUE} or \code{newdata} is specified.
+#'
+#' \code{compute=TRUE} is used to estimate numerical derivatives for use in delta method approximations to the variance.
+#'
+#' For \code{method="io.fi"} or \code{method="trial.fi"} if
 #' \code{integrate=FALSE}, \code{predict} returns the value of the conditional
-#' detection probability and if \code{integrate=TRUE}, it returns the average
-#' conditional detection probability by integrating over x(distance) with
+#  detection probability and if \code{integrate=TRUE}, it returns the average
+#' conditional detection probability by integrating over x (distance) with
 #' respect to a uniform distribution.
-#' 
-#' @aliases predict.ds predict.ddf 
-#' @param object \code{ddf} model object
-#' @param newdata new dataframe for prediction
-#' @param compute if TRUE compute values and don't use the fitted values stored
-#'   in the model object
-#' @param int.range integration range for variable range analysis; either vector or matrix
-#' @param esw if TRUE, returns effective strip half-width (or effective
+#'
+#' @aliases predict.ds predict.ddf predict.io predict.io.fi predict.trial
+#'  predict.trial.fi predict.rem predict.rem.fi
+#' @param object \code{ddf} model object.
+#' @param newdata new \code{data.frame} for prediction.
+#' @param compute if \code{TRUE} compute values and don't use the fitted
+#'  values stored in the model object.
+#' @param int.range integration range for variable range analysis; either
+#'  vector or matrix.
+#' @param esw if \code{TRUE}, returns effective strip half-width (or effective
 #'   detection radius for points) integral 0-W p(y)dy; otherwise it returns
-#'   integral 0-W py)*pi(y) where pi(y)=1/W for lines and pi(y)=2r/W^2 for
+#'   integral 0-W p(y)*pi(y) where pi(y)=1/W for lines and pi(y)=2r/W^2 for
 #'   points.
 #' @param \dots unspecified and unused arguments for S3 consistency
 #' @export
@@ -35,12 +41,13 @@
 #'   element: \tabular{ll}{ \code{fitted} \tab vector of average detection
 #'   probabilities or esw values for each observation in the original data or
 #'   \code{newdata} \cr }
-#' 
+#'
 #' For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with
-#'   integrate=TRUE, he value is a list with the elements: \tabular{ll}{
-#'   \code{fitted} \tab vector of integrated (average) detection probabilities
-#'   for each observation in the original data or \code{newdata} \cr }
-#' 
+#'   \code{integrate=TRUE}, the value is a list with the elements:
+#'   \tabular{ll}{\code{fitted} \tab vector of integrated (average) detection
+#'    probabilities for each observation in the original data or
+#'    \code{newdata} \cr }
+#'
 #' For \code{predict.io.fi}, \code{predict.trial.fi}, or \code{predict.rem.fi}
 #'   with \code{integrate=FALSE}, the value is a list with the following
 #'   elements: \tabular{ll}{ \code{fitted} \tab p(y) values \cr \code{p1} \tab
@@ -59,11 +66,11 @@
 # Uses: integratedetfct, integratedetfct.logistic
 predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
                        esw=FALSE,...){
-	model <- object
-	ltmodel <- model$ds
-	x <- ltmodel$aux$ddfobj$xmat   
-	point <- ltmodel$aux$point
-	width <- ltmodel$aux$width
+  model <- object
+  ltmodel <- model$ds
+  x <- ltmodel$aux$ddfobj$xmat
+  point <- ltmodel$aux$point
+  width <- ltmodel$aux$width
 
   # If there are no fitted values present or compute is set TRUE or
   # a newdata frame has been used, then the predicted values must be computed.
@@ -73,22 +80,24 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
     # for variances, the model parameters are perturbed and may not be at
     # mle values after fitting.
     fpar <- model$par
-	  ddfobj <- ltmodel$aux$ddfobj
-	  ddfobj <- assign.par(ddfobj,fpar)
-	  doeachint <- ltmodel$aux$doeachint
+    ddfobj <- ltmodel$aux$ddfobj
+    ddfobj <- assign.par(ddfobj,fpar)
+    doeachint <- ltmodel$aux$doeachint
 
     # Get integration ranges either from specified argument or from
     # values stored in the model.
     if(is.null(int.range)){
-	  if(is.null(newdata))
-		  nr=nrow(ddfobj$xmat)
-	  else
-		  nr=nrow(newdata)
+      if(is.null(newdata)){
+        nr <- nrow(ddfobj$xmat)
+      }else{
+        nr <- nrow(newdata)
+      }
+
       if(is.null(ltmodel$aux$int.range)){
         int.range <- cbind(rep(0,nr),rep(width,nr))
       }else{
         int.range <- ltmodel$aux$int.range
-	      if(is.vector(int.range)){
+        if(is.vector(int.range)){
           int.range <- cbind(rep(int.range[1],nr),
                              rep(int.range[2],nr))
         }
@@ -97,25 +106,25 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
 
     # Extract other values from model object
     if(!is.null(newdata)){
-	    if(!is.null(ddfobj$scale)){
-		    zdim <- ncol(ddfobj$scale$dm)
-		    znames <- colnames(ddfobj$scale$dm)
-		    ddfobj$scale$dm <- setcov(newdata, as.formula(ddfobj$scale$formula))$cov
-		    if(zdim != ncol(ddfobj$scale$dm) | 
+      if(!is.null(ddfobj$scale)){
+        zdim <- ncol(ddfobj$scale$dm)
+        znames <- colnames(ddfobj$scale$dm)
+        ddfobj$scale$dm <- setcov(newdata, as.formula(ddfobj$scale$formula))$cov
+        if(zdim != ncol(ddfobj$scale$dm) |
            !all(znames==colnames(ddfobj$scale$dm)) ){
-			    stop("fields or factor levels in newdata do not match data used in estimation model for scale model\n")
+          stop("fields or factor levels in newdata do not match data used in estimation model for scale model\n")
         }
       }
-	  
+
       if(!is.null(ddfobj$shape)){
-		    zdim <- ncol(ddfobj$shape$dm)
-		    znames <- colnames(ddfobj$shape$dm)
-		    ddfobj$shape$dm <- setcov(newdata, as.formula(ddfobj$shape$formula))$cov
-		    if(zdim != ncol(ddfobj$shape$dm) | 
+        zdim <- ncol(ddfobj$shape$dm)
+        znames <- colnames(ddfobj$shape$dm)
+        ddfobj$shape$dm <- setcov(newdata, as.formula(ddfobj$shape$formula))$cov
+        if(zdim != ncol(ddfobj$shape$dm) |
            !all(znames==colnames(ddfobj$shape$dm))){
-			    stop("fields or factor levels in newdata do not match data used in estimation model for shape model\n")
+          stop("fields or factor levels in newdata do not match data used in estimation model for shape model\n")
         }
-	    }
+      }
       # update xmat too
       datalist <- process.data(newdata,object$meta.data,check=FALSE)
       ddfobj$xmat <- datalist$xmat
@@ -129,15 +138,15 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
     #   int1=integratedetfct.logistic(x,ltmodel$model$scalemodel,width,
     #                         int.range,theta1,ltmodel$aux$integral.numeric,z)
     # else
-  	ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=TRUE, point=point)
+    ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=TRUE, point=point)
     int1 <- integratepdf(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),width=width,
-		                     int.range=int.range,doeachint=doeachint,
+                         int.range=int.range,doeachint=doeachint,
                          standardize=TRUE,point=point)
     # int1=integratedetfct(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),
     #           width=width,int.range=int.range,doeachint=doeachint,point=point)
 
-    # If the predicted values don't need to be computed, then use the values 
-    # in the model object (model$fitted) and change to integral (esw) values.
+    # If the predicted values don't need to be computed, then use the values
+    # in the model object (model$fitted) and change to integral (esw) values.
     # Note this needs to be checked to see if it works with variable ranges.
 
   }else{
@@ -146,17 +155,17 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
 
   # Compute either esw (int1) or p and store in fitted.
   if(esw){
-	  if(!point){
+    if(!point){
       fitted <- int1*width
     }else{
-	    fitted <- int1*pi*width^2
+      fitted <- int1*pi*width^2
     }
   }else{
-	   fitted <- int1	
+     fitted <- int1
   }
 
-  # If there are no covariates and there is only one prediction, expand to 
-  # a vector based on length of data object.
+  # If there are no covariates and there is only one prediction, expand to
+  # a vector based on length of data object.
   if(length(fitted)==1){
     if(is.null(newdata)){
       fitted <- rep(fitted,length(x$object))
@@ -165,14 +174,14 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
     }
   }
 
-  # If not a new dataframe, then assign names from data stored in the model 
-  # object otherwise, use those from newdata.  Then return vector of values 
+  # If not a new dataframe, then assign names from data stored in the model
+  # object otherwise, use those from newdata.  Then return vector of values
   # to calling frame.
   if(is.null(newdata)){
     names(fitted) <- x$object
   }else{
     names(fitted) <- newdata$object
   }
-  
+
   return(list(fitted=fitted))
 }

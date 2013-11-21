@@ -56,12 +56,12 @@ plot_cond(obs, xmat, gxvalues, model, nc, breaks, finebr, showpoints, showlines,
   \code{lines}, \code{points}, etc)}
 }
 \value{
-  NULL
+NULL
 }
 \description{
-  Plot proportion of observations detected within distance
-  intervals (for conditional detection functions) to
-  compare visually the fitted model and data.
+Plot proportion of observations detected within distance
+intervals (for conditional detection functions) to compare
+visually the fitted model and data.
 }
 \examples{
 \donttest{
@@ -78,7 +78,7 @@ plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
 }
 }
 \author{
-  Jeff Laake, Jon Bishop, David Borchers
+Jeff Laake, Jon Bishop, David Borchers
 }
 \keyword{plot}
 

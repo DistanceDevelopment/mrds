@@ -13,17 +13,17 @@ covered.region.dht(obs, samples, group)
   abundance of individuals}
 }
 \value{
-  Nhat.by.sample - dataframe of abundance by sample
+Nhat.by.sample - dataframe of abundance by sample
 }
 \description{
-  Computes H-T abundance within covered region by sample.
+Computes H-T abundance within covered region by sample.
 }
 \note{
-  Internal function called by \code{\link{dht}} and related
-  functions
+Internal function called by \code{\link{dht}} and related
+functions
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{utility}
 

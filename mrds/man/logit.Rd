@@ -8,13 +8,13 @@ logit(p)
   \item{p}{probability}
 }
 \value{
-  \code{ logit(p)} returns [log(p/(1-p)]
+\code{ logit(p)} returns [log(p/(1-p)]
 }
 \description{
-  Computes logit transformation.
+Computes logit transformation.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{utility}
 

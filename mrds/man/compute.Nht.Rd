@@ -14,20 +14,20 @@ compute.Nht(pdot, group = TRUE, size = NULL)
   populations}
 }
 \value{
-  vector of H-T components for abundance estimate
+vector of H-T components for abundance estimate
 }
 \description{
-  Compute individual components of Horvitz-Thompson
-  abundance estimate in covered region for a particular
-  subset of the data depending on value of group = TRUE (do
-  group abundance); FALSE(do individual abundance)
+Compute individual components of Horvitz-Thompson abundance
+estimate in covered region for a particular subset of the
+data depending on value of group = TRUE (do group
+abundance); FALSE(do individual abundance)
 }
 \note{
-  Internal function called by
-  \code{\link{covered.region.dht}}
+Internal function called by
+\code{\link{covered.region.dht}}
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{utility}
 

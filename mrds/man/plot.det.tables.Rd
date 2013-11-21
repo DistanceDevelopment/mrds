@@ -27,12 +27,12 @@
   plotting functions (plot, hist, lines, points, etc)}
 }
 \value{
-  Just plots.
+Just plots.
 }
 \description{
-  Creates a series of tables for dual observer data that
-  shows the number missed and detected for each observer
-  within defined distance classes.
+Creates a series of tables for dual observer data that
+shows the number missed and detected for each observer
+within defined distance classes.
 }
 \examples{
 \donttest{
@@ -49,6 +49,6 @@ plot(tabs,which=1:6,new=FALSE)
 }
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 

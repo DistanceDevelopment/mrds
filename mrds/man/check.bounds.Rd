@@ -5,11 +5,11 @@
 check.bounds(lt, lowerbounds, upperbounds, ddfobj, showit, setlower, setupper)
 }
 \description{
-  Simple internal function to check that the optimisation
-  didn't hit bounds. Based on code that used to live in
-  \code{detfct.fit.opt}.
+Simple internal function to check that the optimisation
+didn't hit bounds. Based on code that used to live in
+\code{detfct.fit.opt}.
 }
 \author{
-  Dave Miller; Jeff Laake
+Dave Miller; Jeff Laake
 }
 

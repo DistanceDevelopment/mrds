@@ -25,14 +25,14 @@ ds.function(model, newdata = NULL, obs = "All", conditional = FALSE,
   averaged}
 }
 \value{
-  List containing \item{xgrid }{grid of distance values}
-  \item{values }{average detection fct values at the xgrid
-  values}
+List containing \item{xgrid }{grid of distance values}
+\item{values }{average detection fct values at the xgrid
+values}
 }
 \description{
-  Placeholder -- Not functional ----
+Placeholder -- Not functional ----
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 
