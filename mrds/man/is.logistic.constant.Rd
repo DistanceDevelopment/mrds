@@ -1,0 +1,25 @@
+\name{is.logistic.constant}
+\alias{is.logistic.constant}
+\title{Is a logit model constant for all observations?}
+\usage{
+is.logistic.constant(xmat, g0model, width)
+}
+\arguments{
+  \item{xmat}{data}
+
+  \item{g0model}{logit model}
+
+  \item{width}{transect width}
+}
+\value{
+logical value
+}
+\description{
+Determines whether the specified logit model is constant
+for all observations. If it is constant then only one
+integral needs to be computed.
+}
+\author{
+Jeff Laake
+}
+

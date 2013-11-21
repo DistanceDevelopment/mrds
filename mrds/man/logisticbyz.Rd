@@ -1,0 +1,27 @@
+\name{logisticbyz}
+\alias{logisticbyz}
+\title{Logistic as a function of distance}
+\usage{
+logisticbyz(x, distance, models, beta)
+}
+\arguments{
+  \item{x}{covariate data}
+
+  \item{distance}{single distance value}
+
+  \item{models}{model list}
+
+  \item{beta}{logistic parameters}
+}
+\value{
+vector of probabilities
+}
+\description{
+Treats logistic as a function of distance; for a given
+distance it computes function at all covariate values in
+data.
+}
+\author{
+Jeff Laake
+}
+

@@ -1,26 +1,28 @@
-logisticbyx <-
-function (distance, x, models, beta, point)
-#
-#  logisticbyx - treats logistic as a function of covariate z; for a given z it computes
-#                function at with those covariate values at a range of distances 
-#
-#  Arguments:
-#  
-#  distance - vector of distance values
-#  x        - covariate data
-#  models   - model list
-# 
-#  value: vector of probabilities
-#  
-#  Functions used: g0, setcov
-# 
-{
-   xlist <- as.list(x)
-   xlist$distance <-distance
-   xmat <- expand.grid(xlist)
-   if(!point)
-      return(g0(beta, setcov(xmat, models$g0model)$cov))
-   else
-	   return(g0(beta, setcov(xmat, models$g0model)$cov)*2*distance)
-   
+#' Logistic as a function of covariates
+#'
+#' treats logistic as a function of covariates; for a given covariate
+#' combination it computes function at with those covariate values at a
+#' range of distances
+#'
+#' @param distance vector of distance values
+#' @param x covariate data
+#' @param models model list
+#' @param beta logistic parameters
+#' @param \code{TRUE} if a point transect model
+#'
+#' @return vector of probabilities
+#' @author Jeff Laake
+logisticbyx <- function (distance, x, models, beta, point){
+
+  # Functions used: g0, setcov
+
+  xlist <- as.list(x)
+  xlist$distance <- distance
+  xmat <- expand.grid(xlist)
+
+  if(!point){
+    return(g0(beta, setcov(xmat, models$g0model)$cov))
+  }else{
+    return(g0(beta, setcov(xmat, models$g0model)$cov)*2*distance)
+  }
 }

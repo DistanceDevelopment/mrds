@@ -1,0 +1,24 @@
+\name{integratelogistic.analytic}
+\alias{integratelogistic.analytic}
+\title{Analytically integrate logistic detection function}
+\usage{
+integratelogistic.analytic(x, models, beta, width)
+}
+\arguments{
+  \item{x}{matrix of data}
+
+  \item{models}{list of model formulae}
+
+  \item{beta}{parameters of logistic detection function}
+
+  \item{width}{transect half-width}
+}
+\description{
+Computes integral (analytically) over x from 0 to width of
+a logistic detection function; For reference see integral
+#526 in CRC Std Math Table 24th ed
+}
+\author{
+Jeff Laake
+}
+

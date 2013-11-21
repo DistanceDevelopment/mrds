@@ -1,0 +1,34 @@
+\name{integratedetfct.logistic}
+\alias{integratedetfct.logistic}
+\title{Integrate a logistic detection function}
+\usage{
+integratedetfct.logistic(x, scalemodel, width, theta1, integral.numeric, w)
+}
+\arguments{
+  \item{x}{logistic design matrix values}
+
+  \item{scalemodel}{scale model for logistic}
+
+  \item{width}{transect width}
+
+  \item{theta1}{parameters for logistic}
+
+  \item{integral.numeric}{if \code{TRUE} computes numerical
+  integral value}
+
+  \item{w}{design covariates}
+}
+\value{
+vector of integral values
+}
+\description{
+Integrates a logistic detection function; a separate
+function is used because in certain cases the integral can
+be solved analytically and also because the scale trick
+used with the half-normal and hazard rate doesn't work with
+the logistic.
+}
+\author{
+Jeff Laake
+}
+

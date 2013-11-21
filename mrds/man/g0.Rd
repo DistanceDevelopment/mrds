@@ -1,0 +1,21 @@
+\name{g0}
+\alias{g0}
+\title{Compute value of p(0) using a logit formulation}
+\usage{
+g0(beta, z)
+}
+\arguments{
+  \item{beta}{logistic parameters}
+
+  \item{z}{design matrix of covariate values}
+}
+\value{
+vector of p(0) values
+}
+\description{
+Compute value of p(0) using a logit formulation
+}
+\author{
+Jeff Laake
+}
+

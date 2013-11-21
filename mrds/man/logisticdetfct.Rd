@@ -1,0 +1,24 @@
+\name{logisticdetfct}
+\alias{logisticdetfct}
+\title{Logistic detection function}
+\usage{
+logisticdetfct(distance, theta, w, std = FALSE)
+}
+\arguments{
+  \item{distance}{perpendicular distance vector}
+
+  \item{theta}{scale parameters}
+
+  \item{w}{scale covariate matrix}
+
+  \item{std}{if TRUE uses scale=1
+
+  The routine returns a vector of probabilities that the
+  observation were detected given they were at the
+  specified distance and assuming that g(0)=1 (ie a
+  standard line transect detection function).}
+}
+\description{
+Logistic detection function
+}
+

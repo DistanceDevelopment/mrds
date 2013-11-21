@@ -11,6 +11,24 @@
 \usage{
 \method{predict}{ds}(object, newdata = NULL, compute = FALSE,
   int.range = NULL, esw = FALSE, ...)
+
+\method{predict}{io}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, ...)
+
+\method{predict}{io.fi}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, integrate = FALSE, ...)
+
+\method{predict}{rem}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, ...)
+
+\method{predict}{rem.fi}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, integrate = FALSE, ...)
+
+\method{predict}{trial}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, ...)
+
+\method{predict}{trial.fi}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, integrate = FALSE, ...)
 }
 \arguments{
   \item{object}{\code{ddf} model object.}
@@ -25,17 +43,20 @@
 
   \item{esw}{if \code{TRUE}, returns effective strip
   half-width (or effective detection radius for points)
-  integral 0-W p(y)dy; otherwise it returns integral 0-W
-  p(y)*pi(y) where pi(y)=1/W for lines and pi(y)=2r/W^2 for
-  points.}
+  integral from 0 to the truncation distance (\code{width})
+  of p(y)dy; otherwise it returns the integral from 0 to
+  truncation width of p(y)*pi(y) where pi(y)=1/W for lines
+  and pi(y)=2r/W^2 for points.}
 
-  \item{\dots}{unspecified and unused arguments for S3
-  consistency}
+  \item{integrate}{for \code{io.fi} methods, see Details
+  below.}
+
+  \item{\dots}{for S3 consistency}
 }
 \value{
-For all but the exceptions below,the value is a list with a
-single element: \tabular{ll}{ \code{fitted} \tab vector of
-average detection probabilities or esw values for each
+For all but the exceptions below, the value is a list with
+a single element: \tabular{ll}{ \code{fitted} \tab vector
+of average detection probabilities or esw values for each
 observation in the original data or \code{newdata} \cr }
 
 For
@@ -59,20 +80,19 @@ detection probability of being seen by either observer) \cr
 \description{
 Predict detection probabilities (or effective strip widths)
 values from a fitted distance sampling model using either
-the original data or a new dataframe.
+the original data (i.e. "fitted" values) or using new data.
 }
 \details{
 The first 4 arguments are the same in each predict
 function.  The latter 2 are specific to certain functions.
-The effective strip half-width (esw) is the integral of the
-fitted detection function over the range of the sampled
-area (either 0 to W or the specified \code{int.range}).
-The predicted detection probability is the average
-probability which is simply the integral divided by the
-distance range.
+The effective strip half-width (\code{esw}) is the integral
+of the fitted detection function over either 0 to W or the
+specified \code{int.range}.  The predicted detection
+probability is the average probability which is simply the
+integral divided by the distance range.
 
 Fitted detection probabilities are stored in the
-\code{model} object and these are used unless
+\code{model} object and these are returned unless
 \code{compute=TRUE} or \code{newdata} is specified.
 
 \code{compute=TRUE} is used to estimate numerical

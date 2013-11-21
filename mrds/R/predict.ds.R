@@ -1,20 +1,21 @@
 #' Predictions from \code{mrds} models
 #'
 #' Predict detection probabilities (or effective strip widths) values from a
-#' fitted distance sampling model using either the original data or a new
-#' dataframe.
+#' fitted distance sampling model using either the original data (i.e. "fitted"
+#' values) or using new data.
 #'
 #' The first 4 arguments are the same in each predict function.  The latter 2
-#' are specific to certain functions. The effective strip half-width (esw) is
-#' the integral of the fitted detection function over the range of the sampled
-#' area (either 0 to W or the specified \code{int.range}).  The predicted
+#' are specific to certain functions. The effective strip half-width
+#' (\code{esw}) is the integral of the fitted detection function over
+#' either 0 to W or the specified \code{int.range}.  The predicted
 #' detection probability is the average probability which is simply the
 #' integral divided by the distance range.
 #'
 #' Fitted detection probabilities are stored in the \code{model} object and
-#' these are used unless \code{compute=TRUE} or \code{newdata} is specified.
+#' these are returned unless \code{compute=TRUE} or \code{newdata} is specified.
 #'
-#' \code{compute=TRUE} is used to estimate numerical derivatives for use in delta method approximations to the variance.
+#' \code{compute=TRUE} is used to estimate numerical derivatives for use in
+#' delta method approximations to the variance.
 #'
 #' For \code{method="io.fi"} or \code{method="trial.fi"} if
 #' \code{integrate=FALSE}, \code{predict} returns the value of the conditional
@@ -31,13 +32,15 @@
 #' @param int.range integration range for variable range analysis; either
 #'  vector or matrix.
 #' @param esw if \code{TRUE}, returns effective strip half-width (or effective
-#'   detection radius for points) integral 0-W p(y)dy; otherwise it returns
-#'   integral 0-W p(y)*pi(y) where pi(y)=1/W for lines and pi(y)=2r/W^2 for
-#'   points.
-#' @param \dots unspecified and unused arguments for S3 consistency
-#' @export
+#'   detection radius for points) integral from 0 to the truncation distance
+#'   (\code{width}) of p(y)dy; otherwise it returns the integral from 0 to
+#'   truncation width of p(y)*pi(y) where pi(y)=1/W for lines and pi(y)=2r/W^2
+#'   for points.
+#' @param integrate for \code{io.fi} methods, see Details below.
+#' @param \dots for S3 consistency
+#' @S3method predict ds
 #' @method predict ds
-#' @return For all but the exceptions below,the value is a list with a single
+#' @return For all but the exceptions below, the value is a list with a single
 #'   element: \tabular{ll}{ \code{fitted} \tab vector of average detection
 #'   probabilities or esw values for each observation in the original data or
 #'   \code{newdata} \cr }

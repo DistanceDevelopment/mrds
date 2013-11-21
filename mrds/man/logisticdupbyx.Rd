@@ -1,0 +1,31 @@
+\name{logisticdupbyx}
+\alias{logisticdupbyx}
+\title{Logistic for duplicates as a function of covariates}
+\usage{
+logisticdupbyx(distance, x1, x2, models, beta, point)
+}
+\arguments{
+  \item{distance}{vector of distance values}
+
+  \item{x1}{covariate data for fct 1}
+
+  \item{x2}{covariate data for fct 2}
+
+  \item{models}{model list}
+
+  \item{beta}{logistic parameters}
+
+  \item{point}{\code{TRUE} for point transect data}
+}
+\value{
+vector of probabilities
+}
+\description{
+Treats logistic for duplicates as a function of covariate
+z; for a given z it computes the function at with those
+covariate values at a range of distances.
+}
+\author{
+Jeff Laake
+}
+
