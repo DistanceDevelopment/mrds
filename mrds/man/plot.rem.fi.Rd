@@ -6,7 +6,7 @@ sampling model}
 \method{plot}{rem.fi}(x, which = 1:3, breaks = NULL, nc = NULL,
   maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
   angle = -45, density = 20, col = "black", jitter = NULL,
-  divisions = 25, new = TRUE, xlab = "Distance",
+  divisions = 25, pages = 0, xlab = "Distance",
   ylab = "Detection probability", subtitle = TRUE, ...)
 }
 \arguments{
@@ -47,8 +47,10 @@ sampling model}
   \item{divisions}{number of divisions for averaging line
   values; default = 25}
 
-  \item{new}{if TRUE, opens new device for each plot; set
-  new=FALSE if you use par(mfrow=..) or layout}
+  \item{pages}{the number of pages over which to spread the
+  plots. For example, if \code{pages=1} then all plots will
+  be displayed on one page.  Default is 0, which prompts
+  the user for the next plot to be displayed.}
 
   \item{xlab}{label for x-axis}
 
@@ -61,36 +63,35 @@ sampling model}
   \code{lines}, \code{points}, etc)}
 }
 \value{
-  NULL
+NULL
 }
 \description{
-  Plots the fitted detection functions for a distance
-  sampling model and histograms of the distances (for
-  unconditional detection functions) or proportion of
-  observations detected within distance intervals (for
-  conditional detection functions) to compare visually the
-  fitted model and data.
+Plots the fitted detection functions for a distance
+sampling model and histograms of the distances (for
+unconditional detection functions) or proportion of
+observations detected within distance intervals (for
+conditional detection functions) to compare visually the
+fitted model and data.
 }
 \details{
-  The structure of the histogram can be controlled by the
-  user-defined arguments \code{nc} or \code{breaks}.  The
-  observation specific detection probabilities along with
-  the line representing the fitted average detection
-  probability.
+The structure of the histogram can be controlled by the
+user-defined arguments \code{nc} or \code{breaks}.  The
+observation specific detection probabilities along with the
+line representing the fitted average detection probability.
 
-  It is not intended for the user to call any of
-  \code{plot.ds}, \code{plot.trial.fi},
-  \code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
-  \code{plot.io.fi} or \code{plot.io} but the arguments are
-  documented here. Instead the generic \code{plot} command
-  should be used and it will call the appropriate function
-  based on the type of \code{ddf} object.
+It is not intended for the user to call any of
+\code{plot.ds}, \code{plot.trial.fi},
+\code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
+\code{plot.io.fi} or \code{plot.io} but the arguments are
+documented here. Instead the generic \code{plot} command
+should be used and it will call the appropriate function
+based on the type of \code{ddf} object.
 
-  The \code{which} command allows the user to select which
-  plots are returned. See which argument definition.
+The \code{which} command allows the user to select which
+plots are returned. See which argument definition.
 }
 \author{
-  Jeff Laake, Jon Bishop, David Borchers
+Jeff Laake, Jon Bishop, David Borchers, David L Miller
 }
 \keyword{plot}
 

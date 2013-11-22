@@ -45,6 +45,9 @@
 #'   points by multiplying the fitted value by a random draw from a normal
 #'   distribution with mean 1 and sd jitter.
 #' @param divisions number of divisions for averaging line values; default = 25
+#' @param pages the number of pages over which to spread the plots. For
+#'  example, if \code{pages=1} then all plots will be displayed on one page.
+#'  Default is 0, which prompts the user for the next plot to be displayed.
 #' @param xlab label for x-axis
 #' @param ylab label for y-axis
 #' @param subtitle if TRUE, shows plot type as sub-title
@@ -56,7 +59,7 @@
 plot.trial.fi <- function(x, which=1:2, breaks=NULL, nc=NULL, maintitle="",
                           showlines=TRUE, showpoints=TRUE, ylim=c(0,1),
                           angle=-45,density=20,col="black",jitter=NULL,
-                          divisions=25,xlab="Distance",
+                          divisions=25,pages=0,xlab="Distance",
                           ylab="Detection probability",subtitle=TRUE,...){
 
   # Functions used: process.data, predict(predict.trial.fi), plot_uncond,
@@ -90,9 +93,12 @@ plot.trial.fi <- function(x, which=1:2, breaks=NULL, nc=NULL, maintitle="",
     }
   }
 
+  # do the plotting layout
+  oask <- plot.layout(which,pages)
+  on.exit(devAskNewPage(oask))
+
   # Plot primary unconditional detection function
   if(is.element(1,which)){
-    if(.Platform$GUI=="Rgui")dev.new()
     plot_uncond(model,1,xmat,gxvalues,nc,
                 finebr=(width/divisions)*(0:divisions),breaks,showpoints,
                 showlines,maintitle,ylim,
@@ -102,7 +108,6 @@ plot.trial.fi <- function(x, which=1:2, breaks=NULL, nc=NULL, maintitle="",
 
   # Plot conditional detection functions
   if(is.element(2,which)){
-    if(.Platform$GUI=="Rgui")dev.new()
     xmat<- data[data$observer==2&data$detected==1,]
     gxvalues <- predict(model,newdata=xmat,type="response",
                         integrate=FALSE)$fitted

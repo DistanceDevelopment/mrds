@@ -63,9 +63,16 @@
 #' xx <- ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
 #'           data = egdata[egdata$observer==1, ],
 #'           method = "ds", meta.data = list(width = 4))
+#'
+#' # not showing predicted probabilities
 #' plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
+#'
+#' # two subsets
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
+#'
+#' # put both plots on one page
+#' plot(xx,breaks=c(0,.5,1,2,3,4),pages=1,which=1:2)
 #' }
 plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,
                     jitter.v=rep(0,3),showpoints=TRUE,subset=NULL,
