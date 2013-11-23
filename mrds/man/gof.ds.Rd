@@ -20,4 +20,7 @@
 \author{
   Jeff Laake
 }
+\seealso{
+  ddf.gof
+}
 

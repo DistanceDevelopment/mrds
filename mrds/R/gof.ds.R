@@ -5,7 +5,7 @@
 #' @param nc number of distance classes
 #'
 #' @return list with chi-square value, df and p-value
-#'
+#' @seealso ddf.gof
 #' @author Jeff Laake
 gof.ds <- function(model,breaks=NULL,nc=NULL){
   # Functions used: predict.ds

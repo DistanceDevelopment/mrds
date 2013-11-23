@@ -1,6 +1,5 @@
 \name{ddf.gof}
 \alias{ddf.gof}
-\alias{gof.ds}
 \alias{gof.io}
 \alias{gof.io.fi}
 \alias{gof.rem}
