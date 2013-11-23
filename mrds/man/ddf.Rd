@@ -323,6 +323,6 @@ plot(model,main="Dual observer binned point data",new=FALSE)
   \code{\link{ddf.ds}},
   \code{\link{ddf.io}},\code{\link{ddf.io.fi}},\code{\link{ddf.trial}},\code{\link{ddf.trial.fi}},\code{\link{ddf.rem}},\code{\link{ddf.rem.fi}}
 }
-\keyword{~Statistical}
 \keyword{Models}
+\keyword{~Statistical}
 
