@@ -1,24 +1,25 @@
-#' Predictions from distance sampling io models
-#' 
+#' Predictions from distance sampling independent observer (\code{io}) models
+#'
 #' Predict detection probabilities values from a fitted
 #' distance sampling io model using either the original data or a new dataframe.
-#' 
+#'
 #' The first 4 arguments are the same in each predict function.  The latter 2
 #' are specific to certain functions. The effective strip half-width (esw) is
 #' the integral of the fitted detection function over the range of the sampled
-#' area (either 0 to W or the specified \code{int.range}).  The predicted
-#' detection probability is the average probability which is simply the
-#' integral divided by the distance range.  The fitted detection probabilities
-#' are stored in the \code{model} object and these are used unless
+#' area (either 0 to \code{width} or the specified \code{int.range}). The
+#' predicted detection probability is the average probability which is simply
+#' the integral divided by the distance range. The fitted detection
+#' probabilities are stored in the \code{model} object and these are used unless
 #' \code{compute=TRUE} or \code{newdata} is specified. \code{compute=TRUE} is
 #' used to estimate numerical derivatives for use in delta method
-#' approximations to the variance.  For \code{method="io.fi" or ="trial.fi"} if
-#' \code{integrate=FALSE}, \code{predict} returns the value of the conditional
-#' detection probability and if \code{integrate=TRUE}, it returns the average
-#' conditional detection probability by integrating over x(distance) with
-#' respect to a uniform distribution.
-#' 
-#' @aliases predict.io 
+#' approximations to the variance.  For \code{method="io.fi"} or
+#' \code{method="trial.fi"} if \code{integrate=FALSE}, \code{predict} returns
+#' the value of the conditional detection probability and if
+#' \code{integrate=TRUE}, it returns the average conditional detection
+#' probability by integrating over distance with respect to a uniform
+#' distribution.
+#'
+#' @aliases predict.io
 #' @param object \code{ddf} model object
 #' @param newdata new dataframe for prediction
 #' @param compute if TRUE compute values and don't use the fitted values stored
@@ -31,12 +32,12 @@
 #'   element: \tabular{ll}{ \code{fitted} \tab vector of average detection
 #'   probabilities or esw values for each observation in the original data or
 #'   \code{newdata} \cr }
-#' 
+#'
 #' For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with
-#'   integrate=TRUE, he value is a list with the elements: \tabular{ll}{
+#'   integrate=TRUE, the value is a list with the elements: \tabular{ll}{
 #'   \code{fitted} \tab vector of integrated (average) detection probabilities
 #'   for each observation in the original data or \code{newdata} \cr }
-#' 
+#'
 #' For \code{predict.io.fi}, \code{predict.trial.fi}, or \code{predict.rem.fi}
 #'   with \code{integrate=FALSE}, the value is a list with the following
 #'   elements: \tabular{ll}{ \code{fitted} \tab p(y) values \cr \code{p1} \tab
@@ -52,57 +53,51 @@
 #' @seealso \code{\link{ddf}}, \code{\link{summary.io}},
 #'   \code{\link{plot.io}}
 #' @keywords utility
-predict.io <-
-function(object,newdata=NULL,compute=FALSE,int.range=NULL,...)
-#
-# predict.io - computes fitted values for p 
-# 
-# arguments:
-#
-# object     - io model object
-# newdata    - data for which predictions made (not currently used)
-# compute    - if TRUE re-compute fitted values even if they are in model
-# int.range  - integration range for variable range analysis
-#
-# return value:
-#      list with 1 element:
-#         fitted: vector of fitted detection probabilities - integral of p(y)/W
-#
-# Functions Used: predict.io.fi and predict.ds 
-#
-# change 6/7/05 jll: removed dopdot argument and took dopdot=FALSE functionality
-# and moved to plot.io which was the only place it was used.  Added newdata
-# functionality in call to predict.ds.
-#
-{
-   model=object
-   if(!is.null(newdata))
-   {
-      compute=TRUE
-      xmat=newdata
-   }
-   else
-      xmat=model$mr$mr$data
-   xmat$distance=0
-   ddfobj=model$ds$ds$aux$ddfobj
-   if(ddfobj$type=="gamma")
-   {
-	   key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
-	   key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
-	   xmat$distance=rep(apex.gamma(key.scale,key.shape),2)
-   }
-   xmat$offsetvalue=0
-   p.0=predict(model$mr,newdata=xmat,integrate=FALSE,compute=compute)$fitted
-   if(is.null(newdata))
-      pdot=predict(model$ds,esw=FALSE,compute=compute,int.range=int.range)$fitted
-   else
-      pdot=predict(model$ds,newdata=newdata[newdata$observer==1,],esw=FALSE,compute=compute,int.range=int.range)$fitted
-   fitted=p.0*pdot
-   if(is.null(newdata))
-      names(fitted)=model$mr$mr$data$object[model$mr$mr$data$observer==1]
-   else
-      names(fitted)=newdata$object[newdata$observer==1]
-   return(list(fitted=fitted))
+predict.io <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
+  # Functions Used: predict.io.fi and predict.ds
+
+  # change 6/7/05 jll: removed dopdot argument and took dopdot=FALSE
+  # functionality and moved to plot.io which was the only place it was used.
+  # Added newdata functionality in call to predict.ds.
+
+  model <- object
+  if(!is.null(newdata)){
+    compute <- TRUE
+    xmat <- newdata
+  }else{
+    xmat <- model$mr$mr$data
+  }
+
+  xmat$distance <- 0
+  ddfobj <- model$ds$ds$aux$ddfobj
+
+  # for gamma models need to find where p(x)=1 (apex), set that as distance
+  if(ddfobj$type=="gamma"){
+    key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
+    key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
+    xmat$distance <- rep(apex.gamma(key.scale,key.shape),2)
+  }
+
+  # calculate ps for each part of the model
+  xmat$offsetvalue <- 0
+  p.0 <- predict(model$mr,newdata=xmat,integrate=FALSE,compute=compute)$fitted
+  if(is.null(newdata)){
+    pdot <- predict(model$ds,esw=FALSE,compute=compute,
+                     int.range=int.range)$fitted
+  }else{
+    pdot <- predict(model$ds,newdata=newdata[newdata$observer==1,],
+                    esw=FALSE,compute=compute,int.range=int.range)$fitted
+  }
+
+  # take the product for the overall p
+  fitted <- p.0*pdot
+
+  # set labels
+  if(is.null(newdata)){
+    names(fitted) <- model$mr$mr$data$object[model$mr$mr$data$observer==1]
+  }else{
+    names(fitted) <- newdata$object[newdata$observer==1]
+  }
+
+  return(list(fitted=fitted))
 }
-
-

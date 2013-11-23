@@ -15,17 +15,19 @@
   \item{model}{ddf model object}
 }
 \value{
-  list with 2 elements \item{xgrid}{vector of gridded
-  distance values} \item{values }{vector of average
-  detection fct values at the xgrid values }
+  list with 2 elements \tabular{ll}{\code{xgrid} \tab
+  vector of gridded distance values\cr \code{values} \tab
+  vector of average detection function values at the
+  \code{xgrid} values\cr}
 }
 \description{
   For models with covariates the detection probability for
-  each observation can vary.  This function computes an
+  each observation can vary. This function computes an
   average value for a set of distances to plot an average
   line to graphically represent the fitted model in plots
   that compare histograms and the scatter of individual
-  estimated detection probabilities.
+  estimated detection probabilities. Averages are
+  calculated over the observed covariate combinations.
 }
 \note{
   Internal function called from plot functions for ddf

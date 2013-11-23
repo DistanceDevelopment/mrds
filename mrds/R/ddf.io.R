@@ -1,8 +1,8 @@
 #' Mark-Recapture Distance Sampling (MRDS) IO - PI
-#' 
+#'
 #' Mark-Recapture Distance Sampling (MRDS) Analysis of Independent Observer
 #' Configuration and Point Independence
-#' 
+#'
 #' MRDS analysis based on point independence involves two separate and
 #' independent analyses of the mark-recapture data and the distance sampling
 #' data.  For the independent observer configuration, the mark-recapture data
@@ -18,13 +18,13 @@
 #' created as p(y)=p(0)*g(y) (eq 6.28 of Laake and Borchers 2004) from which
 #' predictions are made. \code{ddf.io} is not called directly by the user and
 #' is called from \code{\link{ddf}} with \code{method="io"}.
-#' 
+#'
 #' For a complete description of each of the calling arguments, see
 #' \code{\link{ddf}}.  The argument \code{dataname} is the name of the
 #' dataframe specified by the argument \code{data} in \code{ddf}. The arguments
 #' \code{dsmodel}, \code{mrmodel}, \code{control} and \code{meta.data} are
 #' defined the same as in \code{ddf}.
-#' 
+#'
 #' @S3method ddf io
 #' @param dsmodel distance sampling model specification; model list with key
 #'   function and scale formula if any
@@ -45,110 +45,78 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.io <-
-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call="")
-{
-# 
-# ddf.io
-#
-# Fits double-observer data with io configuration and point independence.
-#
-# Arguments:
-#
-#  mrmodel   - mr model
-#  dsmodel   - ds model
-#  data      - dataframe
-#  meta.data - list containing settings controlling data structure
-#  control   - list containing settings controlling model fitting
-#  call      - call used for ddf
-#
-#  Functions used: assign.default.values, process.data
-#                  ddf.ds, ddf.io.fi, predict(predict.io), NCovered (NCovered.io)
-#
-#  Return value: model object of class "io"
-#  
-#
-#   Save current user options and then set design contrasts to treatment style
-#
-    save.options<-options()
-    options(contrasts=c("contr.treatment","contr.poly"))
-#
-# Set up meta data values
-#
-	meta.data=assign.default.values(meta.data, left=0, width=NA, binned=FALSE, 
+ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
+
+  # Save current user options and then set design contrasts to treatment style
+  save.options<-options()
+  options(contrasts=c("contr.treatment","contr.poly"))
+
+  # Set up meta data values
+  meta.data=assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
                                    int.range=NA, mono=FALSE, mono.strict=TRUE,
                                    point=FALSE)
-#
-# Set up control values
-#
-   control=assign.default.values(control,showit = 0, doeachint=FALSE, estimate=TRUE,refit=TRUE,nrefits=25,
-                                       initial = NA, lowerbounds = NA, upperbounds = NA, mono.points=20)
-#
-#  Process data  
-#
-    data.list=process.data(data,meta.data)
-    meta.data=data.list$meta.data
-    xmat=data.list$xmat
-#
-#   Create result list
-#
-    result=list(call=call,data=data,mrmodel=mrmodel,
-                  dsmodel=dsmodel,meta.data=meta.data,control=control,method="io")
-    class(result)=c("io","ddf")
-#
-#   Fit the conditional detection functions using ddf.io.fi  
-#
-    result$mr=ddf.io.fi(model=mrmodel,data,meta.data,control,call,method="io")
-#
-#   Fit the unconditional detection functions using ddf.ds
-#  
-    unique.data=data[data$observer==1,]
-    unique.data$detected=1
-    result$ds=ddf.ds(model=dsmodel,unique.data,meta.data,control,call)
-#  30 Jan 06; added stop if ds model didn't converge
-    if(is.null(result$ds$Nhat)){
-      if(control$debug){
-        errors("ds model did not converge; no further results possible")
-        errors("Returned object is for debugging ONLY!")
-        return(result)
-      }
-      stop("ds model did not converge; no further results possible")
+  # Set up control values
+  control=assign.default.values(control, showit=0, doeachint=FALSE,
+                                estimate=TRUE, refit=TRUE, nrefits=25,
+                                initial=NA, lowerbounds=NA, upperbounds=NA,
+                                mono.points=20)
+
+  # Process data
+  data.list <- process.data(data,meta.data)
+  meta.data <- data.list$meta.data
+  xmat <- data.list$xmat
+
+  # Create result list
+  result <- list(call=call, data=data, mrmodel=mrmodel, dsmodel=dsmodel,
+                 meta.data=meta.data, control=control, method="io")
+  class(result)=c("io","ddf")
+
+  # Fit the conditional detection functions using ddf.io.fi  
+  result$mr <- ddf.io.fi(model=mrmodel,data,meta.data,control,call,method="io")
+
+  # Fit the unconditional detection functions using ddf.ds
+  unique.data <- data[data$observer==1,]
+  unique.data$detected <- 1
+  result$ds <- ddf.ds(model=dsmodel,unique.data,meta.data,control,call)
+  if(is.null(result$ds$Nhat)){
+    if(control$debug){
+      errors("ds model did not converge; no further results possible")
+      errors("Returned object is for debugging ONLY!")
+      return(result)
     }
-#
-#   Combine parameter vectors and hessian matrices 
-#
-    npar.uncond=length(result$ds$par)
-    npar=npar.uncond+length(result$mr$par)
-    hessian1=result$mr$hessian
-	if(npar.uncond==0)
-		result$hessian=hessian1
-	else
-	{
-		hessian1=cbind(hessian1,matrix(0,ncol=npar.uncond,nrow=npar-npar.uncond))
-		hessian2=cbind(matrix(0,ncol=npar-npar.uncond,nrow=npar.uncond),result$ds$hessian)
-		result$hessian=rbind(hessian1,hessian2)
-	}
-    result$par=coef(result)
-    row.names(result$hessian)=row.names(result$par)
-    colnames(result$hessian)=row.names(result$par)
-    result$par=result$par$estimate
-    names(result$par)=row.names(result$hessian)
-#
-#   Compute total likelihood and AIC
-#
-    result$lnl <- result$ds$lnl + result$mr$lnl       
-    result$criterion<- -2*result$lnl + 2*npar
-#
-#   Get fitted values and predict abundance and its variance in covered region 
-#
-    result$fitted=predict(result)$fitted
-    result$Nhat=NCovered(result)
-#
-#   Restore user options
-#
-    options(save.options)
-#
-#   Return result
-#
-    return(result)
+    stop("ds model did not converge; no further results possible")
+  }
+
+  # Combine parameter vectors and hessian matrices 
+  npar.uncond <- length(result$ds$par)
+  npar <- npar.uncond+length(result$mr$par)
+  hessian1 <- result$mr$hessian
+  if(npar.uncond==0){
+    result$hessian <- hessian1
+  }else{
+    hessian1 <- cbind(hessian1,matrix(0,ncol=npar.uncond,nrow=npar-npar.uncond))
+    hessian2 <- cbind(matrix(0,ncol=npar-npar.uncond,nrow=npar.uncond),
+                      result$ds$hessian)
+    result$hessian <- rbind(hessian1,hessian2)
+  }
+
+  result$par <- coef(result)
+  row.names(result$hessian) <- row.names(result$par)
+  colnames(result$hessian) <- row.names(result$par)
+  result$par <- result$par$estimate
+  names(result$par) <- row.names(result$hessian)
+
+  # Compute total likelihood and AIC
+  result$lnl <- result$ds$lnl + result$mr$lnl
+  result$criterion <- -2*result$lnl + 2*npar
+
+  # Get fitted values and predict abundance and its variance in covered region
+  result$fitted=predict(result)$fitted
+  result$Nhat=NCovered(result)
+
+  # Restore user options
+  options(save.options)
+
+  # Return result
+  return(result)
 }

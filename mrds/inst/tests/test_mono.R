@@ -9,12 +9,12 @@ library(mrds)
 
 context("Monotonicity: bookexamples tests")
 
-test_that("parameter estimates are the same", { 
+test_that("parameter estimates are the same", {
 
    # want to make sure that we get the same answers when
    # the function is monotone by default -- ie half-normal
 
-   # data setup  
+   # data setup
    data(book.tee.data)
    region<-book.tee.data$book.tee.region
    egdata<-book.tee.data$book.tee.dataframe
@@ -22,26 +22,26 @@ test_that("parameter estimates are the same", {
    obs<-book.tee.data$book.tee.obs
 
    # run using optimx
-   result.optimx<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1), 
-                      data = egdata[egdata$observer ==1, ], method = "ds", 
+   result.optimx<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1),
+                      data = egdata[egdata$observer ==1, ], method = "ds",
                       meta.data = list(width = 4))
    # run with Rsolnp, mono=TRUE, mono.strict=FALSE
-   result.mono<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1), 
-                    data = egdata[egdata$observer ==1, ], method = "ds", 
+   result.mono<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1),
+                    data = egdata[egdata$observer ==1, ], method = "ds",
                     meta.data = list(width = 4,mono=TRUE,mono.strict=FALSE))
    # run with Rsolnp, mono=TRUE, mono.strict=TRUE
-   result.strict<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1), 
-                      data = egdata[egdata$observer ==1, ], method = "ds", 
+   result.strict<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1),
+                      data = egdata[egdata$observer ==1, ], method = "ds",
                       meta.data = list(width = 4,mono=TRUE,mono.strict=TRUE))
 #     summary(result,se=TRUE)
 
 
    # test that the parameter is the same
-   expect_that(result.optimx$par, equals(result.mono$par,tolerance=1e-5)) # FAIL 
+   expect_that(result.optimx$par, equals(result.mono$par,tolerance=1e-5)) # FAIL
    expect_that(result.optimx$par, equals(result.strict$par,tolerance=1e-5)) # FAIL
    expect_that(result.mono$par, equals(result.strict$par,tolerance=1e-5))
 
-   # check that the summary gives the right answers too... 
+   # check that the summary gives the right answers too...
    # these won't work anymore since if we don't have adjustments, we just
    # switch to optimx()
    #expect_that(summary(result.mono),prints_text("Monotonicity constraints were enforced."))
@@ -52,7 +52,7 @@ test_that("parameter estimates are the same", {
 })
 
 test_that("monotonicity warnings are correct", {
-   # data setup  
+   # data setup
    data(book.tee.data)
    region<-book.tee.data$book.tee.region
    egdata<-book.tee.data$book.tee.dataframe
@@ -64,8 +64,8 @@ test_that("monotonicity warnings are correct", {
 
 
    # check that there is a warning
-   expect_that(result<-ddf(dsmodel = ~mcds(key = "hn", formula = ~sex), 
-                   data = egdata[egdata$observer ==1, ], method = "ds", 
+   expect_that(result<-ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
+                   data = egdata[egdata$observer ==1, ], method = "ds",
                    meta.data = list(width = 4,mono=TRUE)),
                gives_warning("Covariate models cannot be constrained for monotonicity."))
 
@@ -92,21 +92,23 @@ test_that("monotonic and non-monotonic fits are different for non-monotone data"
 
    # simulate some non-monotonic data
    dat<-mrds:::sim.mix(100,c(0.1,3),c(0.3,0.7),10,means=c(0,4))
-   dat<-data.frame(distance=dat,object=1:length(dat),observed=rep(1,length(dat)))
+   dat<-data.frame(distance=dat,
+                   object=1:length(dat),
+                   observed=rep(1,length(dat)))
 
    trunc<-7
 
    # fit without constraint
-   result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2)), 
-                 data=dat, method = "ds", 
+   result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
+                 adj.order=c(2)), data=dat, method = "ds",
                  meta.data=list(width=trunc,mono=FALSE))
    # with weak monotonicity
-   result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2)), 
-                 data=dat, method = "ds", 
+   result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
+                 adj.order=c(2)), data=dat, method = "ds",
                  meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
    # with strong monotonicity
-   result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2)), 
-                 data=dat, method = "ds", 
+   result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
+                 adj.order=c(2)), data=dat, method = "ds",
                  meta.data=list(width=trunc,mono=TRUE,mono.strict=TRUE))
 
    # plot

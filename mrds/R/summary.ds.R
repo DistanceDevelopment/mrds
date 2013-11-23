@@ -1,16 +1,16 @@
 #' Summary of distance detection function model object
-#' 
+#'
 #' Provides a brief summary of data and fitted detection probability model
 #' parameters, model selection criterion, and optionally abundance in the
 #' covered (sampled) region and its standard error.
-#' 
+#'
 #' The argument \code{N} is used to suppress computation of
 #' abundance and average detection probability in calls to summarize the
 #' \code{ds} and either \code{io.fi} or \code{trial.fi} for summaries of
 #' \code{io} and \code{trial} objects respectively which are composed of a
 #' \code{ds} model object and a mark-recapture model object. The corresponding
 #' print function is called to print the summary results.
-#' 
+#'
 #' @S3method summary ds
 #' @method summary ds
 #' @aliases summary.ds
@@ -27,15 +27,11 @@
 #' @author Jeff Laake
 #' @keywords utility
 summary.ds <- function(object,se=TRUE,N=TRUE,...){
-# Uses: predict.ds (via predict), DeltaMethod, coef.ds (via coef)
+  # Uses: predict.ds (via predict), DeltaMethod, coef.ds (via coef)
 
-# dlm 31-Aug-05	Started re-working this to return an object.
-# dlm 03-Sep-05	Will now return an object of type summary.ds, but will
-# 		still behave as it used to. See print.summary.ds for details.
-
-# at present f(0) code is commented out; need to understand this further
-#F0=function(model,pdot,...)
-#{return(1/(pdot*model$meta.data$width))}
+  # at present f(0) code is commented out; need to understand this further
+  #F0=function(model,pdot,...)
+  #{return(1/(pdot*model$meta.data$width))}
 
   model <- object
   avgp <- function(model,pdot,...){return(pdot)}
@@ -63,39 +59,38 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
   # se is included as part of the objects, see coef.ds
   # for details
   coeff <- coef(model)
-  if(!is.null(coeff))
-  {
-     # Scale Coefficient
-        ans$coeff$key.scale <- coeff$scale
+  if(!is.null(coeff)){
+    # Scale Coefficient
+    ans$coeff$key.scale <- coeff$scale
 
-     # Hazard shape parameter
-        if(ans$key%in%c("gamma","hr","th1","th2")){
-         ans$coeff$key.shape <- coeff$exponent
-        }
-  
-     # Adjustment term parameter(s)
-     # See coef.ds() on how this is returned
-     # This is a vector remember, so if you are using this 
-     # you need to take that into account.
-     if(!is.null(coeff$adjustment)){
-	   ans$adjustment=model$ds$aux$ddfobj$adjustment
-       ans$coeff$adj.order <- model$adj.order
-       ans$coeff$adj.parm <- coeff$adjustment
-     }
+    # Hazard shape parameter
+    if(ans$key%in%c("gamma","hr","th1","th2")){
+     ans$coeff$key.shape <- coeff$exponent
+    }
+
+    # Adjustment term parameter(s)
+    # See coef.ds() on how this is returned
+    # This is a vector remember, so if you are using this 
+    # you need to take that into account.
+    if(!is.null(coeff$adjustment)){
+      ans$adjustment <- model$ds$aux$ddfobj$adjustment
+      ans$coeff$adj.order <- model$adj.order
+      ans$coeff$adj.parm <- coeff$adjustment
+    }
+  }else{
+    ans$coeff <- NULL
   }
-  else
-	  ans$coeff <- NULL
-  
+
   # AIC
   ans$aic <- model$criterion
 
   # Truncation distances, left and right
   ans$width <- model$meta.data$width
   ans$left <- model$meta.data$left
-  
+
   ans$average.p <- ans$n/model$Nhat
-#  fzero=sum(F0(model,pdot)/pdot)
-#  ans$average.f0=fzero/model$Nhat
+  # fzero=sum(F0(model,pdot)/pdot)
+  # ans$average.f0=fzero/model$Nhat
 
   # 26 Jan 06 jll; added code for se of average p and f(0)
   if(se &!is.null(ans$coeff)){
@@ -119,11 +114,11 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
   if(N){
     ans$Nhat <- model$Nhat
     if(se&!is.null(ans$coeff)){
-       ans$Nhat.se <- sqrt(Nhatvar)
+      ans$Nhat.se <- sqrt(Nhatvar)
     }
   }
 
-  if(se&!is.null(ans$coeff)){
+  if(se & !is.null(ans$coeff)){
     # ans$average.f0.se <- sqrt(var.fzero)
     ans$average.p.se <- sqrt(var.pbar)
   }

@@ -4,10 +4,9 @@
 \usage{
   plot_uncond(model, obs, xmat, gxvalues, nc, finebr,
     breaks, showpoints, showlines, maintitle, ylim,
-    point = FALSE, return.lines = FALSE, angle = -45,
-    density = 20, col = "black", jitter = NULL,
-    xlab = "Distance", ylab = "Detection probability",
-    subtitle = TRUE, ...)
+    return.lines = FALSE, angle = -45, density = 20,
+    col = "black", jitter = NULL, xlab = "Distance",
+    ylab = "Detection probability", subtitle = TRUE, ...)
 }
 \arguments{
   \item{model}{fitted model from \code{ddf}}
@@ -36,8 +35,6 @@
 
   \item{ylim}{range of y axis; defaults to (0,1)}
 
-  \item{point}{point count data if TRUE}
-
   \item{return.lines}{if TRUE, returns values for line}
 
   \item{angle}{shading angle for hatching}
@@ -58,10 +55,12 @@
   \item{subtitle}{if TRUE, shows plot type as sub-title}
 
   \item{\dots}{other graphical parameters, passed to the
-  plotting functions (plot, hist, lines, points, etc)}
+  plotting functions (\code{plot}, \code{hist},
+  \code{lines}, \code{points}, etc)}
 }
 \value{
-  NULL
+  if \code{return.lines==TRUE} returns dataframe
+  \code{average.line} otherwise just plots
 }
 \description{
   Plots unconditional detection function for observer=obs

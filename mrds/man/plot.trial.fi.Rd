@@ -14,7 +14,9 @@ sampling trial observer model}
   \item{x}{fitted model from \code{ddf}}
 
   \item{which}{index to specify which plots should be
-  produced. 1: uncond det fct, 2:cond det fct}
+  produced.  \tabular{ll}{1 \tab Unconditional detection
+  function for observer 1 \cr 2 \tab Conditional detection
+  function plot (1|2)\cr}}
 
   \item{breaks}{user define breakpoints}
 
@@ -52,7 +54,8 @@ sampling trial observer model}
   \item{subtitle}{if TRUE, shows plot type as sub-title}
 
   \item{\dots}{other graphical parameters, passed to the
-  plotting functions (plot, hist, lines, points, etc)}
+  plotting functions (\code{plot}, \code{hist},
+  \code{lines}, \code{points}, etc)}
 }
 \value{
   NULL

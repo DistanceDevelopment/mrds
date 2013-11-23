@@ -1,12 +1,12 @@
 #' Distance Detection Function Fitting
-#' 
+#'
 #' Generic function for fitting detection functions for distance sampling with
 #' single and double observer configurations. Independent observer, trial and
 #' dependent observer (removal) configurations are included. This is a generic
 #' function which does little other than to validate the calling arguments and
 #' methods and then calls the appropriate \code{method} specific function to do
 #' the analysis.
-#' 
+#'
 #' The fitting code has certain expectations about \code{data}.  It should be a
 #' dataframe with at least the following fields named and defined as follows:
 #' \tabular{ll}{ \code{object} \tab object number \cr \code{observer} \tab
@@ -30,22 +30,22 @@
 #' makes sense to make the values the same for both records in each pair even
 #' when both detect the object or when observer 1 doesn't detect the object the
 #' data would have to be taken from observer 2 and would not be consistent.
-#' 
+#'
 #' Five different fitting methods are currently available and these in turn
 #' define whether \code{dsmodel} and \code{mrmodel} need to be defined.
-#' 
+#'
 #' \tabular{llll}{ Method \tab Single or Double \tab \code{dsmodel} used? \tab
 #' \code{mrmodel} used? \cr \code{ds} \tab Single \tab yes \tab no \cr
 #' \code{io} \tab Double \tab yes \tab yes \cr \code{io.fi} \tab Double \tab no
 #' \tab yes \cr \code{trial} \tab Double \tab yes \tab yes \cr
 #' \code{trial.fi}\tab Double \tab no \tab yes \cr \code{rem} \tab Double \tab
 #' yes \tab yes \cr \code{rem.fi}\tab Double \tab no \tab yes \cr }
-#' 
+#'
 #' Methods with the suffix ".fi" use the assumption of full independence and do
 #' not use the distance sampling portion of the likelihood which is why a
 #' \code{dsmodel} is not needed.  An \code{mrmodel} is only needed for double
 #' observer surveys and' thus is not needed for method \code{ds}.
-#' 
+#'
 #' The \code{dsmodel} specifies the detection function g(y) for the distance
 #' sampling data and the models restrict g(0)=1. For single observer data g(y)
 #' is the detection function for the single observer and if it is a double
@@ -77,7 +77,7 @@
 #' may be "width" or "scale" (for scaling by the scale parameter). Note that 
 #' the uniform key can only be used with adjustments (usually cosine adjustments
 #' for a Fourier-type analysis.
-#' 
+#'
 #' The \code{mrmodel} specifies the form of the conditional detection functions
 #' (i.e.,probability it is seen by observer j given it was seen by observer
 #' 3-j) for each observer (j=1,2) in a double observer survey.  The value is
@@ -94,10 +94,10 @@
 #' distance, size, and sex.  As another example,
 #' \code{mrmodel=~glm(formula=~distance*size+sex)} constructs the same model
 #' with an added interaction between distance and size.
-#' 
+#'
 #' The argument \code{meta.data} is a list that enables various options about
 #' the data to be set.  These options include:
-#' 
+#'
 #' \tabular{ll}{ Option \tab Value \cr \code{point} \tab if TRUE the data are
 #' from point counts and FALSE (default) implies line transect data \cr
 #' \code{width} \tab distance specifying half-width of the transect \cr
@@ -112,7 +112,7 @@
 #' monotonically decreasing (when there are no covariates) \cr 
 #' \code{mono.strict} \tab when TRUE (default when mono=TRUE) strict 
 #' monotonicity is enforced, else only weak monotonicity. \cr}
-#' 
+#'
 #' Using \code{meta.data=list(int.range=c(1,10))} is the same as
 #' \code{meta.data=list(left=1,width=10)}.  If
 #' \code{meta.data=list(binned=TRUE)} is used, the dataframe needs to contain
@@ -130,43 +130,43 @@
 #' (left and width) and a row for each observation.  Currently, a binned
 #' analysis can only be done for \code{method="ds"} and eventually
 #' \code{int.range} will be incorporated into the dataframe.
-#' 
+#'
 #' The argument \code{control} is a list that enables various analysis options
 #' to be set.  It is not necessary to set any of these for most analyses.  They
 #' were provided so the user can optionally see intermediate fitting output and
 #' to control fitting if the algorithm doesn't converge which happens
 #' infrequently.  The list values include:
-#' 
-#' \tabular{ll}{ Option \tab Value \cr 
-#'   \code{showit} \tab Integer (0-3, default 0) controls the (increasing) 
+#'
+#' \tabular{ll}{ Option \tab Value \cr
+#'   \code{showit} \tab Integer (0-3, default 0) controls the (increasing)
 #'    amount of information printed during fitting. 0 - none, >=1 - information
-#'    about refitting and bound changes is printed, >=2 - information about 
-#'    adjustment term fitting is printed, ==3 -per-iteration parameter 
-#'    estimates and log-likelihood printed. \cr 
-#'   \code{doeachint} \tab if TRUE forces numerical integration rather than 
-#'    interpolation method \cr 
-#'   \code{estimate} \tab if FALSE fits model but doesn't estimate predicted 
-#'    probabilities \cr 
+#'    about refitting and bound changes is printed, >=2 - information about
+#'    adjustment term fitting is printed, ==3 -per-iteration parameter
+#'    estimates and log-likelihood printed. \cr
+#'   \code{doeachint} \tab if TRUE forces numerical integration rather than
+#'    interpolation method \cr
+#'   \code{estimate} \tab if FALSE fits model but doesn't estimate predicted
+#'    probabilities \cr
 #'   \code{refit} \tab if TRUE the algorithm will attempt multiple optimizations
-#'    at different starting values if it doesn't converge \cr 
-#'   \code{nrefits} \tab number of refitting attempts \cr 
-#'   \code{initial} \tab a named list of starting values for the parameters 
-#'    (\code{$scale}, \code{$shape}, \code{$adjust}) \cr 
-#'   \code{lowerbounds} \tab a vector of lowerbounds for the parameters \cr 
-#'   \code{upperbounds} \tab a vector of upperbounds for the parameters \cr 
-#'   \code{limit} \tab if TRUE restrict analysis to observations with 
-#'    \code{detected}=1 \cr 
+#'    at different starting values if it doesn't converge \cr
+#'   \code{nrefits} \tab number of refitting attempts \cr
+#'   \code{initial} \tab a named list of starting values for the parameters
+#'    (\code{$scale}, \code{$shape}, \code{$adjust}) \cr
+#'   \code{lowerbounds} \tab a vector of lowerbounds for the parameters \cr
+#'   \code{upperbounds} \tab a vector of upperbounds for the parameters \cr
+#'   \code{limit} \tab if TRUE restrict analysis to observations with
+#'    \code{detected}=1 \cr
 #'   \code{debug} \tab  if TRUE, if fitting fails, return an object with fitting
-#'    information \cr 
-#'   \code{nofit} \tab if TRUE don't fit a model, but use the starting values 
+#'    information \cr
+#'   \code{nofit} \tab if TRUE don't fit a model, but use the starting values
 #'    and generate an object based on those values \cr
-#'   \code{optimx.method} \tab one (or a vector of) string(s) giving the 
+#'   \code{optimx.method} \tab one (or a vector of) string(s) giving the
 #'    optimisation method to use. If more than one is supplied, the results from
-#'    one are used as the starting values for the next. See 
+#'    one are used as the starting values for the next. See
 #'    \code{\link{optimx}}\cr
-#'   \code{optimx.maxit} \tab maximum number of iterations to use in the 
+#'   \code{optimx.maxit} \tab maximum number of iterations to use in the
 #'    optimisation.\cr}
-#' 
+#'
 #' @param dsmodel distance sampling model specification
 #' @param mrmodel mark-recapture model specification
 #' @param data dataframe containing data to be analyzed
@@ -182,68 +182,92 @@
 #'   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
-#' 
+#'
 #' Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
 #'   function. In: Advanced Distance Sampling, eds. S.T. Buckland,
 #'   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
 #'   Oxford University Press.
 #' @keywords ~Statistical Models
 #' @examples
-#' 
+#' # load data
 #' data(book.tee.data)
-#' region<<-book.tee.data$book.tee.region
-#' egdata<<-book.tee.data$book.tee.dataframe
-#' samples<<-book.tee.data$book.tee.samples
-#' obs<<-book.tee.data$book.tee.obs
-#' result=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = egdata, method = "ds",
-#'  meta.data = list(width = 4))
-#' result=ddf(mrmodel = ~glm(~distance), data = egdata, method = "io.fi", 
-#'   meta.data = list(width = 4))
-#' result=ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance), data = egdata, 
-#'   method = "io", meta.data = list(width = 4))
+#' region <- book.tee.data$book.tee.region
+#' egdata <- book.tee.data$book.tee.dataframe
+#' samples <- book.tee.data$book.tee.samples
+#' obs <- book.tee.data$book.tee.obs
+#'
+#' # fit a half-normal detection function
+#' result <- ddf(dsmodel=~mcds(key="hn", formula=~1), data=egdata, method="ds",
+#'               meta.data=list(width=4))
+#'
+#' # fit an independent observer model with full independence
+#' result.io.fi <- ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi",
+#'                     meta.data=list(width = 4))
+#'
+#' # fit an independent observer model with point independence
+#' result.io <- ddf(dsmodel=~cds(key = "hn"), mrmodel=~glm(~distance),
+#'                  data=egdata, method="io", meta.data=list(width=4))
 #' \donttest{
+#'
+#' # simulated single observer point count data (see ?ptdata.single)
 #' data(ptdata.single)
-#' ptdata.single$distbegin=(as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
-#' ptdata.single$distend=(as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
-#' model=ddf(data=ptdata.single,dsmodel=~cds(key="hn"),meta.data=list(point=TRUE,
-#' binned=TRUE,breaks=10*(0:10)))
+#' ptdata.single$distbegin <- (as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
+#' ptdata.single$distend <- (as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
+#' model <- ddf(data=ptdata.single, dsmodel=~cds(key="hn"),
+#'              meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
+#'
 #' summary(model)
+#'
 #' plot(model,main="Single observer binned point data - half normal")
-#' model=ddf(data=ptdata.single,dsmodel=~cds(key="hr"),
-#' meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
+#'
+#' model <- ddf(data=ptdata.single, dsmodel=~cds(key="hr"),
+#'              meta.data=list(point=TRUE, binned=TRUE, breaks=10*(0:10)))
+#'
 #' summary(model)
+#'
 #' plot(model,main="Single observer binned point data - hazard rate")
-#' 
-#' dev.new() 
+#'
+#' dev.new()
+#'
+#' # simulated double observer point count data (see ?ptdata.dual)
+#' # setup data
 #' data(ptdata.dual)
-#' ptdata.dual$distbegin=(as.numeric(cut(ptdata.dual$distance,10*(0:10)))-1)*10
-#' ptdata.dual$distend=(as.numeric(cut(ptdata.dual$distance,10*(0:10))))*10
-#' model=ddf(method="io",data=ptdata.dual,dsmodel=~cds(key="hn"),
-#'  mrmodel=~glm(formula=~distance*observer),
-#' meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
+#' ptdata.dual$distbegin <- (as.numeric(cut(ptdata.dual$distance,10*(0:10)))-1)*10
+#' ptdata.dual$distend <- (as.numeric(cut(ptdata.dual$distance,10*(0:10))))*10
+#'
+#' model <- ddf(method="io", data=ptdata.dual, dsmodel=~cds(key="hn"),
+#'              mrmodel=~glm(formula=~distance*observer),
+#'              meta.data=list(point=TRUE, binned=TRUE, breaks=10*(0:10)))
+#'
 #' summary(model)
+#'
 #' par(mfrow=c(2,3))
 #' plot(model,main="Dual observer binned point data",new=FALSE)
-#' model=ddf(method="io",data=ptdata.dual,dsmodel=~cds(key="unif",
-#' adj.series="cos", adj.order=1),mrmodel=~glm(formula=~distance*observer),
-#' meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
+#'
+#' model <- ddf(method="io", data=ptdata.dual,
+#'              dsmodel=~cds(key="unif", adj.series="cos", adj.order=1),
+#'              mrmodel=~glm(formula=~distance*observer),
+#'              meta.data=list(point=TRUE, binned=TRUE, breaks=10*(0:10)))
+#'
 #' summary(model)
+#'
 #' par(mfrow=c(2,3))
 #' plot(model,main="Dual observer binned point data",new=FALSE)
-#' } 
-ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds", 
+#'
+#' }
+ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
                 meta.data=list(), control=list()){
-# Functions Used: ddf.ds, ddf.io, ddf.trial, ddf.io.fi, ddf.trial.fi, 
-#                 ddf.rem, ddf.rem.fi  
+  # Functions Used: ddf.ds, ddf.io, ddf.trial, ddf.io.fi, ddf.trial.fi,
+  #                 ddf.rem, ddf.rem.fi
 
-  # Save current user options and then set desgn contrasts to treatment 
+  # Save current user options and then set desgn contrasts to treatment
   # style; load stats
 
-  save.options<-options()
+  save.options <- options()
   options(contrasts=c("contr.treatment","contr.poly"))
   library(stats)
 
-  # Check to make sure method is valid and correct model components 
+  # Check to make sure method is valid and correct model components
   # have been specified
   method <- match.arg(method,c("ds","io","io.fi","trial","trial.fi",
                                "rem","rem.fi"))
@@ -258,23 +282,32 @@ ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
       stop("For method=",method,", mrmodel must be specified")
     }
   }
-#
-# call method specific fitting function
-#
-  result=switch(method,
-         ds=ddf.ds(model=dsmodel,data,meta.data=meta.data,control=control,call=match.call()),
-         io=ddf.io(dsmodel=dsmodel,mrmodel=mrmodel,data=data,meta.data=meta.data,control=control,call=match.call()),
-         io.fi=ddf.io.fi(model=mrmodel,data,meta.data=meta.data,control=control,call=match.call(),method=method),
-         trial=ddf.trial(dsmodel=dsmodel,mrmodel=mrmodel,data=data,meta.data=meta.data,control=control,call=match.call()),
-         trial.fi=ddf.trial.fi(model=mrmodel,data,meta.data=meta.data,control=control,call=match.call(),method="trial.fi"),
-         rem=ddf.rem(dsmodel=dsmodel,mrmodel=mrmodel,data,meta.data=meta.data,control=control,call=match.call()),
-         rem.fi=ddf.rem.fi(model=mrmodel,data,meta.data=meta.data,control=control,call=match.call(),method="rem.fi"))
-#
-# Restore user options
-#
+
+  # call method specific fitting function
+  result <- switch(method,
+                   ds=ddf.ds(model=dsmodel,data,meta.data=meta.data,
+                             control=control,call=match.call()),
+                   io=ddf.io(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
+                             meta.data=meta.data,control=control,
+                             call=match.call()),
+                   io.fi=ddf.io.fi(model=mrmodel,data,meta.data=meta.data,
+                                   control=control,call=match.call(),
+                                   method=method),
+                   trial=ddf.trial(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
+                                   meta.data=meta.data,control=control,
+                                   call=match.call()),
+                   trial.fi=ddf.trial.fi(model=mrmodel,data=data,
+                                         meta.data=meta.data,control=control,
+                                         call=match.call(),method="trial.fi"),
+                   rem=ddf.rem(dsmodel=dsmodel,mrmodel=mrmodel,data,
+                               meta.data=meta.data,control=control,
+                               call=match.call()),
+                   rem.fi=ddf.rem.fi(model=mrmodel,data,meta.data=meta.data,
+                                     control=control,call=match.call(),
+                                     method="rem.fi"))
+
+  # Restore user options
   options(save.options)
-#
-# Return result
-#
+
   return(result)
 }

@@ -14,8 +14,10 @@ sampling model}
   \item{x}{fitted model from \code{ddf}}
 
   \item{which}{index to specify which plots should be
-  produced. 1: observer 1, 2: pooled, 3:cond det fct
-  observer 1|2}
+  produced.  \tabular{ll}{1 \tab Plot primary unconditional
+  detection function \cr 2 \tab Plot pooled unconditional
+  detection function \cr 3 \tab Plot conditional (1|2)
+  detection function \cr}}
 
   \item{breaks}{user defined breakpoints}
 
@@ -41,7 +43,7 @@ sampling model}
   \item{jitter}{scaling option for plotting points.  Jitter
   is applied to points by multiplying the fitted value by a
   random draw from a normal distribution with mean 1 and sd
-  jitter.}
+  jitter}
 
   \item{divisions}{number of divisions for averaging line
   values; default = 25}
@@ -56,7 +58,8 @@ sampling model}
   \item{subtitle}{if TRUE, shows plot type as sub-title}
 
   \item{\dots}{other graphical parameters, passed to the
-  plotting functions (plot, hist, lines, points, etc)}
+  plotting functions (\code{plot}, \code{hist},
+  \code{lines}, \code{points}, etc)}
 }
 \value{
   NULL

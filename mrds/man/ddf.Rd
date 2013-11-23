@@ -236,46 +236,71 @@
   number of iterations to use in the optimisation.\cr}
 }
 \examples{
+# load data
 data(book.tee.data)
-region<<-book.tee.data$book.tee.region
-egdata<<-book.tee.data$book.tee.dataframe
-samples<<-book.tee.data$book.tee.samples
-obs<<-book.tee.data$book.tee.obs
-result=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = egdata, method = "ds",
- meta.data = list(width = 4))
-result=ddf(mrmodel = ~glm(~distance), data = egdata, method = "io.fi",
-  meta.data = list(width = 4))
-result=ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance), data = egdata,
-  method = "io", meta.data = list(width = 4))
+region <- book.tee.data$book.tee.region
+egdata <- book.tee.data$book.tee.dataframe
+samples <- book.tee.data$book.tee.samples
+obs <- book.tee.data$book.tee.obs
+
+# fit a half-normal detection function
+result <- ddf(dsmodel=~mcds(key="hn", formula=~1), data=egdata, method="ds",
+              meta.data=list(width=4))
+
+# fit an independent observer model with full independence
+result.io.fi <- ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi",
+                    meta.data=list(width = 4))
+
+# fit an independent observer model with point independence
+result.io <- ddf(dsmodel=~cds(key = "hn"), mrmodel=~glm(~distance),
+                 data=egdata, method="io", meta.data=list(width=4))
 \donttest{
+
+# simulated single observer point count data (see ?ptdata.single)
 data(ptdata.single)
-ptdata.single$distbegin=(as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
-ptdata.single$distend=(as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
-model=ddf(data=ptdata.single,dsmodel=~cds(key="hn"),meta.data=list(point=TRUE,
-binned=TRUE,breaks=10*(0:10)))
+ptdata.single$distbegin <- (as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
+ptdata.single$distend <- (as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
+model <- ddf(data=ptdata.single, dsmodel=~cds(key="hn"),
+             meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
+
 summary(model)
+
 plot(model,main="Single observer binned point data - half normal")
-model=ddf(data=ptdata.single,dsmodel=~cds(key="hr"),
-meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
+
+model <- ddf(data=ptdata.single, dsmodel=~cds(key="hr"),
+             meta.data=list(point=TRUE, binned=TRUE, breaks=10*(0:10)))
+
 summary(model)
+
 plot(model,main="Single observer binned point data - hazard rate")
 
 dev.new()
+
+# simulated double observer point count data (see ?ptdata.dual)
+# setup data
 data(ptdata.dual)
-ptdata.dual$distbegin=(as.numeric(cut(ptdata.dual$distance,10*(0:10)))-1)*10
-ptdata.dual$distend=(as.numeric(cut(ptdata.dual$distance,10*(0:10))))*10
-model=ddf(method="io",data=ptdata.dual,dsmodel=~cds(key="hn"),
- mrmodel=~glm(formula=~distance*observer),
-meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
+ptdata.dual$distbegin <- (as.numeric(cut(ptdata.dual$distance,10*(0:10)))-1)*10
+ptdata.dual$distend <- (as.numeric(cut(ptdata.dual$distance,10*(0:10))))*10
+
+model <- ddf(method="io", data=ptdata.dual, dsmodel=~cds(key="hn"),
+             mrmodel=~glm(formula=~distance*observer),
+             meta.data=list(point=TRUE, binned=TRUE, breaks=10*(0:10)))
+
 summary(model)
+
 par(mfrow=c(2,3))
 plot(model,main="Dual observer binned point data",new=FALSE)
-model=ddf(method="io",data=ptdata.dual,dsmodel=~cds(key="unif",
-adj.series="cos", adj.order=1),mrmodel=~glm(formula=~distance*observer),
-meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
+
+model <- ddf(method="io", data=ptdata.dual,
+             dsmodel=~cds(key="unif", adj.series="cos", adj.order=1),
+             mrmodel=~glm(formula=~distance*observer),
+             meta.data=list(point=TRUE, binned=TRUE, breaks=10*(0:10)))
+
 summary(model)
+
 par(mfrow=c(2,3))
 plot(model,main="Dual observer binned point data",new=FALSE)
+
 }
 }
 \author{
@@ -298,6 +323,6 @@ plot(model,main="Dual observer binned point data",new=FALSE)
   \code{\link{ddf.ds}},
   \code{\link{ddf.io}},\code{\link{ddf.io.fi}},\code{\link{ddf.trial}},\code{\link{ddf.trial.fi}},\code{\link{ddf.rem}},\code{\link{ddf.rem.fi}}
 }
-\keyword{Models}
 \keyword{~Statistical}
+\keyword{Models}
 

@@ -10,7 +10,7 @@
   \item{x}{object of class det.tables}
 
   \item{which}{items in x to plot; vector with values in
-  1:6 #'}
+  1:6}
 
   \item{angle}{shading angle for hatching}
 
@@ -28,7 +28,7 @@
   plotting functions (plot, hist, lines, points, etc)}
 }
 \value{
-  NULL
+  Just plots.
 }
 \description{
   Creates a series of tables for dual observer data that
