@@ -3,7 +3,7 @@
 #' Generic function that computes chi-square goodness of fit test for ddf
 #' models
 #'
-#' @aliases ddf.gof gof.ds gof.io gof.io.fi gof.trial gof.trial.fi gof.rem
+#' @aliases ddf.gof gof.io gof.io.fi gof.trial gof.trial.fi gof.rem
 #'   gof.rem.fi
 #' @export
 #' @param model ddf model object
