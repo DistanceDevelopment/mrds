@@ -1,51 +1,65 @@
 #'  Detection functions
-#' 
-#'  Various functions used to specify key and adjustment functions for detection functions
-#' 
-#' 	Multi-covariate detection functions (MCDS) are represented by a function \eqn{g(x,w,\theta)} where x is distance,
-#'	z is a set of covariates and \eqn{\theta} is the parameter vector.  The functions are defined such that \eqn{g(0,w,\theta)=1} and
-#'	the covariates modify the scale \eqn{(x/\sigma)} where a log link is used to relate \eqn{\sigma} to the covariates,
-#'	\eqn{\sigma=exp(\theta*w)}. A CDS function is obtained with a constant \eqn{\sigma} which is equivalent to an intercept 
-#'	design matrix, z.
-#'	\code{detfct} will call either a gamma, half-normal, hazard-rate or uniform function only returning the probability of detection at that distance.
-#'	In addition to the simple model above, we may specify adjustment terms to fit the data better. These adjustments are either Cosine, Hermite and simple polynomials. 
-#'	These are specified as arguments to \code{detfct}, as detailed below.   
-#' 
-#'		\code{detfct} meta function which calls the others and assembles the final result using either key(x)[1+series(x)] or (key(x)[1+series(x)])/(key(0)[1+series(0)]) (depending on the value of standardize)
-#'		\code{keyfct.hn, keyfct.hz, keyfct.gamma} calculates half-normal or hazard-rate key function values 
-#'		\code{adjfct.cos, adjfct.poly, adjfct.herm} calculates adjustment term values 
-#'		\code{scalevalue} for either detection function it computes the scale with the log link using the parameters and the covariate design matrix
-#'		\code{fx,fr} non-normalized probability density for line transects and point counts respectively
-#' 
-#' @aliases detfct adjfct.cos adjfct.herm hermite.poly adjfct.poly keyfct.hn keyfct.hz 
-#'  keyfct.gamma apex.gamma scalevalue g0 fx fr distpdf
-#' @usage 	detfct(distance, ddfobj, select=NULL, index=NULL, width=NULL, standardize = TRUE, stdint=FALSE)
-#' 
-#'	adjfct.cos(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
-#' 
-#'	adjfct.poly(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
-#' 
-#'	adjfct.herm(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
-#' 
-#'	scalevalue(key.scale, z)
-#' 
-#'  keyfct.hn(distance, key.scale)
-#' 
-#'	keyfct.hz(distance, key.scale, key.shape)
-#' 
-#'	keyfct.gamma(distance, key.scale, key.shape)
-#' 
-#'	apex.gamma(key.scale, key.shape)
-#' 
-#'	fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
-#' 
-#'	fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
-#' 
-#'	distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
+#'
+#' Various functions used to specify key and adjustment functions for
+#' detection functions.
+#'
+#' Multi-covariate detection functions (MCDS) are represented by a function
+#' \eqn{g(x,w,\theta)} where x is distance, z is a set of covariates and
+#' \eqn{\theta} is the parameter vector.  The functions are defined such that
+#' \eqn{g(0,w,\theta)=1} and the covariates modify the scale \eqn{(x/\sigma)}
+#' where a log link is used to relate \eqn{\sigma} to the covariates,
+#' \eqn{\sigma=exp(\theta*w)}. A CDS function is obtained with a constant
+#' \eqn{\sigma} which is equivalent to an intercept  design matrix, z.
+#'
+#' \code{detfct} will call either a gamma, half-normal, hazard-rate or uniform
+#' function only returning the probability of detection at that distance. In
+#' addition to the simple model above, we may specify adjustment terms to fit
+#' the data better. These adjustments are either Cosine, Hermite and simple
+#' polynomials.
+#' These are specified as arguments to \code{detfct}, as detailed below.
+#'
+#' \code{detfct} function which calls the others and assembles the final result
+#' using either key(x)[1+series(x)] or
+#' (key(x)[1+series(x)])/(key(0)[1+series(0)]) (depending on the value of
+#' standardize)
+#' \code{keyfct.hn, keyfct.hz, keyfct.gamma} calculate half-normal, hazard-rate
+#' or gamma key function values.
+#' \code{adjfct.cos, adjfct.poly, adjfct.herm} calculates adjustment term values
+#' \code{scalevalue} for either detection function it computes the scale with
+#' the log link using the parameters and the covariate design matrix
+#' \code{fx,fr} non-normalized probability density for line transects and point
+#' counts respectively
+#'
+#' @aliases detfct adjfct.cos adjfct.herm hermite.poly adjfct.poly keyfct.hn
+#'  keyfct.hz keyfct.gamma apex.gamma scalevalue fx fr distpdf
+#' @usage detfct(distance, ddfobj, select=NULL, index=NULL, width=NULL,
+#'               standardize = TRUE, stdint=FALSE)
+#'
+#' adjfct.cos(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
+#'
+#' adjfct.poly(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
+#'
+#' adjfct.herm(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
+#'
+#' scalevalue(key.scale, z)
+#'
+#' keyfct.hn(distance, key.scale)
+#'
+#' keyfct.hz(distance, key.scale, key.shape)
+#'
+#' keyfct.gamma(distance, key.scale, key.shape)
+#'
+#' apex.gamma(key.scale, key.shape)
+#'
+#' fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
+#'
+#' fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
+#'
+#' distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
 #'            stdint=FALSE,point=FALSE)
-#' 
-#' @param distance  vector of distances 
-#' @param ddfobj distance sampling object (see \code{\link{create.ddfobj}}) 
+#'
+#' @param distance  vector of distances
+#' @param ddfobj distance sampling object (see \code{\link{create.ddfobj}})
 #' @param z design matrix for scale function
 #' @param select logical vector for selection of data values
 #' @param index specific data row index
@@ -54,58 +68,59 @@
 #' @param adj.order vector of adjustment orders
 #' @param adj.parm vector of adjustment parameters
 #' @param width truncation width
-#' @param standardize logical used to decide whether to divide through by the function evaluated at 0 
-#' @param scaling the scaling for the adjustment terms 
+#' @param standardize logical used to decide whether to divide through by the
+#'  function evaluated at 0
+#' @param scaling the scaling for the adjustment terms
 #' @param stdint logical used to decide whether integral is standardized
 #' @param point if TRUE, point counts; otherwise line transects
 #' @param adj.exp if TRUE uses exp(adj) for adjustment to keep f(x)>0
-#' @return 
-#'	For \code{detfct}, the value is a vector of detection probabilities for the input set of x and z.
-#'	For \code{keyfct.hn, keyfct.hz}, vector of detection probability for that key function at x.
-#'	For \code{adjfct.cos, adjfct.poly, adjfct.herm}, vector of the value of the adjustment term at x.
-#'	For \code{scalevalue}, the value is a vector of the computed scales for the design matrix z. 
-#'	For \code{apex.gamma}, the value is the distance at which the gamma peaks
+#' @return
+#' For \code{detfct}, the value is a vector of detection probabilities for the
+#'   input set of x and z.
+#' For \code{keyfct.hn, keyfct.hz}, vector of detection probability for that
+#'   key function at x.
+#' For \code{adjfct.cos, adjfct.poly, adjfct.herm}, vector of the value of the
+#'   adjustment term at x.
+#' For \code{scalevalue}, the value is a vector of the computed scales for the
+#'   design matrix z.
+#' For \code{apex.gamma}, the value is the distance at which the gamma peaks
 #' @author Jeff Laake, David Miller
 #' @seealso  \code{\link{mcds}},  \code{\link{cds}}
-#' @references 	Marques and Buckland 2004
-#'	Laake and Borchers 2004. in Buckland et al 2004.
-#'	Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection function for line transect surveys with mark-recapture and covariate data. Journal of Agricultural Biological and Environmental Statistics 14:207-223.
-distpdf <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE,point=FALSE)
-{
-	if(!point)
-		return(fx(distance=distance,ddfobj=ddfobj,select=select,index=index,width=width,standardize=standardize,stdint=stdint))
-	else
-		return(fr(distance=distance,ddfobj=ddfobj,select=select,index=index,width=width,standardize=standardize,stdint=stdint))	
-}
-fx <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
-	return(detfct(distance,ddfobj,select,index,width,standardize,stdint)/width)
+#' @references  Marques and Buckland 2004
+#' Laake and Borchers 2004. in Buckland et al 2004.
+#' Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection function for
+#' line transect surveys with mark-recapture and covariate data. Journal of
+#' Agricultural Biological and Environmental Statistics 14:207-223.
+distpdf <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
+                    standardize=TRUE,stdint=FALSE,point=FALSE){
 
-fr <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
-	return(detfct(distance,ddfobj,select,index,width,standardize,stdint)*2*distance/width^2)
+ if(!point){
+   return(fx(distance=distance,ddfobj=ddfobj,select=select,index=index,
+             width=width,standardize=standardize,stdint=stdint))
+ }else
+   return(fr(distance=distance,ddfobj=ddfobj,select=select,index=index,
+             width=width,standardize=standardize,stdint=stdint))
+}
+
+
+fx <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
+               standardize=TRUE,stdint=FALSE){
+  return(detfct(distance,ddfobj,select,index,width,standardize,stdint)/width)
+}
+
+fr <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
+               standardize=TRUE,stdint=FALSE){
+  return(detfct(distance,ddfobj,select,index,width,standardize,stdint)*
+         2*distance/width^2)
+}
+
 
 detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
-		standardize=TRUE,stdint=FALSE){
-#
-# detfct - calls key and adjustment terms to create the detection function
-#
-# Arguments:
-#	distance		- vector of distances 
-#	ddfobj			- distance sampling object
-#	select		    - selection of data values
-#   index           - index of specific row
-#	width			- truncation width
-# 	standardize		- standardizes detection function so g(0)=1
-# 	stdint			- standardizes the scale to 1 for integral computation
-#
-# Value	
-#   the value of the detection function at the specified point(s)
-#
-# Uses : getpar, scalevalue, keyfct.hn, keyfct.hz, adjfct.poly, adjfct.herm, adjfct.cos
-#
-#
-# Set of observations for computation of detection function can
-# be specified with logical (select) and numeric (index) values.
-# Either or both can be specified although the latter is unlikely.
+    standardize=TRUE,stdint=FALSE){
+
+  # Set of observations for computation of detection function can
+  # be specified with logical (select) and numeric (index) values.
+  # Either or both can be specified although the latter is unlikely.
   if(is.null(select)){
     # use all
     if(is.null(index)){
@@ -126,12 +141,12 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
       scale.dm <- ddfobj$scale$dm[select,,drop=FALSE][index,,drop=FALSE]
       shape.dm <- ddfobj$shape$dm[select,,drop=FALSE][index,,drop=FALSE]
     }
-  } 
+  }
 
-  # Key function 
+  # Key function
   key <- ddfobj$type
 
-  # calculate the key scale 
+  # calculate the key scale
   if(stdint){
     if(is.null(index)){
       key.scale <- rep(1,nrow(scale.dm))
@@ -149,11 +164,11 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
     key.shape <- scalevalue(ddfobj$shape$parameters,shape.dm)
   }
 
-  if(key=="gamma"){	  
+  if(key=="gamma"){
     key.shape=key.shape+1
     key.shape[key.shape==1]=key.shape[key.shape==1]+0.000001
   }
- 
+
   # 19-Jan-06 jll; added proper standardize code to get std integral.
   #  I left standardize code below in case it is needed for adjustment fcts
   #
@@ -167,9 +182,9 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
   }else if(key == "gamma"){
     key.vals <- keyfct.gamma(distance, key.scale, key.shape)
   }else if(key == "th1"){
-	  key.vals <- keyfct.th1(distance, key.scale, key.shape)
+    key.vals <- keyfct.th1(distance, key.scale, key.shape)
   }else if(key == "th2"){
-	  key.vals <- keyfct.th2(distance, key.scale, key.shape)
+    key.vals <- keyfct.th2(distance, key.scale, key.shape)
   }
 
   # Adjustment functions
@@ -180,7 +195,7 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
     adj.order <- ddfobj$adjustment$order
     adj.parm <- ddfobj$adjustment$parameters
     adj.exp <- ddfobj$adjustment$exp
-    
+
     # Find out if we are scaling by width or by key scale
     if(adj.scale == "width"){
       scaling <- width
@@ -199,13 +214,13 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
     }else if(adj.series == "cos"){
       adj.vals <- adjfct.cos(distance,scaling,adj.order,adj.parm,adj.exp)
     }
-		
+
     # If we have adjustment terms then we need to standardize the detection
-    # function. So find the values for the key and adjustment terms at 0   
-    		
+    # function. So find the values for the key and adjustment terms at 0
+
     # dlm 25-Aug-05  This causes a division by zero error in the optimization
-    #		 so lets only do it when we need to, it cancels in the
-    #		 likelihood anyway.
+    #    so lets only do it when we need to, it cancels in the
+    #    likelihood anyway.
     if(standardize == TRUE){
       if(key == "hn"){
         key.val.0 <- keyfct.hn(rep(0,length(distance)), key.scale)
@@ -215,11 +230,11 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
         key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
       }else if(key == "unif"){
         key.val.0 <- rep(1/width,length(distance))
-	  }else if(key == "th1"){
-		key.val.0 <- keyfct.th1(rep(0,length(distance)), key.scale, key.shape)
-	  }else if(key == "th2"){
-		key.val.0 <- keyfct.th2(rep(0,length(distance)),key.scale, key.shape)
-	  }	
+      }else if(key == "th1"){
+        key.val.0 <- keyfct.th1(rep(0,length(distance)), key.scale, key.shape)
+      }else if(key == "th2"){
+        key.val.0 <- keyfct.th2(rep(0,length(distance)),key.scale, key.shape)
+      }
       if(adj.series == "poly"){
         adj.val.0 <- adjfct.poly(rep(0,length(distance)),scaling,
                                  adj.order,adj.parm,adj.exp)
@@ -234,7 +249,7 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
       # Now return the standardized value of the detection function
       return((key.vals*(1+adj.vals))/(key.val.0*(1+adj.val.0)))
 
-    } else{
+    }else{
       return(key.vals*(1+adj.vals))
     }
   }else{
@@ -250,11 +265,11 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
         key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
       }else if(key == "unif"){
         key.val.0 <- rep(1/width,length(distance))
-	  }else if(key == "th1"){
-		key.val.0 <- keyfct.th1(rep(0,length(distance)), key.scale, key.shape)
-	  }else if(key == "th2"){
-		key.val.0 <- keyfct.th2(rep(0,length(distance)),key.scale, key.shape)
-	}      # Now return the standardized value of the detection function
+      }else if(key == "th1"){
+        key.val.0 <- keyfct.th1(rep(0,length(distance)), key.scale, key.shape)
+      }else if(key == "th2"){
+        key.val.0 <- keyfct.th2(rep(0,length(distance)),key.scale, key.shape)
+      }      # Now return the standardized value of the detection function
       return(key.vals/key.val.0)
     }else{
       return(key.vals)

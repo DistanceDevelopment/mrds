@@ -8,7 +8,7 @@
 #' @param x covariate data
 #' @param models model list
 #' @param beta logistic parameters
-#' @param \code{TRUE} if a point transect model
+#' @param point \code{TRUE} if a point transect model
 #'
 #' @return vector of probabilities
 #' @author Jeff Laake

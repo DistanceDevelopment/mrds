@@ -13,7 +13,7 @@ logisticbyx(distance, x, models, beta, point)
 
   \item{beta}{logistic parameters}
 
-  \item{\code{TRUE}}{if a point transect model}
+  \item{point}{\code{TRUE} if a point transect model}
 }
 \value{
 vector of probabilities

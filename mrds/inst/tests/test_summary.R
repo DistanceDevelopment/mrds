@@ -3,6 +3,8 @@
 library(testthat)
 library(mrds)
 
+tol <- sqrt(.Machine$double.eps)
+
 context("Summary tests")
 
 test_that("summary results are correct",{
@@ -69,9 +71,12 @@ test_that("summary results are correct",{
                                   breaks=10*(0:10),width=100))
 
 
-  expect_that(summary(pt.result)$mr.summary,equals(pt.result.summ$mr.summary))
-  expect_that(summary(pt.result)$ds.summary,equals(pt.result.summ$ds.summary))
-  expect_that(summary(pt.result),equals(pt.result.summ))
+  expect_that(summary(pt.result)$mr.summary,equals(pt.result.summ$mr.summary,
+              tol=tol))
+  expect_that(summary(pt.result)$ds.summary,equals(pt.result.summ$ds.summary,
+              tol=tol))
+  expect_that(summary(pt.result),equals(pt.result.summ,
+              tol=tol))
 
 
 })

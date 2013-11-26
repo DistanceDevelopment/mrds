@@ -32,8 +32,8 @@ summary.io <- function(object,se=TRUE,...){
   avgp <- function(model,pdot,...){return(pdot)}
   ddfobj <- model$ds$ds$aux$ddfobj
   n <- nrow(ddfobj$xmat)
-  ans <- list(mr.summary  = summary(model$mr,se=se,N=FALSE,model,ddfobj),
-              ds.summary  = summary(model$ds,se=se,N=FALSE),
+  ans <- list(mr.summary  = summary(model$mr,se=se,N=FALSE,model,ddfobj),#io.fi
+              ds.summary  = summary(model$ds,se=se,N=FALSE), #ds
               Nhat        = model$Nhat,
               AIC         = model$criterion,
               average.p   = n/model$Nhat,

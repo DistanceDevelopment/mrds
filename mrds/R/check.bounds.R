@@ -3,6 +3,14 @@
 #' Simple internal function to check that the optimisation didn't hit bounds.
 #' Based on code that used to live in \code{detfct.fit.opt}.
 #'
+#' @param lt optimisation object
+#' @param lowerbounds current lower bounds
+#' @param upperbounds current upper bounds
+#' @param ddfobj ddf object
+#' @param showit debug level
+#' @param setlower were lower bounds set by the user
+#' @param setupper were upper bounds set by the user
+#'
 #' @author Dave Miller; Jeff Laake
 check.bounds <- function(lt,lowerbounds,upperbounds,ddfobj,showit,
                          setlower,setupper){
