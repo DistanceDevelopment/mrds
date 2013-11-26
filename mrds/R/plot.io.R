@@ -60,6 +60,7 @@
 #' @author Jeff Laake, Jon Bishop, David Borchers, David L Miller
 #' @keywords plot
 #' @examples
+#' \donttest{
 #' library(mrds)
 #' data(book.tee.data)
 #' egdata <- book.tee.data$book.tee.dataframe
@@ -72,6 +73,7 @@
 #' # Plot primary and secondary unconditional detection functions on one page
 #' # and  primary and secondary conditional detection functions on another
 #' plot(result.io,which=c(1,2,5,6),pages=2)
+#' }
 plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
                     showlines=TRUE, showpoints=TRUE,ylim=c(0,1),angle=-45,
                     density=20,col="black",jitter=NULL,divisions=25,pages=0,

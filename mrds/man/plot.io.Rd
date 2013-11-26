@@ -95,6 +95,7 @@ The \code{which} command allows the user to select
 definition.
 }
 \examples{
+\donttest{
 library(mrds)
 data(book.tee.data)
 egdata <- book.tee.data$book.tee.dataframe
@@ -107,6 +108,7 @@ plot(result.io)
 # Plot primary and secondary unconditional detection functions on one page
 # and  primary and secondary conditional detection functions on another
 plot(result.io,which=c(1,2,5,6),pages=2)
+}
 }
 \author{
 Jeff Laake, Jon Bishop, David Borchers, David L Miller

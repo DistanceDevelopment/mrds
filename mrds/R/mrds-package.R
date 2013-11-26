@@ -1,5 +1,5 @@
 #' Mark-Recapture Distance Sampling (mrds)
-#' 
+#'
 #' This package implements mark-recapture distance sampling
 #'     methods as described in D.L. Borchers, W. Zucchini and Fewster,
 #'     R.M. (1988), "Mark-recapture models for line transect surveys",
@@ -12,25 +12,27 @@
 #'     J.L., Southwell, C. and Paxton, C.L.G. "Accommodating unmodelled
 #'     heterogeneity in double-observer distance sampling surveys". 2006.
 #'     Biometrics 62:372-378.)
-#' 
+#'
 #' \tabular{ll}{ Package: \tab mrds \cr Type: \tab Package\cr Version:
 #' \tab 2.0.5\cr Date: \tab 2012-3-23\cr License: \tab GPL (>=2)\cr LazyLoad: \tab
 #' yes\cr }
-#' 
+#'
 #' @name mrds-package
 #' @aliases mrds-package mrds
 #' @docType package
-#' @author Jeff Laake <jeff.laake@@noaa.gov>, David Borchers <dlb@@mcs.st-and.ac.uk>, 
-#'    Len Thomas <len@@mcs.st-and.ac.uk>, David Miller <dlm22@@st-and.ac.uk> and Jon Bishop <jonb@@mcs.st-and.ac.uk>
+#' @author Jeff Laake <jeff.laake@@noaa.gov>,
+#'         David Borchers <dlb@@mcs.st-and.ac.uk>,
+#'         Len Thomas <len@@mcs.st-and.ac.uk>,
+#'         David L. Miller <dave@@ninepointeightone.net>,
+#'         Jon Bishop <jonb@@mcs.st-and.ac.uk>
 #' @keywords package
-#' 
+#'
 NULL
 
 
 
-
 #' Golf tee data used in chapter 6 of Advanced Distance Sampling examples
-#' 
+#'
 #' Double platform data collected in a line transect survey of golf tees by 2
 #' observers at St. Andrews. Field sex was actually colour of the golf tee: 0 -
 #' green; 1 - yellow. Exposure was either low (0) or high(1) depending on
@@ -122,56 +124,55 @@ NULL
 #' @examples
 #' \donttest{
 #' data(stake77)
-#' # Functions to extract stake data and put in the mrds format for model fitting.
-#' extract.stake=function(stake,obs)
-#' {
-#'   extract.obs=function(obs)
-#'   {
-#'      example=subset(stake,eval(parse(text=paste("Obs",obs,"==1",sep=""))),select="PD")
-#'      example$distance=example$PD
-#'      example$object=1:nrow(example)
-#'      example$PD=NULL
-#'      return(example)
-#'  }
-#'  if(obs!="all")
-#'   return(extract.obs(obs=obs))
-#'  else
-#'  {
-#'   example=NULL
-#'      for(i in 1:(ncol(stake)-2))
-#'   {
-#'     df=extract.obs(obs=i)
-#'     df$person=i
-#'     example=rbind(example,df)
-#'   }     
-#'   example$person=factor(example$person)
-#'   example$object=1:nrow(example)
-#'   return(example)
-#'  }   
+#' # Extract functions for stake data and put in the mrds format
+#' extract.stake <- function(stake,obs){
+#'   extract.obs <- function(obs){
+#'     example <- subset(stake,eval(parse(text=paste("Obs",obs,"==1",sep=""))),
+#'                       select="PD")
+#'     example$distance <- example$PD
+#'     example$object <- 1:nrow(example)
+#'     example$PD <- NULL
+#'     return(example)
+#'   }
+#'   if(obs!="all"){
+#'     return(extract.obs(obs=obs))
+#'   }else{
+#'     example <- NULL
+#'     for(i in 1:(ncol(stake)-2)){
+#'       df <- extract.obs(obs=i)
+#'       df$person <- i
+#'       example <- rbind(example,df)
+#'     }
+#'     example$person <- factor(example$person)
+#'     example$object <- 1:nrow(example)
+#'     return(example)
+#'   }
 #' }
-#' extract.stake.pairs=function(stake,obs1,obs2,removal=FALSE)
-#' {
-#'   obs1=paste("Obs",obs1,sep="")
-#'   obs2=paste("Obs",obs2,sep="")
-#'   example=subset(stake,eval(parse(text=paste(obs1,"==1 |",obs2,"==1 ",sep=""))),
-#'                 select=c("PD",obs1,obs2))
-#'   names(example)=c("distance","obs1","obs2")
-#'   detected=c(example$obs1,example$obs2)
-#'   example=data.frame(object=rep(1:nrow(example),2),distance=rep(example$distance,2),
-#'    detected=detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
-#'   if(removal)example$detected[example$observer==2]=1
+#' extract.stake.pairs <- function(stake,obs1,obs2,removal=FALSE){
+#'   obs1 <- paste("Obs",obs1,sep="")
+#'   obs2 <- paste("Obs",obs2,sep="")
+#'   example <- subset(stake,eval(parse(text=paste(obs1,"==1 |",obs2,"==1 ",
+#'                                        sep=""))),select=c("PD",obs1,obs2))
+#'   names(example) <- c("distance","obs1","obs2")
+#'   detected <- c(example$obs1,example$obs2)
+#'   example <- data.frame(object=rep(1:nrow(example),2),
+#'                         distance=rep(example$distance,2),
+#'   detected <- detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
+#'   if(removal) example$detected[example$observer==2] <- 1
 #'   return(example)
 #' }
 #' # extract data for observer 1 and fit a single observer model
-#' stakes=extract.stake(stake77,1)
-#' ds.model=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = stakes, method = "ds", 
-#'   meta.data = list(width = 20))
+#' stakes <- extract.stake(stake77,1)
+#' ds.model <- ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = stakes,
+#'                 method = "ds", meta.data = list(width = 20))
 #' plot(ds.model,breaks=seq(0,20,2),showpoints=TRUE)
 #' ddf.gof(ds.model)
+#'
 #' # extract data from observers 1 and 3 and fit an io model
-#' stkpairs=extract.stake.pairs(stake77,1,3,removal=FALSE)
-#' io.model=ddf(dsmodel = ~mcds(key = "hn", formula=~1), mrmodel=~glm(formula=~distance),
-#'          data = stkpairs, method = "io")
+#' stkpairs <- extract.stake.pairs(stake77,1,3,removal=FALSE)
+#' io.model <- ddf(dsmodel = ~mcds(key = "hn", formula=~1),
+#'                 mrmodel=~glm(formula=~distance),
+#'                 data = stkpairs, method = "io")
 #' summary(io.model)
 #' par(mfrow=c(3,2))
 #' plot(io.model,breaks=seq(0,20,2),showpoints=TRUE,new=FALSE)
@@ -181,17 +182,17 @@ NULL
 
 
 #' Wooden stake data from 1978 survey
-#' 
+#'
 #' Multiple surveys by different observers of a single 1km transect containing
 #' 150 wooden stakes placed based on expected uniform distribution throughout a
 #' 40 m strip (20m on either side).
-#' 
+#'
 #' The 1997 survey was based on a single realization of a uniform distribution.
 #' Because it was a single transect and there was no randomization of the
 #' distances for each survey, we repeated the experiment and used distances
 #' that provided a uniform distribution but randomly sorted the positions along
 #' the line so there was no pattern obvious to the observer.
-#' 
+#'
 #' @name stake78
 #' @docType data
 #' @format A data frame with 150 observations on the following 13 variables.
@@ -220,87 +221,94 @@ NULL
 #' data(stake77)
 #' # compare distribution of distances for all stakes
 #' hist(stake77$PD)
-#' if(.Platform$GUI=="Rgui")dev.new()
 #' hist(stake78$PD)
-#' # Functions to extract stake data and put in the mrds format for model fitting.
-#' extract.stake=function(stake,obs)
-#' {
-#'   extract.obs=function(obs)
-#'   {
-#'      example=subset(stake,eval(parse(text=paste("Obs",obs,"==1",sep=""))),select="PD")
-#'      example$distance=example$PD
-#'      example$object=1:nrow(example)
-#'      example$PD=NULL
-#'      return(example)
-#'  }
-#'  if(obs!="all")
-#'   return(extract.obs(obs=obs))
-#'  else
-#'  {
-#'   example=NULL
-#'      for(i in 1:(ncol(stake)-2))
-#'   {
-#'     df=extract.obs(obs=i)
-#'     df$person=i
-#'     example=rbind(example,df)
-#'   }     
-#'   example$person=factor(example$person)
-#'   example$object=1:nrow(example)
-#'   return(example)
-#'  }   
+#' # Extract stake data and put in the mrds format for model fitting.
+#' extract.stake <- function(stake,obs){
+#'   extract.obs <- function(obs){
+#'     example <- subset(stake,eval(parse(text=paste("Obs",obs,"==1",sep=""))),
+#'                       select="PD")
+#'     example$distance <- example$PD
+#'     example$object <- 1:nrow(example)
+#'     example$PD <- NULL
+#'     return(example)
+#'   }
+#'   if(obs!="all"){
+#'      return(extract.obs(obs=obs))
+#'   }else{
+#'     example <- NULL
+#'     for(i in 1:(ncol(stake)-2)){
+#'       df <- extract.obs(obs=i)
+#'       df$person <- i
+#'       example <- rbind(example,df)
+#'     }
+#'     example$person <- factor(example$person)
+#'     example$object <- 1:nrow(example)
+#'     return(example)
+#'   }
 #' }
-#' extract.stake.pairs=function(stake,obs1,obs2,removal=FALSE)
-#' {
-#'   obs1=paste("Obs",obs1,sep="")
-#'   obs2=paste("Obs",obs2,sep="")
-#'   example=subset(stake,eval(parse(text=paste(obs1,"==1 |",obs2,"==1 ",sep=""))),
-#'            select=c("PD",obs1,obs2))
-#'   names(example)=c("distance","obs1","obs2")
-#'   detected=c(example$obs1,example$obs2)
-#'   example=data.frame(object=rep(1:nrow(example),2),distance=rep(example$distance,2),
-#'      detected=detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
-#'   if(removal)example$detected[example$observer==2]=1
+#' extract.stake.pairs <- function(stake,obs1,obs2,removal=FALSE){
+#'   obs1 <- paste("Obs",obs1,sep="")
+#'   obs2 <- paste("Obs",obs2,sep="")
+#'   example <- subset(stake,eval(parse(text=paste(obs1,"==1 |",obs2,"==1 ",
+#'                                      sep=""))), select=c("PD",obs1,obs2))
+#'   names(example) <- c("distance","obs1","obs2")
+#'   detected <- c(example$obs1,example$obs2)
+#'   example <- data.frame(object=rep(1:nrow(example),2),
+#'                         distance=rep(example$distance,2),
+#'                         detected = detected,
+#'                         observer=c(rep(1,nrow(example)),
+#'                                    rep(2,nrow(example))))
+#'   if(removal) example$detected[example$observer==2] <- 1
 #'   return(example)
 #' }
+#'
 #' # extract data for observer 10 and fit a single observer model
-#' stakes=extract.stake(stake78,10)
-#' ds.model=ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = stakes, method = "ds", 
-#'                 meta.data = list(width = 20))
+#' stakes <- extract.stake(stake78,10)
+#' ds.model <- ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = stakes,
+#'                 method = "ds", meta.data = list(width = 20))
 #' plot(ds.model,breaks=seq(0,20,2),showpoints=TRUE)
 #' ddf.gof(ds.model)
+#'
 #' # extract data from observers 5 and 7 and fit an io model
-#' stkpairs=extract.stake.pairs(stake78,5,7,removal=FALSE)
-#' io.model=ddf(dsmodel = ~mcds(key = "hn", formula=~1), mrmodel=~glm(formula=~distance),
-#'     data = stkpairs, method = "io")
+#' stkpairs <- extract.stake.pairs(stake78,5,7,removal=FALSE)
+#' io.model <- ddf(dsmodel = ~mcds(key = "hn", formula=~1),
+#'                 mrmodel=~glm(formula=~distance),
+#'                 data = stkpairs, method = "io")
 #' summary(io.model)
 #' par(mfrow=c(3,2))
 #' plot(io.model,breaks=seq(0,20,2),showpoints=TRUE,new=FALSE)
 #' ddf.gof(io.model)
 #' }
-#' 
+#'
 NULL
 
 #' Single observer point count data example from Distance
-#' 
+#'
 #' Single observer point count data example from Distance
-#' 
-#' 
+#'
+#'
 #' @name ptdata.distance
 #' @docType data
-#' @format The format is 144 obs of 6 variables: ..$ distance: numeric distance from center $ 
-#'   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
-#'   detected: numeric 0/1  $ object: sequential object number $Sample.Label: point label $ Region.Label: single region label
+#' @format The format is 144 obs of 6 variables:
+#'   distance: numeric distance from center
+#'   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...
+#'   detected: numeric 0/1
+#'   object: sequential object number
+#'   Sample.Label: point label
+#'   Region.Label: single region label
 #' @keywords datasets
 #' @examples
 #' \donttest{
 #' data(ptdata.distance)
-#' xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.distance, method = "ds", 
-#'      meta.data = list(point=TRUE))
+#' xx <- ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.distance,
+#'           method = "ds", meta.data = list(point=TRUE))
 #' summary(xx)
 #' plot(xx,main="Distance point count data")
 #' ddf.gof(xx)
-#' Regions=data.frame(Region.Label=1,Area=1)
-#' Samples=data.frame(Sample.Label=1:30,Region.Label=rep(1,30),Effort=rep(1,30))
+#' Regions <- data.frame(Region.Label=1,Area=1)
+#' Samples <- data.frame(Sample.Label=1:30,
+#'                       Region.Label=rep(1,30),
+#'                       Effort=rep(1,30))
 #' print(dht(xx,sample.table=Samples,region.table=Regions))
 #' }
 NULL
@@ -308,43 +316,48 @@ NULL
 
 
 #' Simulated single observer point count data
-#' 
-#' Simulated single observer point count data with detection p(0)=1; hn sigma=30; w=100
-#' 
-#' 
+#'
+#' Simulated single observer point count data with detection p(0)=1;
+#' hn sigma=30; w=100
+#'
 #' @name ptdata.single
 #' @docType data
-#' @format The format is 341 obs of 4 variables: ..$ distance: numeric distance from center $ 
+#' @format The format is 341 obs of 4 variables: ..$
+#'   distance: numeric distance from center $
 #'   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
 #'   detected: numeric 0/1  $ object : sequential object number
 #' @keywords datasets
 #' @examples
 #' \donttest{
 #' data(ptdata.single)
-#' xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.single, method = "ds", 
-#'             meta.data = list(point=TRUE))
+#' xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.single,
+#'          method = "ds", meta.data = list(point=TRUE))
 #' summary(xx)
 #' plot(xx,main="Simulated point count data")
 #' }
 NULL
 
 #' Simulated dual observer point count data
-#' 
-#' Simulated dual observer point count data with detection p(0)=0.8; hn sigma=30; w=100
-#' for both observers with dependency y>0, gamma=0.1
-#' 
+#'
+#' Simulated dual observer point count data with detection p(0)=0.8;
+#' hn sigma=30; w=100 for both observers with dependency y>0, gamma=0.1
+#'
 #' @name ptdata.dual
 #' @docType data
-#' @format The format is 420 obs of 6 variables: ..$ distance: numeric distance from center $ 
-#'   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
-#'   detected: numeric 0/1  $ person: Factor with 2 levels A,B $ pair: Factor with 2 levels "AB" BA" $
-#'   object : sequential object number
+#' @format The format is 420 obs of 6 variables:
+#' distance: numeric distance from center
+#' observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...
+#' detected: numeric 0/1
+#' person: Factor with 2 levels A,B
+#' pair: Factor with 2 levels "AB" BA" $
+#' object : sequential object number
 #' @keywords datasets
 #' @examples
 #' \donttest{
 #' data(ptdata.dual)
-#' xx=ddf(mrmodel=~glm(formula=~distance), dsmodel = ~cds(key="hn", formula = ~1), 
-#'       data = ptdata.dual, method = "io", meta.data = list(point=TRUE))
+#' xx <- ddf(mrmodel=~glm(formula=~distance),
+#'           dsmodel = ~cds(key="hn", formula = ~1),
+#'           data = ptdata.dual, method = "io", meta.data = list(point=TRUE))
 #' summary(xx)
 #' plot(xx,main="Simulated point count data")
 #' }
@@ -352,22 +365,27 @@ NULL
 
 
 #' Simulated removal observer point count data
-#' 
-#' Simulated removal observer point count data with detection p(0)=0.8; hn sigma=30; w=100
-#' for both observers with dependency y>0, gamma=0.1
-#' 
+#'
+#' Simulated removal observer point count data with detection p(0)=0.8;
+#' hn sigma=30; w=100 for both observers with dependency y>0, gamma=0.1
+#'
 #' @name ptdata.removal
 #' @docType data
-#' @format The format is 408 obs of 6 variables: ..$ distance: numeric distance from center $ 
-#'   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
-#'   detected: numeric 0/1  $ person: Factor with 2 levels A,B $ pair: Factor with 2 levels "AB" BA" $
-#'   object : sequential object number
+#' @format The format is 408 obs of 6 variables:
+#'  distance: numeric distance from center
+#'  observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...
+#'  detected: numeric 0/1
+#'  person: Factor with 2 levels A,B
+#'  pair: Factor with 2 levels "AB" BA"
+#'  object: sequential object number
 #' @keywords datasets
 #' @examples
 #' \donttest{
 #' data(ptdata.removal)
-#' xx=ddf(mrmodel=~glm(formula=~distance), dsmodel = ~cds(key="hn", formula = ~1), 
-#'   data = ptdata.removal, method = "rem", meta.data = list(point=TRUE))
+#' xx <- ddf(mrmodel=~glm(formula=~distance),
+#'           dsmodel = ~cds(key="hn", formula = ~1),
+#'           data = ptdata.removal, method = "rem",
+#'           meta.data = list(point=TRUE))
 #' summary(xx)
 #' plot(xx,main="Simulated point count data")
 #' }
