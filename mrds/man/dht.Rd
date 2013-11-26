@@ -37,13 +37,14 @@ dht(model, region.table, sample.table, obs.table = NULL, subset = NULL,
   \link{varn} (Default: R2)}
 }
 \value{
-list object of class "dht" with elements
+list object of class "dht" with elements:
 \item{clusters}{result list for object clusters}
 \item{individuals}{result list for individuals}
 \item{Expected.S}{dataframe of estimates of expected
-cluster size with fields Region, Expected.S and
-se.Expected.S) If each cluster size=1, then the result only
-includes individuals and not clusters and Expected.S.}
+cluster size with fields \code{Region}, \code{Expected.S}
+and \code{se.Expected.S}) If each cluster size=1, then the
+result only includes individuals and not clusters and
+Expected.S.}
 
 The list structure of clusters and individuals are the
 same: \item{bysample}{dataframe giving results for each

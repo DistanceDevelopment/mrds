@@ -115,22 +115,27 @@
 #'   convert to units of length (Default: 1) 4) ervar - encounter rate variance
 #'   type - see type argument to \link{varn} (Default: R2)
 #' @export
-#' @return list object of class "dht" with elements 
+#' @return list object of class "dht" with elements:
 #' \item{clusters}{result list for object clusters}
 #' \item{individuals}{result list for individuals}
-#' \item{Expected.S}{dataframe of estimates of expected cluster size with fields Region, Expected.S and se.Expected.S)
-#' If each cluster size=1, then the result only includes individuals and not clusters and Expected.S.}
+#' \item{Expected.S}{dataframe of estimates of expected cluster size with
+#'  fields \code{Region}, \code{Expected.S} and \code{se.Expected.S})
+#'  If each cluster size=1, then the result only includes individuals and not
+#'  clusters and Expected.S.}
 #'
 #' The list structure of clusters and individuals are the same:
-#' \item{bysample}{dataframe giving results for each sample; Nchat is the estimated abundance within the sample and
-#' Nhat is scaled by surveyed area/ covered area within that region}
+#' \item{bysample}{dataframe giving results for each sample; Nchat is the
+#'  estimated abundance within the sample and Nhat is scaled by surveyed area/
+#'  covered area within that region}
 #' \item{summary}{dataframe of summary statistics for each region and total}
 #' \item{N}{dataframe of estimates of abundance for each region and total}
 #' \item{D}{dataframe of estimates of density for each region and total}
 #' \item{average.p}{average detection probability estimate}
-#' \item{cormat}{correlation matrix of regional abundance/density estimates and total (if more than one
-#'   region)}
-#' \item{vc}{list of 3: total v-c matrix and detection and er (encounter rate) components of variance; for detection the v-c matrix and partial vector are returned}
+#' \item{cormat}{correlation matrix of regional abundance/density estimates and
+#'  total (if more than one region)}
+#' \item{vc}{list of 3: total v-c matrix and detection and er (encounter rate)
+#'  components of variance; for detection the v-c matrix and partial vector
+#'  are returned}
 #' \item{Nhat.by.sample}{another summary of Nhat by sample used by dht.se}
 #' @author Jeff Laake
 #' @seealso \code{\link{print.dht}},\code{\link{dht.se}}
@@ -222,7 +227,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
                           lcl = rep(NA,numRegions + 1),
                           ucl = rep(NA, numRegions + 1))
     }else{
-      estimate.table = data.frame(Label    = c("Total"), 
+      estimate.table = data.frame(Label    = c("Total"),
                                   Estimate = rep(0,1),
                                   se       = rep(NA, 1),
                                   cv       = rep(NA, 1),
@@ -311,7 +316,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     # Create estimate table for D from same table for N
     D.estimate.table <- estimate.table
     if(numRegions > 1){
-      D.estimate.table$Estimate <- D.estimate.table$Estimate/c(region.table$Area,
+      D.estimate.table$Estimate <-D.estimate.table$Estimate/c(region.table$Area,
           sum(region.table$Area))
       D.estimate.table$se <- D.estimate.table$se/c(region.table$Area,
           sum(region.table$Area))
@@ -326,7 +331,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
       D.estimate.table$ucl <- D.estimate.table$ucl/region.table$Area
     }
 
-    # jll 11_11_04; change to set missing values to 0
+    # set missing values to 0
     D.estimate.table$Estimate[is.nan(D.estimate.table$Estimate)] <- 0
     D.estimate.table$se[is.nan(D.estimate.table$se)] <- 0
     D.estimate.table$cv[is.nan(D.estimate.table$cv)] <- 0
@@ -334,7 +339,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     D.estimate.table$ucl[is.nan(D.estimate.table$ucl)] <- 0
 
     # Return list depending on value of se
-    # jll 11_11_04; change to set missing values to 0
+    # change to set missing values to 0
     # jll 6/30/06; dropped restriction that numregions > 1 on sending vc back
     if(se){
       cormat <- result$vc/(result$estimate.table$se %o% result$estimate.table$se)
@@ -414,8 +419,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   obs <- vs$obs
   region.table <- vs$region
 
-  # jll 18-Nov-04 code added to handle subset feature when labels 
-  #   are also in data
+  # handle subset feature when labels are also in data
   if(!is.null(obs$Region.Label.x)){
     obs$Region.Label <- obs$Region.Label.x
     obs$Sample.Label <- obs$Sample.Label.x
@@ -430,7 +434,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   obs <- merge(obs,data.frame(object=objects,pdot=pdot))
 
   # If clustered population create tables for clusters and individuals and
-  # an expected S table otherwise just tables for individuals in an 
+  # an expected S table otherwise just tables for individuals in an
   # unclustered popn
   if(!is.null(obs$size)){
     clusters <- tables.dht(TRUE)
