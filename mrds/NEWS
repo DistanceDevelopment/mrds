@@ -1,5 +1,17 @@
 mrds 2.1.4-3
 ------------
+
+BUG FIX
+
+ * predict.io.fi did not work for new data (thanks to Len Thomas and Phil Hammond for pointing this out
+
+CHANGES
+
+ * general documentation updates
+ * simplication and re-structuring of internals
+
+mrds 2.1.4-3
+------------
 CHANGES
 
  * internal re-structuring of summary methods

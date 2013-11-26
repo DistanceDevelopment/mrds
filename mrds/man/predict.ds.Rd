@@ -12,23 +12,23 @@
 \method{predict}{ds}(object, newdata = NULL, compute = FALSE,
   int.range = NULL, esw = FALSE, ...)
 
-\method{predict}{io}(object, newdata = NULL, compute = FALSE,
-  int.range = NULL, ...)
-
 \method{predict}{io.fi}(object, newdata = NULL, compute = FALSE,
   int.range = NULL, integrate = FALSE, ...)
 
-\method{predict}{rem}(object, newdata = NULL, compute = FALSE,
+\method{predict}{io}(object, newdata = NULL, compute = FALSE,
   int.range = NULL, ...)
 
 \method{predict}{rem.fi}(object, newdata = NULL, compute = FALSE,
   int.range = NULL, integrate = FALSE, ...)
 
-\method{predict}{trial}(object, newdata = NULL, compute = FALSE,
+\method{predict}{rem}(object, newdata = NULL, compute = FALSE,
   int.range = NULL, ...)
 
 \method{predict}{trial.fi}(object, newdata = NULL, compute = FALSE,
   int.range = NULL, integrate = FALSE, ...)
+
+\method{predict}{trial}(object, newdata = NULL, compute = FALSE,
+  int.range = NULL, ...)
 }
 \arguments{
   \item{object}{\code{ddf} model object.}
