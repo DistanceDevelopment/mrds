@@ -45,19 +45,21 @@
 #'   points by multiplying the fitted value by a random draw from a normal
 #'   distribution with mean 1 and sd jitter
 #' @param divisions number of divisions for averaging line values; default = 25
-#' @param new if TRUE, opens new device for each plot; set new=FALSE if you use par(mfrow=..) or layout
+#' @param pages the number of pages over which to spread the plots. For
+#'  example, if \code{pages=1} then all plots will be displayed on one page.
+#'  Default is 0, which prompts the user for the next plot to be displayed.
 #' @param xlab label for x-axis
 #' @param ylab label for y-axis
 #' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (\code{plot}, \code{hist}, \code{lines}, \code{points}, etc)
 #' @return NULL
-#' @author Jeff Laake, Jon Bishop, David Borchers
+#' @author Jeff Laake, Jon Bishop, David Borchers, David L Miller
 #' @keywords plot
 plot.rem.fi <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
                         showlines=TRUE, showpoints=TRUE,ylim=c(0,1),angle=-45,
                         density=20,col="black",jitter=NULL,divisions=25,
-                        new=TRUE,xlab="Distance",ylab="Detection probability",
+                        pages=0,xlab="Distance",ylab="Detection probability",
                         subtitle=TRUE,...){
   # Functions used: process.data, predict(predict.io.fi),
   #                 plot.uncond, plot.cond
@@ -91,9 +93,12 @@ plot.rem.fi <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
     }
   }
 
+  # do the plotting layout
+  oask <- plot.layout(which,pages)
+  on.exit(devAskNewPage(oask))
+
   # Plot primary unconditional detection function
   if(is.element(1,which)){
-    if(new& .Platform$GUI=="Rgui")dev.new()
     plot_uncond(model,1,xmat,gxvalues=p1,nc,
                 finebr=(width/divisions)*(0:divisions),breaks,showpoints,
                 showlines,maintitle,ylim,
@@ -103,7 +108,6 @@ plot.rem.fi <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
 
   # Plot pooled unconditional detection function
   if(is.element(2,which)){
-    if(new& .Platform$GUI=="Rgui")dev.new()
     plot_uncond(model,3,xmat,gxvalues=p1+p2*(1-p1),nc,
                 finebr=(width/divisions)*(0:divisions),breaks,showpoints,
                 showlines,maintitle,ylim,
@@ -115,7 +119,6 @@ plot.rem.fi <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   data <- process.data(model$data,model$meta.data)$xmat
   data$offsetvalue <- 0
   if(is.element(3,which)){
-    if(new& .Platform$GUI=="Rgui")dev.new()
     gxvalues <- p1[xmat$detected[xmat$observer==2]==1]
     plot_cond(1,data,gxvalues,model,nc,breaks,
               finebr=(width/divisions)*(0:divisions),showpoints,showlines,

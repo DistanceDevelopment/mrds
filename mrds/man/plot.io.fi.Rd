@@ -6,7 +6,7 @@ sampling independent observer model with full independence (\code{io.fi})}
 \method{plot}{io.fi}(x, which = 1:6, breaks = NULL, nc = NULL,
   maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
   angle = -45, density = 20, col = "black", jitter = NULL,
-  divisions = 25, new = TRUE, xlab = "Distance",
+  divisions = 25, pages = 0, xlab = "Distance",
   ylab = "Detection probability", subtitle = TRUE, ...)
 }
 \arguments{
@@ -50,8 +50,10 @@ sampling independent observer model with full independence (\code{io.fi})}
   \item{divisions}{number of divisions for averaging line
   values; default = 25}
 
-  \item{new}{if TRUE, opens new device for each plot; set
-  new=FALSE if you use par(mfrow=..) or layout}
+  \item{pages}{the number of pages over which to spread the
+  plots. For example, if \code{pages=1} then all plots will
+  be displayed on one page.  Default is 0, which prompts
+  the user for the next plot to be displayed.}
 
   \item{xlab}{label for x-axis}
 
@@ -91,8 +93,22 @@ based on the type of \code{ddf} object.
 The \code{which} command allows the user to select which
 plots are returned. See which argument definition.
 }
+\examples{
+library(mrds)
+data(book.tee.data)
+egdata <- book.tee.data$book.tee.dataframe
+result.io.fi <- ddf(mrmodel=~glm(~distance), data = egdata, method = "io.fi",
+              meta.data = list(width = 4))
+
+# just plot everything
+plot(result.io.fi)
+
+# Plot primary and secondary unconditional detection functions on one page
+# and  primary and secondary conditional detection functions on another
+plot(result.io.fi,which=c(1,2,5,6),pages=2)
+}
 \author{
-Jeff Laake, Jon Bishop, David Borchers
+Jeff Laake, Jon Bishop, David Borchers, David L Miller
 }
 \keyword{plot}
 

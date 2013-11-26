@@ -6,7 +6,7 @@ sampling model}
 \method{plot}{rem.fi}(x, which = 1:3, breaks = NULL, nc = NULL,
   maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
   angle = -45, density = 20, col = "black", jitter = NULL,
-  divisions = 25, new = TRUE, xlab = "Distance",
+  divisions = 25, pages = 0, xlab = "Distance",
   ylab = "Detection probability", subtitle = TRUE, ...)
 }
 \arguments{
@@ -47,8 +47,10 @@ sampling model}
   \item{divisions}{number of divisions for averaging line
   values; default = 25}
 
-  \item{new}{if TRUE, opens new device for each plot; set
-  new=FALSE if you use par(mfrow=..) or layout}
+  \item{pages}{the number of pages over which to spread the
+  plots. For example, if \code{pages=1} then all plots will
+  be displayed on one page.  Default is 0, which prompts
+  the user for the next plot to be displayed.}
 
   \item{xlab}{label for x-axis}
 
@@ -89,7 +91,7 @@ The \code{which} command allows the user to select which
 plots are returned. See which argument definition.
 }
 \author{
-Jeff Laake, Jon Bishop, David Borchers
+Jeff Laake, Jon Bishop, David Borchers, David L Miller
 }
 \keyword{plot}
 

@@ -33,8 +33,6 @@
 #'   implemented.
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
-#' @param winht plot window height (not currently implemented)
-#' @param winwd plot window width (not currently implemented)
 #' @param jitter.v scaling option for plotting points.  Jitter is applied to
 #'   points by multiplying the fitted value by a random draw from a normal
 #'   distribution with mean 1 and sd \code{jitter.v[j]}.  Where \code{j=1,2}
@@ -49,7 +47,9 @@
 #' @param pl.den shading density for plots of obs 1, obs 2 detections.
 #' @param pl.ang shading angle for plots of obs 1, obs 2 detections.
 #' @param main user-specfied plot title.
-#' @param new make new windows for plots?
+#' @param pages the number of pages over which to spread the plots. For
+#'  example, if \code{pages=1} then all plots will be displayed on one page.
+#'  Default is 0, which prompts the user for the next plot to be displayed.
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}},
 #'   \code{\link{points}}, etc).
@@ -59,25 +59,29 @@
 #' @examples
 #' \donttest{
 #' data(book.tee.data)
-#' region <- book.tee.data$book.tee.region
 #' egdata <- book.tee.data$book.tee.dataframe
-#' samples <- book.tee.data$book.tee.samples
-#' obs <- book.tee.data$book.tee.obs
 #' xx <- ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
 #'           data = egdata[egdata$observer==1, ],
 #'           method = "ds", meta.data = list(width = 4))
+#'
+#' # not showing predicted probabilities
 #' plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
+#'
+#' # two subsets
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
 #' plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
+#'
+#' # put both plots on one page
+#' plot(xx,breaks=c(0,.5,1,2,3,4),pages=1,which=1:2)
 #' }
-plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,
+plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,
                     jitter.v=rep(0,3),showpoints=TRUE,subset=NULL,
                     pl.col=c('black'),bw.col=c(grey(0)),black.white=FALSE,
-                    pl.den=rep(20,1),pl.ang=rep(-45,1),main=NULL,new=TRUE,...){
+                    pl.den=rep(20,1),pl.ang=rep(-45,1),main=NULL,pages=0,...){
 
   #  Uses: setcov, detfct, histline, test.breaks
   model<-x
-  show <- rep(FALSE, 8)
+  show <- rep(FALSE, 2)
   show[which] <- TRUE
   lower <- 0
   divisions <- 25
@@ -257,11 +261,22 @@ plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,
   freq <- hist.obj$density
   hist.obj$equidist <- FALSE
 
-  ## Actual plotting is here
+
+
+  ### Actual plotting is here
+
+  # do the paging, using devAskNewPage() means we can just call plots and
+  # R will make the prompt for us
+  if(pages!=1 & sum(show)!=1){
+    oask <- devAskNewPage(TRUE)
+    on.exit(devAskNewPage(oask))
+  }else{
+    opar <- par(mfrow=c(1,sum(show)))
+    on.exit(par(opar))
+  }
 
   # Data summary plot for observer 1
   if(show[1]){
-    if(new) dev.new()
     histline(h1$counts,breaks=breaks,lineonly=FALSE,ylim=c(0,ymax),
              xlab=xlab,ylab="Frequency",fill=TRUE,angle=angval1,
              density=denval1,col=byval1,...)
@@ -271,8 +286,6 @@ plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,winht=4,winwd=6,
   # Detection function plot overlaid on histogram of observed
   # distances - much of this code is taken from earlier plot.ds function.
   if(show[2]){
-    if(new) dev.new()
-
     # Primary detection function
     gxvalues <- detfct(xmat$distance,ddfobj,select=selected,width=width)
     ymax <- max(hist.obj$density,max(gxvalues))
