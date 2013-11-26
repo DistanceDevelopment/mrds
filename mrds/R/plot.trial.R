@@ -96,9 +96,7 @@ plot.trial <- function(x, which=1:2, breaks=NULL, nc=NULL, maintitle="",
     xmat.trial <- xmat
     xmat.trial$distance <- 0
     if(ddfobj$type=="gamma"){
-      key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
-      key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
-      xmat.trial$distance <- as.vector(apex.gamma(key.scale,key.shape))
+      xmat.trial$distance <- as.vector(apex.gamma(ddfobj))
     }
     g0 <- predict(model$mr$mr,newdata=xmat.trial,type="response")
     gxvalues <- detfct.pooled.values*g0

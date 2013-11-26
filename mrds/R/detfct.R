@@ -31,7 +31,7 @@
 #' counts respectively
 #'
 #' @aliases detfct adjfct.cos adjfct.herm hermite.poly adjfct.poly keyfct.hn
-#'  keyfct.hz keyfct.gamma apex.gamma scalevalue fx fr distpdf
+#'  keyfct.hz keyfct.gamma scalevalue fx fr distpdf
 #' @usage detfct(distance, ddfobj, select=NULL, index=NULL, width=NULL,
 #'               standardize = TRUE, stdint=FALSE)
 #'
@@ -48,8 +48,6 @@
 #' keyfct.hz(distance, key.scale, key.shape)
 #'
 #' keyfct.gamma(distance, key.scale, key.shape)
-#'
-#' apex.gamma(key.scale, key.shape)
 #'
 #' fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 #'
@@ -83,7 +81,6 @@
 #'   adjustment term at x.
 #' For \code{scalevalue}, the value is a vector of the computed scales for the
 #'   design matrix z.
-#' For \code{apex.gamma}, the value is the distance at which the gamma peaks
 #' @author Jeff Laake, David Miller
 #' @seealso  \code{\link{mcds}},  \code{\link{cds}}
 #' @references  Marques and Buckland 2004

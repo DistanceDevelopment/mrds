@@ -88,9 +88,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
   xmat.p0$distance <- 0
   ddfobj <- model$ds$ds$aux$ddfobj
   if(ddfobj$type=="gamma"){
-    key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
-    key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
-    xmat.p0$distance <- rep(apex.gamma(key.scale,key.shape),2)
+    xmat.p0$distance <- rep(apex.gamma(ddfobj),2)
   }
 
   p0 <- predict(model$mr,newdata=xmat.p0,integrate=FALSE)$fitted

@@ -41,12 +41,10 @@ ds.function <- function(model,newdata=NULL,obs="All",conditional=FALSE,
     ddfobj <- model$ds$ds$aux$ddfobj
 
     if(ddfobj$type=="gamma"){
-      key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
-      key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
       if(model$method=="io"){
-        newdat$distance <- rep(apex.gamma(key.scale,key.shape),2)
+        newdat$distance <- rep(apex.gamma(ddfobj),2)
       }else{
-        newdat$distance <- as.vector(apex.gamma(key.scale,key.shape))
+        newdat$distance <- as.vector(apex.gamma(ddfobj))
       }
     }
 

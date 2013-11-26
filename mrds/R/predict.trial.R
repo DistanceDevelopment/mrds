@@ -22,9 +22,7 @@ predict.trial <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
   ddfobj <- model$ds$ds$aux$ddfobj
 
   if(ddfobj$type=="gamma"){
-    key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
-    key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
-    xmat$distance <- as.vector(apex.gamma(key.scale,key.shape))
+    xmat$distance <- as.vector(apex.gamma(ddfobj))
   }
 
   if(is.null(newdata)){

@@ -2,7 +2,6 @@
 \alias{adjfct.cos}
 \alias{adjfct.herm}
 \alias{adjfct.poly}
-\alias{apex.gamma}
 \alias{detfct}
 \alias{distpdf}
 \alias{fr}
@@ -30,8 +29,6 @@ keyfct.hn(distance, key.scale)
 keyfct.hz(distance, key.scale, key.shape)
 
 keyfct.gamma(distance, key.scale, key.shape)
-
-apex.gamma(key.scale, key.shape)
 
 fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 
@@ -85,8 +82,7 @@ probability for that key function at x. For
 \code{adjfct.cos, adjfct.poly, adjfct.herm}, vector of the
 value of the adjustment term at x. For \code{scalevalue},
 the value is a vector of the computed scales for the design
-matrix z. For \code{apex.gamma}, the value is the distance
-at which the gamma peaks
+matrix z.
 }
 \description{
 Various functions used to specify key and adjustment
