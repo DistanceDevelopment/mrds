@@ -1,12 +1,12 @@
-#' Extract coefficients 
+#' Extract coefficients
 #'
 #' Extract coefficients and provide a summary of parameters and estimates
 #' from the output of \code{\link{ddf}} model objects.
 #'
 #' @aliases coefficients coef.ds coef.io coef.io.fi coef.trial coef.trial.fi
 #'   coef.rem coef.rem.fi
-#' @param object ddf model object of class "ds", "io", "io.fi", "trial",
-#'   "trial.fi", "rem", or "rem.fi"
+#' @param object ddf model object of class \code{ds}, \code{io}, \code{io.fi},
+#'    \code{trial}, \code{trial.fi}, \code{rem}, or \code{rem.fi}.
 #' @param \dots unspecified arguments that are unused at present
 #' @usage \method{coef}{ds}(object,...)
 #'        \method{coef}{io}(object,...)

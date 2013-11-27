@@ -18,8 +18,9 @@
        \\method{coef}{rem.fi}(object,...)
 }
 \arguments{
-  \item{object}{ddf model object of class "ds", "io",
-  "io.fi", "trial", "trial.fi", "rem", or "rem.fi"}
+  \item{object}{ddf model object of class \code{ds},
+  \code{io}, \code{io.fi}, \code{trial}, \code{trial.fi},
+  \code{rem}, or \code{rem.fi}.}
 
   \item{\dots}{unspecified arguments that are unused at
   present}
