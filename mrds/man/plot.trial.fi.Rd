@@ -6,8 +6,8 @@ sampling trial observer model}
 \method{plot}{trial.fi}(x, which = 1:2, breaks = NULL, nc = NULL,
   maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
   angle = -45, density = 20, col = "black", jitter = NULL,
-  divisions = 25, xlab = "Distance", ylab = "Detection probability",
-  subtitle = TRUE, ...)
+  divisions = 25, pages = 0, xlab = "Distance",
+  ylab = "Detection probability", subtitle = TRUE, ...)
 }
 \arguments{
   \item{x}{fitted model from \code{ddf}}
@@ -45,6 +45,11 @@ sampling trial observer model}
 
   \item{divisions}{number of divisions for averaging line
   values; default = 25}
+
+  \item{pages}{the number of pages over which to spread the
+  plots. For example, if \code{pages=1} then all plots will
+  be displayed on one page.  Default is 0, which prompts
+  the user for the next plot to be displayed.}
 
   \item{xlab}{label for x-axis}
 

@@ -48,18 +48,35 @@
 #'   points by multiplying the fitted value by a random draw from a normal
 #'   distribution with mean 1 and sd jitter.
 #' @param divisions number of divisions for averaging line values; default = 25
-#' @param new if TRUE, opens new device for each plot; set new=FALSE if you use par(mfrow=..) or layout
+#' @param pages the number of pages over which to spread the plots. For
+#'  example, if \code{pages=1} then all plots will be displayed on one page.
+#'  Default is 0, which prompts the user for the next plot to be displayed.
 #' @param xlab label for x-axis
 #' @param ylab label for y-axis
 #' @param subtitle if TRUE, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (\code{plot}, \code{hist}, \code{lines}, \code{points}, etc)
 #' @return Just plots.
-#' @author Jeff Laake, Jon Bishop, David Borchers
+#' @author Jeff Laake, Jon Bishop, David Borchers, David L Miller
 #' @keywords plot
+#' @examples
+#' \donttest{
+#' library(mrds)
+#' data(book.tee.data)
+#' egdata <- book.tee.data$book.tee.dataframe
+#' result.io.fi <- ddf(mrmodel=~glm(~distance), data = egdata, method = "io.fi",
+#'               meta.data = list(width = 4))
+#'
+#' # just plot everything
+#' plot(result.io.fi)
+#'
+#' # Plot primary and secondary unconditional detection functions on one page
+#' # and  primary and secondary conditional detection functions on another
+#' plot(result.io.fi,which=c(1,2,5,6),pages=2)
+#' }
 plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
                        showlines=TRUE, showpoints=TRUE,ylim=c(0,1),angle=-45,
-                       density=20,col="black",jitter=NULL,divisions=25,new=TRUE,
+                       density=20,col="black",jitter=NULL,divisions=25,pages=0,
                        xlab="Distance",ylab="Detection probability",
                        subtitle=TRUE,...){
   # Functions used: process.data, predict.io.fi, plot_uncond,plot_cond
@@ -97,16 +114,6 @@ plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
     }
   }
 
-  # dummy function for plot_uncond calls
-  plot_uncond_dummy <- function(obs,gxvalues,...){
-    if(new& .Platform$GUI=="Rgui")dev.new()
-    plot_uncond(model,obs,xmat,gxvalues=gxvalues,nc,
-                finebr=(width/divisions)*(0:divisions),
-                breaks,showpoints,showlines,maintitle,ylim,
-                angle=angle,density=density,
-                col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
-  }
-
   # make a list of the gxvalues we would want
   gxlist <- list(p1,
                  p2,
@@ -115,24 +122,30 @@ plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
                  p1[xmat$detected[xmat$observer==2]==1],
                  p2[xmat$detected[xmat$observer==1]==1])
 
+  # do the plotting layout
+  oask <- plot.layout(which,pages)
+  on.exit(devAskNewPage(oask))
+
   # guide to which
+
+  # 1:4 plots are unconditional plots
   # 1 - Plot primary unconditional detection function
   # 2 - Plot secondary unconditional detection function
   # 3 - Plot pooled unconditional detection function
   # 4 - Plot duplicate unconditional detection function
-  # 5 - Plot conditional detection functions
-  # 6 - Plot secondary conditional detection function
-
-  # 1:4 plots are unconditional plots
   for(wh in seq_along(which[which<5])){
-    plot_uncond_dummy(wh,gxlist[[wh]])
+    #plot_uncond_dummy(wh,gxlist[[wh]])
+    plot_uncond(model,wh,xmat,gxvalues=gxlist[[wh]],nc,
+                finebr=(width/divisions)*(0:divisions),
+                breaks,showpoints,showlines,maintitle,ylim,
+                angle=angle,density=density,
+                col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
   }
 
-  # Plot conditional detection functions
+  # 5 - Plot conditional detection functions
   data <- model$mr$data
   data$offsetvalue <- 0
   if(is.element(5,which)){
-    if(new& .Platform$GUI=="Rgui")dev.new()
     gxvalues <- p1[xmat$detected[xmat$observer==2]==1]
     plot_cond(1,data,gxvalues,model,nc,breaks,
               finebr=(width/divisions)*(0:divisions),showpoints,showlines,
@@ -140,9 +153,8 @@ plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
               xlab=xlab,ylab=ylab,subtitle=subtitle,...)
   }
 
-  # Plot secondary conditional detection function
+  # 6 - Plot secondary conditional detection function
   if(is.element(6,which)){
-    if(new& .Platform$GUI=="Rgui")dev.new()
     gxvalues <-p2[xmat$detected[xmat$observer==1]==1]
     plot_cond(2,data,gxvalues,model,nc,breaks,
               finebr=(width/divisions)*(0:divisions),showpoints,showlines,

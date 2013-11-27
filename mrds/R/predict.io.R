@@ -21,9 +21,7 @@ predict.io <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
 
   # for gamma models need to find where p(x)=1 (apex), set that as distance
   if(ddfobj$type=="gamma"){
-    key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
-    key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
-    xmat$distance <- rep(apex.gamma(key.scale,key.shape),2)
+    xmat$distance <- rep(apex.gamma(ddfobj),2)
   }
 
   # calculate ps for each part of the model

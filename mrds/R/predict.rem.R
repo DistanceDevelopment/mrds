@@ -17,9 +17,7 @@ predict.rem <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
   ddfobj <- model$ds$ds$aux$ddfobj
 
   if(ddfobj$type=="gamma"){
-    key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
-    key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
-    xmat$distance <- rep(apex.gamma(key.scale,key.shape),2)
+    xmat$distance <- rep(apex.gamma(ddfobj),2)
   }
 
   xmat$offsetvalue <- 0

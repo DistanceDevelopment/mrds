@@ -52,11 +52,11 @@
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (\code{plot}, \code{hist}, \code{lines}, \code{points}, etc)
 #' @return NULL
-#' @author Jeff Laake, Jon Bishop, David Borchers
+#' @author Jeff Laake, Jon Bishop, David Borchers, David L Miller
 #' @keywords plot
 plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
                      showlines=TRUE, showpoints=TRUE,ylim=c(0,1),angle=-45,
-                     density=20,col="black",jitter=NULL,divisions=25,new=TRUE,
+                     density=20,col="black",jitter=NULL,divisions=25,pages=0,
                      xlab="Distance",ylab="Detection probability",
                      subtitle=TRUE,...){
 
@@ -68,9 +68,7 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   xmat.p0$distance <- 0
   ddfobj <- model$ds$ds$aux$ddfobj
   if(ddfobj$type=="gamma"){
-    key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
-    key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
-    xmat.p0$distance <- rep(apex.gamma(key.scale,key.shape),2)
+    xmat.p0$distance <- rep(apex.gamma(ddfobj),2)
   }
   p0 <- predict(model$mr,newdata=xmat.p0,integrate=FALSE)$fitted
   xmat <- model$mr$data
@@ -101,9 +99,12 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
     }
   }
 
+  # do the plotting layout
+  oask <- plot.layout(which,pages)
+  on.exit(devAskNewPage(oask))
+
   # Plot primary unconditional detection function
   if(is.element(1,which)){
-    if(new& .Platform$GUI=="Rgui")dev.new()
     plot_uncond(model,1,xmat,gxvalues=p1/delta,nc,
                 finebr=(width/divisions)*(0:divisions),
                 breaks,showpoints,showlines,maintitle,ylim,
@@ -113,7 +114,6 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
 
   # Plot pooled unconditional detection function
   if(is.element(2,which)){
-    if(new& .Platform$GUI=="Rgui")dev.new()
     plot_uncond(model,3,xmat,gxvalues=(p1+p2*(1-p1))/delta,nc,
                 finebr=(width/divisions)*(0:divisions),breaks,showpoints,
                 showlines,maintitle,ylim,
@@ -125,7 +125,6 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   data <- process.data(model$mr$data,model$meta.data)$xmat
   data$offsetvalue <- 0
   if(is.element(3,which)){
-    if(new& .Platform$GUI=="Rgui")dev.new()
     gxvalues <- p1[xmat$detected[xmat$observer==2]==1]
     plot_cond(1,data,gxvalues,model,nc,breaks,
               finebr=(width/divisions)*(0:divisions),showpoints,showlines,

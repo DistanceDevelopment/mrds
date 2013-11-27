@@ -27,7 +27,7 @@ Version: \tab 2.0.5\cr Date: \tab 2012-3-23\cr License:
 \author{
 Jeff Laake <jeff.laake@noaa.gov>, David Borchers
 <dlb@mcs.st-and.ac.uk>, Len Thomas <len@mcs.st-and.ac.uk>,
-David Miller <dlm22@st-and.ac.uk> and Jon Bishop
+David L. Miller <dave@ninepointeightone.net>, Jon Bishop
 <jonb@mcs.st-and.ac.uk>
 }
 \keyword{package}

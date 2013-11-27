@@ -30,6 +30,12 @@ List containing \item{xgrid }{grid of distance values}
 values}
 }
 \description{
+Computes values of conditional and unconditional detection
+functions and probability density functions for for
+line/point data for single observer or dual observer in any
+of the 3 configurations (io,trial,rem).
+}
+\details{
 Placeholder -- Not functional ----
 }
 \author{

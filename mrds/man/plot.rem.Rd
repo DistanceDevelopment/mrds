@@ -6,7 +6,7 @@ sampling model}
 \method{plot}{rem}(x, which = 1:3, breaks = NULL, nc = NULL,
   maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
   angle = -45, density = 20, col = "black", jitter = NULL,
-  divisions = 25, new = TRUE, xlab = "Distance",
+  divisions = 25, pages = 0, xlab = "Distance",
   ylab = "Detection probability", subtitle = TRUE, ...)
 }
 \arguments{
@@ -89,7 +89,7 @@ The \code{which} command allows the user to select which
 plots are returned. See which argument definition.
 }
 \author{
-Jeff Laake, Jon Bishop, David Borchers
+Jeff Laake, Jon Bishop, David Borchers, David L Miller
 }
 \keyword{plot}
 

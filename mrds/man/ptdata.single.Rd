@@ -2,7 +2,8 @@
 \name{ptdata.single}
 \alias{ptdata.single}
 \title{Simulated single observer point count data}
-\format{The format is 341 obs of 4 variables: ..$ distance: numeric distance from center $
+\format{The format is 341 obs of 4 variables: ..$
+  distance: numeric distance from center $
   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...  ..$
   detected: numeric 0/1  $ object : sequential object number}
 \description{
@@ -12,8 +13,8 @@ p(0)=1; hn sigma=30; w=100
 \examples{
 \donttest{
 data(ptdata.single)
-xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.single, method = "ds",
-            meta.data = list(point=TRUE))
+xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.single,
+         method = "ds", meta.data = list(point=TRUE))
 summary(xx)
 plot(xx,main="Simulated point count data")
 }

@@ -48,9 +48,7 @@ summary.io.fi <- function(object,se=TRUE,N=TRUE,fittedmodel=NULL,
 
   # get the apex for the gamma function
   if(!is.null(ddfobj) && ddfobj$type=="gamma"){
-    key.scale <- scalevalue(ddfobj$scale$parameters,ddfobj$scale$dm)
-    key.shape <- scalevalue(ddfobj$shape$parameters,ddfobj$shape$dm)
-    newdat$distance <- rep(apex.gamma(key.scale,key.shape),2)
+    newdat$distance <- rep(apex.gamma(ddfobj),2)
   }
 
   newdat$offsetvalue <- 0

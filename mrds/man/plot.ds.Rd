@@ -4,10 +4,10 @@
 sampling model}
 \usage{
 \method{plot}{ds}(x, which = c(2), byvar = "", breaks = NULL, nc = NULL,
-  winht = 4, winwd = 6, jitter.v = rep(0, 3), showpoints = TRUE,
-  subset = NULL, pl.col = c("black"), bw.col = c(grey(0)),
-  black.white = FALSE, pl.den = rep(20, 1), pl.ang = rep(-45, 1),
-  main = NULL, new = TRUE, ...)
+  jitter.v = rep(0, 3), showpoints = TRUE, subset = NULL,
+  pl.col = c("black"), bw.col = c(grey(0)), black.white = FALSE,
+  pl.den = rep(20, 1), pl.ang = rep(-45, 1), main = NULL, pages = 0,
+  ...)
 }
 \arguments{
   \item{x}{fitted model from \code{ddf}.}
@@ -22,12 +22,6 @@ sampling model}
   \item{breaks}{user define breakpoints}
 
   \item{nc}{number of equal-width bins for histogram}
-
-  \item{winht}{plot window height (not currently
-  implemented)}
-
-  \item{winwd}{plot window width (not currently
-  implemented)}
 
   \item{jitter.v}{scaling option for plotting points.
   Jitter is applied to points by multiplying the fitted
@@ -58,7 +52,10 @@ sampling model}
 
   \item{main}{user-specfied plot title.}
 
-  \item{new}{make new windows for plots?}
+  \item{pages}{the number of pages over which to spread the
+  plots. For example, if \code{pages=1} then all plots will
+  be displayed on one page.  Default is 0, which prompts
+  the user for the next plot to be displayed.}
 
   \item{\dots}{other graphical parameters, passed to the
   plotting functions (\code{\link{plot}},
@@ -96,16 +93,20 @@ plots are returned. See which argument definition.
 \examples{
 \donttest{
 data(book.tee.data)
-region <- book.tee.data$book.tee.region
 egdata <- book.tee.data$book.tee.dataframe
-samples <- book.tee.data$book.tee.samples
-obs <- book.tee.data$book.tee.obs
 xx <- ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
           data = egdata[egdata$observer==1, ],
           method = "ds", meta.data = list(width = 4))
+
+# not showing predicted probabilities
 plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
+
+# two subsets
 plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
 plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
+
+# put both plots on one page
+plot(xx,breaks=c(0,.5,1,2,3,4),pages=1,which=1:2)
 }
 }
 \author{

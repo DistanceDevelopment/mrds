@@ -115,23 +115,27 @@
 #'   convert to units of length (Default: 1) 4) ervar - encounter rate variance
 #'   type - see type argument to \link{varn} (Default: R2)
 #' @export
-#' @return list object of class "dht" with elements 
+#' @return list object of class "dht" with elements:
 #' \item{clusters}{result list for object clusters}
 #' \item{individuals}{result list for individuals}
-#' \item{Expected.S}{dataframe of estimates of expected cluster size with fields Region, Expected.S and se.Expected.S)
-#' If each cluster size=1, then the result only includes individuals and not clusters and 
-#' Expected.S.}
-#' 
+#' \item{Expected.S}{dataframe of estimates of expected cluster size with
+#'  fields \code{Region}, \code{Expected.S} and \code{se.Expected.S})
+#'  If each cluster size=1, then the result only includes individuals and not
+#'  clusters and Expected.S.}
+#'
 #' The list structure of clusters and individuals are the same:
-#' \item{bysample}{dataframe giving results for each sample; Nchat is the estimated abundance within the sample and
-#' Nhat is scaled by surveyed area/ covered area within that region}
+#' \item{bysample}{dataframe giving results for each sample; Nchat is the
+#'  estimated abundance within the sample and Nhat is scaled by surveyed area/
+#'  covered area within that region}
 #' \item{summary}{dataframe of summary statistics for each region and total}
 #' \item{N}{dataframe of estimates of abundance for each region and total}
 #' \item{D}{dataframe of estimates of density for each region and total}
 #' \item{average.p}{average detection probability estimate}
-#' \item{cormat}{correlation matrix of regional abundance/density estimates and total (if more than one
-#'   region)}
-#' \item{vc}{list of 3: total v-c matrix and detection and er (encounter rate) components of variance; for detection the v-c matrix and partial vector are returned}
+#' \item{cormat}{correlation matrix of regional abundance/density estimates and
+#'  total (if more than one region)}
+#' \item{vc}{list of 3: total v-c matrix and detection and er (encounter rate)
+#'  components of variance; for detection the v-c matrix and partial vector
+#'  are returned}
 #' \item{Nhat.by.sample}{another summary of Nhat by sample used by dht.se}
 #' @author Jeff Laake
 #' @seealso \code{\link{print.dht}},\code{\link{dht.se}}
@@ -175,181 +179,183 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   #                  covered.region.dht, survey.region.dht, dht.se, varn,
   #                  covn(in varn.R), solvecov (in coef.ds.R).
 
-tables.dht <- function(group){
-  # Internal function to create summary tables for clusters (group=TRUE) or
-  # individuals (group=FALSE).
-  options$group <- group
+  tables.dht <- function(group){
+    # Internal function to create summary tables for clusters (group=TRUE) or
+    # individuals (group=FALSE).
+    options$group <- group
 
-  # Compute covered region abundances by sample depending on value of group
-  Nhat.by.sample <- covered.region.dht(obs, samples, group)
+    # Compute covered region abundances by sample depending on value of group
+    Nhat.by.sample <- covered.region.dht(obs, samples, group)
 
-  # Mod 18-Aug-05 jll; added computation of avergage detection probability
-  # which is simply n/Nhat in the covered region
-  average.p <- dim(obs)[1]/sum(Nhat.by.sample$Nhat)
+    # Mod 18-Aug-05 jll; added computation of avergage detection probability
+    # which is simply n/Nhat in the covered region
+    average.p <- dim(obs)[1]/sum(Nhat.by.sample$Nhat)
 
-  # Scale up abundances to survey region
-  # Change jll 19-Jan-05 - sort Nhat.by.sample by Region.Label and Sample.Label
-  width <- model$meta.data$width * options$convert.units
-  Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,width,point)
-  Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
-                                         Nhat.by.sample$Sample.Label),]
-  if(point)
-	  s.area <- Nhat.by.sample$Effort.x*pi*width^2
-  else
+    # Scale up abundances to survey region
+    # jll 19-Jan-05 - sort Nhat.by.sample by Region.Label and Sample.Label
+    width <- model$meta.data$width * options$convert.units
+    Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,width,point)
+    Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
+                                           Nhat.by.sample$Sample.Label),]
+    if(point){
+      s.area <- Nhat.by.sample$Effort.x*pi*width^2
+    }else{
       s.area <- Nhat.by.sample$Effort.x*2*width
-
-  bysample.table <- with(Nhat.by.sample,
-                         data.frame(Region = Region.Label,
-                                    Sample = Sample.Label, 
-                                    Effort = Effort.x,
-                                    Sample.Area = s.area,
-                                    Area=Area,
-                                    n = n,
-                                    Nhat = Nhat,
-                                    Nchat = Nhat*CoveredArea/Area))
-
-  bysample.table$Dhat <- bysample.table$Nchat/bysample.table$Sample.Area
-  Nhat.by.region <- by(Nhat.by.sample$Nhat, Nhat.by.sample$Region.Label,sum)
-
-  # Create estimate table
-  numRegions <- length(unique(samples$Region.Label))
-  if (numRegions > 1){
-    estimate.table <- data.frame(
-                        Label = c(levels(unique(samples$Region.Label)),"Total"),
-                        Estimate = rep(0, numRegions + 1), 
-                        se = rep(NA,numRegions + 1),
-                        cv = rep(NA, numRegions + 1),
-                        lcl = rep(NA,numRegions + 1),
-                        ucl = rep(NA, numRegions + 1))
-  }else{
-      estimate.table = data.frame(Label = c("Total"), 
-                                  Estimate = rep(0,1),
-                                  se = rep(NA, 1),
-                                  cv = rep(NA, 1),
-                                  lcl = rep(NA, 1),
-                                  ucl = rep(NA, 1))
-  }
-  if(numRegions > 1){
-    estimate.table$Estimate <- c(Nhat.by.region, sum(Nhat.by.region))
-  }else{
-    estimate.table$Estimate <- Nhat.by.region
-  }
-
-  # Create summary table
-  summary.table <- Nhat.by.sample[, c("Region.Label","Area",
-                                      "CoveredArea","Effort.y")]
-  summary.table <- unique(summary.table)
-  var.er <- sapply(split(Nhat.by.sample,Nhat.by.sample$Region.Label),
-                   function(x)varn(x$Effort.x,x$n,type=options$ervar))
-
-  if(numRegions > 1){
-     var.er <- c(var.er,varn(Nhat.by.sample$Effort.x,
-                             Nhat.by.sample$n,type=options$ervar))
-  }
-
-  #  jll 11_11_04; change to set missing values for nobs to 0 
-  #   - regions with no sightings
-  nobs <- as.vector(by(bysample.table$n, bysample.table$Region, sum))
-  nobs[is.na(nobs)] <- 0
-  summary.table$n <- nobs
-  if(group){
-    summary.table$k <- tapply(Nhat.by.sample$Sample.Label,
-                              Nhat.by.sample$Region.Label,length)
-    colnames(summary.table) <- c("Region", "Area", "CoveredArea",
-                                 "Effort", "n","k")
-  }else{
-      colnames(summary.table) = c("Region", "Area", "CoveredArea",
-           "Effort", "n")
-  }
-
-  if(numRegions > 1){
-    summary.table <- data.frame(Region=c(levels(summary.table$Region),"Total"),
-                                rbind(summary.table[, -1],
-                                      apply(summary.table[,-1], 2, sum)))
-  }
-  summary.table$ER <- summary.table$n/summary.table$Effort
-  summary.table$se.ER <- sqrt(var.er)
-  summary.table$cv.ER <- summary.table$se.ER/summary.table$ER
-  summary.table$cv.ER[summary.table$ER==0] <- 0
-
-  #  29/05/12 lhm - change to set missing values to 0
-  summary.table$ER[is.nan(summary.table$ER)] <- 0
-  summary.table$se.ER[is.nan(summary.table$se.ER)] <- 0
-  summary.table$cv.ER[is.nan(summary.table$cv.ER)] <- 0
-
-  # If summary of individuals for a clustered popn, add mean 
-  #  group size and its std error
-  if(!group){
-    mean.clustersize <- tapply(obs$size,obs$Region.Label,mean)
-    se.clustersize <- sqrt(tapply(obs$size,obs$Region.Label,var)/
-                           tapply(obs$size,obs$Region.Label,length))
-    cs <- data.frame(Region=names(mean.clustersize),
-                     mean.size=as.vector(mean.clustersize),
-                     se.mean=as.vector(se.clustersize))
-
-    summary.table <- merge(summary.table, cs, by.x = "Region",
-                           all=TRUE,sort=FALSE)
-    if(numRegions > 1){
-      summary.table$mean.size[numRegions+1] <- mean(obs$size)
-      summary.table$se.mean[numRegions+1] <-sqrt(var(obs$size)/length(obs$size))
     }
-    #  29/05/12 lhm - moved to set missing values to 0
-    summary.table$mean.size[is.na(summary.table$mean.size)] <- 0
-    summary.table$se.mean[is.na(summary.table$se.mean)] <- 0
+
+    bysample.table <- with(Nhat.by.sample,
+                           data.frame(Region      = Region.Label,
+                                      Sample      = Sample.Label,
+                                      Effort      = Effort.x,
+                                      Sample.Area = s.area,
+                                      Area        = Area,
+                                      n           = n,
+                                      Nhat        = Nhat,
+                                      Nchat       = Nhat*CoveredArea/Area))
+
+    bysample.table$Dhat <- bysample.table$Nchat/bysample.table$Sample.Area
+    Nhat.by.region <- by(Nhat.by.sample$Nhat, Nhat.by.sample$Region.Label,sum)
+
+    # Create estimate table
+    numRegions <- length(unique(samples$Region.Label))
+    if(numRegions > 1){
+      estimate.table <- data.frame(
+                          Label = c(levels(unique(samples$Region.Label)),"Total"),
+                          Estimate = rep(0, numRegions + 1),
+                          se = rep(NA,numRegions + 1),
+                          cv = rep(NA, numRegions + 1),
+                          lcl = rep(NA,numRegions + 1),
+                          ucl = rep(NA, numRegions + 1))
+    }else{
+      estimate.table = data.frame(Label    = c("Total"),
+                                  Estimate = rep(0,1),
+                                  se       = rep(NA, 1),
+                                  cv       = rep(NA, 1),
+                                  lcl      = rep(NA, 1),
+                                  ucl      = rep(NA, 1))
+    }
+
+    if(numRegions > 1){
+      estimate.table$Estimate <- c(Nhat.by.region, sum(Nhat.by.region))
+    }else{
+      estimate.table$Estimate <- Nhat.by.region
+    }
+
+    # Create summary table
+    summary.table <- Nhat.by.sample[, c("Region.Label","Area",
+                                        "CoveredArea","Effort.y")]
+    summary.table <- unique(summary.table)
+    var.er <- sapply(split(Nhat.by.sample,Nhat.by.sample$Region.Label),
+                     function(x)varn(x$Effort.x,x$n,type=options$ervar))
+
+    if(numRegions > 1){
+       var.er <- c(var.er,varn(Nhat.by.sample$Effort.x,
+                               Nhat.by.sample$n,type=options$ervar))
+    }
+
+    #  jll 11_11_04; change to set missing values for nobs to 0
+    #   - regions with no sightings
+    nobs <- as.vector(by(bysample.table$n, bysample.table$Region, sum))
+    nobs[is.na(nobs)] <- 0
+    summary.table$n <- nobs
+    if(group){
+      summary.table$k <- tapply(Nhat.by.sample$Sample.Label,
+                                Nhat.by.sample$Region.Label,length)
+      colnames(summary.table) <- c("Region", "Area", "CoveredArea",
+                                   "Effort", "n","k")
+    }else{
+      colnames(summary.table) = c("Region", "Area", "CoveredArea", "Effort", "n")
+    }
+
+    if(numRegions > 1){
+      summary.table <- data.frame(Region=c(levels(summary.table$Region),"Total"),
+                                  rbind(summary.table[, -1],
+                                        apply(summary.table[,-1], 2, sum)))
+    }
+
+    summary.table$ER <- summary.table$n/summary.table$Effort
+    summary.table$se.ER <- sqrt(var.er)
+    summary.table$cv.ER <- summary.table$se.ER/summary.table$ER
+    summary.table$cv.ER[summary.table$ER==0] <- 0
+
+    # set missing values to 0
+    summary.table$ER[is.nan(summary.table$ER)] <- 0
+    summary.table$se.ER[is.nan(summary.table$se.ER)] <- 0
+    summary.table$cv.ER[is.nan(summary.table$cv.ER)] <- 0
+
+    # If summary of individuals for a clustered popn, add mean
+    #  group size and its std error
+    if(!group){
+      mean.clustersize <- tapply(obs$size,obs$Region.Label,mean)
+      se.clustersize <- sqrt(tapply(obs$size,obs$Region.Label,var)/
+                             tapply(obs$size,obs$Region.Label,length))
+      cs <- data.frame(Region=names(mean.clustersize),
+                       mean.size=as.vector(mean.clustersize),
+                       se.mean=as.vector(se.clustersize))
+
+      summary.table <- merge(summary.table, cs, by.x = "Region",
+                             all=TRUE,sort=FALSE)
+      if(numRegions > 1){
+        summary.table$mean.size[numRegions+1] <- mean(obs$size)
+        summary.table$se.mean[numRegions+1] <-sqrt(var(obs$size)/length(obs$size))
+      }
+      #  29/05/12 lhm - moved to set missing values to 0
+      summary.table$mean.size[is.na(summary.table$mean.size)] <- 0
+      summary.table$se.mean[is.na(summary.table$se.mean)] <- 0
+    }
+
+    rownames(summary.table) <- 1:dim(summary.table)[1]
+
+    # If a std error has been requested call dht.se
+    if(se){
+      result <- dht.se(model, summary.table, samples, obs, options, numRegions,
+                       estimate.table, Nhat.by.sample)
+      estimate.table <- result$estimate.table
+    }
+
+    # Create estimate table for D from same table for N
+    D.estimate.table <- estimate.table
+    if(numRegions > 1){
+      D.estimate.table$Estimate <-D.estimate.table$Estimate/c(region.table$Area,
+          sum(region.table$Area))
+      D.estimate.table$se <- D.estimate.table$se/c(region.table$Area,
+          sum(region.table$Area))
+      D.estimate.table$lcl <- D.estimate.table$lcl/c(region.table$Area,
+          sum(region.table$Area))
+      D.estimate.table$ucl <- D.estimate.table$ucl/c(region.table$Area,
+          sum(region.table$Area))
+    }else{
+      D.estimate.table$Estimate <- D.estimate.table$Estimate/region.table$Area
+      D.estimate.table$se <- D.estimate.table$se/region.table$Area
+      D.estimate.table$lcl <- D.estimate.table$lcl/region.table$Area
+      D.estimate.table$ucl <- D.estimate.table$ucl/region.table$Area
+    }
+
+    # set missing values to 0
+    D.estimate.table$Estimate[is.nan(D.estimate.table$Estimate)] <- 0
+    D.estimate.table$se[is.nan(D.estimate.table$se)] <- 0
+    D.estimate.table$cv[is.nan(D.estimate.table$cv)] <- 0
+    D.estimate.table$lcl[is.nan(D.estimate.table$lcl)] <- 0
+    D.estimate.table$ucl[is.nan(D.estimate.table$ucl)] <- 0
+
+    # Return list depending on value of se
+    # change to set missing values to 0
+    # jll 6/30/06; dropped restriction that numregions > 1 on sending vc back
+    if(se){
+      cormat <- result$vc/(result$estimate.table$se %o% result$estimate.table$se)
+      cormat[is.nan(cormat)] <- 0
+      result <- list(bysample=bysample.table, summary = summary.table,
+                     N=result$estimate.table, D=D.estimate.table, 
+                     average.p=average.p, cormat = cormat,
+                     vc=list(total=result$vc,detection=result$vc1,er=result$vc2),
+                     Nhat.by.sample=Nhat.by.sample)
+    }else{
+      result <- list(bysample=bysample.table,summary = summary.table,
+                    N = estimate.table,D = D.estimate.table, average.p=average.p,
+                    Nhat.by.sample=Nhat.by.sample)
+    }
+    return(result)
   }
-
-  rownames(summary.table) <- 1:dim(summary.table)[1]
-
-  # If a std error has been requested call dht.se
-  if(se){
-    result <- dht.se(model, summary.table, samples, obs, options, numRegions,
-                     estimate.table, Nhat.by.sample)
-    estimate.table <- result$estimate.table
-  }
-
-  # Create estimate table for D from same table for N
-  D.estimate.table <- estimate.table
-  if(numRegions > 1){
-    D.estimate.table$Estimate <- D.estimate.table$Estimate/c(region.table$Area,
-        sum(region.table$Area))
-    D.estimate.table$se <- D.estimate.table$se/c(region.table$Area,
-        sum(region.table$Area))
-    D.estimate.table$lcl <- D.estimate.table$lcl/c(region.table$Area,
-        sum(region.table$Area))
-    D.estimate.table$ucl <- D.estimate.table$ucl/c(region.table$Area,
-        sum(region.table$Area))
-  }else{
-    D.estimate.table$Estimate <- D.estimate.table$Estimate/region.table$Area
-    D.estimate.table$se <- D.estimate.table$se/region.table$Area
-    D.estimate.table$lcl <- D.estimate.table$lcl/region.table$Area
-    D.estimate.table$ucl <- D.estimate.table$ucl/region.table$Area
-  }
-
-  # jll 11_11_04; change to set missing values to 0
-  D.estimate.table$Estimate[is.nan(D.estimate.table$Estimate)] <- 0
-  D.estimate.table$se[is.nan(D.estimate.table$se)] <- 0
-  D.estimate.table$cv[is.nan(D.estimate.table$cv)] <- 0
-  D.estimate.table$lcl[is.nan(D.estimate.table$lcl)] <- 0
-  D.estimate.table$ucl[is.nan(D.estimate.table$ucl)] <- 0
-
-  # Return list depending on value of se
-  # jll 11_11_04; change to set missing values to 0
-  # jll 6/30/06; dropped restriction that numregions > 1 on sending vc back
-  if(se){
-    cormat <- result$vc/(result$estimate.table$se %o% result$estimate.table$se)
-    cormat[is.nan(cormat)] <- 0
-    result <- list(bysample=bysample.table, summary = summary.table,
-                   N=result$estimate.table, D=D.estimate.table, 
-                   average.p=average.p, cormat = cormat,
-                   vc=list(total=result$vc,detection=result$vc1,er=result$vc2),
-                   Nhat.by.sample=Nhat.by.sample)
-  }else{
-    result <- list(bysample=bysample.table,summary = summary.table,
-                  N = estimate.table,D = D.estimate.table, average.p=average.p,
-                  Nhat.by.sample=Nhat.by.sample)
-  }
-  return(result)
-}
 
 ###Start of dht function
 
@@ -413,8 +419,7 @@ tables.dht <- function(group){
   obs <- vs$obs
   region.table <- vs$region
 
-  # jll 18-Nov-04 code added to handle subset feature when labels 
-  #   are also in data
+  # handle subset feature when labels are also in data
   if(!is.null(obs$Region.Label.x)){
     obs$Region.Label <- obs$Region.Label.x
     obs$Sample.Label <- obs$Sample.Label.x
@@ -429,7 +434,7 @@ tables.dht <- function(group){
   obs <- merge(obs,data.frame(object=objects,pdot=pdot))
 
   # If clustered population create tables for clusters and individuals and
-  # an expected S table otherwise just tables for individuals in an 
+  # an expected S table otherwise just tables for individuals in an
   # unclustered popn
   if(!is.null(obs$size)){
     clusters <- tables.dht(TRUE)
@@ -446,6 +451,7 @@ tables.dht <- function(group){
         numRegions <- length(unique(samples$Region.Label))
         cov.Nc.Ncs <- rep(0,numRegions)
         scale <- clusters$summary$Area/clusters$summary$CoveredArea
+
         for(i in 1:numRegions){
           c.stratum.data <- clusters$Nhat.by.sample[
               as.character(clusters$Nhat.by.sample$Region.Label) ==

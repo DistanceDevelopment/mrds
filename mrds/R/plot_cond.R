@@ -91,14 +91,14 @@ plot_cond <- function(obs,xmat,gxvalues,model,nc,breaks,finebr,showpoints,
   if(maintitle!=""){
     if(subtitle){
       title(paste(maintitle,
-                  "\nConditional detection probability - Observer=",
+                  "\nConditional detection probability\nObserver=",
                   obs ," | Observer = ",3-obs),...)
     }else{
      title(maintitle)
     }
   }else{
     if(subtitle){
-      title(paste("Conditional detection probability - Observer=",
+      title(paste("Conditional detection probability\nObserver=",
                   obs ," | Observer = ",3-obs),...)
     }
   }

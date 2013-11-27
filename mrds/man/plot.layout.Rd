@@ -1,0 +1,25 @@
+\name{plot.layout}
+\alias{plot.layout}
+\title{Layout for plot methods in mrds}
+\usage{
+\method{plot}{layout}(which, pages)
+}
+\arguments{
+  \item{which}{which plots are to be created}
+
+  \item{pages}{number of pages to span the plots accross}
+}
+\description{
+This function does the paging, using
+\code{devAskNewPage()}. This means we can just call plots
+and R will make the prompt for us Warning, this function
+has side effects! It modifies \code{devAskNewPage}!
+}
+\details{
+Code is stolen and modified from plot.R in mgcv by Simon
+Wood
+}
+\author{
+David L. Miller, based on code by Simon N. Wood
+}
+
