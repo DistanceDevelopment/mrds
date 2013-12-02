@@ -1,0 +1,19 @@
+\name{apex.gamma}
+\alias{apex.gamma}
+\title{Get the apex for a gamma detection function}
+\usage{
+apex.gamma(ddfobj)
+}
+\arguments{
+  \item{ddfobj}{ddf object}
+}
+\value{
+the distance at which the gamma peaks
+}
+\description{
+Get the apex for a gamma detection function
+}
+\author{
+Jeff Laake
+}
+
