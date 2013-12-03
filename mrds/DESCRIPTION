@@ -3,7 +3,7 @@ Imports:
     optimx (>= 2013.8.6),
     mgcv,
     Rsolnp
-Maintainer: Jeff Laake <jeff.laake@noaa.gov>
+Maintainer: David Miller <dave@ninepointeightone.net> 
 License: GPL (>=2)
 Title: Mark-Recapture Distance Sampling (mrds)
 LazyLoad: yes
