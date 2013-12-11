@@ -1,6 +1,6 @@
 library(testthat)
 library(mrds)
 
-test_package("mrds")
+test_check("mrds")
 
 
