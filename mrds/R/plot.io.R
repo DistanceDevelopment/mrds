@@ -7,10 +7,9 @@
 #' conditional detection functions) to compare visually the fitted model and
 #' data.
 #'
-#' The structure of the histogram can be controlled by the user-defined
-#' arguments \code{nc} or \code{breaks}.  The observation specific detection
-#' probabilities along with the line representing the fitted average detection
-#' probability.
+#' The structure of the histogram can be controlled using \code{nc} or
+#' \code{breaks}. The observation specific detection probabilities along with
+#' the line representing the fitted average detection probability.
 #'
 #' It is not intended for the user to call any of \code{plot.ds},
 #' \code{plot.trial.fi}, \code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
@@ -27,12 +26,14 @@
 #' @export plot.io
 #' @param x fitted model from \code{ddf}
 #' @param which index to specify which plots should be produced.
-#'  \tabular{ll}{1 \tab Plot primary unconditional detection function \cr
-#'               2 \tab Plot secondary unconditional detection function \cr
-#'               3 \tab Plot pooled unconditional detection function \cr
-#'               4 \tab Plot duplicate unconditional detection function \cr
-#'               5 \tab Plot primary conditional detection function\cr
-#'               6 \tab Plot secondary conditional detection function \cr}
+#'  \tabular{ll}{1 \tab Plot histogram of observed distances for observer 1\cr
+#'               2 \tab Plot histogram of observed distances for observer 2\cr
+#'               3 \tab Plot primary unconditional detection function \cr
+#'               4 \tab Plot secondary unconditional detection function \cr
+#'               5 \tab Plot pooled unconditional detection function \cr
+#'               6 \tab Plot duplicate unconditional detection function \cr
+#'               7 \tab Plot primary conditional detection function\cr
+#'               8 \tab Plot secondary conditional detection function \cr}
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
 #' @param maintitle main title line for each plot
@@ -70,11 +71,12 @@
 #' # just plot everything
 #' plot(result.io)
 #'
-#' # Plot primary and secondary unconditional detection functions on one page
-#' # and  primary and secondary conditional detection functions on another
-#' plot(result.io,which=c(1,2,5,6),pages=2)
+#' # page 1 -- plot histograms of observed distances per observer
+#' # page 2 -- plot primary and secondary unconditional detection functions
+#' # page 3 -- plot primary and secondary conditional detection functions
+#' plot(result.io,which=c(1,2,5,6,7,8),pages=3)
 #' }
-plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
+plot.io <- function(x, which=1:8, breaks=NULL, nc=NULL,  maintitle="",
                     showlines=TRUE, showpoints=TRUE,ylim=c(0,1),angle=-45,
                     density=20,col="black",jitter=NULL,divisions=25,pages=0,
                     xlab="Distance",ylab="Detection probability",subtitle=TRUE,
@@ -116,7 +118,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
     nc<-round(sqrt(min(length(xmat$distance[xmat$observer==1&xmat$detected==1]),
                        length(xmat$distance[xmat$observer==2&xmat$detected==1]),
                        length(xmat$distance[xmat$observer==1 &
-                              xmat$timesdetected==2]) )),0)
+                                            xmat$timesdetected==2]) )),0)
   }
 
   # Set up default break points unless specified
@@ -135,23 +137,34 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
   oask <- plot.layout(which,pages)
   on.exit(devAskNewPage(oask))
 
+  # plot histograms
+  for(wh in which[which < 3]){
+    if(maintitle!="") maintitle <- paste(maintitle,"\n",sep="")
+    mt <- paste(maintitle, "Observer = ",wh, " detections")
+
+    hist(xmat$distance[xmat$observer==wh & xmat$detected==1],breaks=breaks,
+         main=mt,angle=angle,density=density,col=col,xlab=xlab,ylab=ylab)
+  }
+
+
   # loop over the unconditional plots
-  # 1 - Plot primary unconditional detection function
-  # 2 - Plot secondary unconditional detection function
-  # 3 - Plot pooled unconditional detection function
-  # 4 - Plot duplicate unconditional detection function
-  for(wh in seq_along(which[which<5])){
-    plot_uncond(model, wh, xmat, gxvalues=gxlist[[wh]], nc,
+  # 3 - Plot primary unconditional detection function
+  # 4 - Plot secondary unconditional detection function
+  # 5 - Plot pooled unconditional detection function
+  # 6 - Plot duplicate unconditional detection function
+  for(wh in which[which > 2 & which < 7]){
+    observer <- wh-2
+    plot_uncond(model, observer, xmat, gxvalues=gxlist[[observer]], nc,
                 finebr=(width/divisions)*(0:divisions), breaks, showpoints,
                 showlines, maintitle, ylim,
                 angle=angle,density=density,col=col,jitter=jitter,xlab=xlab,
                 ylab=ylab,subtitle=subtitle,...)
   }
 
-  # 5 - Plot conditional detection function (1|2)
+  # 7 - Plot conditional detection function (1|2)
   data <- model$mr$mr$data
   data$offsetvalue <- 0
-  if(is.element(5,which)){
+  if(is.element(7,which)){
     gxvalues <-p1[xmat$detected[xmat$observer==2]==1]
     plot_cond(1,data,gxvalues,model,nc,breaks,
               finebr=(width/divisions)*(0:divisions),showpoints,showlines,
@@ -159,8 +172,8 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
               xlab=xlab,ylab=ylab,subtitle=subtitle,...)
   }
 
-  # 6 - Plot secondary conditional detection function (2|1)
-  if(is.element(6,which)){
+  # 8 - Plot secondary conditional detection function (2|1)
+  if(is.element(8,which)){
     gxvalues <- p2[xmat$detected[xmat$observer==1]==1]
     plot_cond(2,data,gxvalues,model,nc,breaks,
               finebr=(width/divisions)*(0:divisions),showpoints,showlines,

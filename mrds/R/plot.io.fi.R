@@ -12,14 +12,8 @@
 #' probabilities along with the line representing the fitted average detection
 #' probability.
 #'
-#' It is not intended for the user to call any of \code{plot.ds},
-#' \code{plot.trial.fi}, \code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
-#' \code{plot.io.fi} or \code{plot.io} but the arguments are documented here.
-#' Instead the generic \code{plot} command should be used and it will call the
-#' appropriate function based on the type of \code{ddf} object.
-#'
-#' The \code{which} command allows the user to
-#' select which plots are returned. See which argument definition.
+#' It is not intended for the user to call any of \code{plot.io.fi} but the
+#' arguments are documented here. The generic \code{plot} command should be used#' and will call the appropriate function based on the \code{ddf} object.
 #'
 #' @aliases plot.io.fi
 #' @S3method plot io.fi
@@ -27,12 +21,14 @@
 #' @export
 #' @param x fitted model from \code{ddf}
 #' @param which index to specify which plots should be produced.
-#'  \tabular{ll}{1 \tab Plot primary unconditional detection function \cr
-#'               2 \tab Plot secondary unconditional detection function \cr
-#'               3 \tab Plot pooled unconditional detection function \cr
-#'               4 \tab Plot duplicate unconditional detection function \cr
-#'               5 \tab Plot primary conditional detection function \cr
-#'               6 \tab Plot secondary conditional detection function \cr}
+#'  \tabular{ll}{1 \tab Plot histogram of observed distances for observer 1\cr
+#'               2 \tab Plot histogram of observed distances for observer 2\cr
+#'               3 \tab Plot primary unconditional detection function \cr
+#'               4 \tab Plot secondary unconditional detection function \cr
+#'               5 \tab Plot pooled unconditional detection function \cr
+#'               6 \tab Plot duplicate unconditional detection function \cr
+#'               7 \tab Plot primary conditional detection function \cr
+#'               8 \tab Plot secondary conditional detection function \cr}
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
 #' @param maintitle main title line for each plot
@@ -74,7 +70,7 @@
 #' # and  primary and secondary conditional detection functions on another
 #' plot(result.io.fi,which=c(1,2,5,6),pages=2)
 #' }
-plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
+plot.io.fi <- function(x, which=1:8, breaks=NULL, nc=NULL, maintitle="",
                        showlines=TRUE, showpoints=TRUE,ylim=c(0,1),angle=-45,
                        density=20,col="black",jitter=NULL,divisions=25,pages=0,
                        xlab="Distance",ylab="Detection probability",
@@ -99,7 +95,7 @@ plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
     nc<-round(sqrt(min(length(xmat$distance[xmat$observer==1&xmat$detected==1]),
                        length(xmat$distance[xmat$observer==2&xmat$detected==1]),
                        length(xmat$distance[xmat$observer==1&
-                              xmat$timesdetected==2]))),0)
+                                            xmat$timesdetected==2]))),0)
   }
 
   # Set up default break points unless specified
@@ -126,26 +122,33 @@ plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
   oask <- plot.layout(which,pages)
   on.exit(devAskNewPage(oask))
 
-  # guide to which
+  # plot histograms
+  for(wh in which[which < 3]){
+    if(maintitle!="") maintitle <- paste(maintitle,"\n",sep="")
+    mt <- paste(maintitle, "Observer = ",wh, " detections")
 
-  # 1:4 plots are unconditional plots
-  # 1 - Plot primary unconditional detection function
-  # 2 - Plot secondary unconditional detection function
-  # 3 - Plot pooled unconditional detection function
-  # 4 - Plot duplicate unconditional detection function
-  for(wh in seq_along(which[which<5])){
-    #plot_uncond_dummy(wh,gxlist[[wh]])
-    plot_uncond(model,wh,xmat,gxvalues=gxlist[[wh]],nc,
+    hist(xmat$distance[xmat$observer==wh & xmat$detected==1],breaks=breaks,
+         main=mt,angle=angle,density=density,col=col,xlab=xlab,ylab=ylab)
+  }
+
+
+  # 3 - Plot primary unconditional detection function
+  # 4 - Plot secondary unconditional detection function
+  # 5 - Plot pooled unconditional detection function
+  # 6 - Plot duplicate unconditional detection function
+  for(wh in which[which > 2 & which < 7]){
+    observer <- wh-2
+    plot_uncond(model,observer,xmat,gxvalues=gxlist[[observer]],nc,
                 finebr=(width/divisions)*(0:divisions),
                 breaks,showpoints,showlines,maintitle,ylim,
                 angle=angle,density=density,
                 col=col,jitter=jitter,xlab=xlab,ylab=ylab,...)
   }
 
-  # 5 - Plot conditional detection functions
+  # 7 - Plot conditional detection functions
   data <- model$mr$data
   data$offsetvalue <- 0
-  if(is.element(5,which)){
+  if(is.element(7,which)){
     gxvalues <- p1[xmat$detected[xmat$observer==2]==1]
     plot_cond(1,data,gxvalues,model,nc,breaks,
               finebr=(width/divisions)*(0:divisions),showpoints,showlines,
@@ -153,8 +156,8 @@ plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
               xlab=xlab,ylab=ylab,subtitle=subtitle,...)
   }
 
-  # 6 - Plot secondary conditional detection function
-  if(is.element(6,which)){
+  # 8 - Plot secondary conditional detection function
+  if(is.element(8,which)){
     gxvalues <-p2[xmat$detected[xmat$observer==1]==1]
     plot_cond(2,data,gxvalues,model,nc,breaks,
               finebr=(width/divisions)*(0:divisions),showpoints,showlines,
