@@ -44,11 +44,13 @@ sampling model}
   random draw from a normal distribution with mean 1 and sd
   jitter.}
 
+  \item{pages}{the number of pages over which to spread the
+  plots. For example, if \code{pages=1} then all plots will
+  be displayed on one page.  Default is 0, which prompts
+  the user for the next plot to be displayed.}
+
   \item{divisions}{number of divisions for averaging line
   values; default = 25}
-
-  \item{new}{if TRUE, opens new device for each plot; set
-  new=FALSE if you use par(mfrow=..) or layout}
 
   \item{xlab}{label for x-axis}
 

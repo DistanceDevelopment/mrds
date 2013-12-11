@@ -44,8 +44,10 @@
 #' @param jitter scaling option for plotting points.  Jitter is applied to
 #'   points by multiplying the fitted value by a random draw from a normal
 #'   distribution with mean 1 and sd jitter.
+#' @param pages the number of pages over which to spread the plots. For
+#'  example, if \code{pages=1} then all plots will be displayed on one page.
+#'  Default is 0, which prompts the user for the next plot to be displayed.
 #' @param divisions number of divisions for averaging line values; default = 25
-#' @param new if TRUE, opens new device for each plot; set new=FALSE if you use par(mfrow=..) or layout
 #' @param xlab label for x-axis
 #' @param ylab label for y-axis
 #' @param subtitle if TRUE, shows plot type as sub-title
