@@ -1,11 +1,8 @@
 #' Plot fit of detection functions and histograms of data from distance
 #' sampling model
 #'
-#' Plots the fitted detection functions for a distance sampling model and
-#' histograms of the distances (for unconditional detection functions) or
-#' proportion of observations detected within distance intervals (for
-#' conditional detection functions) to compare visually the fitted model and
-#' data.
+#' Plots the fitted detection functions with a histogram of the observed
+#  distances to compare visually the fitted model and data.
 #'
 #' The structure of the histogram can be controlled by the user-defined
 #' arguments \code{nc} or \code{breaks}.  The observation specific detection
@@ -27,8 +24,8 @@
 #' @export
 #' @param x fitted model from \code{ddf}.
 #' @param which index to specify which plots should be produced:
-#'  \tabular{ll}{1 \tab histogram \cr
-#'               2 \tab histogram with fitted line and points \cr}
+#'  \tabular{ll}{1 \tab histogram of observed distances\cr
+#'               2 \tab histogram od observed distanes with fitted line and points \cr}
 #' @param byvar name of variable to be used to color points - not currently
 #'   implemented.
 #' @param breaks user define breakpoints
@@ -74,10 +71,10 @@
 #' # put both plots on one page
 #' plot(xx,breaks=c(0,.5,1,2,3,4),pages=1,which=1:2)
 #' }
-plot.ds <- function(x,which=c(2),byvar="",breaks=NULL,nc=NULL,
-                    jitter.v=rep(0,3),showpoints=TRUE,subset=NULL,
-                    pl.col=c('black'),bw.col=c(grey(0)),black.white=FALSE,
-                    pl.den=rep(20,1),pl.ang=rep(-45,1),main=NULL,pages=0,...){
+plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
+                    jitter.v=rep(0,3), showpoints=TRUE, subset=NULL,
+                    pl.col='black', bw.col=grey(0), black.white=FALSE,
+                    pl.den=rep(20,1), pl.ang=rep(-45,1), main=NULL,pages=0,...){
 
   #  Uses: setcov, detfct, histline, test.breaks
   model<-x
