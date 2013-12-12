@@ -326,9 +326,7 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
     }
 
     # use the user-supplied main= ...
-    if(is.null(main)){
-       title("Detection function plot",cex.main=0.8)
-    }else{
+    if(!is.null(main)){
        title(main,cex.main=0.8)
     }
   }
