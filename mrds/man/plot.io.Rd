@@ -3,7 +3,7 @@
 \title{Plot fit of detection functions and histograms of data from distance
 sampling independent observer (\code{io}) model}
 \usage{
-\method{plot}{io}(x, which = 1:8, breaks = NULL, nc = NULL,
+\method{plot}{io}(x, which = 1:6, breaks = NULL, nc = NULL,
   maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
   angle = -45, density = 20, col = "black", jitter = NULL,
   divisions = 25, pages = 0, xlab = "Distance",
@@ -13,15 +13,13 @@ sampling independent observer (\code{io}) model}
   \item{x}{fitted model from \code{ddf}}
 
   \item{which}{index to specify which plots should be
-  produced.  \tabular{ll}{1 \tab Plot histogram of observed
-  distances for observer 1\cr 2 \tab Plot histogram of
-  observed distances for observer 2\cr 3 \tab Plot primary
+  produced.  \tabular{ll}{1 \tab Plot primary unconditional
+  detection function \cr 2 \tab Plot secondary
+  unconditional detection function \cr 3 \tab Plot pooled
   unconditional detection function \cr 4 \tab Plot
-  secondary unconditional detection function \cr 5 \tab
-  Plot pooled unconditional detection function \cr 6 \tab
-  Plot duplicate unconditional detection function \cr 7
-  \tab Plot primary conditional detection function\cr 8
-  \tab Plot secondary conditional detection function \cr}}
+  duplicate unconditional detection function \cr 5 \tab
+  Plot primary conditional detection function\cr 6 \tab
+  Plot secondary conditional detection function \cr}}
 
   \item{breaks}{user define breakpoints}
 
@@ -79,10 +77,10 @@ conditional detection functions) to compare visually the
 fitted model and data.
 }
 \details{
-The structure of the histogram can be controlled using
-\code{nc} or \code{breaks}. The observation specific
-detection probabilities along with the line representing
-the fitted average detection probability.
+The structure of the histogram can be controlled by the
+user-defined arguments \code{nc} or \code{breaks}.  The
+observation specific detection probabilities along with the
+line representing the fitted average detection probability.
 
 It is not intended for the user to call any of
 \code{plot.ds}, \code{plot.trial.fi},
@@ -107,10 +105,9 @@ result.io <- ddf(dsmodel=~cds(key = "hn"), mrmodel=~glm(~distance),
 # just plot everything
 plot(result.io)
 
-# page 1 -- plot histograms of observed distances per observer
-# page 2 -- plot primary and secondary unconditional detection functions
-# page 3 -- plot primary and secondary conditional detection functions
-plot(result.io,which=c(1,2,5,6,7,8),pages=3)
+# Plot primary and secondary unconditional detection functions on one page
+# and  primary and secondary conditional detection functions on another
+plot(result.io,which=c(1,2,5,6),pages=2)
 }
 }
 \author{

@@ -3,7 +3,7 @@
 \title{Plot fit of detection functions and histograms of data from distance
 sampling independent observer model with full independence (\code{io.fi})}
 \usage{
-\method{plot}{io.fi}(x, which = 1:8, breaks = NULL, nc = NULL,
+\method{plot}{io.fi}(x, which = 1:6, breaks = NULL, nc = NULL,
   maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
   angle = -45, density = 20, col = "black", jitter = NULL,
   divisions = 25, pages = 0, xlab = "Distance",
@@ -13,15 +13,13 @@ sampling independent observer model with full independence (\code{io.fi})}
   \item{x}{fitted model from \code{ddf}}
 
   \item{which}{index to specify which plots should be
-  produced.  \tabular{ll}{1 \tab Plot histogram of observed
-  distances for observer 1\cr 2 \tab Plot histogram of
-  observed distances for observer 2\cr 3 \tab Plot primary
+  produced.  \tabular{ll}{1 \tab Plot primary unconditional
+  detection function \cr 2 \tab Plot secondary
+  unconditional detection function \cr 3 \tab Plot pooled
   unconditional detection function \cr 4 \tab Plot
-  secondary unconditional detection function \cr 5 \tab
-  Plot pooled unconditional detection function \cr 6 \tab
-  Plot duplicate unconditional detection function \cr 7
-  \tab Plot primary conditional detection function \cr 8
-  \tab Plot secondary conditional detection function \cr}}
+  duplicate unconditional detection function \cr 5 \tab
+  Plot primary conditional detection function \cr 6 \tab
+  Plot secondary conditional detection function \cr}}
 
   \item{breaks}{user define breakpoints}
 
@@ -85,10 +83,15 @@ observation specific detection probabilities along with the
 line representing the fitted average detection probability.
 
 It is not intended for the user to call any of
-\code{plot.io.fi} but the arguments are documented here.
-The generic \code{plot} command should be used#' and will
-call the appropriate function based on the \code{ddf}
-object.
+\code{plot.ds}, \code{plot.trial.fi},
+\code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
+\code{plot.io.fi} or \code{plot.io} but the arguments are
+documented here. Instead the generic \code{plot} command
+should be used and it will call the appropriate function
+based on the type of \code{ddf} object.
+
+The \code{which} command allows the user to select which
+plots are returned. See which argument definition.
 }
 \examples{
 \donttest{
