@@ -87,8 +87,6 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   dsmodel <- model$call$dsmodel[[2]][[2]]
 
   xlab <- "Distance"
-  p1.name <- "Observer 1"
-  p2.name <- "Observer 2"
   objname <- "object"
   obsname <- "observer"
   detname <- "detected"
@@ -273,7 +271,6 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
     histline(h1$counts,breaks=breaks,lineonly=FALSE,ylim=c(0,ymax),
              xlab=xlab,ylab="Frequency",fill=TRUE,angle=angval1,
              density=denval1,col=byval1,...)
-    title(paste(p1.name,"detections"),cex.main=0.8)
   }
 
   # Detection function plot overlaid on histogram of observed
