@@ -6,31 +6,31 @@
   col1 = "black", col2 = "blue", new = TRUE, ...)
 }
 \arguments{
-  \item{x}{object of class det.tables}
+  \item{x}{object returned by \code{\link{det.tables}}}
 
-  \item{which}{items in x to plot; vector with values in
-  1:6}
+  \item{which}{items in x to plot (vector with values in
+  1:6)}
 
   \item{angle}{shading angle for hatching}
 
   \item{density}{shading density for hatching}
 
-  \item{col1}{plotting colour for specified universe of
-  detections (col1= Observer1; col2= Observer 2 within
-  Observer 1 subset)}
+  \item{col1}{plotting colour for observer 1 detections}
 
-  \item{col2}{plotting colour for those detected}
+  \item{col2}{plotting colour for observer 2 detections
+  within observer 1 subset detections}
 
   \item{new}{if TRUE new plotting window for each plot}
 
-  \item{\dots}{other graphical parameters, passed to the
-  plotting functions (plot, hist, lines, points, etc)}
+  \item{\dots}{other graphical parameters, passed to
+  plotting functions}
 }
 \value{
 Just plots.
 }
 \description{
-Creates a series of tables for dual observer data that
+Plot the tables created by \code{\link{det.tables}}.
+Produces a series of tables for dual observer data that
 shows the number missed and detected for each observer
 within defined distance classes.
 }

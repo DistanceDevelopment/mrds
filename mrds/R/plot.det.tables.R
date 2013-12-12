@@ -1,21 +1,22 @@
 #' Observation detection tables
 #'
-#' Creates a series of tables for dual observer data that shows the number
-#' missed and detected for each observer within defined distance classes.
+#' Plot the tables created by \code{\link{det.tables}}. Produces a series of
+#' tables for dual observer data that shows the number missed and detected for
+#' each observer within defined distance classes.
 #'
 #' @aliases plot.det.tables
 #' @method plot det.tables
 #' @S3method plot det.tables
 #' @export
-#' @param x object of class det.tables
-#' @param which items in x to plot; vector with values in 1:6
+#' @param x object returned by \code{\link{det.tables}}
+#' @param which items in x to plot (vector with values in 1:6)
 #' @param angle shading angle for hatching
 #' @param density shading density for hatching
-#' @param col1 plotting colour for specified universe of detections (col1= Observer1; col2= Observer 2 within Observer 1 subset)
-#' @param col2 plotting colour for those detected
+#' @param col1 plotting colour for observer 1 detections
+#' @param col2 plotting colour for observer 2 detections within observer 1
+#'  subset detections
 #' @param new if TRUE new plotting window for each plot
-#' @param \dots other graphical parameters, passed to the plotting functions
-#'   (plot, hist, lines, points, etc)
+#' @param \dots other graphical parameters, passed to plotting functions
 #' @return Just plots.
 #' @author Jeff Laake
 #' @examples
