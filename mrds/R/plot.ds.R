@@ -9,14 +9,10 @@
 #' probabilities along with the line representing the fitted average detection
 #' probability.
 #'
-#' It is not intended for the user to call any of \code{plot.ds},
-#' \code{plot.trial.fi}, \code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
-#' \code{plot.io.fi} or \code{plot.io} but the arguments are documented here.
-#' Instead the generic \code{plot} command should be used and it will call the
-#' appropriate function based on the type of \code{ddf} object.
-#'
-#' The \code{which} command allows the user to
-#' select which plots are returned. See which argument definition.
+#' It is not intended for the user to call \code{plot.ds} but its arguments
+#' are documented here. Instead the generic \code{plot} command should be used
+#' and it will call the appropriate function based on the class of the
+#' \code{ddf} object.
 #'
 #' @aliases plot.ds
 #' @S3method plot ds

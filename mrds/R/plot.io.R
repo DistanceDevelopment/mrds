@@ -12,14 +12,10 @@
 #' probabilities along with the line representing the fitted average detection
 #' probability.
 #'
-#' It is not intended for the user to call any of \code{plot.ds},
-#' \code{plot.trial.fi}, \code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
-#' \code{plot.io.fi} or \code{plot.io} but the arguments are documented here.
-#' Instead the generic \code{plot} command should be used and it will call the
-#' appropriate function based on the type of \code{ddf} object.
-#'
-#' The \code{which} command allows the user to select \code{which} plots are
-#' returned. See which argument definition.
+#' It is not intended for the user to call \code{plot.io.fi} but its arguments
+#' are documented here. Instead the generic \code{plot} command should be used
+#' and it will call the appropriate function based on the class of the
+#' \code{ddf} object.
 #'
 #' @aliases plot.io
 #' @S3method plot io
@@ -33,6 +29,8 @@
 #'               4 \tab Plot duplicate unconditional detection function \cr
 #'               5 \tab Plot primary conditional detection function\cr
 #'               6 \tab Plot secondary conditional detection function \cr}
+#'  Note that the order of which is ignored and plots are produced in the above
+#'  order.
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
 #' @param maintitle main title line for each plot
@@ -81,6 +79,10 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
                     ...){
 
   model <- x
+
+  # since we can't get the same ordering as which is, make sure it's the same
+  # every time, at least
+  which <- sort(which)
 
   # Retrieve values from model object
   xmat.p0 <- model$mr$mr$data
@@ -140,7 +142,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
   # 2 - Plot secondary unconditional detection function
   # 3 - Plot pooled unconditional detection function
   # 4 - Plot duplicate unconditional detection function
-  for(wh in seq_along(which[which<5])){
+  for(wh in which[which<5]){
     plot_uncond(model, wh, xmat, gxvalues=gxlist[[wh]], nc,
                 finebr=(width/divisions)*(0:divisions), breaks, showpoints,
                 showlines, maintitle, ylim,

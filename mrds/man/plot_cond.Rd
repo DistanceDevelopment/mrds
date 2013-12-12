@@ -61,21 +61,8 @@ NULL
 \description{
 Plot proportion of observations detected within distance
 intervals (for conditional detection functions) to compare
-visually the fitted model and data.
-}
-\examples{
-\donttest{
-data(book.tee.data)
-region<<-book.tee.data$book.tee.region
-egdata<<-book.tee.data$book.tee.dataframe
-samples<<-book.tee.data$book.tee.samples
-obs<<-book.tee.data$book.tee.obs
-xx=ddf(dsmodel = ~mcds(key = "hn", formula = ~sex), data = egdata[egdata$observer==1, ],
-   method = "ds", meta.data = list(width = 4))
-plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
-plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
-plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
-}
+visually the fitted model and data. Internal function
+called by \code{plot} methods.
 }
 \author{
 Jeff Laake, Jon Bishop, David Borchers

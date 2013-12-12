@@ -19,7 +19,9 @@ sampling independent observer model with full independence (\code{io.fi})}
   unconditional detection function \cr 4 \tab Plot
   duplicate unconditional detection function \cr 5 \tab
   Plot primary conditional detection function \cr 6 \tab
-  Plot secondary conditional detection function \cr}}
+  Plot secondary conditional detection function \cr} Note
+  that the order of which is ignored and plots are produced
+  in the above order.}
 
   \item{breaks}{user define breakpoints}
 
@@ -82,16 +84,11 @@ user-defined arguments \code{nc} or \code{breaks}.  The
 observation specific detection probabilities along with the
 line representing the fitted average detection probability.
 
-It is not intended for the user to call any of
-\code{plot.ds}, \code{plot.trial.fi},
-\code{plot.trial},\code{plot.rem.fi}, \code{plot.rem},
-\code{plot.io.fi} or \code{plot.io} but the arguments are
-documented here. Instead the generic \code{plot} command
-should be used and it will call the appropriate function
-based on the type of \code{ddf} object.
-
-The \code{which} command allows the user to select which
-plots are returned. See which argument definition.
+It is not intended for the user to call \code{plot.io.fi}
+but its arguments are documented here. Instead the generic
+\code{plot} command should be used and it will call the
+appropriate function based on the class of the \code{ddf}
+object.
 }
 \examples{
 \donttest{
