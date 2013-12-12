@@ -45,16 +45,14 @@ plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
     n <- length(xmat$distance[xmat$observer == obs&xmat$detected==1])
     selmat <- xmat[xmat$observer== obs,]
     det.detected <- xmat$detected[xmat$observer== obs]==1
+  }else if(obs==3){
+    n <- length(xmat$distance[xmat$observer==1])
+    selmat <- xmat[xmat$observer==1,]
+    det.detected<- selmat$observer==1
   }else{
-    if(obs==3){
-      n <- length(xmat$distance[xmat$observer==1])
-      selmat <- xmat[xmat$observer==1,]
-      det.detected<- selmat$observer==1
-    }else{
-      n <- length(xmat$distance[xmat$observer==1 & xmat$timesdetected==2])
-      selmat <- xmat[xmat$observer==1,]
-      det.detected <- selmat$timesdetected==2
-    }
+    n <- length(xmat$distance[xmat$observer==1 & xmat$timesdetected==2])
+    selmat <- xmat[xmat$observer==1,]
+    det.detected <- selmat$timesdetected==2
   }
 
   hist.obj <- hist(selmat$distance[det.detected], breaks=breaks, plot=FALSE)
