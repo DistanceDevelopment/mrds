@@ -9,11 +9,11 @@ predict.io <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
   # Added newdata functionality in call to predict.ds.
 
   model <- object
-  if(!is.null(newdata)){
+  if(is.null(newdata)){
+    xmat <- model$mr$mr$data
+  }else{
     compute <- TRUE
     xmat <- newdata
-  }else{
-    xmat <- model$mr$mr$data
   }
 
   xmat$distance <- 0
