@@ -28,6 +28,7 @@ predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
   # integrate=FALSE -- predict p(y)
   if(!integrate){
     # predict here is predict.glm
+    # since model here is model$mr, so model$mr is model$mr$mr
     fitted <- predict(model$mr,newdata,type="response")
 
     p1 <- fitted[newdata$observer==1]
