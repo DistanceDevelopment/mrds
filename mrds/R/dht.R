@@ -99,44 +99,53 @@
 #' derivative calculation for the delta method variance.
 #'
 #' @param model ddf model object
-#' @param region.table dataframe of region records - Region.Label and Area
-#' @param sample.table dataframe of sample records - Region.Label,
-#'   Sample.Label, Effort
-#' @param obs.table dataframe of observation records with fields object,
-#'   Region.Label, and Sample.Label which give links to sample.table,
-#'   region.table and the data records used in \code{model}
-#' @param subset subset statement to create obs.table if NULL
-#' @param se if TRUE computes std errors, cv and confidence interval based on
-#'   log-normal
-#' @param bootstrap if TRUE uses bootstrap approach (currently not implemented)
-#' @param options a list of options that can be set: 1) pdelta: delta value for
-#'   computing numerical first derivatives (Default: 0.001), 2) varflag - 0,1,2
-#'   (see below) (Default: 2), 3) convert.units - multiplier for width to
-#'   convert to units of length (Default: 1) 4) ervar - encounter rate variance
-#'   type - see type argument to \link{varn} (Default: R2)
+#' @param region.table \code{data.frame} of region records. Two columns:
+#'  \code{Region.Label} and \code{Area}.
+#' @param sample.table \code{data.frame} of sample records. Three columns:
+#'   \code{Region.Label}, \code{Sample.Label}, \code{Effort}.
+#' @param obs.table \code{data.frame} of observation records with fields:
+#'  \code{object}, \code{Region.Label}, and \code{Sample.Label} which give
+#'  links to \code{sample.table}, \code{region.table} and the data records used
+#'  in \code{model}
+#' @param subset subset statement to create \code{obs.table} if \code{NULL}
+#' @param se if \code{TRUE} computes std errors, cv and confidence interval
+#'  based on log-normal
+#' @param bootstrap if \code{TRUE} uses bootstrap approach (currently not
+#'  implemented)
+#' @param options a list of options that can be set:
+#'  \code{pdelta} : delta value for computing numerical first derivatives
+#'    (Default: 0.001)
+#'  \code{varflag} : 0,1,2 (see below) (Default: 2)
+#'  \code{convert.units} :  multiplier for width to convert to units of
+#'    length (Default: 1)
+#'  \code{ervar} : encounter rate variance type - see type argument to
+#'    \code{\link{varn}} (Default: \code{"R2"})
 #' @export
-#' @return list object of class "dht" with elements:
+#' @return list object of class \code{dht} with elements:
 #' \item{clusters}{result list for object clusters}
 #' \item{individuals}{result list for individuals}
-#' \item{Expected.S}{dataframe of estimates of expected cluster size with
-#'  fields \code{Region}, \code{Expected.S} and \code{se.Expected.S})
-#'  If each cluster size=1, then the result only includes individuals and not
-#'  clusters and Expected.S.}
+#' \item{Expected.S}{\code{data.frame} of estimates of expected cluster size
+#'  with fields \code{Region}, \code{Expected.S} and \code{se.Expected.S})
+#'  If each cluster \code{size=1}, then the result only includes individuals
+#'  and not clusters and \code{Expected.S}.}
 #'
 #' The list structure of clusters and individuals are the same:
-#' \item{bysample}{dataframe giving results for each sample; Nchat is the
+#' \item{bysample}{\code{data.frame} giving results for each sample; Nchat is the
 #'  estimated abundance within the sample and Nhat is scaled by surveyed area/
 #'  covered area within that region}
-#' \item{summary}{dataframe of summary statistics for each region and total}
-#' \item{N}{dataframe of estimates of abundance for each region and total}
-#' \item{D}{dataframe of estimates of density for each region and total}
+#' \item{summary}{\code{data.frame} of summary statistics for each region and
+#'  total}
+#' \item{N}{\code{data.frame} of estimates of abundance for each region and
+#'  total}
+#' \item{D}{\code{data.frame} of estimates of density for each region and total}
 #' \item{average.p}{average detection probability estimate}
 #' \item{cormat}{correlation matrix of regional abundance/density estimates and
 #'  total (if more than one region)}
 #' \item{vc}{list of 3: total v-c matrix and detection and er (encounter rate)
 #'  components of variance; for detection the v-c matrix and partial vector
 #'  are returned}
-#' \item{Nhat.by.sample}{another summary of Nhat by sample used by dht.se}
+#' \item{Nhat.by.sample}{another summary of \code{Nhat} by sample used by
+#'  \code{dht.se}}
 #' @author Jeff Laake
 #' @seealso \code{\link{print.dht}},\code{\link{dht.se}}
 #' @references
