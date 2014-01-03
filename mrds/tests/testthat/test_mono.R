@@ -39,7 +39,7 @@ test_that("bookexamples parameter estimates and likelihood is correct", {
 
 })
 
-test_that("ddf dies when monotonicity is not required", {
+test_that("ddf when monotonicity is not required", {
 
   # covariate models die
   expect_that(result<-ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
@@ -51,7 +51,7 @@ test_that("ddf dies when monotonicity is not required", {
   expect_that(result<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1),
                   data = egdata[egdata$observer ==1, ], method = "ds",
                   meta.data = list(width = 4,mono=TRUE)),
-     throws_error("Monotonicity constraints unnecessary with key only models."))
+     shows_message("Monotonicity constraints are unnecessary with key only models, not constraining model for monotonicity."))
 
 })
 

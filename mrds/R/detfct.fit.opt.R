@@ -72,6 +72,13 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     optim.options$optimx.method <- NULL
     optim.options$follow.on <- TRUE
   }
+
+  # if monotonicity has been requested but we are using key only then just
+  # use optimx
+  if(misc.options$mono & is.null(ddfobj$adjustment)){
+    misc.options$mono <- FALSE
+  }
+
   # if nofit=TRUE, we just want to set the parameters, calculate the
   # likelihood and exit
   if(misc.options$nofit){
