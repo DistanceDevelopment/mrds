@@ -1,13 +1,13 @@
 #' Numerically integrate pdf of observed distances over specified ranges
-#' 
-#' Computes integral of pdf of observed distances over x for each observation.  The
-#' method of computation depends on argument switches set and the type of
+#'
+#' Computes integral of pdf of observed distances over x for each observation.
+#' The method of computation depends on argument switches set and the type of
 #' detection function.
-#' 
-#' If either doeachint is set or there is only one integral then they are computed 
-#' using integrate; otherwise, it uses the cgftab which is a spline
-#' fitted to a table of standardized integrals and the value is interpolated from the
-#' spline for each observation.
+#'
+#' If either doeachint is set or there is only one integral then they are
+#' computed using integrate; otherwise, it uses the cgftab which is a spline
+#' fitted to a table of standardized integrals and the value is interpolated
+#' from the spline for each observation.
 #'
 #' @param ddfobj distance detection function specification
 #' @param select logical vector for selection of data values
@@ -24,16 +24,18 @@
 #' @keywords utility
 integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
                          standardize=TRUE, point=FALSE){
-#  Make sure there is consistency between integration ranges and data
-#  It is ok to have a single observation with multiple ranges or a single range
-#  with multiple observations but otherwise the numbers must agree if both >1
+  # Make sure there is consistency between integration ranges and data
+  # It is ok to have a single observation with multiple ranges or a single range
+  # with multiple observations but otherwise the numbers must agree if both >1
 
   if(!is.matrix(int.range)){
-	if(is.vector(int.range) && length(int.range)==2)
-		int.range=matrix(int.range,ncol=2,nrow=1)
-	else
+    if(is.vector(int.range) && length(int.range)==2){
+      int.range=matrix(int.range,ncol=2,nrow=1)
+    }else{
         stop("\nInternal error - int.range is not a matrix and cannot be converted to the required matrix structure")
+    }
   }
+
   if(is.null(select)){
     nobs <- nrow(ddfobj$xmat)
     index <- 1:nobs
@@ -41,9 +43,11 @@ integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
     nobs <- sum(select)
     index <- which(select)
   }
+
   if(nrow(int.range)>1 && nobs>1 && nrow(int.range)!=nobs){
     stop("\n Number of integration ranges (int.range) does not match number of observations\n")
   }
+
   # Now either compute integral by integrating function or by use of spline in
   # cgftab.  If either doeachint=TRUE or only a single integral, then integrate
   # function using gstdint with stdint=FALSE
@@ -58,18 +62,20 @@ integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
         if(nobs>1){
           if(nrow(int.range)>1){
             integrals[i] <- gstdint(int.range[i,], ddfobj=ddfobj,
-                               index=index[i], select=NULL, width=width,
-                               standardize=standardize, point=point,
-                               stdint=FALSE)
+                                    index=index[i], select=NULL, width=width,
+                                    standardize=standardize, point=point,
+                                    stdint=FALSE)
           }else{
             integrals[i] <- gstdint(int.range, ddfobj=ddfobj, index=index[i],
-                               select=NULL,width=width, standardize=standardize,
-                               point=point, stdint=FALSE)
+                                    select=NULL,width=width,
+                                    standardize=standardize,point=point,
+                                    stdint=FALSE)
           }
         }else{
           integrals[i] <- gstdint(int.range[i,], ddfobj=ddfobj, index=index[1],
                                   select=NULL, width=width,
-                             standardize=standardize, point=point, stdint=FALSE)
+                                  standardize=standardize, point=point,
+                                  stdint=FALSE)
         }
       }
     }
