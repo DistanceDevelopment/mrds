@@ -1,7 +1,8 @@
-#' Integral of pdf of distances 
-#' 
-#' Computes the integral of distpdf with scale=1 (stdint=TRUE) or specified scale (stdint=FALSE) 
-#' 
+#' Integral of pdf of distances
+#'
+#' Computes the integral of distpdf with scale=1 (stdint=TRUE) or specified
+#' scale (stdint=FALSE)
+#'
 #' @param x lower,upper value for integration
 #' @param ddfobj distance detection function specification
 #' @param index specific data row index
@@ -12,17 +13,17 @@
 #' @param point logical to determine if point count(TRUE) or line
 #'   transect(FALSE)
 #' @param stdint if TRUE, scale=1 otherwise specified scale used
-#' @return vector of integral values of detection function 
+#' @return vector of integral values of detection function
 #' @note This is an internal function that is not intended to be invoked
 #'   directly.
 #' @author Jeff Laake
 #' @seealso \code{\link{tablecgf}}
 #' @keywords utility
 gstdint <- function (x, ddfobj, index=NULL,select=NULL,width,
-                      standardize=TRUE, point=FALSE, stdint=TRUE)
-{
+                      standardize=TRUE, point=FALSE, stdint=TRUE){
+
    return(integrate(distpdf, lower = x[1], upper = x[2], width=width,
-                       ddfobj=ddfobj, select=select, index=index, 
-                       rel.tol = 1e-7,standardize=standardize,
-           		       stdint=stdint,point=point)$value)
+                    ddfobj=ddfobj, select=select, index=index,
+                    rel.tol = 1e-7,standardize=standardize,
+                    stdint=stdint,point=point)$value)
 }
