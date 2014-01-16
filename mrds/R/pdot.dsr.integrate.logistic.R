@@ -47,6 +47,10 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
     lower <- 0
   }
 
+  if(is.null(x$observer)){
+    stop("data must have a column named \"observer\"")
+  }
+
   if(integral.numeric | point){
 
     if(GAM|length(right)>1){

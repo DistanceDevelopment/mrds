@@ -9,26 +9,13 @@ predict.trial.fi <- function(object, newdata=NULL,compute=FALSE, int.range=NULL,
   point <- model$meta.data$point
   width <- model$meta.data$width
 
+  # set newdata to be the model data if we don't have any
   if(is.null(newdata)){
     newdata <- model$data
     newdata <- newdata[newdata$object %in% as.numeric(names(model$fitted)),]
   }
 
-  if(!integrate){
-    p1 <- predict(model$mr,newdata,type="response")
-    p2 <- 0
-    fitted <- p1
-
-    if(is.null(newdata)){
-      names(fitted) <- model$mr$data$object[model$mr$data$observer==1]
-    }else{
-      names(fitted) <- newdata$object[newdata$observer==1]
-    }
-
-    return(list(p1     = p1,
-                p2     = 0,
-                fitted = fitted))
-  }else{
+  if(integrate){
     left <- model$meta.data$left
     formula <- paste("~",as.character(model$mr$formula)[3],collapse="")
 
@@ -62,6 +49,20 @@ predict.trial.fi <- function(object, newdata=NULL,compute=FALSE, int.range=NULL,
     }
 
     fitted <- pdot.list$pdot
+  }else{
+    p1 <- predict(model$mr,newdata,type="response")
+    p2 <- 0
+    fitted <- p1
+
+    if(is.null(newdata)){
+      names(fitted) <- model$mr$data$object[model$mr$data$observer==1]
+    }else{
+      names(fitted) <- newdata$object[newdata$observer==1]
+    }
+
+    return(list(p1     = p1,
+                p2     = 0,
+                fitted = fitted))
   }
 
   if(is.null(newdata)){
