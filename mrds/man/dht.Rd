@@ -19,10 +19,12 @@ dht(model, region.table, sample.table, obs.table = NULL, subset = NULL,
   with fields: \code{object}, \code{Region.Label}, and
   \code{Sample.Label} which give links to
   \code{sample.table}, \code{region.table} and the data
-  records used in \code{model}}
+  records used in \code{model}. Not necessary if the
+  \code{data.frame} used to create the model contains
+  \code{Region.Label}, \code{Sample.Label} columns.}
 
-  \item{subset}{subset statement to create \code{obs.table}
-  if \code{NULL}}
+  \item{subset}{subset statement to create
+  \code{obs.table}}
 
   \item{se}{if \code{TRUE} computes std errors, cv and
   confidence interval based on log-normal}

@@ -30,7 +30,7 @@ vector of integral values - one for each observation
 }
 \description{
 Computes integral of pdf of observed distances over x for
-each observation.  The method of computation depends on
+each observation. The method of computation depends on
 argument switches set and the type of detection function.
 }
 \details{

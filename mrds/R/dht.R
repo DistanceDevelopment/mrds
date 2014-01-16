@@ -106,8 +106,9 @@
 #' @param obs.table \code{data.frame} of observation records with fields:
 #'  \code{object}, \code{Region.Label}, and \code{Sample.Label} which give
 #'  links to \code{sample.table}, \code{region.table} and the data records used
-#'  in \code{model}
-#' @param subset subset statement to create \code{obs.table} if \code{NULL}
+#'  in \code{model}. Not necessary if the \code{data.frame} used to create
+#'  the model contains \code{Region.Label}, \code{Sample.Label} columns.
+#' @param subset subset statement to create \code{obs.table}
 #' @param se if \code{TRUE} computes std errors, cv and confidence interval
 #'  based on log-normal
 #' @param bootstrap if \code{TRUE} uses bootstrap approach (currently not
