@@ -21,17 +21,17 @@
 #' @author Jeff Laake, Dave Miller
 setinitial.ds <- function(ddfobj,width,initial,point){
 
-	ftype <- ddfobj$type
-	if(ftype=="unif"){
-		initialvalues <- list(scale=NULL,shape=NULL)
+  ftype <- ddfobj$type
+  if(ftype=="unif"){
+    initialvalues <- list(scale=NULL,shape=NULL)
   }
-	dmat <- ddfobj$xmat
-	if(point){
+  dmat <- ddfobj$xmat
+  if(point){
     dmat$distance <- sqrt(dmat$distance)
   }
-	point <- FALSE
+  point <- FALSE
 
-  # Set shape parameters for special case of cds hazard function
+  # shape parameters for hazard-rate
   if(ftype == "hr"){
     initialvalues <- sethazard(ddfobj,dmat,width)
     if(ncol(ddfobj$shape$dm)>1){
@@ -43,19 +43,23 @@ setinitial.ds <- function(ddfobj,width,initial,point){
                                rep(0,ncol(ddfobj$scale$dm)-1))
     }
   }else{
-    # Set scale parameters using Ramsey's approach of linear model 
+    # Set scale parameters using Ramsey's approach of linear model
     # with log(distance)
-		if(ftype!="unif"){
-			initialvalues <- list(scale=lm(eval(parse(text=paste(
-                            "log(distance+width/1000)",ddfobj$scale$formula))),
-							              data=dmat[dmat$detected==1,])$coeff)
+    if(ftype!="unif"){
+      init.formula <- as.formula(paste("log(distance+width/1000)",
+                                       ddfobj$scale$formula))
+      initialvalues <- list(scale=lm(init.formula,
+                                     data=dmat[dmat$detected==1,])$coeff)
+      #initialvalues <- list(scale=lm(eval(parse(text=paste(
+      #                      "log(distance+width/1000)",ddfobj$scale$formula))),
+      #                      data=dmat[dmat$detected==1,])$coeff)
     }
 
     # Set shape parameter values in a very cheesey way...
     if(!is.null(ddfobj$shape)){
       initialvalues$shape <- c(log(2),rep(0,ncol(ddfobj$shape$dm)-1))
     }
-	}
+  }
 
   # Set initial values for the adjustment term parameters
   if(!is.null(ddfobj$adjustment)){
@@ -87,7 +91,7 @@ setinitial.ds <- function(ddfobj,width,initial,point){
       }else{
         stop("Length of initial values for adjustments incorrect")
       }
-    }	
+    } 
   }
   return(initialvalues)
 }
