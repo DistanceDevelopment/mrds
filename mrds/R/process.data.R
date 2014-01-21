@@ -40,6 +40,7 @@
 #'
 #' @param data dataframe object
 #' @param meta.data meta.data options; see \code{\link{ddf}} for a description
+#' @param control control options; see \code{\link{ddf}} for a description
 #' @param mr.check if \code{TRUE} check data for errors in the mark-recapture
 #'  part of the model structure; for detection function (\code{method="ds"})
 #'  then \code{mr.check=FALSE}.
@@ -47,7 +48,7 @@
 #'   \item{meta.data}{meta.data list}
 #' @author Jeff Laake
 #' @keywords utility
-process.data <- function(data,meta.data=list(),mr.check=TRUE){
+process.data <- function(data,meta.data=list(),control=list(),mr.check=TRUE){
 
   set.default.width=function(data,meta.data){
   # set.default.width - sets default transect width when none was specified
@@ -61,6 +62,19 @@ process.data <- function(data,meta.data=list(),mr.check=TRUE){
       width <- max(data$distance)
     }
     return(width)
+  }
+
+  ## detection function only checks
+  if(!mr.check){
+    if(!is.null(data$distance)){
+      data <- data[!is.na(data$distance),]
+    }else{
+      data <- data[!is.na(data$distbegin)&!is.na(data$distend),]
+    }
+    if(is.null(data$object)){
+      stop("\nobject field is missing in the data\n")
+    }
+
   }
 
 
@@ -135,7 +149,7 @@ process.data <- function(data,meta.data=list(),mr.check=TRUE){
     data$binned[!is.na(data$distbegin)] <- TRUE
   }
 
-  # Restrict data to width interval 
+  # Restrict data to width interval
   # If no width set, use largest measured distance as width
   if(is.na(meta.data$width)){
     width <- set.default.width(data,meta.data)
@@ -188,6 +202,31 @@ process.data <- function(data,meta.data=list(),mr.check=TRUE){
       xmat[,i] <- factor (xmat[,i])
     }
   }
+
+  ## further detection function only checks
+##  if(!mr.check){
+##    # use all unique detections (observer=1) if observer is present
+##    if(!is.null(xmat$observer)){
+##      if(control$limit){
+##        if(length(levels(factor(xmat$observer)))>1){
+##          xmat <- xmat[xmat$observer==levels(factor(xmat$observer))[1],]
+##          xmat$detected <- rep(1,dim(xmat)[1])
+##        }
+##      }
+##    }
+##
+##    # If the frame includes column "detected", use only those with detected=1
+##    if(!is.null(xmat$detected)){
+##      if(control$limit) xmat <- xmat[xmat$detected==1,]
+##    }else{
+##      xmat$detected <- rep(1,dim(xmat)[1])
+##    }
+##
+##    #  Make sure object #'s are unique
+##    if(length(unique(xmat$object))!=length(xmat$object)){
+##      stop("\nSome values of object field are duplicates. They must be unique.\n")
+##    }
+##  }
 
   # If the exclusion eliminated all of the data, stop with error message
   if(dim(xmat)[1]==0){

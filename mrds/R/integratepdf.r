@@ -45,7 +45,7 @@ integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
   }
 
   if(nrow(int.range)>1 && nobs>1 && nrow(int.range)!=nobs){
-    stop("\n Number of integration ranges (int.range) does not match number of observations\n")
+    stop("\nNumber of integration ranges (int.range) does not match number of observations\n")
   }
 
   # Now either compute integral by integrating function or by use of spline in

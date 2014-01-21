@@ -63,7 +63,7 @@ ddf.rem<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   control <- assign.default.values(control, showit=0, doeachint=FALSE,
                                    estimate=TRUE, refit=TRUE, nrefits=25,
                                    initial=NA, lowerbounds=NA, upperbounds=NA,
-                                   mono.points=20)
+                                   mono.points=20,limit=TRUE)
 
   # Process data
   data.list <- process.data(data,meta.data)
@@ -88,7 +88,7 @@ ddf.rem<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   missed <- data$detected[data$observer==1]==0
   unique.data <- rbind(unique.data,obs2[obs1$detected==0,])
   unique.data$observer <- 1
-  unique.data  <-  process.data(unique.data, meta.data,mr.check=FALSE)$xmat
+  unique.data  <-  process.data(unique.data,meta.data,control,mr.check=FALSE)$xmat
   result$ds <- ddf.ds(model=dsmodel,unique.data,meta.data,control,call)
 
   # stop if ds model didn't converge

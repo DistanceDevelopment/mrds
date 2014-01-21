@@ -95,18 +95,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   save.options <- options()
   options(contrasts=c("contr.treatment","contr.poly"))
 
-  # Process data
-  # First remove data with missing distances
-  if(!is.null(data$distance)){
-    data <- data[!is.na(data$distance),]
-  }else{
-    data <- data[!is.na(data$distbegin)&!is.na(data$distend),]
-  }
-  if(is.null(data$object)){
-    stop("\nobject field is missing in the data\n")
-  }
-  # Next call function to process data based on values of meta.data
-  datalist <- process.data(data,meta.data,mr.check=FALSE)
+  # Process data based on values of meta.data
+  datalist <- process.data(data,meta.data,control,mr.check=FALSE)
   xmat <- datalist$xmat
   meta.data <- datalist$meta.data
 
@@ -150,8 +140,6 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   # set doeachint=TRUE if adj.scale="width" and key not uniform
   if(ddfobj$type!="unif"&&!is.null(ddfobj$adjustment)){
     if(ddfobj$adjustment$scale=="width"){
-      # setting doeachint to TRUE;
-      # cannot use integral scaling with adj.scale=width and non-uniform key
       control$doeachint <- TRUE
     }
   }

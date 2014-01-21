@@ -87,28 +87,10 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
     ddfobj <- assign.par(ddfobj,fpar)
     doeachint <- ltmodel$aux$doeachint
 
-    # Get integration ranges either from specified argument or from
-    # values stored in the model.
-    if(is.null(int.range)){
-      if(is.null(newdata)){
-        nr <- nrow(ddfobj$xmat)
-      }else{
-        nr <- nrow(newdata)
-      }
-
-      if(is.null(ltmodel$aux$int.range)){
-        int.range <- cbind(rep(0,nr),rep(width,nr))
-      }else{
-        int.range <- ltmodel$aux$int.range
-        if(is.vector(int.range)){
-          int.range <- cbind(rep(int.range[1],nr),
-                             rep(int.range[2],nr))
-        }
-      }
-    }
 
     # Extract other values from model object
     if(!is.null(newdata)){
+
       if(!is.null(ddfobj$scale)){
         zdim <- ncol(ddfobj$scale$dm)
         znames <- colnames(ddfobj$scale$dm)
@@ -129,8 +111,27 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
         }
       }
       # update xmat too
-      datalist <- process.data(newdata,object$meta.data,mr.check=FALSE)
+      datalist <- process.data(newdata,object$meta.data,object$control, mr.check=FALSE)
       ddfobj$xmat <- datalist$xmat
+    }
+    # Get integration ranges either from specified argument or from
+    # values stored in the model.
+    if(is.null(int.range)){
+      if(is.null(newdata)){
+        nr <- nrow(ddfobj$xmat)
+      }else{
+        nr <- nrow(newdata)
+      }
+
+      if(is.null(ltmodel$aux$int.range)){
+        int.range <- cbind(rep(0,nr),rep(width,nr))
+      }else{
+        int.range <- ltmodel$aux$int.range
+        if(is.vector(int.range)){
+          int.range <- cbind(rep(int.range[1],nr),
+                             rep(int.range[2],nr))
+        }
+      }
     }
 
     # Compute integral of fitted detection function using either logistic or
