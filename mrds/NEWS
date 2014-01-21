@@ -5,6 +5,7 @@ CHANGES
 
  * new testthat changes test locations etc, this has been sorted out.
  * which= argument in plot.* now sorts the which first, so plots will always be in order
+ * plot.ds is now more friendly to par() users, thanks to Jason Roberts for the pointer
 
 
 mrds 2.1.4-3

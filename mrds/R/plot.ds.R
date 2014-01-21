@@ -1,3 +1,5 @@
+plot.ds is now more friendly to par() users, thanks to Jason Roberts for
+the pointer
 #' Plot fit of detection functions and histograms of data from distance
 #' sampling model
 #'
@@ -261,7 +263,7 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   if(pages!=1 & sum(show)!=1){
     oask <- devAskNewPage(TRUE)
     on.exit(devAskNewPage(oask))
-  }else{
+  }else if(sum(show)!=1){
     opar <- par(mfrow=c(1,sum(show)))
     on.exit(par(opar))
   }
