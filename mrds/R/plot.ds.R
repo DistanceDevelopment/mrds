@@ -1,5 +1,3 @@
-plot.ds is now more friendly to par() users, thanks to Jason Roberts for
-the pointer
 #' Plot fit of detection functions and histograms of data from distance
 #' sampling model
 #'
