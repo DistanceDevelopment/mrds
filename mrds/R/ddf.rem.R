@@ -88,7 +88,7 @@ ddf.rem<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   missed <- data$detected[data$observer==1]==0
   unique.data <- rbind(unique.data,obs2[obs1$detected==0,])
   unique.data$observer <- 1
-  unique.data  <-  process.data(unique.data, meta.data,check=FALSE)$xmat
+  unique.data  <-  process.data(unique.data, meta.data,mr.check=FALSE)$xmat
   result$ds <- ddf.ds(model=dsmodel,unique.data,meta.data,control,call)
 
   # stop if ds model didn't converge

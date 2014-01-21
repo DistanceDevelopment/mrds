@@ -6,7 +6,7 @@
 #' The function does a number of error checking tasks, creating fields and
 #' adding to \code{meta.data} including:
 #'
-#' 1) If \code{check=TRUE}, check to make sure the record structure is okay for
+#' 1) If \code{mr.check=TRUE}, check to make sure the record structure is okay for
 #' mrds data. The number of primary records (observer=1) must equal the number
 #' of secondary records (observer=2). Also, a field in the dataframe is created
 #' \code{timesseen} which counts the number of times an object was detected
@@ -40,13 +40,14 @@
 #'
 #' @param data dataframe object
 #' @param meta.data meta.data options; see \code{\link{ddf}} for a description
-#' @param check if \code{TRUE} check data for errors in the mrds structure; for
-#'   \code{method="ds" check=FALSE}
+#' @param mr.check if \code{TRUE} check data for errors in the mark-recapture
+#'  part of the model structure; for detection function (\code{method="ds"})
+#'  then \code{mr.check=FALSE}.
 #' @return \item{xmat}{processed \code{data.frame} with added fields}
 #'   \item{meta.data}{meta.data list}
 #' @author Jeff Laake
 #' @keywords utility
-process.data <- function(data,meta.data=list(),check=TRUE){
+process.data <- function(data,meta.data=list(),mr.check=TRUE){
 
   set.default.width=function(data,meta.data){
   # set.default.width - sets default transect width when none was specified
@@ -62,19 +63,17 @@ process.data <- function(data,meta.data=list(),check=TRUE){
     return(width)
   }
 
-  # assign dataframe to data
 
+  ## MR only checks
   # Check to make sure the record structure is ok. Number of primary
   # records = number of secondary
-  if(check){
+  if(mr.check){
     if(length(data$detected[data$observer==1]) !=
         length(data$detected[data$observer==2])){
       stop("number of records for primary observer not equal to number for secondary observer")
     }
-  }
 
-  # Create field which counts the number of times an object was detected 0,1,2
-  if(check){
+    # Create field which counts the number of times an object was detected 0,1,2
     timesdetected <- data$detected[data$observer==1] +
                      data$detected[data$observer==2]
     data$timesdetected <- rep(0,dim(data)[1])

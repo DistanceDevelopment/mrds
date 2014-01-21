@@ -2,7 +2,7 @@
 \alias{process.data}
 \title{Process data for fitting distance sampling detection function}
 \usage{
-process.data(data, meta.data = list(), check = TRUE)
+process.data(data, meta.data = list(), mr.check = TRUE)
 }
 \arguments{
   \item{data}{dataframe object}
@@ -10,8 +10,10 @@ process.data(data, meta.data = list(), check = TRUE)
   \item{meta.data}{meta.data options; see \code{\link{ddf}}
   for a description}
 
-  \item{check}{if \code{TRUE} check data for errors in the
-  mrds structure; for \code{method="ds" check=FALSE}}
+  \item{mr.check}{if \code{TRUE} check data for errors in
+  the mark-recapture part of the model structure; for
+  detection function (\code{method="ds"}) then
+  \code{mr.check=FALSE}.}
 }
 \value{
 \item{xmat}{processed \code{data.frame} with added fields}
@@ -25,7 +27,7 @@ needed fields to dataframe and to \code{meta.data}.
 The function does a number of error checking tasks,
 creating fields and adding to \code{meta.data} including:
 
-1) If \code{check=TRUE}, check to make sure the record
+1) If \code{mr.check=TRUE}, check to make sure the record
 structure is okay for mrds data. The number of primary
 records (observer=1) must equal the number of secondary
 records (observer=2). Also, a field in the dataframe is

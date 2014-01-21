@@ -129,7 +129,7 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
         }
       }
       # update xmat too
-      datalist <- process.data(newdata,object$meta.data,check=FALSE)
+      datalist <- process.data(newdata,object$meta.data,mr.check=FALSE)
       ddfobj$xmat <- datalist$xmat
     }
 
