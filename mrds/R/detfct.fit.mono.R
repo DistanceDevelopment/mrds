@@ -27,76 +27,75 @@ getRefPoints<- function(no_d,width){
 #  pars           - parameters
 #  ddfobj         - ddf object with almost everything we need in it
 #  misc.options   - everything else...
-flnl.constr<- function(pars, ddfobj, misc.options,...){
+flnl.constr <- function(pars, ddfobj, misc.options,...){
 
   if(is.null(ddfobj$adjustment)){
     # this never gets called from ddf()
-    ineq_constr<-rep(10,2*misc.options$mono.points)
+    ineq_constr <- rep(10,2*misc.options$mono.points)
   }else{
-    ddfobj<-assign.par(ddfobj,pars)
+    ddfobj <- assign.par(ddfobj,pars)
 
     # apply the constraints?
-    constr<-misc.options$mono
+    constr <- misc.options$mono
     # apply strict monotonicity?
-    strict<-misc.options$mono.strict
+    strict <- misc.options$mono.strict
 
     ### Constraint stuff here:
     # number of points (distances)
     # at which the DF is evaluated
-    no_d<- misc.options$mono.points
+    no_d <- misc.options$mono.points
     # reference points (distances)
-    ref_p<- getRefPoints(no_d,misc.options$width)
+    ref_p <- getRefPoints(no_d,misc.options$width)
     # to get detfct to play nice need to mudge ddfobj a bit...
     if(!is.null(ddfobj$scale)){
-      ddfobj$scale$dm<-rep(1,no_d)
+      ddfobj$scale$dm <- rep(1,no_d)
     }
     if(!is.null(ddfobj$shape)){
-      ddfobj$shape$dm<-rep(1,no_d)
+      ddfobj$shape$dm <- rep(1,no_d)
     }
-    df_v_rp<- double(no_d)
+    df_v_rp <- double(no_d)
 
-    df_v_rp<-as.vector(detfct(ref_p,ddfobj,width=misc.options$width,
-                    standardize=FALSE))
+    df_v_rp <- as.vector(detfct(ref_p,ddfobj,width=misc.options$width,
+                                standardize=FALSE))
 
     # reference point associated with distance=0
-    ref_p0<- 0
+    ref_p0 <- 0
     # again, to get detfct to play nice need to mudge ddfobj a bit...
     if(!is.null(ddfobj$scale)){
-      ddfobj$scale$dm<-1
+      ddfobj$scale$dm <- 1
     }
     if(!is.null(ddfobj$shape)){
-      ddfobj$shape$dm<-1
+      ddfobj$shape$dm <- 1
     }
-    df_v_rp0<- double(1)
-    df_v_rp0<-as.vector(detfct(ref_p0,ddfobj,width=misc.options$width,
-                    standardize=FALSE))
+    df_v_rp0 <- double(1)
+    df_v_rp0 <- as.vector(detfct(ref_p0,ddfobj,width=misc.options$width,
+                                 standardize=FALSE))
 
     # inequality constraints ensuring the
     # (weak or strict) monotonicity
-    ic_m<- NULL
+    ic_m <- NULL
     if(constr){
-      # set the reference point to be the detection function 
-      # value at 0.
-      df_v_rp_p<- df_v_rp0 
-      ic_m<- double(no_d)
+      # set the reference point to be the detection function
+      # value at 0
+      df_v_rp_p <- df_v_rp0
+      ic_m <- double(no_d)
       for(i in 1:no_d){
-        ic_m[i]<- (df_v_rp_p - df_v_rp[i])
+        ic_m[i] <- (df_v_rp_p - df_v_rp[i])
         if(strict){
           # if we have strict monotonicity, then change the ref
           # point to be the last point
-          df_v_rp_p<- df_v_rp[i]
+          df_v_rp_p <- df_v_rp[i]
         }
       }
     }
 
     # inequality constraints ensuring that
     # the detection function is always >=0
-    ic_p<- double(no_d)
-    ic_p<- df_v_rp
+    ic_p <- double(no_d)
+    ic_p <- df_v_rp
 
-    #  set of inequality constraints 
-    ineq_constr<-c(ic_m, ic_p)
+    #  set of inequality constraints
+    ineq_constr <- c(ic_m, ic_p)
     }
   return(ineq_constr)
 }
-
