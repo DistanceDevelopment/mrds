@@ -48,39 +48,29 @@ coef.ds <- function(object,...){
   indices <- getpar(ddfobj,index=TRUE)
   se <- sqrt(diag(vcov))
 
-  if(indices[1]!=0){
-    key.shape.se <- se[1:indices[1]]
-  }
-
-  if(indices[2]!=0){
-    key.scale.se <- se[(indices[1]+1):indices[2]]
-  }
-
-  if(indices[3]!=0){
-    if(indices[2]!=0){
-      adj.parm.se <- se[(indices[2]+1):indices[3]]
-    }else{
-      adj.parm.se <- se[(indices[1]+1):indices[3]]
-    }
-  }
+  # make a fake ddf object to easily extract the SEs
+  se.dd <- assign.par(ddfobj,se)
+  key.shape.se <- se.dd$pars$shape
+  key.scale.se <- se.dd$pars$scale
+  adj.parm.se <- se.dd$pars$adjustment
 
   # Always get the scale parameter
   if(!is.null(ddfobj$scale)){
-    coeff <- as.data.frame(cbind(estimate=ddfobj$scale$parameters,
+    coeff <- as.data.frame(cbind(estimate=ddfobj$pars$scale,
                                  se=key.scale.se))
     row.names(coeff) <- colnames(ddfobj$scale$dm)
   }
 
   # If we have a non-null shape parameter, get that too
   if(!is.null(ddfobj$shape)){
-    exp.coeff <- as.data.frame(cbind(estimate=ddfobj$shape$parameters,
+    exp.coeff <- as.data.frame(cbind(estimate=ddfobj$pars$shape,
                                      se=key.shape.se))
     row.names(exp.coeff) <- colnames(ddfobj$shape$dm)
   }
 
   # Get the adjustment parameters if necessary
   if(!is.null(ddfobj$adjustment)){
-    adj.coeff <- as.data.frame(cbind(estimate=ddfobj$adjustment$parameters,
+    adj.coeff <- as.data.frame(cbind(estimate=ddfobj$pars$adjustment,
                                      se=adj.parm.se))
     adj.names <- NULL
     for(i in 1:nrow(adj.coeff)){

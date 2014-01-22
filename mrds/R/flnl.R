@@ -53,17 +53,10 @@ flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
     # if the parameters exist
     if(!is.null(ddfobj$pars[[par.name]])){
       # set those we don't want to optimise as NA
-##      save.pars <- ddfobj[[par.name]]$parameters
-##      ddfobj[[par.name]]$parameters <- rep(NA,
-##                                          length(ddfobj[[par.name]]$parameters))
-##      pars <- getpar(ddfobj)
-##      fpar[which(is.na(pars))] <- save.pars
-
       save.pars <- ddfobj$pars[[par.name]]
       ddfobj$pars[[par.name]] <- rep(NA,length(ddfobj$pars[[par.name]]))
       pars <- getpar(ddfobj)
       fpar[which(is.na(pars))] <- save.pars
-
     }
     return(list(fpar=fpar,ddfobj=ddfobj))
   }

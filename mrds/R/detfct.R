@@ -152,14 +152,12 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
     }
   }else{
     if(!is.null(ddfobj$scale)){
-##      key.scale <- scalevalue(ddfobj$scale$parameters,scale.dm)
       key.scale <- scalevalue(ddfobj$pars$scale,scale.dm)
     }
   }
 
   # calculate the key shape
   if(!is.null(ddfobj$shape)){
-##    key.shape <- scalevalue(ddfobj$shape$parameters,shape.dm)
     key.shape <- scalevalue(ddfobj$pars$shape,shape.dm)
   }
 
@@ -192,7 +190,6 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
     adj.series <- ddfobj$adjustment$series
     adj.scale <- ddfobj$adjustment$scale
     adj.order <- ddfobj$adjustment$order
-##    adj.parm <- ddfobj$adjustment$parameters
     adj.parm <- ddfobj$pars$adjustment
     adj.exp <- ddfobj$adjustment$exp
 

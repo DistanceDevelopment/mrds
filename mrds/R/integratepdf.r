@@ -86,8 +86,6 @@ integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
     if(!is.null(ddfobj$scale)){
       xscale <- scalevalue(ddfobj$pars$scale,
                            ddfobj$scale$dm[select,,drop=FALSE])
-##      xscale <- scalevalue(ddfobj$scale$parameters,
-##                           ddfobj$scale$dm[select,,drop=FALSE])
     }else{
       xscale <- 1
     }

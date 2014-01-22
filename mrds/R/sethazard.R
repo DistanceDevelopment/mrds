@@ -4,9 +4,6 @@ sethazard <- function(ddfobj,dmat,width){
   evallike <- function(fpar){
     ddfobj$intercept.only <- TRUE
 
-    ddfobj$shape$parameters[1] <- fpar[1]
-    ddfobj$scale$parameters[1] <- fpar[2]
-
     pars <- list()
     pars$shape <- fpar[1]
     pars$scale <- fpar[2]
@@ -15,15 +12,14 @@ sethazard <- function(ddfobj,dmat,width){
 
     # set adjustment parameters to zero for now...
     if(!is.null(ddfobj$adjustment)){
-      ddfobj$adjustment$parameters <- rep(0,length(ddfobj$adjustment$order))
       ddfobj$pars$adjustment <- rep(0,length(ddfobj$adjustment$order))
     }
 
     fpar <- getpar(ddfobj)
-    ddfobj$shape$parameters[1] <- NA
-    ddfobj$scale$parameters[1] <- NA
+    ddfobj$par$shape[1] <- NA
+    ddfobj$par$scale[1] <- NA
     if(!is.null(ddfobj$adjustment)){
-      ddfobj$adjustment$parameters <- rep(NA,length(ddfobj$adjustment$order))
+      ddfobj$pars$adjustment <- rep(0,length(ddfobj$adjustment$order))
     }
 
     flnl(fpar, ddfobj, FALSE,

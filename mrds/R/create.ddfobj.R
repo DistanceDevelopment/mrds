@@ -92,8 +92,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
                                     meta.data,as.formula(ddfobj$shape$formula))
   if(ddfobj$type !="unif"){
     ddfobj$scale$dm <- setcov(ddfobj$xmat,ddfobj$scale$formula)$cov
-    ddfobj$scale$parameters <- rep(0,ncol(ddfobj$scale$dm))
-ddfobj$pars$scale <- rep(0,ncol(ddfobj$scale$dm))
+    ddfobj$pars$scale <- rep(0,ncol(ddfobj$scale$dm))
     # Next determine if scale covariate model is intercept only.
     ddfobj$intercept.only <- FALSE
     if(ddfobj$scale$formula == "~1" &
@@ -106,8 +105,7 @@ ddfobj$pars$scale <- rep(0,ncol(ddfobj$scale$dm))
 
   if(!is.null(ddfobj$shape)){
     ddfobj$shape$dm <- setcov(ddfobj$xmat,ddfobj$shape$formula)$cov
-    ddfobj$shape$parameters <- rep(0,ncol(ddfobj$shape$dm))
-ddfobj$pars$shape <- rep(0,ncol(ddfobj$shape$dm))
+    ddfobj$pars$shape <- rep(0,ncol(ddfobj$shape$dm))
   }
 
   # Set up integral table if this is a half-normal detection function and
@@ -130,18 +128,15 @@ ddfobj$pars$shape <- rep(0,ncol(ddfobj$shape$dm))
       }
       ddfobj$scale$dm[,!is.na(initialvalues$scale)]
     }
-    ddfobj$scale$parameters <- initialvalues$scale[!is.na(initialvalues$scale)]
-ddfobj$pars$scale <- initialvalues$scale[!is.na(initialvalues$scale)]
+    ddfobj$pars$scale <- initialvalues$scale[!is.na(initialvalues$scale)]
   }
 
   if(!is.null(ddfobj$shape)){
-    ddfobj$shape$parameters <- initialvalues$shape
-ddfobj$pars$shape <- initialvalues$shape
+    ddfobj$pars$shape <- initialvalues$shape
   }
 
   if(!is.null(ddfobj$adjustment)){
-    ddfobj$adjustment$parameters <- initialvalues$adjustment
-ddfobj$pars$adjustment <- initialvalues$adjustment
+    ddfobj$pars$adjustment <- initialvalues$adjustment
   }
 
   # Add restriction to prevent adjustments if scale formula isn't ~1
