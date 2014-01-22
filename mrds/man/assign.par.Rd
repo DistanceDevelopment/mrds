@@ -26,7 +26,7 @@ vector based on a known structure and assigns them into
 to be extracted from \code{ddfobj}.
 }
 \note{
-Internal functions not intended to be called by user.
+Internal function, not intended to be called by user.
 }
 \author{
 Jeff Laake

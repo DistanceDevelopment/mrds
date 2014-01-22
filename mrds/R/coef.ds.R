@@ -45,7 +45,6 @@ coef.ds <- function(object,...){
   }
 
   ddfobj <- ltmodel$aux$ddfobj
-  indices <- getpar(ddfobj,index=TRUE)
   se <- sqrt(diag(vcov))
 
   # make a fake ddf object to easily extract the SEs

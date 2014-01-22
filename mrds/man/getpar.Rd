@@ -2,7 +2,7 @@
 \alias{getpar}
 \title{Extraction and assignment of parameters to vector}
 \usage{
-getpar(ddfobj, fitting = "all", index = FALSE)
+getpar(ddfobj, fitting = "all")
 }
 \arguments{
   \item{ddfobj}{distance sampling object (see
@@ -10,16 +10,7 @@ getpar(ddfobj, fitting = "all", index = FALSE)
 
   \item{fitting}{character string which is either
   "all","key","adjust" which determines which parameters
-  are retrieved}
-
-  \item{index}{logical that determines whether parameters
-  are returned (FALSE) or starting indices in parameter
-  vector for scale, shape, adjustment parameters}
-}
-\value{
-index==FALSE, vector of parameters that were requested or
-index==TRUE, vector of 3 indices for scale, shape,
-adjustment
+  are retrieved.}
 }
 \description{
 Extracts parameters of a particular type (scale, shape,
@@ -35,7 +26,7 @@ to be extracted from \code{ddfobj}.
 Internal functions not intended to be called by user.
 }
 \author{
-Jeff Laake
+Jeff Laake, David L Miller
 }
 \seealso{
 assign.par

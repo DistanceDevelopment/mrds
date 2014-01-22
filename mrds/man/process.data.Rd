@@ -2,13 +2,16 @@
 \alias{process.data}
 \title{Process data for fitting distance sampling detection function}
 \usage{
-process.data(data, meta.data = list(), mr.check = TRUE)
+process.data(data, meta.data = list(), control = list(), mr.check = TRUE)
 }
 \arguments{
   \item{data}{dataframe object}
 
   \item{meta.data}{meta.data options; see \code{\link{ddf}}
   for a description}
+
+  \item{control}{control options; see \code{\link{ddf}} for
+  a description}
 
   \item{mr.check}{if \code{TRUE} check data for errors in
   the mark-recapture part of the model structure; for
