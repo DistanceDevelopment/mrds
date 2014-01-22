@@ -13,28 +13,33 @@
 #' @param fpar parameter vector
 #' @return index==FALSE, vector of parameters that were requested or
 #'   index==TRUE, vector of 3 indices for scale, shape, adjustment
-#' @note Internal functions not intended to be called by user.
+#' @note Internal function, not intended to be called by user.
 #' @seealso getpar
 #' @author Jeff Laake
 #' @keywords utility
 assign.par <- function(ddfobj, fpar){
-  index <- 1
-  # Shape parameters
-  if(!is.null(ddfobj$shape)){
-    ddfobj$shape$parameters <- fpar[1:ncol(ddfobj$shape$dm)]
-    index <- index+ncol(ddfobj$shape$dm)
-  }
+##  index <- 1
+##  # Shape parameters
+##  if(!is.null(ddfobj$shape)){
+##    ddfobj$shape$parameters <- fpar[1:ncol(ddfobj$shape$dm)]
+##    index <- index+ncol(ddfobj$shape$dm)
+##  }
+##
+##  # Scale parameters
+##  if(!is.null(ddfobj$scale)){
+##    ddfobj$scale$parameters <- fpar[index:(index+ncol(ddfobj$scale$dm)-1)]
+##    index <- index+ncol(ddfobj$scale$dm)
+##  }
+##
+##  # Adjustment parameters
+##  if(!is.null(ddfobj$adjustment)){
+##    ddfobj$adjustment$parameters <- fpar[index:length(fpar)]
+##  }
 
-  # Scale parameters
-  if(!is.null(ddfobj$scale)){
-    ddfobj$scale$parameters <- fpar[index:(index+ncol(ddfobj$scale$dm)-1)]
-    index <- index+ncol(ddfobj$scale$dm)
-  }
 
-  # Adjustment parameters
-  if(!is.null(ddfobj$adjustment)){
-    ddfobj$adjustment$parameters <- fpar[index:length(fpar)]
-  }
+  # eventually comment out the above
+  ddfobj$pars <- relist(fpar,skel=ddfobj$pars)
+  ddfobj$pars <- as.relistable(ddfobj$pars)
 
   return(ddfobj)
 }

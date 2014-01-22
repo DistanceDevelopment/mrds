@@ -144,8 +144,11 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
     }
   }
 
-  initialvalues <- c(ddfobj$shape$parameters,ddfobj$scale$parameters,
-                     ddfobj$adjustment$parameters)
+  #initialvalues <- c(ddfobj$shape$parameters,ddfobj$scale$parameters,
+  #                   ddfobj$adjustment$parameters)
+
+  initialvalues <- as.vector(unlist(ddfobj$pars))
+
   if(!is.null(initialvalues)){
     bounds <- setbounds(control$lowerbounds,control$upperbounds,
                       initialvalues,ddfobj)

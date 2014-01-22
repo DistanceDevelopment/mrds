@@ -200,12 +200,12 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         lt$aux$ddfobj <- ddfobj
       }else{
       # If we don't have convergence what do we do
-        refit.count<-refit.count+1
-        if(is.null(nrefits)|refit.count<=nrefits){
+        refit.count <- refit.count+1
+        if(is.null(nrefits) | refit.count<=nrefits){
           if(showit>=1) errors("No convergence. Refitting ...")
 
           # use the new pars only if they gave a better lnl than last time
-          if(lt$value<=lnl.last){
+          if(lt$value <= lnl.last){
             # conv==1 has a different meaning in optimx() and solnp()
             if(lt$conv==1 && !misc.options$mono){
               initialvalues <- lt$par
@@ -246,7 +246,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
     if(any(is.na(lt$par)) | lt$conv!=0){
       # if there was no convergence then just return the lt object for debugging
-      errors("Problems with fitting data. Did not converge")
+      errors("Problem with fitting data: no convergence.")
       if(misc.options$debug){
         lt$optim.history <- optim.history
         return(lt)

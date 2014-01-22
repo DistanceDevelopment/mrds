@@ -29,16 +29,18 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
 
   # Create empty object and get values from cds or mcds function
   ddfobj <- vector("list")
-  point <- meta.data$point
   modpaste <- paste(model)
   modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
+
+  # basic information about the detection function
+  point <- meta.data$point
+  ddfobj$transect <- ifelse(point,"point","line")
+  ddfobj$width <- meta.data$width
+  ddfobj$type <- modelvalues$key
 
   if(class(modelvalues)=="try-error"){
     stop("Invalid model specification: ",model)
   }
-
-  # Specify key function type
-  ddfobj$type <- modelvalues$key
 
   if(ddfobj$type=="logistic"){
     stop("Logistic detection function has been temporarily disabled")
@@ -91,6 +93,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   if(ddfobj$type !="unif"){
     ddfobj$scale$dm <- setcov(ddfobj$xmat,ddfobj$scale$formula)$cov
     ddfobj$scale$parameters <- rep(0,ncol(ddfobj$scale$dm))
+ddfobj$pars$scale <- rep(0,ncol(ddfobj$scale$dm))
     # Next determine if scale covariate model is intercept only.
     ddfobj$intercept.only <- FALSE
     if(ddfobj$scale$formula == "~1" &
@@ -104,6 +107,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   if(!is.null(ddfobj$shape)){
     ddfobj$shape$dm <- setcov(ddfobj$xmat,ddfobj$shape$formula)$cov
     ddfobj$shape$parameters <- rep(0,ncol(ddfobj$shape$dm))
+ddfobj$pars$shape <- rep(0,ncol(ddfobj$shape$dm))
   }
 
   # Set up integral table if this is a half-normal detection function and
@@ -127,14 +131,17 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
       ddfobj$scale$dm[,!is.na(initialvalues$scale)]
     }
     ddfobj$scale$parameters <- initialvalues$scale[!is.na(initialvalues$scale)]
+ddfobj$pars$scale <- initialvalues$scale[!is.na(initialvalues$scale)]
   }
 
   if(!is.null(ddfobj$shape)){
     ddfobj$shape$parameters <- initialvalues$shape
+ddfobj$pars$shape <- initialvalues$shape
   }
 
   if(!is.null(ddfobj$adjustment)){
     ddfobj$adjustment$parameters <- initialvalues$adjustment
+ddfobj$pars$adjustment <- initialvalues$adjustment
   }
 
   # Add restriction to prevent adjustments if scale formula isn't ~1
@@ -165,6 +172,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
     }
   }
 
+#  ddfobj$pars <- initialvalues
 
   return(ddfobj)
 }

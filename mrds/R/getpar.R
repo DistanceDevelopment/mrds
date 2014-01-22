@@ -23,32 +23,42 @@
 #' @keywords utility
 getpar <- function(ddfobj,fitting="all",index=FALSE){
 
-  pars <- NULL
+##  pars <- NULL
 
   if(!index){
-    if(fitting=="key" | fitting=="all"){
-      if(!is.null(ddfobj$shape)) pars <- c(pars,ddfobj$shape$parameters)
-      if(!is.null(ddfobj$scale)) pars <- c(pars,ddfobj$scale$parameters)
-    }else{
-      if(!is.null(ddfobj$shape)){
-        pars <- c(pars,rep(NA,length(ddfobj$shape$parameters)))
-      }
-      if(!is.null(ddfobj$scale)){
-        pars <- c(pars,rep(NA,length(ddfobj$scale$parameters)))
-      }
+##    if(fitting=="key" | fitting=="all"){
+##      if(!is.null(ddfobj$shape)) pars <- c(pars,ddfobj$shape$parameters)
+##      if(!is.null(ddfobj$scale)) pars <- c(pars,ddfobj$scale$parameters)
+##    }else{
+##      if(!is.null(ddfobj$shape)){
+##        pars <- c(pars,rep(NA,length(ddfobj$shape$parameters)))
+##      }
+##      if(!is.null(ddfobj$scale)){
+##        pars <- c(pars,rep(NA,length(ddfobj$scale$parameters)))
+##      }
+##    }
+##
+##    if(fitting=="adjust" | fitting=="all"){
+##      if(!is.null(ddfobj$adjustment)){
+##        pars <- c(pars,ddfobj$adjustment$parameters)
+##      }
+##    }else{
+##      if(!is.null(ddfobj$adjustment)){
+##        pars <- c(pars,rep(NA,length(ddfobj$adjustment$parameters)))
+##      }
+##    }
+##
+##    return(pars)
+
+    # this needs to be generalized to non K+A setting
+    if(fitting=="adjust"){
+      ddfobj$pars$scale <- rep(NA,length(ddfobj$pars$scale))
+      ddfobj$pars$shape <- rep(NA,length(ddfobj$pars$shape))
+    }else if(fitting=="key"){
+      ddfobj$pars$adjustment <- rep(NA,length(ddfobj$pars$adjustment))
     }
 
-    if(fitting=="adjust" | fitting=="all"){
-      if(!is.null(ddfobj$adjustment)){
-        pars <- c(pars,ddfobj$adjustment$parameters)
-      }
-    }else{
-      if(!is.null(ddfobj$adjustment)){
-        pars <- c(pars,rep(NA,length(ddfobj$adjustment$parameters)))
-      }
-    }
-
-    return(pars)
+    return(as.vector(unlist(ddfobj$pars)))
 
   }else{
     indices <- rep(0,3)

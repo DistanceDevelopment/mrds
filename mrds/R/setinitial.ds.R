@@ -1,11 +1,11 @@
 #' Set initial values for detection function based on distance sampling
-#' 
+#'
 #' For a given detection function, it computes the initial values for the
 #' parameters including scale and shape parameters and adjustment function
 #' parameters if any.  If there are user-defined initial values only the
 #' parameters not specified by the user are computed.
-#' 
-#' 
+#'
+#'
 #' @usage setinitial.ds(ddfobj,width,initial,point)
 #'        sethazard(ddfobj,dmat,width)
 #' @aliases setinitial.ds sethazard
@@ -50,9 +50,6 @@ setinitial.ds <- function(ddfobj,width,initial,point){
                                        ddfobj$scale$formula))
       initialvalues <- list(scale=lm(init.formula,
                                      data=dmat[dmat$detected==1,])$coeff)
-      #initialvalues <- list(scale=lm(eval(parse(text=paste(
-      #                      "log(distance+width/1000)",ddfobj$scale$formula))),
-      #                      data=dmat[dmat$detected==1,])$coeff)
     }
 
     # Set shape parameter values in a very cheesey way...
@@ -63,8 +60,10 @@ setinitial.ds <- function(ddfobj,width,initial,point){
 
   # Set initial values for the adjustment term parameters
   if(!is.null(ddfobj$adjustment)){
-    initialvalues$adjustment <- rep(0,length(ddfobj$adjustment$order)) 
+    initialvalues$adjustment <- rep(0,length(ddfobj$adjustment$order))
   }
+
+
 
   if(!any(is.na(initial))){
     if(!is.list(initial)){
@@ -91,7 +90,10 @@ setinitial.ds <- function(ddfobj,width,initial,point){
       }else{
         stop("Length of initial values for adjustments incorrect")
       }
-    } 
+    }
   }
+
+  initialvalues <- as.relistable(initialvalues)
+
   return(initialvalues)
 }

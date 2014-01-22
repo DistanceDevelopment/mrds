@@ -3,11 +3,20 @@ sethazard <- function(ddfobj,dmat,width){
   # temporary function to evaluate the likelihood for hazard rate
   evallike <- function(fpar){
     ddfobj$intercept.only <- TRUE
+
     ddfobj$shape$parameters[1] <- fpar[1]
     ddfobj$scale$parameters[1] <- fpar[2]
+
+    pars <- list()
+    pars$shape <- fpar[1]
+    pars$scale <- fpar[2]
+    pars <- as.relistable(pars)
+    ddfobj$pars <- pars
+
     # set adjustment parameters to zero for now...
     if(!is.null(ddfobj$adjustment)){
       ddfobj$adjustment$parameters <- rep(0,length(ddfobj$adjustment$order))
+      ddfobj$pars$adjustment <- rep(0,length(ddfobj$adjustment$order))
     }
 
     fpar <- getpar(ddfobj)

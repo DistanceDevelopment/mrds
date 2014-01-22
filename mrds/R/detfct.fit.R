@@ -66,17 +66,18 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
 
     if(misc.options$mono & ddfobj$type!="unif"){
       # get best key pars first
-      save.mono<-misc.options$mono
-      save.mono.strict<-misc.options$mono.strict
+      save.mono <- misc.options$mono
+      save.mono.strict <- misc.options$mono.strict
 
-      misc.options$mono<-FALSE
-      misc.options$mono.strict<-FALSE
+      # run unconstrained optimisation to obtain good key parameters
+      misc.options$mono <- FALSE
+      misc.options$mono.strict <- FALSE
       lt <- detfct.fit.opt(ddfobj,optim.options,bounds,
                            misc.options,fitting="key")
-      misc.options$mono<-save.mono
-      misc.options$mono.strict<-save.mono.strict
+      misc.options$mono <- save.mono
+      misc.options$mono.strict <- save.mono.strict
 
-      ddfobj<-assign.par(ddfobj,lt$par)
+      ddfobj <- assign.par(ddfobj,lt$par)
     }
 
     lt <- detfct.fit.opt(ddfobj,optim.options,bounds,misc.options)
@@ -86,8 +87,10 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
 
     # think this needs to live elsewhere, but let's leave it here for
     # the moment
-    if(!is.null(ddfobj$adjustment) && ddfobj$adjustment$series=="herm")
-      ddfobj$adjustment$parameters<-rep(1,length(ddfobj$adjustment$order))
+    if(!is.null(ddfobj$adjustment) && ddfobj$adjustment$series=="herm"){
+      ddfobj$adjustment$parameters <- rep(1,length(ddfobj$adjustment$order))
+      ddfobj$pars$adjustment <- rep(1,length(ddfobj$adjustment$order))
+    }
 
     initialvalues <- getpar(ddfobj)
     # This holds the previous values, to test for convergence
@@ -114,8 +117,8 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
 
         # don't do refitting when we are just fitting key or adjustments
         if(fitting == "adjust" | fitting=="key"){
-          refit.save<-misc.options$refit
-          misc.options$refit<-FALSE
+          refit.save <- misc.options$refit
+          misc.options$refit <- FALSE
         }
 
         if(showit==3) {
@@ -136,11 +139,11 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
                          fitting," failed.",sep=""),preamble="Info")
           }
           if(fitting=="all"){
-            stop("*** Warning: fitting failed! Try again with better initial values.\n")
+            stop("*** Warning: fitting failed! Try again with different initial values.\n")
           }
         }else{
           # update bounds
-          bounds<-lt$bounds
+          bounds <- lt$bounds
 
           if(showit==3){
             errors(paste("iteration ",iter,".",metaiter,
@@ -150,11 +153,9 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
                    preamble="Info")
           }
 
-          # were any of the pars NA?
-          # if so, reset to initialvalues
-          if(any(is.na(lt$par))){
-            lt$par[is.na(lt$par)]<-initialvalues[is.na(lt$par)]
-          }
+          # reset pars to initialvalues if NA
+          lt$par[is.na(lt$par)] <- initialvalues[is.na(lt$par)]
+
           # Rebuild initialvalues again
           ddfobj <- assign.par(ddfobj,lt$par)
           initialvalues <- getpar(ddfobj)
@@ -165,11 +166,11 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
         }
 
         # restore the refit status
-        misc.options$refit<-refit.save
+        misc.options$refit <- refit.save
 
       }
 
-      iter<-iter+1
+      iter <- iter+1
     }
 
     if(iter>misc.options$maxiter)
@@ -185,7 +186,7 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
   }
 
   # get rid of the first (dummy) line of the optimisation history
-  lt$optim.history<-lt$optim.history[-1,]
+  lt$optim.history <- lt$optim.history[-1,]
 
   # Return some (hopefully correct) results
   return(lt)

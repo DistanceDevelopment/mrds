@@ -84,8 +84,10 @@ integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
     # otherwise, use cgftab spline.
     cgftab <- ddfobj$cgftab
     if(!is.null(ddfobj$scale)){
-      xscale <- scalevalue(ddfobj$scale$parameters,
+      xscale <- scalevalue(ddfobj$pars$scale,
                            ddfobj$scale$dm[select,,drop=FALSE])
+##      xscale <- scalevalue(ddfobj$scale$parameters,
+##                           ddfobj$scale$dm[select,,drop=FALSE])
     }else{
       xscale <- 1
     }
