@@ -147,13 +147,12 @@ for(i in model.set){
           expect_that(result$lnl<=this.model$LnL,is_true(),
                       label=paste("Likelihood for model",i,
                                   "better than MCDS"))
-        }) 
+        })
       }else{
         test_that(this.test,{
           expect_that(result$lnl,equals(this.model$LnL,tol=lnl.tol),
-                      label=paste("Likelihood for model",i,
-                                  "the same as MCDS"))
-        }) 
+                      label=paste("Model",i,": likelihood"))
+        })
       }
 
       #if(result$lnl<=this.model$LnL){
