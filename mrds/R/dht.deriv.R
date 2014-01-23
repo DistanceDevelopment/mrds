@@ -55,7 +55,8 @@ dht.deriv <- function(par,model,obs,samples,options=list()){
 
   # Scale up abundances to survey region
   Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,
-                                   model$meta.data$width*options$convert.units,
+                                      model$truncation$right*
+                                       options$convert.units,
                                    model$meta.data$point)
   Nhat.by.region <- by(Nhat.by.sample$Nhat,Nhat.by.sample$Region.Label,sum)
 

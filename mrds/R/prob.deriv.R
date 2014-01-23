@@ -51,8 +51,8 @@ prob.deriv <- function(par,model,parfct,observer=NULL,fittedmodel=NULL){
         newdat <- model$data
       }
 
-      newdat <- newdat[newdat$distance <= model$meta.data$width &
-                       newdat$distance >= model$meta.data$left,]
+      newdat <- newdat[newdat$distance <= model$truncation$right &
+                       newdat$distance >= model$truncation$left,]
       newdat$distance <- rep(0,length(newdat$distance))
       newdat$offsetvalue <- 0
       pred.at0 <- predict(model,newdat)$fitted

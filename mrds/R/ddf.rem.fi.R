@@ -32,6 +32,12 @@
 #' @S3method ddf rem.fi
 #' @param model mark-recapture model specification
 #' @param data analysis dataframe
+#' @param truncation either: a single number giving the right truncation for the
+#'  distances; a 2-vector giving the left and right truncations
+#'  (\code{c(left, right)}); or a list with elements \code{left} and
+#'  \code{right} (at least \code{right} must be supplied in list form). Default
+#'  is \code{NULL} which uses the largest observed distance (not usually a good
+#'  idea with unbinned data).
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -45,7 +51,8 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
+ddf.rem.fi<-function(model, data, truncation=NULL, meta.data=list(),
+                     control=list(), call="",method){
   #  NOTE: gams are only partially implemented
 
   # The following are dummy glm and gam functions that are defined here to
@@ -59,7 +66,7 @@ ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
         stop("Invalid formula")
       }
     }else{
-      formula <- paste(as.character(formula),collapse="") 
+      formula <- paste(as.character(formula),collapse="")
     }
     if(class(link)=="function"){
       link <- substitute(link)
@@ -94,7 +101,7 @@ ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
   options(contrasts=c("contr.treatment","contr.poly"))
 
   # Set up meta data values
-  meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
+  meta.data <- assign.default.values(meta.data, binned=FALSE,
                                    int.range=NA, mono=FALSE, mono.strict=TRUE,
                                    point=FALSE)
 
@@ -113,13 +120,14 @@ ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
   rm(glm,gam)
 
   # Process data if needed
-   if(is.data.frame(data)){
-     data.list <- process.data(data,meta.data)
-     meta.data <- data.list$meta.data
-     xmat <- data.list$xmat
-   }else{
-     xmat <- data
-   }
+  if(is.data.frame(data)){
+    data.list <- process.data(data,truncation,meta.data)
+    meta.data <- data.list$meta.data
+    xmat <- data.list$xmat
+    truncation <- data.list$truncation
+  }else{
+    xmat <- data
+  }
 
   # Setup default breaks
   if(meta.data$binned){
@@ -130,7 +138,7 @@ ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
 
   # Create result list with some arguments
   result <- list(call=call, data=data, model=model, meta.data=meta.data,
-                 control=control, method="rem.fi")
+                 control=control, method="rem.fi",truncation=truncation)
   class(result) <- c("rem.fi","ddf")
 
   # Create formula and model frame (if not GAM);
@@ -189,7 +197,7 @@ ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
   #if(GAM){
   #  result$hessian <- result$mr$Vp
   #}else{
-  #  result$hessian <- solve(summary(result$mr)$cov.unscaled) 
+  #  result$hessian <- solve(summary(result$mr)$cov.unscaled)
   #}
 
   # Compute fitted values
@@ -203,11 +211,11 @@ ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
       if(meta.data$point){
         result$lnl<- result$lnl +
                      sum(log(predict(result,newdat=xmat,integrate=FALSE)$fitted*
-                     2*distances/meta.data$width^2)) - sum(log(result$fitted))
+                     2*distances/truncation$right^2)) - sum(log(result$fitted))
       }else{
         result$lnl<- result$lnl +
                      sum(log(predict(result,newdat=xmat,
-                                     integrate=FALSE)$fitted/meta.data$width))-
+                                     integrate=FALSE)$fitted/truncation$right))-
                       sum(log(result$fitted))
       }
     }else{

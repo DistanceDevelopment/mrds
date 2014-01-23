@@ -22,7 +22,9 @@ ddf.gof <- function(model,breaks=NULL,nc=NULL,qq=TRUE,...){
   #                 gof.trial.fi, qqplot.df
 
   if(!is.null(breaks)){
-    breaks <- test.breaks(breaks,model$meta.data$left,model$meta.data$width)
+    breaks <- test.breaks(breaks,
+                          model$truncation$left,
+                          model$truncation$right)
     nc <- length(breaks)-1
   }else if(model$meta.data$binned){
     breaks <- model$meta.data$breaks

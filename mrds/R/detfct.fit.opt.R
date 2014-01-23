@@ -215,7 +215,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
               # otherwise we end up with an infeasible problem
               if(misc.options$mono & !is.null(ddfobj$adjustment)){
                 initialvalues[(length(initialvalues)-
-                              length(ddfobj$adjustment$parameters)+1):
+                              length(ddfobj$pars$adjustment)+1):
                               length(initialvalues)] <- 0
               }
 
@@ -229,7 +229,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
               # otherwise we end up with an infeasible problem
               if(misc.options$mono & !is.null(ddfobj$adjustment)){
                 initialvalues[(length(initialvalues)-
-                              length(ddfobj$adjustment$parameters)+1):
+                              length(ddfobj$pars$adjustment)+1):
                               length(initialvalues)] <- 0
               }
           }

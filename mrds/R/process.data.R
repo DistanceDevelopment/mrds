@@ -21,10 +21,10 @@
 #' distance for the observation is binned.  By assigning for each observation
 #' this allows an analysis of a mixture of binned and unbinned distances.
 #'
-#' 4) Data are restricted such that distances are not greater than \code{width}
-#' and not less than \code{left} if those values are specified in
-#' \code{meta.data}.  If they are not specified then \code{left} defaults to 0
-#' and \code{width} defaults to the largest distance measurement.
+#' 4) Data are restricted such that distances are not greater than the right
+#' truncation and not less than left truncaton (if values are specified). If
+#' they are not specified then the left truncation defaults to 0 and the right
+#' truncation defaults to the largest distance measurement.
 #'
 #' 5) Determine if an integration range (\code{int.begin} and \code{int.end}
 #' has been specified for the observations.  If it has, add the structure to
@@ -39,6 +39,12 @@
 #' function stops with an error message
 #'
 #' @param data dataframe object
+#' @param truncation either: a single number giving the right truncation for the
+#'  distances; a 2-vector giving the left and right truncations
+#'  (\code{c(left, right)}); or a list with elements \code{left} and
+#'  \code{right} (at least \code{right} must be supplied in list form). Default
+#'  is \code{NULL} which uses the largest observed distance (not usually a good
+#'  idea with unbinned data).
 #' @param meta.data meta.data options; see \code{\link{ddf}} for a description
 #' @param control control options; see \code{\link{ddf}} for a description
 #' @param mr.check if \code{TRUE} check data for errors in the mark-recapture
@@ -48,21 +54,8 @@
 #'   \item{meta.data}{meta.data list}
 #' @author Jeff Laake
 #' @keywords utility
-process.data <- function(data,meta.data=list(),control=list(),mr.check=TRUE){
-
-  set.default.width=function(data,meta.data){
-  # set.default.width - sets default transect width when none was specified
-  #  Arguments:
-  #  data      - dataframe
-  #  meta.data - meta.data list
-  # Values:  width of transect
-    if(meta.data$binned){
-      width <- max(c(data$distend,data$distance),na.rm=TRUE)
-    }else{
-      width <- max(data$distance)
-    }
-    return(width)
-  }
+process.data <- function(data,truncation,meta.data=list(),control=list(),
+                         mr.check=TRUE){
 
   ## detection function only checks
   if(!mr.check){
@@ -102,22 +95,15 @@ process.data <- function(data,meta.data=list(),control=list(),mr.check=TRUE){
     }
   }
 
-  # also check for mrds that the data fields have the same value for both 
-  # observers for example same distance, size etc.  This is only a warning as 
-  #some fields may be validly different
-  #  if(any(apply(data[data$observer==1,names(data)!="observer"&names(data)!="detected"],1,paste,collapse="")!=
-  #    apply(data[data$observer==2,names(data)!="observer"&names(data)!="detected"],1,paste,collapse="")))
-  #    errors("If analysis fails it may be due to difference in data between observer 1 and 2;\n fields such as distance, size and covariates should be the same")
-
   # Determine if data are binned by presence of distbegin and distend fields
-  if(is.null(data$distend)|is.null(data$distbegin)){
+  if(is.null(data$distend) | is.null(data$distbegin)){
     binned <- FALSE
   }else{
-    if(all(is.null(data$distend))|all(is.null(data$distbegin))){
+    if(all(is.null(data$distend)) | all(is.null(data$distbegin))){
       binned <- FALSE
     }else{
       if(any(is.null(data$distend) & !is.null(data$distbegin)) |
-         any(is.null(data$distbegin)&!is.null(data$distend))){
+         any(is.null(data$distbegin) & !is.null(data$distend))){
         stop("mismatched distance intervals - one or more endpoints are missing")
       }else{
         binned <- TRUE
@@ -149,49 +135,71 @@ process.data <- function(data,meta.data=list(),control=list(),mr.check=TRUE){
     data$binned[!is.na(data$distbegin)] <- TRUE
   }
 
-  # Restrict data to width interval
+
+  ## Restrict data to width interval
   # If no width set, use largest measured distance as width
-  if(is.na(meta.data$width)){
-    width <- set.default.width(data,meta.data)
-    meta.data$width <- width
+  if(is.null(truncation)){
+    truncation <- list()
+    truncation$right <- ifelse(meta.data$binned,
+                               max(c(data$distend,data$distance),na.rm=TRUE),
+                               max(data$distance))
     xmat <- data
     warning("no truncation distance specified; using largest observed distance",immediate.=TRUE)
   }else{
-    # change: jll 2 June 05; ref to width changed to meta.data$width
+
+    ## ensure that the truncation is in the right format for later or
+    ## throw an error if the input was garbage
+    if(is.list(truncation)){
+      if(!all(names(truncation)%in%c("left","right"))){
+        stop("truncation must be a number, a 2-vector or a named list")
+      }
+      # otherwise truncation has been supplied correctly as a list with
+      # elements "left" and "right"
+    }else if(length(truncation)==2){
+      # convert 2 vector into a list
+      truncation <- list(left=min(truncation),right=max(truncation))
+    }else if(length(truncation)==1){
+      truncation <- list(left=0,right=truncation)
+    }else{
+      stop("truncation must be a number, a 2-vector or a named list")
+    }
+
     # This piece of code makes sure that the set width is as large as the
     # largest bin end point for binned data.
     if(meta.data$binned){
-      if(any(data$binned & data$distend > meta.data$width)){
+      if(any(data$binned & data$distend > truncation$right)){
         stop("width must exceed largest interval end point")
       }else{
         xmat <- data[data$binned |
-                     (!data$binned&data$distance<=meta.data$width),]
+                     (!data$binned&data$distance<=truncation$right),]
       }
     }else{
-      xmat <- data[data$distance <= meta.data$width,]
+      xmat <- data[data$distance <= truncation$right,]
     }
   }
+
 
   # Determine if integration range has been specified
   if(is.null(xmat$int.begin)|is.null(xmat$int.end)){
     if(any(is.na(meta.data$int.range))){
-      meta.data$int.range <- c(meta.data$left,meta.data$width)
+      meta.data$int.range <- c(truncation$left,truncation$right)
     }
   }else{
-      meta.data$int.range <- rbind(c(meta.data$left,meta.data$width),
+      meta.data$int.range <- rbind(c(truncation$left,truncation$right),
                                    cbind(xmat$int.begin,xmat$int.end))
   }
 
   # If left >0 perform left truncation by restricting values
-  if(meta.data$left >0){
+  if(truncation$left >0){
     if(binned){
-      if(any(data$binned&data$distbegin < meta.data$left)){
+      if(any(data$binned & (data$distbegin < truncation$left))){
         stop("left truncation must be smaller than the smallest interval begin point")
       }else{
-        xmat <- data[data$binned|(!data$binned&data$distance>=meta.data$left),]
+        xmat <- data[data$binned|(!data$binned &
+                                  (data$distance >= truncation$left)),]
       }
     }else{
-      xmat <- xmat[xmat$distance>=meta.data$left,]
+      xmat <- xmat[xmat$distance >= truncation$left,]
     }
   }
 
@@ -199,7 +207,7 @@ process.data <- function(data,meta.data=list(),control=list(),mr.check=TRUE){
   b <- dim(xmat)[2]
   for(i in 1:b){
     if(is.factor(xmat[,i])){
-      xmat[,i] <- factor (xmat[,i])
+      xmat[,i] <- factor(xmat[,i])
     }
   }
 
@@ -233,5 +241,5 @@ process.data <- function(data,meta.data=list(),control=list(),mr.check=TRUE){
     stop("no data to analyze")
   }
 
-  return(list(xmat=xmat,meta.data=meta.data))
+  return(list(xmat=xmat,meta.data=meta.data,truncation=truncation))
 }

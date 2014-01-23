@@ -96,8 +96,8 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
 
   # code from dpexplot:
   ltmodel <- model$ds
-  width <- model$meta.data$width
-  left <- model$meta.data$left
+  width <- model$truncation$right
+  left <- model$truncation$left
   ddfobj <- ltmodel$aux$ddfobj
   point <- ltmodel$aux$point
   if(is.null(ltmodel$aux$int.range)){
@@ -197,7 +197,7 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   }
 
   # test breaks for validity and reset as needed
-  breaks <- test.breaks(breaks,model$meta.data$left,width)
+  breaks <- test.breaks(breaks,model$truncation$left,width)
   nc <- length(breaks)-1
 
   #breaks<-seq(lower,upper,length=(nclass+1))

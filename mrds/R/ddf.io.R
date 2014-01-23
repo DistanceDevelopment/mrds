@@ -31,6 +31,12 @@
 #' @param mrmodel mark-recapture model specfication; model list with formula
 #'   and link
 #' @param data analysis dataframe
+#' @param truncation either: a single number giving the right truncation for the
+#'  distances; a 2-vector giving the left and right truncations
+#'  (\code{c(left, right)}); or a list with elements \code{left} and
+#'  \code{right} (at least \code{right} must be supplied in list form). Default
+#'  is \code{NULL} which uses the largest observed distance (not usually a good
+#'  idea with unbinned data).
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -45,7 +51,7 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
+ddf.io<-function(dsmodel,mrmodel,data,truncation=NULL,meta.data=list(),control=list(),call=""){
 
   # Save current user options and then set design contrasts to treatment style
   save.options<-options()
@@ -62,22 +68,24 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
                                 mono.points=20)
 
   # Process data
-  data.list <- process.data(data,meta.data)
+  data.list <- process.data(data,truncation,meta.data)
   meta.data <- data.list$meta.data
   xmat <- data.list$xmat
+  truncation <- data.list$truncation
 
   # Create result list
   result <- list(call=call, data=data, mrmodel=mrmodel, dsmodel=dsmodel,
-                 meta.data=meta.data, control=control, method="io")
+                 meta.data=meta.data, control=control, method="io",truncation=truncation)
   class(result)=c("io","ddf")
 
-  # Fit the conditional detection functions using ddf.io.fi  
-  result$mr <- ddf.io.fi(model=mrmodel,data,meta.data,control,call,method="io")
+  # Fit the conditional detection functions using ddf.io.fi
+  result$mr <- ddf.io.fi(model=mrmodel,data,truncation,meta.data,control,call,method="io")
 
   # Fit the unconditional detection functions using ddf.ds
   unique.data <- data[data$observer==1,]
   unique.data$detected <- 1
-  result$ds <- ddf.ds(model=dsmodel,unique.data,meta.data,control,call)
+  result$ds <- ddf.ds(model=dsmodel,unique.data,truncation,meta.data,
+                      control,call)
   if(is.null(result$ds$Nhat)){
     if(control$debug){
       errors("ds model did not converge; no further results possible")

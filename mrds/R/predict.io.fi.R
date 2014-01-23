@@ -6,7 +6,7 @@ predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
   # Functions Used: pdot.dsr.integrate.logistic, is.linear.logistic,
   #                 predict.glm (could also use predict.gam eventually)
   model <- object
-  width <- model$meta.data$width
+  width <- model$truncation$right
   point <- model$meta.data$point
 
   # if no new data supplied, use the data from the model
@@ -43,7 +43,7 @@ predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
 
   }else{
     # integrate=TRUE -- get the average probability of detection
-    left <- model$meta.data$left
+    left <- model$truncation$left
     formula <- paste("~",as.character(model$mr$formula)[3],collapse="")
 
     if("gam" %in% class(model$mr)){

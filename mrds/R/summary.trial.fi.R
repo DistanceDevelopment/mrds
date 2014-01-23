@@ -33,8 +33,8 @@ summary.trial.fi <- function(object,se=TRUE,N=TRUE,fittedmodel=NULL,...){
   avgp <- function(model,pdot,...){return(pdot)}
 
   newdat <- model$data
-  newdat <- newdat[newdat$distance <= model$meta.data$width &
-                   newdat$distance >= model$meta.data$left, ]
+  newdat <- newdat[newdat$distance <= model$truncation$right &
+                   newdat$distance >= model$truncation$left, ]
   n <- length(newdat$distance)/2
   timesdetected <- newdat$detected[newdat$observer == 1] +
                    newdat$detected[newdat$observer == 2]

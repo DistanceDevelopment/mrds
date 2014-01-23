@@ -68,8 +68,8 @@ plot.rem.fi <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   fitted <- cond.det$fitted
   p1 <- cond.det$p1
   p2 <- cond.det$p2
-  width <- model$meta.data$width
-  left <- model$meta.data$left
+  width <- model$truncation$right
+  left <- model$truncation$left
 
   # If number of classes for histogram intervals was not set compute
   # a reasonable default
@@ -112,7 +112,7 @@ plot.rem.fi <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   }
 
   # Plot conditional detection function
-  data <- process.data(model$data,model$meta.data)$xmat
+  data <- process.data(model$data,model$truncation,model$meta.data)$xmat
   data$offsetvalue <- 0
   if(is.element(3,which)){
     gxvalues <- p1[xmat$detected[xmat$observer==2]==1]

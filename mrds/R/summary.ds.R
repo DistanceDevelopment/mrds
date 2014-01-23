@@ -31,7 +31,7 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
 
   # at present f(0) code is commented out; need to understand this further
   #F0=function(model,pdot,...)
-  #{return(1/(pdot*model$meta.data$width))}
+  #{return(1/(pdot*model$truncation$right))}
 
   model <- object
   avgp <- function(model,pdot,...){return(pdot)}
@@ -88,8 +88,8 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
   ans$aic <- model$criterion
 
   # Truncation distances, left and right
-  ans$width <- model$meta.data$width
-  ans$left <- model$meta.data$left
+  ans$width <- model$truncation$right
+  ans$left <- model$truncation$left
 
   ans$average.p <- ans$n/model$Nhat
 

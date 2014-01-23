@@ -27,7 +27,7 @@ average.line.cond <- function(finebr,obs,model){
     newdat <- model$mr$mr$data
   }else{
     # if(model$method=="trial" | model$method=="trial.fi"){
-    #   newdat=process.data(model$data,model$meta.data)$xmat
+    #   newdat=process.data(model$data,model$truncation,model$meta.data)$xmat
     #   newdat=newdat[newdat$observer!=obs & newdat$detected==1,]
     # }else
     if(model$method=="rem.fi"){

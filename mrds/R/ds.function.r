@@ -25,7 +25,8 @@ ds.function <- function(model,newdata=NULL,obs="All",conditional=FALSE,
   if(model$method=="io"){
     newdat <- model$mr$mr$data
   }else if(model$method=="trial" | model$method=="trial.fi"){
-    newdat <- process.data(model$data,model$meta.data)$xmat
+    newdat <- process.data(model$data,model$truncation,
+                           model$meta.data)$xmat
     newdat <- newdat[newdat$observer==obs & newdat$detected==1,]
   }else{
     newdat <- model$mr$data
@@ -88,7 +89,8 @@ ds.function <- function(model,newdata=NULL,obs="All",conditional=FALSE,
 
     if(model$method=="io" | model$method=="trial" | model$method=="rem"  ){
       detfct.pooled.values <- detfct(newdat$distance[newdat$observer==1],ddfobj,
-                               width=model$meta.data$width-model$meta.data$left)
+                               width=model$truncation$right-
+                                     model$truncation$left)
       deltax <- detfct.pooled.values/(cond.det$fitted/g0)
     }else{
       detfct.pooled.values <- cond.det$fitted/g0

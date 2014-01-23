@@ -18,16 +18,16 @@ test_that("easy mixture",{
 ##!##
 ##!##   # fit without constraint
 ##!##   result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-##!##                 data=dat, method = "ds", 
-##!##                 meta.data=list(width=trunc,mono=FALSE))
+##!##                 data=dat, method = "ds",truncation=trunc, 
+##!##                 meta.data=list(mono=FALSE))
 ##!##
 ##!##   result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-##!##                 data=dat, method = "ds", 
-##!##                 meta.data=list(width=trunc,mono=TRUE))
+##!##                 data=dat, method = "ds",truncation=trunc, 
+##!##                 meta.data=list(mono=TRUE))
 ##!##
 ##!##   result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-##!##                 data=dat, method = "ds", 
-##!##                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+##!##                 data=dat, method = "ds",truncation=trunc, 
+##!##                 meta.data=list(mono=TRUE,mono.strict=FALSE))
 })
 
 test_that("less easy mixture -- mode away from zero",{
@@ -45,31 +45,31 @@ test_that("less easy mixture -- mode away from zero",{
 ##!##
 ##!##   # fit cosine adjsutment 
 ##!##   result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-##!##                 data=dat, method = "ds", 
-##!##                 meta.data=list(width=trunc,mono=FALSE))
+##!##                 data=dat, method = "ds",truncation=trunc, 
+##!##                 meta.data=list(mono=FALSE))
 ##!##
 ##!##   result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-##!##                 data=dat, method = "ds", 
-##!##                 meta.data=list(width=trunc,mono=TRUE))
+##!##                 data=dat, method = "ds",truncation=trunc, 
+##!##                 meta.data=list(mono=TRUE))
 ##!##
 ##!##   result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-##!##                 data=dat, method = "ds", 
-##!##                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+##!##                 data=dat, method = "ds",truncation=trunc, 
+##!##                 meta.data=list(mono=TRUE,mono.strict=FALSE))
 ##!##
 ##!##
 ##!##
 ##!##   # hazard rate
 ##!##   result.n<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-##!##                 data=dat, method = "ds", 
-##!##                 meta.data=list(width=trunc,mono=FALSE))
+##!##                 data=dat, method = "ds",truncation=trunc, 
+##!##                 meta.data=list(mono=FALSE))
 ##!##
 ##!##   result.s<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-##!##                 data=dat, method = "ds", 
-##!##                 meta.data=list(width=trunc,mono=TRUE))
+##!##                 data=dat, method = "ds",truncation=trunc, 
+##!##                 meta.data=list(mono=TRUE))
 ##!##
 ##!##   result.w<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-##!##                 data=dat, method = "ds", 
-##!##                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+##!##                 data=dat, method = "ds",truncation=trunc, 
+##!##                 meta.data=list(mono=TRUE,mono.strict=FALSE))
 })
 
 #test_that("less easy mixture -- spike",{
@@ -86,29 +86,29 @@ test_that("less easy mixture -- mode away from zero",{
 #
 #   # fit cosine adjsutment 
 #   result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-#                 data=dat, method = "ds", 
-#                 meta.data=list(width=trunc,mono=FALSE))
+#                 data=dat, method = "ds",truncation=trunc, 
+#                 meta.data=list(mono=FALSE))
 #
 #   result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-#                 data=dat, method = "ds", 
-#                 meta.data=list(width=trunc,mono=TRUE))
+#                 data=dat, method = "ds",truncation=trunc, 
+#                 meta.data=list(mono=TRUE))
 #
 #   result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",adj.order=c(2),adj.scale="scale"), 
-#                 data=dat, method = "ds", 
-#                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+#                 data=dat, method = "ds",truncation=trunc, 
+#                 meta.data=list(mono=TRUE,mono.strict=FALSE))
 #
 #
 ## hazard rate
 #   result.n<-ddf(dsmodel=~mcds(key="hr",formula=~1),data=dat, method="ds", 
-#                 meta.data=list(width=trunc,mono=FALSE))
+#                 meta.data=list(mono=FALSE),truncation=trunc)
 #
 #   result.w<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-#                 data=dat, method = "ds", 
-#                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+#                 data=dat, method = "ds",truncation=trunc, 
+#                 meta.data=list(mono=TRUE,mono.strict=FALSE))
 #
 #   result.s<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-#                 data=dat, method = "ds", 
-#                 meta.data=list(width=trunc,mono=TRUE,mono.strict=TRUE))
+#                 data=dat, method = "ds",truncation=trunc, 
+#                 meta.data=list(mono=TRUE,mono.strict=TRUE))
 #par(mfrow=c(1,3))
 #plot(result.n)
 #plot(result.s)
@@ -121,15 +121,15 @@ test_that("less easy mixture -- mode away from zero",{
 #
 ## hazard rate
 #   result.n<-ddf(dsmodel=~mcds(key="hr",formula=~1),data=dat, method="ds", 
-#                 meta.data=list(width=trunc,mono=FALSE))
+#                 meta.data=list(mono=FALSE),truncation=trunc)
 #
 #   result.w<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-#                 data=dat, method = "ds", 
-#                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+#                 data=dat, method = "ds",truncation=trunc, 
+#                 meta.data=list(mono=TRUE,mono.strict=FALSE))
 #
 #   result.s<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-#                 data=dat, method = "ds", 
-#                 meta.data=list(width=trunc,mono=TRUE,mono.strict=TRUE))
+#                 data=dat, method = "ds",truncation=trunc, 
+#                 meta.data=list(mono=TRUE,mono.strict=TRUE))
 #par(mfrow=c(1,3))
 #plot(result.n)
 #plot(result.s)
@@ -148,20 +148,20 @@ test_that("less easy mixture -- mode away from zero",{
 
    #trunc<-2.5
    #result.n<-ddf(dsmodel=~mcds(key="hr",formula=~1),data=dat, method="ds", 
-   #              meta.data=list(width=trunc,mono=FALSE),control=list(lowerbounds=c(0.0001,-2.5)))
+   #              meta.data=list(mono=FALSE),control=list(lowerbounds=c(0.0001,-2.5)),truncation=trunc)
 
    #result.n<-ddf(dsmodel=~mcds(key="hr",formula=~1),data=dat, method="ds", 
-   #              meta.data=list(width=trunc,mono=FALSE),
+   #              meta.data=list(mono=FALSE),truncation=trunc,
    #              control=list(lowerbounds=c(result.n$par[1]-1e-4,-10),upperbounds=c(result.n$par[1]+1e-4,10),initial=list(scale=result.n$ds$aux$ddfobj$scale$parameters, shape=result.n$ds$aux$ddfobj$shape$parameters)))
 
 
    #result.w<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-   #              data=dat, method = "ds", 
-   #              meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+   #              data=dat, method = "ds",truncation=trunc, 
+   #              meta.data=list(mono=TRUE,mono.strict=FALSE))
 
    #result.s<-ddf(dsmodel = ~mcds(key = "hr",formula=~1), 
-   #              data=dat, method = "ds", 
-   #              meta.data=list(width=trunc,mono=TRUE,mono.strict=TRUE))
+   #              data=dat, method = "ds",truncation=trunc, 
+   #              meta.data=list(mono=TRUE,mono.strict=TRUE))
 
    # recover the seed
    #.Random.seed<-rngsave

@@ -10,8 +10,8 @@
 gof.ds <- function(model,breaks=NULL,nc=NULL){
   # Functions used: predict.ds
 
-  width <- model$meta.data$width
-  left <- model$meta.data$left
+  width <- model$truncation$right
+  left <- model$truncation$left
   xmat <- model$ds$aux$ddfobj$xmat
   n <- dim(xmat)[1]
 

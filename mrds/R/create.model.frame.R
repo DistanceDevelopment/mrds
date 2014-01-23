@@ -41,7 +41,7 @@ create.model.frame <- function(xmat,scale.formula,meta.data,shape.formula=NULL){
 
   # fix: ljt 21-Sep-05; row.names of xmat need to be copied over to data,
   #  otherwise some later stuff in e.g., ddf.ds doesn't work
-  row.names(data)<-row.names(xmat)
+  row.names(data) <- row.names(xmat)
 
   # Include other fields such as detected, observer, binned, and
   # optionally distance (unless null)

@@ -6,26 +6,34 @@
 #'
 #' @param model model list with key function and possibly adjustment functions,
 #'   scale formula, and shape formula
+#' @param truncation either: a single number giving the right truncation for the
+#'  distances; a 2-vector giving the left and right truncations
+#'  (\code{c(left, right)}); or a list with elements \code{left} and
+#'  \code{right} (at least \code{right} must be supplied in list form). Default
+#'  is \code{NULL} which uses the largest observed distance (not usually a good
+#'  idea with unbinned data).
 #' @param xmat model data frame
-#' @param meta.data list of options describing data like width, etc
+#' @param meta.data list of options
 #' @param initial vector of initial values for parameters of the detection
 #'   function
 #' @return Distance sampling function object list with elements that all can be
-#'   null except type: \item{type}{type of detection function
-#'   hn,hr,gamma,unif,logistic} \item{xmat}{model data frame}
+#'   null except type:
+#'   \item{type}{type of detection function hn,hr,gamma,unif,logistic}
+#'   \item{xmat}{model data frame}
 #'   \item{intercept.only}{TRUE if scale = ~1 and any shape formula =~1}
 #'   \item{cgftab}{table of standardized integral values}
-#'   \item{scale}{sublist with elements (can be NULL i.e., unif key):formula,
-#'   parameters, design matrix (dm)} \item{shape}{sublist with elements (power
-#'   of hazard rate or gamma) (can be NULL i.e., unif or hn key):formula,
-#'   parameters, design matrix (dm)} \item{adjustment}{sublist with elements
-#'   (is NULL if no adjustments used):series,order,scale,parameters}
+#'   \item{scale}{sublist with elements (can be NULL i.e., unif key): formula,
+#'    parameters, design matrix (dm)}
+#'   \item{shape}{sublist with elements (power of hazard rate or gamma) (can be
+#'    NULL i.e., unif or hn key):formula, parameters, design matrix (dm)}
+#'   \item{adjustment}{sublist with elements (is NULL if no adjustments used):
+#'    series,order,scale,parameters}
 #'   \item{g0}{sublist with elements (not used at present):formula,parameters,
-#'   design matrix(dm), link}
+#'    design matrix(dm), link}
 #' @note Internal function not meant to be called by user
 #' @author Jeff Laake
 #' @seealso \code{\link{detfct}}, \code{\link{ddf}}
-create.ddfobj <- function(model,xmat,meta.data,initial){
+create.ddfobj <- function(model,truncation,xmat,meta.data,initial){
 
   # Create empty object and get values from cds or mcds function
   ddfobj <- vector("list")
@@ -35,7 +43,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   # basic information about the detection function
   point <- meta.data$point
   ddfobj$transect <- ifelse(point,"point","line")
-  ddfobj$width <- meta.data$width
+  ddfobj$truncation <- truncation
   ddfobj$type <- modelvalues$key
 
   if(class(modelvalues)=="try-error"){
@@ -111,14 +119,14 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   # Set up integral table if this is a half-normal detection function and
   # it is not an intercept.only and likelihood will incorporate integrals
   if(ddfobj$type%in%c("hn","unif")){
-    ddfobj$cgftab <- tablecgf(ddfobj=ddfobj, width=meta.data$width,
+    ddfobj$cgftab <- tablecgf(ddfobj=ddfobj, width=truncation$right,
                               point=point, standardize=FALSE)
   }else{
     ddfobj$cgftab <- NULL
   }
 
   # Compute initialvalues unless uniform
-  initialvalues <- setinitial.ds(ddfobj,width=meta.data$width,initial,point)
+  initialvalues <- setinitial.ds(ddfobj,width=truncation$right,initial,point)
 
   # Delete columns of dm that end up as NA from initialvalues
   if(!is.null(ddfobj$scale)){

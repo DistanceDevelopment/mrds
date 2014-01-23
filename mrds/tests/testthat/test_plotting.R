@@ -13,7 +13,7 @@ test_that("average.line for plot.io is correct (unconditional df)",{
 
   # fit the model
   result <- ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance),
-                data = egdata, method = "io", meta.data = list(width = 4))
+                data = egdata, method = "io", truncation=4)
 
   # make the grid (as in plot.io)
   divisions <- 25 # default in plot.io
@@ -70,7 +70,7 @@ test_that("average.line for plot.io is correct (unconditional df)",{
   model <- ddf(method="io", data=ptdata.dual, dsmodel=~cds(key="hn"),
                mrmodel=~glm(formula=~distance*observer),
                meta.data=list(point=TRUE, binned=TRUE,
-                              breaks=10*(0:10),width=100))
+                              breaks=10*(0:10)),truncation=100)
   finebr <- (100/divisions)*(0:divisions)
 
   # obs==1

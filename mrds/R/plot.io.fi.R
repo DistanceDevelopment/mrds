@@ -92,8 +92,8 @@ plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
   fitted <-cond.det$fitted
   p1 <- cond.det$p1
   p2 <- cond.det$p2
-  width <- model$meta.data$width
-  left <- model$meta.data$left
+  width <- model$truncation$right
+  left <- model$truncation$left
 
   # If number of classes for histogram intervals was not set
   # compute a reasonable default

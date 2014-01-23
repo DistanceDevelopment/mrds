@@ -16,8 +16,8 @@ function(model,breaks=NULL,nc=NULL)
 #  Functions used: predict(predict.trial)
 #
 {
-    width <- model$meta.data$width 
-    left <- model$meta.data$left
+    width <- model$truncation$right
+    left <- model$truncation$left
     xmat=model$mr$mr$data
     data=eval(model$data)
     data=data[data$observer==1&data$object %in% as.numeric(names(model$fitted)),]

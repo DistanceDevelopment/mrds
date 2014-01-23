@@ -36,7 +36,7 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
     z <- matrix(1,nrow=nrow(x),ncol=1)
   }
 
-  width <- misc.options$width
+  width <- ddfobj$truncation$right
   if((!is.null(ddfobj$shape) | !is.null(ddfobj$adjustment)) & !doeachint){
     ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=FALSE,
                               point=misc.options$point)

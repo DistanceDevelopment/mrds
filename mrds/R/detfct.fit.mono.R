@@ -45,7 +45,7 @@ flnl.constr <- function(pars, ddfobj, misc.options,...){
     # at which the DF is evaluated
     no_d <- misc.options$mono.points
     # reference points (distances)
-    ref_p <- getRefPoints(no_d,misc.options$width)
+    ref_p <- getRefPoints(no_d,ddfobj$truncation$right)
     # to get detfct to play nice need to mudge ddfobj a bit...
     if(!is.null(ddfobj$scale)){
       ddfobj$scale$dm <- rep(1,no_d)
@@ -55,7 +55,7 @@ flnl.constr <- function(pars, ddfobj, misc.options,...){
     }
     df_v_rp <- double(no_d)
 
-    df_v_rp <- as.vector(detfct(ref_p,ddfobj,width=misc.options$width,
+    df_v_rp <- as.vector(detfct(ref_p,ddfobj,width=ddfobj$truncation$right,
                                 standardize=FALSE))
 
     # reference point associated with distance=0
@@ -68,7 +68,7 @@ flnl.constr <- function(pars, ddfobj, misc.options,...){
       ddfobj$shape$dm <- 1
     }
     df_v_rp0 <- double(1)
-    df_v_rp0 <- as.vector(detfct(ref_p0,ddfobj,width=misc.options$width,
+    df_v_rp0 <- as.vector(detfct(ref_p0,ddfobj,width=ddfobj$truncation$right,
                                  standardize=FALSE))
 
     # inequality constraints ensuring the

@@ -16,8 +16,8 @@ function(model,breaks=NULL,nc=NULL)
 #  Functions used: predict(predict.trial.fi)
 #
 {
-    width <- model$meta.data$width 
-    left<-model$meta.data$left
+    width <- model$truncation$right
+    left <- model$truncation$left
     xmat=model$mr$data
     n=dim(xmat)[1]
 #

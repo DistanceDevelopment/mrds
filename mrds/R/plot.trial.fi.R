@@ -62,11 +62,11 @@ plot.trial.fi <- function(x, which=1:2, breaks=NULL, nc=NULL, maintitle="",
 
   # Retrieve values from model object
   model <- x
-  data <- process.data(model$data,model$meta.data)$xmat
+  data <- process.data(model$data,model$truncation,model$meta.data)$xmat
   xmat <- data[data$observer==1&data$detected==1,]
   gxvalues <- predict(model,newdata=xmat,type="response",integrate=FALSE)$fitted
-  width <- model$meta.data$width 
-  left <- model$meta.data$left
+  width <- model$truncation$right
+  left <- model$truncation$left
 
   # If number of classes for histogram intervals was not set compute
   # a reasonable default

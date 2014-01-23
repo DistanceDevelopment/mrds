@@ -96,8 +96,8 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
   p0 <- predict(model$mr,newdata=xmat.p0,integrate=FALSE)$fitted
   xmat <- model$mr$mr$data
   cond.det <- predict(model$mr,newdata=xmat,integrate=FALSE)
-  width <- model$meta.data$width
-  left <- model$meta.data$left
+  width <- model$truncation$right
+  left <- model$truncation$left
   detfct.pooled.values <- detfct(xmat$distance[xmat$observer==1],
                                  ddfobj,width=width-left)
   delta <- cond.det$fitted/(p0*detfct.pooled.values)

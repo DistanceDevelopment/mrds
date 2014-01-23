@@ -7,7 +7,7 @@ predict.trial.fi <- function(object, newdata=NULL,compute=FALSE, int.range=NULL,
   #                 predict.glm (could also use predict.gam eventually)
   model <- object
   point <- model$meta.data$point
-  width <- model$meta.data$width
+  width <- model$truncation$right
 
   # set newdata to be the model data if we don't have any
   if(is.null(newdata)){
@@ -16,7 +16,7 @@ predict.trial.fi <- function(object, newdata=NULL,compute=FALSE, int.range=NULL,
   }
 
   if(integrate){
-    left <- model$meta.data$left
+    left <- model$truncation$left
     formula <- paste("~",as.character(model$mr$formula)[3],collapse="")
 
     if (class(model$mr)[1]=="gam"){

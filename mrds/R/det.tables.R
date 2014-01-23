@@ -28,17 +28,18 @@
 #' par(mfrow=c(2,2))
 #' plot(tabs,new=FALSE,which=c(1,2,5,6))
 #' }
-det.tables=function(model,nc=NULL,breaks=NULL){
+det.tables <- function(model,nc=NULL,breaks=NULL){
 
   # do nothing if we have single observer data
   if(model$method=="ds"){
     stop("This function does not work with single observer data.\n")
   }
 
-  xmat <- process.data(model$data,model$meta.data)$xmat
+  xmat <- process.data(model$data,model$truncation,
+                       model$meta.data)$xmat
   xmat$Detected <- factor(xmat$detected,labels=c("Missed","Detected"))
-  left <- model$meta.data$left
-  width <- model$meta.data$width
+  left <- model$truncation$left
+  width <- model$truncation$right
 
   # extract the method
   this.method <- substr(model$method,1,2)
@@ -46,11 +47,11 @@ det.tables=function(model,nc=NULL,breaks=NULL){
   # Set up default number of classes unless specified
   if(is.null(nc)){
     if(this.method == "io"){
-      nc<-round(sqrt(min(
-           length(xmat$distance[xmat$observer==1&xmat$detected==1]),
-           length(xmat$distance[xmat$observer==2&xmat$detected==1]),
-           length(xmat$distance[xmat$observer==1&xmat$timesdetected==2])
-          )),0)
+      nc <- round(sqrt(min(
+             length(xmat$distance[xmat$observer==1&xmat$detected==1]),
+             length(xmat$distance[xmat$observer==2&xmat$detected==1]),
+             length(xmat$distance[xmat$observer==1&xmat$timesdetected==2])
+             )),0)
     }
     if(this.method == "re"){
       nc <- round(sqrt(

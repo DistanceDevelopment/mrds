@@ -13,16 +13,16 @@ test_that("detected and missed are the same in summary and det.tables", {
 
    # grab some data
    data(book.tee.data)
-   egdata<<-book.tee.data$book.tee.dataframe
+   egdata <- book.tee.data$book.tee.dataframe
 
 
    # no zeros, just check it works anyway
-   xx<-ddf(mrmodel=~glm(formula=~distance),
-           dsmodel = ~mcds(key = "hn", formula = ~sex),
-           data = egdata, method = "trial.fi", meta.data = list(width = 4))
+   xx <- ddf(mrmodel=~glm(formula=~distance),
+             dsmodel = ~mcds(key = "hn", formula = ~sex),
+             data = egdata, method = "trial.fi", truncation=4)
 
-   tabs<-det.tables(xx,breaks=c(0,.5,1,2,3,4))
-   summ<-summary(xx)
+   tabs <- det.tables(xx,breaks=c(0,.5,1,2,3,4))
+   summ <- summary(xx)
 
    # the sums of the columns in tabs should match the summary numbers
    expect_that(sum(tabs$Observer1[,2]), equals(summ$n1))
@@ -32,11 +32,11 @@ test_that("detected and missed are the same in summary and det.tables", {
 
    # there are no zeros, so fix that and re-run the model
    egdata$distance[egdata$distance==0.02]<-0
-   xx<-ddf(mrmodel=~glm(formula=~distance),
-           dsmodel = ~mcds(key = "hn", formula = ~sex),
-           data = egdata, method = "trial.fi", meta.data = list(width = 4))
-   tabs<-det.tables(xx,breaks=c(0,.5,1,2,3,4))
-   summ<-summary(xx)
+   xx <- ddf(mrmodel=~glm(formula=~distance),
+             dsmodel = ~mcds(key = "hn", formula = ~sex),
+             data = egdata, method = "trial.fi", truncation=4)
+   tabs <- det.tables(xx,breaks=c(0,.5,1,2,3,4))
+   summ <- summary(xx)
    # test the bug
    expect_that(sum(tabs$Observer1[,2]), equals(summ$n1))
    expect_that(sum(tabs$Observer2[,2]), equals(summ$n2))
@@ -61,7 +61,7 @@ test_that("results from golf tee data (trial.fi mode) work (distance covar)", {
   # Fit the model
   fi.mr.dist <- ddf(method="trial.fi",
                     mrmodel=~glm(link="logit",formula =~distance),
-                    data = detections, meta.data = list(width = 4))
+                    data = detections, truncation=4)
 
   # setup the "true" parameter estimates
   par.ests <- c(2.900233,-1.058677)
@@ -92,7 +92,7 @@ test_that("results from golf tee data (trial.fi mode) work (distance+sex*exposur
   fi.mr.dist.sex.exposure <- ddf(method = "trial.fi",
                                mrmodel=~glm(link = "logit",
                                formula = ~distance + sex * exposure),
-                               data = detections, meta.data = list(width = 4))
+                               data = detections, truncation=4)
 
   par.ests <- c(-0.1938752,-1.9137954,3.9599369,4.7888851,-1.7273873)
   names(par.ests) <- c("(Intercept)","distance","sex1","exposure1",

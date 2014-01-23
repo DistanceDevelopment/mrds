@@ -100,8 +100,6 @@
 #'
 #' \tabular{ll}{ Option \tab Value \cr \code{point} \tab if TRUE the data are
 #' from point counts and FALSE (default) implies line transect data \cr
-#' \code{width} \tab distance specifying half-width of the transect \cr
-#' \code{left} \tab distance specifying inner truncation value \cr
 #' \code{binned} \tab TRUE or FALSE to specify whether distances should be
 #' binned for analysis \cr 
 #' \code{breaks} \tab if binned=TRUE, this is a required sequence of break 
@@ -170,6 +168,12 @@
 #' @param dsmodel distance sampling model specification
 #' @param mrmodel mark-recapture model specification
 #' @param data dataframe containing data to be analyzed
+#' @param truncation either: a single number giving the right truncation for the
+#'  distances; a 2-vector giving the left and right truncations
+#'  (\code{c(left, right)}); or a list with elements \code{left} and
+#'  \code{right} (at least \code{right} must be supplied in list form). Default
+#'  is \code{NULL} which uses the largest observed distance (not usually a good
+#'  idea with unbinned data).
 #' @param method analysis method
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
@@ -198,15 +202,15 @@
 #'
 #' # fit a half-normal detection function
 #' result <- ddf(dsmodel=~mcds(key="hn", formula=~1), data=egdata, method="ds",
-#'               meta.data=list(width=4))
+#'               truncation=4)
 #'
 #' # fit an independent observer model with full independence
 #' result.io.fi <- ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi",
-#'                     meta.data=list(width = 4))
+#'                     truncation=4)
 #'
 #' # fit an independent observer model with point independence
 #' result.io <- ddf(dsmodel=~cds(key = "hn"), mrmodel=~glm(~distance),
-#'                  data=egdata, method="io", meta.data=list(width=4))
+#'                  data=egdata, method="io", truncation=4)
 #' \donttest{
 #'
 #' # simulated single observer point count data (see ?ptdata.single)
@@ -255,8 +259,8 @@
 #' plot(model,main="Dual observer binned point data",new=FALSE)
 #'
 #' }
-ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
-                meta.data=list(), control=list()){
+ddf <- function(dsmodel=call(), mrmodel=call(),data, truncation=NULL,
+                method="ds", meta.data=list(), control=list()){
   # Functions Used: ddf.ds, ddf.io, ddf.trial, ddf.io.fi, ddf.trial.fi,
   #                 ddf.rem, ddf.rem.fi
 
@@ -285,26 +289,28 @@ ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
 
   # call method specific fitting function
   result <- switch(method,
-                   ds=ddf.ds(model=dsmodel,data,meta.data=meta.data,
-                             control=control,call=match.call()),
-                   io=ddf.io(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
+                   ds=ddf.ds(model=dsmodel,data,truncation=truncation,
                              meta.data=meta.data,control=control,
                              call=match.call()),
+                   io=ddf.io(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
+                             truncation=truncation,meta.data=meta.data,
+                             control=control,call=match.call()),
                    io.fi=ddf.io.fi(model=mrmodel,data,meta.data=meta.data,
-                                   control=control,call=match.call(),
-                                   method=method),
+                                   truncation=truncation, control=control,
+                                   call=match.call(),method=method),
                    trial=ddf.trial(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
-                                   meta.data=meta.data,control=control,
-                                   call=match.call()),
+                                   truncation=truncation,meta.data=meta.data,
+                                   control=control,call=match.call()),
                    trial.fi=ddf.trial.fi(model=mrmodel,data=data,
+                                         truncation=truncation,
                                          meta.data=meta.data,control=control,
                                          call=match.call(),method="trial.fi"),
                    rem=ddf.rem(dsmodel=dsmodel,mrmodel=mrmodel,data,
-                               meta.data=meta.data,control=control,
-                               call=match.call()),
-                   rem.fi=ddf.rem.fi(model=mrmodel,data,meta.data=meta.data,
-                                     control=control,call=match.call(),
-                                     method="rem.fi"))
+                               truncation=truncation,meta.data=meta.data,
+                               control=control,call=match.call()),
+                   rem.fi=ddf.rem.fi(model=mrmodel,data,truncation=truncation,
+                                     meta.data=meta.data, control=control,
+                                     call=match.call(),method="rem.fi"))
 
   # Restore user options
   options(save.options)

@@ -30,6 +30,12 @@
 #' @param mrmodel mark-recapture model specfication; model list with formula
 #'   and link
 #' @param data analysis dataframe
+#' @param truncation either: a single number giving the right truncation for the
+#'  distances; a 2-vector giving the left and right truncations
+#'  (\code{c(left, right)}); or a list with elements \code{left} and
+#'  \code{right} (at least \code{right} must be supplied in list form). Default
+#'  is \code{NULL} which uses the largest observed distance (not usually a good
+#'  idea with unbinned data).
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -44,7 +50,7 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.trial <- function(dsmodel,mrmodel,data,meta.data=list(),control=list(),
+ddf.trial <- function(dsmodel,mrmodel,data,truncation=NULL, meta.data=list(),control=list(),
                       call=""){
 
 
@@ -69,25 +75,28 @@ ddf.trial <- function(dsmodel,mrmodel,data,meta.data=list(),control=list(),
                                    mono.points=20,limit=TRUE)
 
   # Process data
-  data.list <- process.data(data,meta.data)
+  data.list <- process.data(data,truncation,meta.data)
   meta.data <- data.list$meta.data
   xmat <- data.list$xmat
+  truncation <- data.list$truncation
 
   # Create result list
   result=list(call=call, data=data, mrmodel=mrmodel, dsmodel=dsmodel,
-              meta.data=meta.data, control=control, method="trial")
+              meta.data=meta.data, control=control, method="trial",truncation=truncation)
   class(result) <- c("trial","ddf")
 
   # Fit the conditional detection functions using ddf.trial.fi
-  result$mr <- ddf.trial.fi(model=mrmodel,data,meta.data,control,
+  result$mr <- ddf.trial.fi(model=mrmodel,data,truncation,meta.data,control,
                             call,method="trial")
 
   #  Fit the unconditional detection functions using ddf.ds
   #  5/24/05 - jll add call to process.data for unique.data because it
   #  didn't handle truncation correctly - error reported by Sharon Hedley
   unique.data <- data[data$observer==1&data$detected==1,]
-  unique.data <- process.data(unique.data, meta.data, control, mr.check=FALSE)$xmat
-  result$ds <- ddf.ds(model=dsmodel,unique.data,meta.data,control,call)
+  unique.data <- process.data(unique.data, truncation, meta.data, control,
+                              mr.check=FALSE)$xmat
+  result$ds <- ddf.ds(model=dsmodel,unique.data,truncation,meta.data,
+                      control,call)
 
   # stop if ds model didn't converge
   if(is.null(result$ds$Nhat)){

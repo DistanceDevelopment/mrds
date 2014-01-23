@@ -16,10 +16,10 @@ test_that("a dht object with only 0's for estimates is returned", {
   load(ex.filename)
   ex.filename<-system.file("testData/NoSightings/sample_table.robj", package="mrds")
   load(ex.filename)
-  
+
   #run analyses
-  ddf.clusters <- ddf(method='ds', dsmodel = ~mcds(key = 'hn', formula = ~scaledtotsize), data = clusters, meta.data = list(width = 5.5))
-  ddf.no.clusters <- ddf(method='ds', dsmodel = ~mcds(key = 'hn', formula = ~scaledtotsize), data = no.clusters, meta.data = list(width = 5.5))
+  ddf.clusters <- ddf(method='ds', dsmodel = ~mcds(key = 'hn', formula = ~scaledtotsize), data = clusters, truncation=5.5)
+  ddf.no.clusters <- ddf(method='ds', dsmodel = ~mcds(key = 'hn', formula = ~scaledtotsize), data = no.clusters, truncation=5.5)
   cluster.result <- dht(ddf.clusters, region.table, sample.table, obs.table.subset)
   no.cluster.result <- dht(ddf.no.clusters, region.table, sample.table, obs.table.subset)
 

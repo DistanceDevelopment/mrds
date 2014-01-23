@@ -30,7 +30,8 @@ average.line <- function(finebr,obs,model){
     newdat <- model$mr$mr$data
   }else{
     if(model$method=="trial" | model$method=="trial.fi"){
-      newdat <- process.data(model$data,model$meta.data)$xmat
+      newdat <- process.data(model$data,model$truncation,
+                             model$meta.data)$xmat
       newdat <- newdat[newdat$observer==obs & newdat$detected==1,]
     }else{
       if(model$method=="rem.fi"){
@@ -102,8 +103,8 @@ average.line <- function(finebr,obs,model){
     # See ADS p. 130-140 for details
     if(model$method=="io" | model$method=="trial" | model$method=="rem"){
       detfct.pooled.values <- detfct(newdat$distance[newdat$observer==1],
-                                     ddfobj,width=model$meta.data$width-
-                                                  model$meta.data$left)
+                                     ddfobj,width=model$truncation$right-
+                                                  model$truncation$left)
       # substitute (6.28) into (6.27), ADS ch 6
       # this is actually: deltax <- (detfct.pooled.values*g0)/cond.det$fitted
       # so 1/delta(x)

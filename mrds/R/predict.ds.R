@@ -73,7 +73,7 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
   ltmodel <- model$ds
   x <- ltmodel$aux$ddfobj$xmat
   point <- ltmodel$aux$point
-  width <- ltmodel$aux$width
+  width <- model$truncation$right
 
   # If there are no fitted values present or compute is set TRUE or
   # a newdata frame has been used, then the predicted values must be computed.
@@ -86,7 +86,6 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
     ddfobj <- ltmodel$aux$ddfobj
     ddfobj <- assign.par(ddfobj,fpar)
     doeachint <- ltmodel$aux$doeachint
-
 
     # Extract other values from model object
     if(!is.null(newdata)){
@@ -111,7 +110,8 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
         }
       }
       # update xmat too
-      datalist <- process.data(newdata,object$meta.data,object$control, mr.check=FALSE)
+      datalist <- process.data(newdata,model$truncation,
+                               object$meta.data, object$control, mr.check=FALSE)
       ddfobj$xmat <- datalist$xmat
     }
     # Get integration ranges either from specified argument or from

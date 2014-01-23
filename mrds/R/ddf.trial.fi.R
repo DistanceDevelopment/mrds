@@ -28,6 +28,12 @@
 #' @S3method ddf trial.fi
 #' @param model mark-recapture model specification
 #' @param data analysis dataframe
+#' @param truncation either: a single number giving the right truncation for the
+#'  distances; a 2-vector giving the left and right truncations
+#'  (\code{c(left, right)}); or a list with elements \code{left} and
+#'  \code{right} (at least \code{right} must be supplied in list form). Default
+#'  is \code{NULL} which uses the largest observed distance (not usually a good
+#'  idea with unbinned data).
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -43,8 +49,8 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.trial.fi <- function(model, data, meta.data=list(), control=list(),
-                         call="", method){
+ddf.trial.fi <- function(model, data, truncation=NULL, meta.data=list(),
+                         control=list(), call="", method){
   #  NOTE: gams are only partially implemented
 
   # The following are dummy glm and gam functions that are defined here to
@@ -91,9 +97,8 @@ ddf.trial.fi <- function(model, data, meta.data=list(), control=list(),
   options(contrasts=c("contr.treatment","contr.poly"))
 
   # Set up meta data values
-  meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
-                                     int.range=NA, mono=FALSE, mono.strict=TRUE,
-                                      point=FALSE)
+  meta.data <- assign.default.values(meta.data, binned=FALSE, int.range=NA,
+                                     mono=FALSE, mono.strict=TRUE, point=FALSE)
 
   # Set up control values
   control <- assign.default.values(control, showit=0, doeachint=FALSE,
@@ -111,9 +116,10 @@ ddf.trial.fi <- function(model, data, meta.data=list(), control=list(),
 
   # Process data if needed
   if(is.data.frame(data)){
-    data.list <- process.data(data,meta.data)
+    data.list <- process.data(data,truncation,meta.data)
     meta.data <- data.list$meta.data
     xmat <- data.list$xmat
+    truncation <- data.list$truncation
   }else{
     xmat <- data
   }
@@ -126,7 +132,7 @@ ddf.trial.fi <- function(model, data, meta.data=list(), control=list(),
   }
 
   # Create result list with some arguments
-  result <- list(call=call,data=data,model=model,
+  result <- list(call=call,data=data,model=model,truncation=truncation,
                  meta.data=meta.data,control=control,method="trial.fi")
   class(result) <- c("trial.fi","ddf")
 
@@ -150,7 +156,7 @@ ddf.trial.fi <- function(model, data, meta.data=list(), control=list(),
   data <- create.model.frame(data,as.formula(model.formula),meta.data)
 
   # Fit model
-  result$mr <- glm (as.formula(model.formula),family=binomial,data=data)
+  result$mr <- glm(as.formula(model.formula),family=binomial,data=data)
   result$par <- coef(result$mr)
   npar <- length(result$par)
   result$lnl <- -result$mr$deviance/2
@@ -175,13 +181,13 @@ ddf.trial.fi <- function(model, data, meta.data=list(), control=list(),
                       sum(log(predict(result,
                                newdat=xmat[xmat$observer==1&xmat$detected==1,],
                                integrate=FALSE)$fitted*
-                          2*distances/meta.data$width^2))-
+                          2*distances/truncation$right^2))-
                       sum(log(result$fitted))
       }else{
         result$lnl <- result$lnl +
                       sum(log(predict(result,
                                newdat=xmat[xmat$observer==1&xmat$detected==1,],
-                               integrate=FALSE)$fitted/meta.data$width)) -
+                               integrate=FALSE)$fitted/truncation$right)) -
                       sum(log(result$fitted))
       }
     }else{

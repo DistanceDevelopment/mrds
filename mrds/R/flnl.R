@@ -28,8 +28,8 @@
 #' @param fpar parameter values for detection function at which log-likelihood
 #'   should be evaluated
 #' @param ddfobj distance sampling object
-#' @param misc.options width-transect width (W); int.range-integration range
-#'   for observations; showit- 0 to 3 controls level of iteration output; 
+#' @param misc.options int.range-integration range
+#'   for observations; showit- 0 to 3 controls level of iteration output;
 #'   doeachint-if TRUE doesn't use cgftab and does each
 #'   integral; integral.numeric-if TRUE integral is computed numerically rather
 #'   than analytically

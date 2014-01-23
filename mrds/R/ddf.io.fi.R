@@ -31,6 +31,12 @@
 #' @S3method ddf io.fi
 #' @param model mark-recapture model specification
 #' @param data analysis dataframe
+#' @param truncation either: a single number giving the right truncation for the
+#'  distances; a 2-vector giving the left and right truncations
+#'  (\code{c(left, right)}); or a list with elements \code{left} and
+#'  \code{right} (at least \code{right} must be supplied in list form). Default
+#'  is \code{NULL} which uses the largest observed distance (not usually a good
+#'  idea with unbinned data).
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -46,16 +52,17 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
-                      call="",method){
+ddf.io.fi <- function(model,data,truncation=NULL,meta.data=list(),
+                      control=list(),call="",method){
   # Functions used: assign.default.values, process.data, create.model.frame
   #                 ioglm, predict(predict.io.fi), NCovered (NCovered.io.fi)
 
   # NOTE: gams are only partially implemented
 
-  # The following are dummy glm and gam functions that are defined here to 
-  # provide the list of arguments for use in the real glm/gam functions. 
-  # These dummy functions are removed after they are used so the real ones can 
+  # The following are dummy glm and gam functions that are defined here to
+  # provide the list of arguments for use in the real glm/gam functions.
+
+  # These dummy functions are removed after they are used so the real ones can
   # be used in the model fitting.
   glm <- function(formula,link="logit"){
     if(class(formula)!="formula"){
@@ -95,9 +102,8 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
   options(contrasts=c("contr.treatment","contr.poly"))
 
   # Set up meta data values
-  meta.data=assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
-                                  int.range=NA,mono=FALSE,mono.strict=TRUE,
-                                  point=FALSE)
+  meta.data <- assign.default.values(meta.data, binned=FALSE, int.range=NA,
+                                     mono=FALSE,mono.strict=TRUE, point=FALSE)
 
   # Set up control values
   control <- assign.default.values(control,showit = 0, doeachint=FALSE,
@@ -115,9 +121,10 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
 
   # Process data if needed
   if(is.data.frame(data)){
-    data.list <- process.data(data,meta.data)
+    data.list <- process.data(data, truncation, meta.data)
     meta.data <- data.list$meta.data
     xmat <- data.list$xmat
+    truncation <- data.list$truncation
   }else{
     xmat <- data
   }
@@ -132,7 +139,7 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
 
   # Create result list with some arguments
   result <- list(call=call,data=data,model=model,meta.data=meta.data,
-                 control=control,method="io.fi")
+                 control=control,method="io.fi", truncation=truncation)
   class(result) <- c("io.fi","ddf")
 
   # Create formula and model frame (if not GAM)
@@ -147,29 +154,29 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
 #     hessian=TRUE,control=list(maxit=5000))
 #   fit$hessian=hessian(lnl.removal,x=fit$par,method="Richardson",x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
   GAM <- FALSE
-  #if(modelvalues$fct=="gam") 
+  #if(modelvalues$fct=="gam")
   #{
   #   GAM <- TRUE
   #} else
   xmat <- create.model.frame(xmat,as.formula(model.formula),meta.data)
   model.formula <- as.formula(paste(model.formula,"+offset(offsetvalue)"))
 
-  # Fit the conditional detection functions using io.glm 
-  suppressWarnings(result$mr <- io.glm (xmat,model.formula,GAM=GAM))
+  # Fit the conditional detection functions using io.glm
+  suppressWarnings(result$mr <- io.glm(xmat,model.formula,GAM=GAM))
 
   # if(GAM)result$mr$data=xmat
 
   if(result$mr$converged){
-    # if the glm did converge, then do one quick round of BFGS to 
+    # if the glm did converge, then do one quick round of BFGS to
     #  compute the hessian
-    result$hessian<- optimHess(result$mr$coefficients, lnl.io, 
-                               x1=xmat1, x2=xmat2, 
-                               models=list(p.formula=p.formula))
+    result$hessian <- optimHess(result$mr$coefficients, lnl.io,
+                                x1=xmat1, x2=xmat2,
+                                models=list(p.formula=p.formula))
   }else{
     # only resort to optim if there was not convergence in the glm!
 
     # Now use optimx with starting values perturbed by 5%
-    fit <-try(optimx(result$mr$coefficients*1.05,
+    fit <- try(optimx(result$mr$coefficients*1.05,
                       lnl.io, method="L-BFGS-B", hessian=TRUE,x1=xmat1,x2=xmat2,
                       models=list(p.formula=p.formula)))
     # did this model converge?
@@ -179,15 +186,17 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
     fit$par <- topfit.par
     fit$message <- ""
     names(fit)[names(fit)=="convcode"] <- "conv"
-    fit$hessian<-details$nhatend
+    fit$hessian <- details$nhatend
 
     if(fit$conv!=0 | class(fit)=="try-error"){
       # first try the old way of just setting the starting values to zero,
       # this seems (with the crabbie data) to converge back to the values in
       # result$mr$coefficients but without having the convergence issues
       # NEED TO THINK ABOUT THIS MORE...
-      fit <- try(optimx(result$mr$coefficients*0,lnl.io, method="L-BFGS-B", 
-              hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))
+      fit <- try(optimx(result$mr$coefficients*0,lnl.io, method="L-BFGS-B",
+                        hessian=TRUE,x1=xmat1,x2=xmat2,
+                        models=list(p.formula=p.formula)))
+
       topfit.par <- coef(fit, order="value")[1, ]
       details <- attr(fit,"details")[1,]
       fit <- as.list(summary(fit, order="value")[1, ])
@@ -206,7 +215,7 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
   }
   # Compute the L_omega portion of the likelihood value, AIC and hessian
   cond.det <- predict(result)
-  result$par <- coef(result$mr)  
+  result$par <- coef(result$mr)
   npar <- length(result$par)
   p1 <- cond.det$p1
   p2 <- cond.det$p2
@@ -232,11 +241,11 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
     if(!meta.data$binned){
       if(meta.data$point){
         result$lnl <- result$lnl +
-            sum(log(cond.det$fitted*2*distances/meta.data$width^2)) -
+            sum(log(cond.det$fitted*2*distances/truncation$right^2)) -
             sum(log(result$fitted))
       }else{
         result$lnl<- result$lnl +
-            sum(log(cond.det$fitted/meta.data$width)) -
+            sum(log(cond.det$fitted/truncation$right)) -
             sum(log(result$fitted))
       }
     }else{
@@ -247,7 +256,7 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
                            integrate=TRUE)$fitted
         result$lnl <- result$lnl + log(int.val)
       }
-      result$lnl<- result$lnl- sum(log(result$fitted))
+      result$lnl<- result$lnl - sum(log(result$fitted))
     }
   }
 

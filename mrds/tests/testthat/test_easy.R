@@ -1,4 +1,4 @@
-library(mrds)
+#library(mrds)
 library(testthat)
 
 lnl.tol<-1e-4
@@ -15,32 +15,32 @@ test_that("golf tee data gives the same results as Distance",{
 
   # io
   result.cds<-ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance),
-                  data = egdata, method = "io", meta.data = list(width = 4))
+                  data = egdata, method = "io", truncation=4)
   expect_that(result.cds$Nhat, equals(232.0015,tolerance=1e-6))
 
   # io.fi
   result.glm<-ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi",
-                  meta.data = list(width = 4))
+                  truncation=4)
   expect_that(result.glm$Nhat, equals(186.0947,tolerance=1e-6))
 
   # MCDS
-  #checkException(ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = newdata, method = "ds", meta.data = list(width = 4)))
+  #checkException(ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = newdata, method = "ds", truncation=4))
 
   result.mcds<-ddf(dsmodel=~mcds(key = "hn", formula=~1),
                    data=egdata[egdata$observer==1,], method="ds",
-                   meta.data=list(width=4))
+                   truncation=4)
   expect_that(result.mcds$Nhat, equals(212.229,tolerance=1e-3))
 
 
 #  # check that uniform key works
 #  result.unif<-ddf(dsmodel = ~cds(key = "unif",adj.series="cos",adj.order=2),
-#                  data = egdata, method = "ds", meta.data = list(width = 4))
+#                  data = egdata, method = "ds", truncation=4)
 #  expect_that(result.unif$par, equals(0.7005934,tolerance=1e-6))
 
 # there should be an error if we don't supply adjustments with uniform key
 # This was removed because it now works
 #  expect_error(ddf(dsmodel = ~cds(key = "unif"),
-#                  data = egdata, method = "ds", meta.data = list(width = 4)))
+#                  data = egdata, method = "ds", truncation=4))
 
 })
 
@@ -66,7 +66,7 @@ width<-25
 
 test.df<-function(mcds.bit,dat,width,mono=FALSE,strict=FALSE,mono.tol=1e-7,showit=0){
   ddf(dsmodel=mcds.bit,data=dat,method="ds",
-      meta.data=list(width=width,mono=mono,mono.strict=strict),
+      meta.data=list(mono=mono,mono.strict=strict),truncation=width,
 #      control=list(mono.tol=mono.tol,showit=showit))
       control=list(mono.tol=1e-5,mono.delta=1e-5,showit=showit))
 }

@@ -42,10 +42,11 @@
 qqplot.ddf <- function(model,plot=TRUE,...){
 
   fun <- function(x,z,lt){
-    if(lt)
+    if(lt){
       length(z[z<x])
-    else 
+    }else{
       length(z[z<=x])
+    }
   }
 
   if("ds" %in% class(model)){
@@ -63,13 +64,13 @@ qqplot.ddf <- function(model,plot=TRUE,...){
       newdata <- data[data$object %in% as.numeric(names(model$fitted))[i],]
       cdfvalues[i] <- predict.io.fi(model,newdata=newdata,integrate=TRUE,
                                     int.range=newdata$distance[1])$fitted
-      if(model$meta.data$left!=0){
+      if(model$truncation$left!=0){
         widthvalue <- predict.io.fi(model,newdata=newdata,integrate=TRUE,
-                                    int.range=model$meta.data$width)$fitted
+                                    int.range=model$truncation$right)$fitted
         cdfvalues[i] <- cdfvalues[i]/widthvalue
       }
     }
-    if(model$meta.data$left==0){
+    if(model$truncation$left==0){
       cdfvalues <- cdfvalues/predict.io.fi(model,integrate=TRUE)$fitted
     }
     cdfvalues <- sort(cdfvalues)
@@ -84,13 +85,13 @@ qqplot.ddf <- function(model,plot=TRUE,...){
       cdfvalues[i] <- predict.trial.fi(model,newdata=newdata,integrate=TRUE,
                                        int.range=newdata$distance[1])$fitted
 
-      if(model$meta.data$left != 0){
+      if(model$truncation$left != 0){
         widthvalue <- predict.trial.fi(model,newdata=newdata,integrate=TRUE,
-                                       int.range=model$meta.data$width)$fitted
+                                       int.range=model$truncation$right)$fitted
         cdfvalues[i] <- cdfvalues[i]/widthvalue
       }
     }
-    if(model$meta.data$left==0){
+    if(model$truncation$left==0){
       cdfvalues <- cdfvalues/predict.trial.fi(model,newdata=data,
                                               integrate=TRUE)$fitted
     }
@@ -105,13 +106,13 @@ qqplot.ddf <- function(model,plot=TRUE,...){
       cdfvalues[i] <- predict.rem.fi(model,newdata=newdata,integrate=TRUE,
                                      int.range=newdata$distance[1])$fitted
 
-      if(model$meta.data$left!=0){
+      if(model$truncation$left!=0){
         widthvalue <- predict.rem.fi(model,newdata=newdata,integrate=TRUE,
-                                  int.range=model$meta.data$width)$fitted
+                                  int.range=model$truncation$right)$fitted
         cdfvalues[i] <- cdfvalues[i]/widthvalue
       }
     }
-    if(model$meta.data$left==0){
+    if(model$truncation$left==0){
       cdfvalues <- cdfvalues/predict.rem.fi(model,newdata=data,
                                             integrate=TRUE)$fitted
     }

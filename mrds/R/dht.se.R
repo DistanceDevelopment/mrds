@@ -104,7 +104,8 @@ dht.se <- function(model,region.table,samples,obs,options,numRegions,
   if(!is.null(model$par)){
     vcov <- solvecov(model$hessian)$inv
     vc1.list <- DeltaMethod(model$par, dht.deriv, vcov, options$pdelta,
-        model = model, samples = samples, obs = obs, options = options)
+                            model=model, samples=samples, obs=obs,
+                            options=options)
     vc1 <- vc1.list$variance
   }else{
     vc1.list <- list(variance=0)
@@ -195,7 +196,8 @@ dht.se <- function(model,region.table,samples,obs,options,numRegions,
     }
 
     # sort Nhat.by.sample by Region.Label and Sample.Label
-    Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,Nhat.by.sample$Sample.Label),]
+    Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
+                                           Nhat.by.sample$Sample.Label),]
 
     # Loop over each region and compute each variance;
     # jll 11/11/04 - changes made in following code using

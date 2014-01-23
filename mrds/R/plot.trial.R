@@ -59,10 +59,10 @@ plot.trial <- function(x, which=1:2, breaks=NULL, nc=NULL, maintitle="",
   # Uses: detfct, plot_cond, plot_uncond
 
   model <- x
-  data <- process.data(model$data,model$meta.data)$xmat
+  data <- process.data(model$data,model$truncation,model$meta.data)$xmat
   xmat <- data[data$observer==1&data$detected==1,]
-  width <- model$meta.data$width
-  left <- model$meta.data$left
+  width <- model$truncation$right
+  left <- model$truncation$left
 
   #  Set up default break points unless specified
   if(is.null(nc)){

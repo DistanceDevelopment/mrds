@@ -19,7 +19,8 @@ test_that("bookexamples parameter estimates and likelihood is correct", {
   result.mono<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1, adj.series="cos",
                                    adj.order=2),
                    data = egdata[egdata$observer ==1, ], method = "ds",
-                   meta.data = list(width = 4,mono=TRUE,mono.strict=FALSE))
+                   meta.data = list(mono=TRUE,mono.strict=FALSE),
+                   truncation=4)
 
   mono.par <- c(0.663253549669784, -3.25134503272446e-07)
   names(result.mono$par) <- NULL
@@ -30,7 +31,8 @@ test_that("bookexamples parameter estimates and likelihood is correct", {
   result.strict<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1, adj.series="cos",
                                      adj.order=2),
                      data = egdata[egdata$observer ==1, ], method = "ds",
-                     meta.data = list(width = 4,mono=TRUE,mono.strict=TRUE))
+                     meta.data = list(mono=TRUE,mono.strict=TRUE),
+                     truncation=4)
 
   strict.par <- c(0.663257996011827,-3.27954455074367e-07)
   names(result.strict$par) <- NULL
@@ -44,13 +46,13 @@ test_that("ddf when monotonicity is not required", {
   # covariate models die
   expect_that(result<-ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
                   data = egdata[egdata$observer ==1, ], method = "ds",
-                  meta.data = list(width = 4,mono=TRUE)),
+                  meta.data = list(mono=TRUE),truncation=4),
       throws_error("Covariate models cannot be constrained for monotonicity."))
 
   #key only models die
   expect_that(result<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1),
                   data = egdata[egdata$observer ==1, ], method = "ds",
-                  meta.data = list(width = 4,mono=TRUE)),
+                  meta.data = list(mono=TRUE),truncation=4),
      shows_message("Monotonicity constraints are unnecessary with key only models, not constraining model for monotonicity."))
 
 })
@@ -75,15 +77,15 @@ test_that("monotonic and non-monotonic fits differ for non-monotone data",{
    # fit without constraint
    result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
                  adj.order=c(2)), data=dat, method = "ds",
-                 meta.data=list(width=trunc,mono=FALSE))
+                 meta.data=list(mono=FALSE),truncation=trunc)
    # with weak monotonicity
    result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
-                 adj.order=c(2)), data=dat, method = "ds",
-                 meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
+                 adj.order=c(2)), data=dat, method = "ds",truncation=trunc,
+                 meta.data=list(mono=TRUE,mono.strict=FALSE))
    # with strong monotonicity
    result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
-                 adj.order=c(2)), data=dat, method = "ds",
-                 meta.data=list(width=trunc,mono=TRUE,mono.strict=TRUE))
+                 adj.order=c(2)), data=dat, method = "ds",truncation=trunc,
+                 meta.data=list(mono=TRUE,mono.strict=TRUE))
 
    # plot
    #par(mfrow=c(1,3))

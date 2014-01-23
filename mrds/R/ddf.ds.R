@@ -19,6 +19,12 @@
 #' @S3method ddf ds
 #' @param model model list with key function and scale formula if any
 #' @param data analysis dataframe
+#' @param truncation either: a single number giving the right truncation for the
+#'  distances; a 2-vector giving the left and right truncations
+#'  (\code{c(left, right)}); or a list with elements \code{left} and
+#'  \code{right} (at least \code{right} must be supplied in list form). Default
+#'  is \code{NULL} which uses the largest observed distance (not usually a good
+#'  idea with unbinned data).
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call if this function not called directly from
@@ -56,15 +62,15 @@
 #' obs <- book.tee.data$book.tee.obs
 #' result <- ddf(dsmodel = ~mcds(key = "hn", formula = ~1),
 #'               data = egdata[egdata$observer==1, ], method = "ds",
-#'               meta.data = list(width = 4))
+#'               truncation=4)
 #' summary(result,se=TRUE)
 #' plot(result,main="cds - observer 1")
 #' print(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),
 #'           se=TRUE))
 #' print(ddf.gof(result))
 #' }
-ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
-                  method="ds"){
+ddf.ds <-function(model, data, truncation=NULL, meta.data=list(),control=list(),
+                  call, method="ds"){
   #   Code structure for optimization with optim
   #
   # ddf.ds --> detfct.fit --> detfct.fit.opt --> optimx or solnp --> flnl
@@ -78,9 +84,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   # sets up initial values.
 
   # Set up meta data values
-  meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
-                                     int.range=NA, mono=FALSE, mono.strict=TRUE,
-                                     point=FALSE)
+  meta.data <- assign.default.values(meta.data, binned=FALSE, int.range=NA,
+                                     mono=FALSE, mono.strict=TRUE, point=FALSE)
   # Set up control values
   control <- assign.default.values(control, showit=0, doeachint=FALSE,
                                    estimate=TRUE, refit=TRUE, nrefits=25,
@@ -96,8 +101,9 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   options(contrasts=c("contr.treatment","contr.poly"))
 
   # Process data based on values of meta.data
-  datalist <- process.data(data,meta.data,control,mr.check=FALSE)
+  datalist <- process.data(data,truncation,meta.data,control,mr.check=FALSE)
   xmat <- datalist$xmat
+  truncation <- datalist$truncation
   meta.data <- datalist$meta.data
 
   # use all unique detections (observer=1) if observer is present
@@ -131,23 +137,21 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   }
 
   # Setup detection model
-  ddfobj <- create.ddfobj(model,xmat,meta.data,control$initial)
+  ddfobj <- create.ddfobj(model,truncation,xmat,meta.data,control$initial)
 
   # set doeachint=TRUE if a shape formula is used
   if(!is.null(ddfobj$shape) && ncol(ddfobj$shape$dm)>1){
     control$doeachint <- TRUE
   }
   # set doeachint=TRUE if adj.scale="width" and key not uniform
-  if(ddfobj$type!="unif"&&!is.null(ddfobj$adjustment)){
+  if( (ddfobj$type!="unif") && (!is.null(ddfobj$adjustment)) ){
     if(ddfobj$adjustment$scale=="width"){
       control$doeachint <- TRUE
     }
   }
 
-  #initialvalues <- c(ddfobj$shape$parameters,ddfobj$scale$parameters,
-  #                   ddfobj$adjustment$parameters)
-
-  initialvalues <- as.vector(unlist(ddfobj$pars))
+  # extract the initialvalues
+  initialvalues <- getpar(ddfobj)
 
   if(!is.null(initialvalues)){
     bounds <- setbounds(control$lowerbounds,control$upperbounds,
@@ -162,7 +166,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                      maxiter=control$maxiter, refit=control$refit,
                      nrefits=control$nrefits, parscale=control$parscale,
                      mono=meta.data$mono, mono.strict=meta.data$mono.strict,
-                     binned=meta.data$binned, width=meta.data$width,
+                     binned=meta.data$binned,
                      standardize=control$standardize,
                      mono.points=control$mono.points,
                      mono.tol=control$mono.tol,
@@ -181,7 +185,9 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                         optimx.method=control$optimx.method)
 
   # Actually do the optimisation if not just a uniform key!
-  if(is.null(initialvalues)) misc.options$nofit <- TRUE
+  if(is.null(initialvalues)){
+    misc.options$nofit <- TRUE
+  }
 
   lt <- detfct.fit(ddfobj,optim.options,bounds,misc.options)
 
@@ -190,7 +196,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   stored_data$detected <- 1
   result <- list(call=call, data=stored_data, model=substitute(model),
                  meta.data=meta.data, control=control, method=method,
-                 ds=lt, par=lt$par, lnl=-lt$value)
+                 ds=lt, par=lt$par, lnl=-lt$value, truncation=truncation)
 
   # if there was no convergence, return the fitting object incase it's useful
   # it won't be of the correct class or have the correct elements

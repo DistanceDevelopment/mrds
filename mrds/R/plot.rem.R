@@ -71,8 +71,8 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   p0 <- predict(model$mr,newdata=xmat.p0,integrate=FALSE)$fitted
   xmat <- model$mr$data
   cond.det <- predict(model$mr,newdata=xmat,integrate=FALSE)
-  width <- model$meta.data$width
-  left <- model$meta.data$left
+  width <- model$truncation$right
+  left <- model$truncation$left
   detfct.pooled.values <- detfct(xmat$distance[xmat$observer==1],ddfobj,
                                  width=width-left)
   delta <- cond.det$fitted/(p0*detfct.pooled.values)
@@ -120,7 +120,7 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   }
 
   # Plot conditional detection function
-  data <- process.data(model$mr$data,model$meta.data)$xmat
+  data <- process.data(model$mr$data,model$truncation,model$meta.data)$xmat
   data$offsetvalue <- 0
   if(is.element(3,which)){
     gxvalues <- p1[xmat$detected[xmat$observer==2]==1]

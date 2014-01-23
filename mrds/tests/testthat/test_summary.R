@@ -29,7 +29,7 @@ test_that("summary results are correct",{
 
   # fit the model
   tee.result <- ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance),
-                data = egdata, method = "io", meta.data = list(width = 4))
+                data = egdata, method = "io", truncation=4)
 
   expect_that(summary(tee.result)$mr.summary,equals(tee.result.summ$mr.summary))
   expect_that(summary(tee.result)$ds.summary,equals(tee.result.summ$ds.summary))
@@ -39,14 +39,14 @@ test_that("summary results are correct",{
   tee.result.trial.fi <- ddf(mrmodel=~glm(formula=~distance),
                              dsmodel = ~mcds(key = "hn", formula = ~sex),
                              data=egdata, method="trial.fi",
-                             meta.data=list(width=4))
+                             truncation=4)
   expect_that(summary(tee.result.trial.fi),equals(tee.result.trial.fi.summ))
 
-  ### trial.fi method -- line transect
+  ### trial method -- line transect
   tee.result.trial <- ddf(mrmodel=~glm(formula=~distance),
                           dsmodel = ~mcds(key = "hn", formula = ~sex),
                           data=egdata, method="trial",
-                          meta.data=list(width=4))
+                          truncation=4)
   expect_that(summary(tee.result.trial),equals(tee.result.trial.summ))
 
 
@@ -54,7 +54,7 @@ test_that("summary results are correct",{
   tee.result.rem <- ddf(mrmodel=~glm(formula=~distance),
                           dsmodel = ~mcds(key = "hn", formula = ~sex),
                           data=egdata, method="rem",
-                          meta.data=list(width=4))
+                          truncation=4)
   expect_that(summary(tee.result.rem),equals(tee.result.rem.summ))
 
 
@@ -68,7 +68,7 @@ test_that("summary results are correct",{
   pt.result <- ddf(method="io", data=ptdata.dual, dsmodel=~cds(key="hn"),
                    mrmodel=~glm(formula=~distance*observer),
                    meta.data=list(point=TRUE, binned=TRUE,
-                                  breaks=10*(0:10),width=100))
+                                  breaks=10*(0:10)),truncation=100)
 
 
   expect_that(summary(pt.result)$mr.summary,equals(pt.result.summ$mr.summary,
