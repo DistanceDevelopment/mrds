@@ -44,6 +44,35 @@ test_that("golf tee data gives the same results as Distance",{
 
 })
 
+
+test_that("golf tee data: left truncation works",{
+
+  data(book.tee.data)
+  egdata<-book.tee.data$book.tee.dataframe
+
+  # vector
+  result.lr<-ddf(dsmodel=~mcds(key = "hn", formula=~1),
+                   data=egdata, method="ds",
+                   truncation=c(1,4))
+  expect_that(result.lr$Nhat, equals(270.344,tolerance=1e-3))
+
+  # vector in wrong order
+  result.rl<-ddf(dsmodel=~mcds(key = "hn", formula=~1),
+                   data=egdata, method="ds",
+                   truncation=c(4,1))
+  expect_that(result.rl$Nhat, equals(270.344,tolerance=1e-3))
+
+  # list
+  result.l<-ddf(dsmodel=~mcds(key = "hn", formula=~1),
+                   data=egdata, method="ds",
+                   truncation=list(right=4,left=1))
+  expect_that(result.l$Nhat, equals(270.344,tolerance=1e-3))
+
+})
+
+
+
+
 context("easy tests: line transect example")
 # line transect example from Distance
 ### check likelihood and pars

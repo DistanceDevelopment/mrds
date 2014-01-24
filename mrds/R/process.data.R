@@ -171,7 +171,7 @@ process.data <- function(data,truncation,meta.data=list(),control=list(),
         stop("width must exceed largest interval end point")
       }else{
         xmat <- data[data$binned |
-                     (!data$binned&data$distance<=truncation$right),]
+                     (!data$binned & data$distance <= truncation$right),]
       }
     }else{
       xmat <- data[data$distance <= truncation$right,]
