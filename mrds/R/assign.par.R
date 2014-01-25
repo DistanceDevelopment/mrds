@@ -20,7 +20,7 @@
 assign.par <- function(ddfobj, fpar){
 
   # eventually comment out the above
-  ddfobj$pars <- relist(fpar,skel=ddfobj$pars)
+  ddfobj$pars <- relist(fpar,skeleton=ddfobj$pars)
   ddfobj$pars <- as.relistable(ddfobj$pars)
 
   return(ddfobj)
