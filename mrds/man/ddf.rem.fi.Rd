@@ -2,13 +2,21 @@
 \alias{ddf.rem.fi}
 \title{Mark-Recapture Distance Sampling (MRDS) Removal - FI}
 \usage{
-ddf.rem.fi(model, data, meta.data = list(), control = list(), call = "",
-  method)
+ddf.rem.fi(model, data, truncation = NULL, meta.data = list(),
+  control = list(), call = "", method)
 }
 \arguments{
   \item{model}{mark-recapture model specification}
 
   \item{data}{analysis dataframe}
+
+  \item{truncation}{either: a single number giving the
+  right truncation for the distances; a 2-vector giving the
+  left and right truncations (\code{c(left, right)}); or a
+  list with elements \code{left} and \code{right} (at least
+  \code{right} must be supplied in list form). Default is
+  \code{NULL} which uses the largest observed distance (not
+  usually a good idea with unbinned data).}
 
   \item{meta.data}{list containing settings controlling
   data structure}

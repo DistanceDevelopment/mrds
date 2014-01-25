@@ -2,14 +2,22 @@
 \alias{ddf.ds}
 \title{CDS/MCDS Distance Detection Function Fitting}
 \usage{
-ddf.ds(model, data, meta.data = list(), control = list(), call,
-  method = "ds")
+ddf.ds(model, data, truncation = NULL, meta.data = list(),
+  control = list(), call, method = "ds")
 }
 \arguments{
   \item{model}{model list with key function and scale
   formula if any}
 
   \item{data}{analysis dataframe}
+
+  \item{truncation}{either: a single number giving the
+  right truncation for the distances; a 2-vector giving the
+  left and right truncations (\code{c(left, right)}); or a
+  list with elements \code{left} and \code{right} (at least
+  \code{right} must be supplied in list form). Default is
+  \code{NULL} which uses the largest observed distance (not
+  usually a good idea with unbinned data).}
 
   \item{meta.data}{list containing settings controlling
   data structure}
@@ -51,14 +59,14 @@ the dataframe specified by the argument \code{data} in
 defined the same as in \code{ddf}.
 }
 \note{
-If mixture of binned and unbinned distance, width must be
-set to be >= largest interval endpoint; this could be
-changed with a more complicated analysis; likewise, if all
-binned and bins overlap, the above must also hold; if bins
-don't overlap, width must be one of the interval endpoints;
-same holds for left truncation Although the mixture
-analysis works in principle it has not been tested via
-simulation.
+If mixture of binned and unbinned distance, right
+truncation must be set to be >= largest interval endpoint;
+this could be changed with a more complicated analysis;
+likewise, if all binned and bins overlap, the above must
+also hold; if bins don't overlap, width must be one of the
+interval end points; same holds for left truncation
+Although the mixture analysis works in principle it has not
+been tested via simulation.
 }
 \examples{
 # ddf.ds is called when ddf is called with method="ds"
@@ -70,7 +78,7 @@ samples <- book.tee.data$book.tee.samples
 obs <- book.tee.data$book.tee.obs
 result <- ddf(dsmodel = ~mcds(key = "hn", formula = ~1),
               data = egdata[egdata$observer==1, ], method = "ds",
-              meta.data = list(width = 4))
+              truncation=4)
 summary(result,se=TRUE)
 plot(result,main="cds - observer 1")
 print(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),
@@ -79,7 +87,7 @@ print(ddf.gof(result))
 }
 }
 \author{
-Jeff Laake
+Jeff Laake, David L Miller
 }
 \references{
 Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete

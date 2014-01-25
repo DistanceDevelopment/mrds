@@ -2,10 +2,19 @@
 \alias{process.data}
 \title{Process data for fitting distance sampling detection function}
 \usage{
-process.data(data, meta.data = list(), control = list(), mr.check = TRUE)
+process.data(data, truncation, meta.data = list(), control = list(),
+  mr.check = TRUE)
 }
 \arguments{
   \item{data}{dataframe object}
+
+  \item{truncation}{either: a single number giving the
+  right truncation for the distances; a 2-vector giving the
+  left and right truncations (\code{c(left, right)}); or a
+  list with elements \code{left} and \code{right} (at least
+  \code{right} must be supplied in list form). Default is
+  \code{NULL} which uses the largest observed distance (not
+  usually a good idea with unbinned data).}
 
   \item{meta.data}{meta.data options; see \code{\link{ddf}}
   for a description}
@@ -51,9 +60,9 @@ each observation this allows an analysis of a mixture of
 binned and unbinned distances.
 
 4) Data are restricted such that distances are not greater
-than \code{width} and not less than \code{left} if those
-values are specified in \code{meta.data}.  If they are not
-specified then \code{left} defaults to 0 and \code{width}
+than the right truncation and not less than left truncaton
+(if values are specified). If they are not specified then
+the left truncation defaults to 0 and the right truncation
 defaults to the largest distance measurement.
 
 5) Determine if an integration range (\code{int.begin} and

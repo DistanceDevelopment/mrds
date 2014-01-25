@@ -11,12 +11,11 @@ flnl(fpar, ddfobj, misc.options, fitting = "all")
 
   \item{ddfobj}{distance sampling object}
 
-  \item{misc.options}{width-transect width (W);
-  int.range-integration range for observations; showit- 0
-  to 3 controls level of iteration output; doeachint-if
-  TRUE doesn't use cgftab and does each integral;
-  integral.numeric-if TRUE integral is computed numerically
-  rather than analytically}
+  \item{misc.options}{int.range-integration range for
+  observations; showit- 0 to 3 controls level of iteration
+  output; doeachint-if TRUE doesn't use cgftab and does
+  each integral; integral.numeric-if TRUE integral is
+  computed numerically rather than analytically}
 
   \item{fitting}{"key" if only fitting key fct parameters,
   "adjust" if fitting adjustment function parameters or

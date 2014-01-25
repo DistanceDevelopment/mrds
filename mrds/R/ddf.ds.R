@@ -32,13 +32,13 @@
 #' @param method analysis method; only needed if this function called from
 #'   \code{ddf.io} or \code{ddf.trial}
 #' @return result: a ds model object
-#' @note If mixture of binned and unbinned distance, width must be set to be >=
-#'   largest interval endpoint; this could be changed with a more complicated
-#'   analysis; likewise, if all binned and bins overlap, the above must also
-#'   hold; if bins don't overlap, width must be one of the interval endpoints;
-#'   same holds for left truncation Although the mixture analysis works in
-#'   principle it has not been tested via simulation.
-#' @author Jeff Laake
+#' @note If mixture of binned and unbinned distance, right truncation must be
+#'  set to be >= largest interval endpoint; this could be changed with a more
+#'  complicated analysis; likewise, if all binned and bins overlap, the above
+#'  must also hold; if bins don't overlap, width must be one of the interval end
+#'  points; same holds for left truncation Although the mixture analysis works
+#'  in principle it has not been tested via simulation.
+#' @author Jeff Laake, David L Miller
 #' @seealso \code{\link{flnl}}, \code{\link{summary.ds}}, \code{\link{coef.ds}},
 #'   \code{\link{plot.ds}},\code{\link{gof.ds}}
 #' @references Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete

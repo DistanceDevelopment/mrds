@@ -61,9 +61,8 @@ ddf.rem<-function(dsmodel,mrmodel,data,truncation=NULL,meta.data=list(),control=
   options(contrasts=c("contr.treatment","contr.poly"))
 
   # Set up meta data values
-  meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
-                                     int.range=NA, mono=FALSE, mono.strict=TRUE,
-                                     point=FALSE)
+  meta.data <- assign.default.values(meta.data, binned=FALSE, int.range=NA,
+                                     mono=FALSE, mono.strict=TRUE, point=FALSE)
 
   # Set up control values
   control <- assign.default.values(control, showit=0, doeachint=FALSE,

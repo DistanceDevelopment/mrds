@@ -2,8 +2,8 @@
 \alias{ddf}
 \title{Distance Detection Function Fitting}
 \usage{
-ddf(dsmodel = call(), mrmodel = call(), data, method = "ds",
-  meta.data = list(), control = list())
+ddf(dsmodel = call(), mrmodel = call(), data, truncation = NULL,
+  method = "ds", meta.data = list(), control = list())
 }
 \arguments{
   \item{dsmodel}{distance sampling model specification}
@@ -11,6 +11,14 @@ ddf(dsmodel = call(), mrmodel = call(), data, method = "ds",
   \item{mrmodel}{mark-recapture model specification}
 
   \item{data}{dataframe containing data to be analyzed}
+
+  \item{truncation}{either: a single number giving the
+  right truncation for the distances; a 2-vector giving the
+  left and right truncations (\code{c(left, right)}); or a
+  list with elements \code{left} and \code{right} (at least
+  \code{right} must be supplied in list form). Default is
+  \code{NULL} which uses the largest observed distance (not
+  usually a good idea with unbinned data).}
 
   \item{method}{analysis method}
 
@@ -125,7 +133,7 @@ also specify a vector of orders for the adjustment terms
 may be "width" or "scale" (for scaling by the scale
 parameter). Note that the uniform key can only be used with
 adjustments (usually cosine adjustments for a Fourier-type
-analysis.
+analysis).
 
 The \code{mrmodel} specifies the form of the conditional
 detection functions (i.e.,probability it is seen by
@@ -155,43 +163,42 @@ include:
 
 \tabular{ll}{ Option \tab Value \cr \code{point} \tab if
 TRUE the data are from point counts and FALSE (default)
-implies line transect data \cr \code{width} \tab distance
-specifying half-width of the transect \cr \code{left} \tab
-distance specifying inner truncation value \cr
-\code{binned} \tab TRUE or FALSE to specify whether
-distances should be binned for analysis \cr \code{breaks}
-\tab if binned=TRUE, this is a required sequence of break
-points that are used for plotting/gof. They should match
-\code{distbegin}, \code{distend} values if bins are fixed
-\cr \code{int.range} \tab an integration range for
-detection probability; either a vector of 2 or matrix with
-2 columns \cr \code{mono} \tab constrain the detection
-function to be (strictly) monotonically decreasing (when
-there are no covariates) \cr \code{mono.strict} \tab when
-TRUE (default when mono=TRUE) strict monotonicity is
-enforced, else only weak monotonicity. \cr}
+implies line transect data \cr \code{binned} \tab TRUE or
+FALSE to specify whether distances should be binned for
+analysis \cr \code{breaks} \tab if binned=TRUE, this is a
+required sequence of break points that are used for
+plotting/gof. They should match \code{distbegin},
+\code{distend} values if bins are fixed \cr
+\code{int.range} \tab an integration range for detection
+probability; either a vector of 2 or matrix with 2 columns
+\cr \code{mono} \tab constrain the detection function to be
+(strictly) monotonically decreasing (when there are no
+covariates) \cr \code{mono.strict} \tab when TRUE (default
+when mono=TRUE) strict monotonicity is enforced, else only
+weak monotonicity. \cr}
 
 Using \code{meta.data=list(int.range=c(1,10))} is the same
-as \code{meta.data=list(left=1,width=10)}.  If
+as \code{truncation=list(left=1,width=10)}.  If
 \code{meta.data=list(binned=TRUE)} is used, the dataframe
-needs to contain the fields distbegin and distend for each
-observation which specify the left and right hand end
-points of the distance interval containing the observation.
-This is a general data structure that allows the intervals
-to change rather than being fixed as in the standard
-distance analysis tools. Typically, if the intervals are
-changing so is the integration range.  For example, assume
-that distance bins are generated using fixed angular
-measurements from an aircraft in which the altitude is
-varying.  Because all analyses are truncated (i.e., the
-last interval does not go to infinity), the transect width
-(and the left truncation point if there is a blindspot
-below the aircraft) can potentially change for each
-observation.  The argument \code{int.range} can also be
-entered as a matrix with 2 columns (left and width) and a
-row for each observation.  Currently, a binned analysis can
-only be done for \code{method="ds"} and eventually
-\code{int.range} will be incorporated into the dataframe.
+needs to contain the fields \code{distbegin} and
+\code{distend} for each observation which specify the left
+and right hand end points of the distance interval
+containing the observation. This is a general data
+structure that allows the intervals to change rather than
+being fixed as in the standard distance analysis tools.
+Typically, if the intervals are changing so is the
+integration range.  For example, assume that distance bins
+are generated using fixed angular measurements from an
+aircraft in which the altitude is varying.  Because all
+analyses are truncated (i.e., the last interval does not go
+to infinity), the transect width (and the left truncation
+point if there is a blindspot below the aircraft) can
+potentially change for each observation. The argument
+\code{int.range} can also be entered as a matrix with 2
+columns (\code{left} and \code{right}) and a row for each
+observation.  Currently, a binned analysis can only be done
+for \code{method="ds"} and eventually \code{int.range} will
+be incorporated into the dataframe.
 
 The argument \code{control} is a list that enables various
 analysis options to be set.  It is not necessary to set any
@@ -206,29 +213,30 @@ of information printed during fitting. 0 - none, >=1 -
 information about refitting and bound changes is printed,
 >=2 - information about adjustment term fitting is printed,
 ==3 -per-iteration parameter estimates and log-likelihood
-printed. \cr \code{doeachint} \tab if TRUE forces numerical
-integration rather than interpolation method \cr
-\code{estimate} \tab if FALSE fits model but doesn't
-estimate predicted probabilities \cr \code{refit} \tab if
-TRUE the algorithm will attempt multiple optimizations at
-different starting values if it doesn't converge \cr
-\code{nrefits} \tab number of refitting attempts \cr
-\code{initial} \tab a named list of starting values for the
-parameters (\code{$scale}, \code{$shape}, \code{$adjust})
-\cr \code{lowerbounds} \tab a vector of lowerbounds for the
+printed. \cr \code{doeachint} \tab if \code{TRUE} forces
+numerical integration rather than interpolation method for
+integrating the detection function\cr \code{estimate} \tab
+if \code{FALSE} fits model but doesn't estimate predicted
+probabilities \cr \code{refit} \tab if \code{TRUE} the
+algorithm will attempt multiple optimizations at different
+starting values if it doesn't converge \cr \code{nrefits}
+\tab number of refitting attempts \cr \code{initial} \tab a
+named list of starting values for the parameters
+(\code{$scale}, \code{$shape}, \code{$adjust}) \cr
+\code{lowerbounds} \tab a vector of lowerbounds for the
 parameters \cr \code{upperbounds} \tab a vector of
 upperbounds for the parameters \cr \code{limit} \tab if
-TRUE restrict analysis to observations with
-\code{detected}=1 \cr \code{debug} \tab if TRUE, if fitting
-fails, return an object with fitting information \cr
-\code{nofit} \tab if TRUE don't fit a model, but use the
-starting values and generate an object based on those
-values \cr \code{optimx.method} \tab one (or a vector of)
-string(s) giving the optimisation method to use. If more
-than one is supplied, the results from one are used as the
-starting values for the next. See \code{\link{optimx}}\cr
-\code{optimx.maxit} \tab maximum number of iterations to
-use in the optimisation.\cr}
+\code{TRUE} restrict analysis to observations with
+\code{detected}=1 \cr \code{debug} \tab if \code{TRUE}, if
+fitting fails, return an object with fitting information
+\cr \code{nofit} \tab if \code{TRUE} don't fit a model, but
+use the starting values and generate an object based on
+those values \cr \code{optimx.method} \tab one (or a vector
+of) string(s) giving the optimisation method to use. If
+more than one is supplied, the results from one are used as
+the starting values for the next. See
+\code{\link{optimx}}\cr \code{optimx.maxit} \tab maximum
+number of iterations to use in the optimisation.\cr}
 }
 \examples{
 # load data
@@ -240,15 +248,15 @@ obs <- book.tee.data$book.tee.obs
 
 # fit a half-normal detection function
 result <- ddf(dsmodel=~mcds(key="hn", formula=~1), data=egdata, method="ds",
-              meta.data=list(width=4))
+              truncation=4)
 
 # fit an independent observer model with full independence
 result.io.fi <- ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi",
-                    meta.data=list(width = 4))
+                    truncation=4)
 
 # fit an independent observer model with point independence
 result.io <- ddf(dsmodel=~cds(key = "hn"), mrmodel=~glm(~distance),
-                 data=egdata, method="io", meta.data=list(width=4))
+                 data=egdata, method="io", truncation=4)
 \donttest{
 
 # simulated single observer point count data (see ?ptdata.single)
