@@ -36,6 +36,8 @@
 #'  \code{right} (at least \code{right} must be supplied in list form). Default
 #'  is \code{NULL} which uses the largest observed distance (not usually a good
 #'  idea with unbinned data).
+#' @param transect is the survey \code{"point"} or \code{"line"} transects?
+#'  (Default \code{"line"}.)
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -50,8 +52,8 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.trial <- function(dsmodel,mrmodel,data,truncation=NULL, meta.data=list(),control=list(),
-                      call=""){
+ddf.trial <- function(dsmodel, mrmodel, data, truncation=NULL, transect="line",
+                      meta.data=list(), control=list(), call=""){
 
 
   # Test to make sure that observer not used in mrmodel
@@ -65,7 +67,7 @@ ddf.trial <- function(dsmodel,mrmodel,data,truncation=NULL, meta.data=list(),con
 
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, binned=FALSE, int.range=NA,
-                                     mono=FALSE, mono.strict=TRUE, point=FALSE)
+                                     mono=FALSE, mono.strict=TRUE)
 
   # Set up control values
   control <- assign.default.values(control, showit = 0, doeachint=FALSE,
@@ -81,12 +83,13 @@ ddf.trial <- function(dsmodel,mrmodel,data,truncation=NULL, meta.data=list(),con
 
   # Create result list
   result=list(call=call, data=data, mrmodel=mrmodel, dsmodel=dsmodel,
-              meta.data=meta.data, control=control, method="trial",truncation=truncation)
+              meta.data=meta.data, control=control, method="trial",
+              truncation=truncation,transect=transect)
   class(result) <- c("trial","ddf")
 
   # Fit the conditional detection functions using ddf.trial.fi
-  result$mr <- ddf.trial.fi(model=mrmodel,data,truncation,meta.data,control,
-                            call,method="trial")
+  result$mr <- ddf.trial.fi(model=mrmodel, data, truncation, transect,
+                            meta.data, control, call, method="trial")
 
   #  Fit the unconditional detection functions using ddf.ds
   #  5/24/05 - jll add call to process.data for unique.data because it
@@ -94,15 +97,15 @@ ddf.trial <- function(dsmodel,mrmodel,data,truncation=NULL, meta.data=list(),con
   unique.data <- data[data$observer==1&data$detected==1,]
   unique.data <- process.data(unique.data, truncation, meta.data, control,
                               mr.check=FALSE)$xmat
-  result$ds <- ddf.ds(model=dsmodel,unique.data,truncation,meta.data,
-                      control,call)
+  result$ds <- ddf.ds(model=dsmodel, unique.data, truncation, transect,
+                      meta.data, control, call)
 
   # stop if ds model didn't converge
   if(is.null(result$ds$Nhat)){
     stop("ds model did not converge; no further results possible")
   }
 
-  # Combine parameter vectors and hessian matrices 
+  # Combine parameter vectors and hessian matrices
   npar.uncond <- length(result$ds$par)
   npar <- npar.uncond+length(result$mr$par)
   hessian1 <- result$mr$hessian

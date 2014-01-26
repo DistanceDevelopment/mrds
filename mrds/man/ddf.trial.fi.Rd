@@ -2,8 +2,8 @@
 \alias{ddf.trial.fi}
 \title{Mark-Recapture Analysis of Trial Configuration - FI}
 \usage{
-ddf.trial.fi(model, data, truncation = NULL, meta.data = list(),
-  control = list(), call = "", method)
+ddf.trial.fi(model, data, truncation = NULL, transect = "line",
+  meta.data = list(), control = list(), call = "", method)
 }
 \arguments{
   \item{model}{mark-recapture model specification}
@@ -17,6 +17,9 @@ ddf.trial.fi(model, data, truncation = NULL, meta.data = list(),
   \code{right} must be supplied in list form). Default is
   \code{NULL} which uses the largest observed distance (not
   usually a good idea with unbinned data).}
+
+  \item{transect}{is the survey \code{"point"} or
+  \code{"line"} transects?  (Default \code{"line"}.)}
 
   \item{meta.data}{list containing settings controlling
   data structure}

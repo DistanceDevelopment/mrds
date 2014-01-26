@@ -189,7 +189,8 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   #                  covered.region.dht, survey.region.dht, dht.se, varn,
   #                  covn(in varn.R), solvecov (in coef.ds.R).
 
-  tables.dht <- function(group){
+  # TKTKTK this just pulls variables from the frame outside, FIX THIS
+  tables.dht <- function(group,transect){
     # Internal function to create summary tables for clusters (group=TRUE) or
     # individuals (group=FALSE).
     options$group <- group
@@ -204,10 +205,10 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     # Scale up abundances to survey region
     # jll 19-Jan-05 - sort Nhat.by.sample by Region.Label and Sample.Label
     width <- model$truncation$right * options$convert.units
-    Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,width,point)
+    Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,width,transect)
     Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
                                            Nhat.by.sample$Sample.Label),]
-    if(point){
+    if(transect=="point"){
       s.area <- Nhat.by.sample$Effort.x*pi*width^2
     }else{
       s.area <- Nhat.by.sample$Effort.x*2*width
@@ -373,7 +374,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   # statement to be added to create obs.table from model data rather than
   # creating obs.table separately. This only works if the data contain the
   # Sample.Label and Region.Label fields.
-  point <- model$meta.data$point
+  transect <- model$transect
   objects <- as.numeric(names(model$fitted))
   if(is.null(obs.table)){
     data <- model$data
@@ -418,7 +419,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     # cat("Warning: Area for regions is zero. They have been set to area of covered region(strips), \nso N is for covered region.",
     #     "However, standard errors will not match \nprevious covered region SE because it includes spatial variation\n")
     Effort.by.region <- by(sample.table$Effort, sample.table$Region.Label,sum)
-    region.table$Area <- ifelse(point,
+    region.table$Area <- ifelse(transect=="point",
                                 pi*as.vector(Effort.by.region)*width^2,
                                 2*as.vector(Effort.by.region)*width)
   }
@@ -447,8 +448,8 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   # an expected S table otherwise just tables for individuals in an
   # unclustered popn
   if(!is.null(obs$size)){
-    clusters <- tables.dht(TRUE)
-    individuals <- tables.dht(FALSE)
+    clusters <- tables.dht(TRUE,transect)
+    individuals <- tables.dht(FALSE,transect)
     Expected.S <- individuals$N$Estimate/clusters$N$Estimate
 
     # This computes the se(E(s)).  It essentially uses 3.37 from Ads but in
@@ -510,7 +511,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
                    individuals=individuals,
                    Expected.S=as.vector(Expected.S))
   }else{
-    individuals <- tables.dht(TRUE)
+    individuals <- tables.dht(TRUE,transect)
     if(DensityOnly){
       individuals$N <- NULL
     }

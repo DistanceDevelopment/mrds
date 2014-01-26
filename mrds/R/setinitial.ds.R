@@ -6,30 +6,29 @@
 #' parameters not specified by the user are computed.
 #'
 #'
-#' @usage setinitial.ds(ddfobj,width,initial,point)
+#' @usage setinitial.ds(ddfobj,width,initial)
 #'        sethazard(ddfobj,dmat,width)
 #' @aliases setinitial.ds sethazard
 #' @param ddfobj distance detection function object
 #' @param width half-width of transect or radius of point count
 #' @param initial list of user-defined initial values with possible elements
 #'   scale,shape,adjustment
-#' @param point if TRUE, point count data; otherwise, line transect data
 #' @param dmat xmat from ddfobj
 #' @return \item{scale}{vector of initial scale parameter values}
 #'   \item{shape}{vector of initial shape parameter values}
 #'   \item{adjustment}{vector of initial adjustment function parameter values}
 #' @author Jeff Laake, Dave Miller
-setinitial.ds <- function(ddfobj,width,initial,point){
+setinitial.ds <- function(ddfobj,width,initial){
 
   ftype <- ddfobj$type
   if(ftype=="unif"){
     initialvalues <- list(scale=NULL,shape=NULL)
   }
   dmat <- ddfobj$xmat
-  if(point){
+
+  if(ddfobj$transect == "point"){
     dmat$distance <- sqrt(dmat$distance)
   }
-  point <- FALSE
 
   # shape parameters for hazard-rate
   if(ftype == "hr"){

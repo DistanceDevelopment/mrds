@@ -6,14 +6,15 @@
 #' The function does a number of error checking tasks, creating fields and
 #' adding to \code{meta.data} including:
 #'
-#' 1) If \code{mr.check=TRUE}, check to make sure the record structure is okay for
-#' mrds data. The number of primary records (observer=1) must equal the number
-#' of secondary records (observer=2). Also, a field in the dataframe is created
-#' \code{timesseen} which counts the number of times an object was detected
-#' 0,1,2; if \code{timesseen=0} then the record is tossed from the analysis.
-#' Also if there are differences in the data (distance, size, covariates) for
-#' observer 1 and 2 a warning is issued that the analysis may fail.  The code
-#' assumes these values are the same for both observers.
+#' 1) If \code{mr.check=TRUE}, check to make sure the record structure is okay
+#' for mrds data. The number of primary records (\code{observer=1}) must equal
+#' the number of secondary records (\code{observer=2}). Also, a field in the
+#' \code{data.frame} is created \code{timesseen} which counts the number of
+#' times an object was detected (0,1,2); if \code{timesseen=0} then the record
+#' is tossed from the analysis. Also if there are differences in the data
+#' (distance, size, covariates) for observer 1 and 2 a warning is issued that
+#' the analysis may fail.  The code assumes these values are the same for both
+#' observers.
 #'
 #' 2) Based on the presence of fields \code{distbegin} and \code{distend}, a
 #' determination is made of whether the data analysis should be based on binned

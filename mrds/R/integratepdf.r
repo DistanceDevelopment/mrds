@@ -17,13 +17,11 @@
 #'   should be computed numerically
 #' @param standardize logical used to decide whether to divide through by the
 #'   function evaluated at 0
-#' @param point logical to determine if point count(TRUE) or line
-#'   transect(FALSE)
 #' @return vector of integral values - one for each observation
 #' @author Jeff Laake
 #' @keywords utility
 integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
-                         standardize=TRUE, point=FALSE){
+                         standardize=TRUE){
   # Make sure there is consistency between integration ranges and data
   # It is ok to have a single observation with multiple ranges or a single range
   # with multiple observations but otherwise the numbers must agree if both >1
@@ -54,7 +52,7 @@ integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
   if(doeachint || (nobs==1 & nrow(int.range)==1)){
     if(nobs==1){
       return(gstdint(int.range[1,], ddfobj=ddfobj, index=1, select=NULL,
-             width=width, standardize=standardize, point=point, stdint=FALSE))
+             width=width, standardize=standardize, stdint=FALSE))
     }else{
       nintegrals <- max(nobs,nrow(int.range))
       integrals <- vector("numeric",nintegrals)
@@ -63,18 +61,16 @@ integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
           if(nrow(int.range)>1){
             integrals[i] <- gstdint(int.range[i,], ddfobj=ddfobj,
                                     index=index[i], select=NULL, width=width,
-                                    standardize=standardize, point=point,
-                                    stdint=FALSE)
+                                    standardize=standardize, stdint=FALSE)
           }else{
             integrals[i] <- gstdint(int.range, ddfobj=ddfobj, index=index[i],
-                                    select=NULL,width=width,
-                                    standardize=standardize,point=point,
-                                    stdint=FALSE)
+                                    select=NULL, width=width,
+                                    standardize=standardize, stdint=FALSE)
           }
         }else{
           integrals[i] <- gstdint(int.range[i,], ddfobj=ddfobj, index=index[1],
                                   select=NULL, width=width,
-                                  standardize=standardize, point=point,
+                                  standardize=standardize,
                                   stdint=FALSE)
         }
       }
@@ -90,7 +86,7 @@ integratepdf <- function(ddfobj, select, width, int.range, doeachint=FALSE,
       xscale <- 1
     }
 
-    if(!point){
+    if(ddfobj$transect == "line"){
       integrals <- xscale*(predict(cgftab, as.vector(int.range[,2]/xscale))$y -
                            predict(cgftab, as.vector(int.range[,1]/xscale))$y)
     }else{

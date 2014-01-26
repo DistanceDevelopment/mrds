@@ -3,7 +3,7 @@
 \title{Numerically integrate pdf of observed distances over specified ranges}
 \usage{
 integratepdf(ddfobj, select, width, int.range, doeachint = FALSE,
-  standardize = TRUE, point = FALSE)
+  standardize = TRUE)
 }
 \arguments{
   \item{ddfobj}{distance detection function specification}
@@ -21,9 +21,6 @@ integratepdf(ddfobj, select, width, int.range, doeachint = FALSE,
 
   \item{standardize}{logical used to decide whether to
   divide through by the function evaluated at 0}
-
-  \item{point}{logical to determine if point count(TRUE) or
-  line transect(FALSE)}
 }
 \value{
 vector of integral values - one for each observation

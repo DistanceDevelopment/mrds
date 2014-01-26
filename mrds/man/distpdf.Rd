@@ -35,7 +35,7 @@ fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FAL
 fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 
 distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
-           stdint=FALSE,point=FALSE)
+           stdint=FALSE)
 }
 \arguments{
   \item{distance}{vector of distances}
@@ -67,9 +67,6 @@ distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
 
   \item{stdint}{logical used to decide whether integral is
   standardized}
-
-  \item{point}{if TRUE, point counts; otherwise line
-  transects}
 
   \item{adj.exp}{if TRUE uses exp(adj) for adjustment to
   keep f(x)>0}

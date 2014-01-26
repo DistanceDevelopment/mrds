@@ -24,8 +24,8 @@ sethazard <- function(ddfobj,dmat,width){
 
     flnl(fpar, ddfobj, FALSE,
          misc.options=list(width=width,int.range=c(0,width),showit=0,
-         doeachint=TRUE,integral.numeric=FALSE,standardize=FALSE,fitting="none",
-         point=FALSE))
+         doeachint=TRUE,integral.numeric=FALSE,standardize=FALSE,fitting="none")
+        )
   }
 
   # Using code from CDS in Distance.

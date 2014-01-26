@@ -96,7 +96,7 @@ library(mrds)
 data(book.tee.data)
 egdata <- book.tee.data$book.tee.dataframe
 result.io.fi <- ddf(mrmodel=~glm(~distance), data = egdata, method = "io.fi",
-              meta.data = list(width = 4))
+                    truncation=4)
 
 # just plot everything
 plot(result.io.fi)

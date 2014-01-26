@@ -72,7 +72,6 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
   model <- object
   ltmodel <- model$ds
   x <- ltmodel$aux$ddfobj$xmat
-  point <- ltmodel$aux$point
   width <- model$truncation$right
 
   # If there are no fitted values present or compute is set TRUE or
@@ -142,12 +141,12 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
     #   int1=integratedetfct.logistic(x,ltmodel$model$scalemodel,width,
     #                         int.range,theta1,ltmodel$aux$integral.numeric,z)
     # else
-    ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=TRUE, point=point)
+    ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=TRUE)
     int1 <- integratepdf(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),width=width,
                          int.range=int.range,doeachint=doeachint,
-                         standardize=TRUE,point=point)
+                         standardize=TRUE)
     # int1=integratedetfct(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),
-    #           width=width,int.range=int.range,doeachint=doeachint,point=point)
+    #           width=width,int.range=int.range,doeachint=doeachint)
 
     # If the predicted values don't need to be computed, then use the values
     # in the model object (model$fitted) and change to integral (esw) values.
@@ -159,7 +158,7 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
 
   # Compute either esw (int1) or p and store in fitted.
   if(esw){
-    if(!point){
+    if(ddfobj$transect=="line"){
       fitted <- int1*width
     }else{
       fitted <- int1*pi*width^2

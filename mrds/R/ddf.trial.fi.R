@@ -34,6 +34,8 @@
 #'  \code{right} (at least \code{right} must be supplied in list form). Default
 #'  is \code{NULL} which uses the largest observed distance (not usually a good
 #'  idea with unbinned data).
+#' @param transect is the survey \code{"point"} or \code{"line"} transects?
+#'  (Default \code{"line"}.)
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -49,8 +51,8 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.trial.fi <- function(model, data, truncation=NULL, meta.data=list(),
-                         control=list(), call="", method){
+ddf.trial.fi <- function(model, data, truncation=NULL, transect="line",
+                         meta.data=list(), control=list(), call="", method){
   #  NOTE: gams are only partially implemented
 
   # The following are dummy glm and gam functions that are defined here to
@@ -98,7 +100,7 @@ ddf.trial.fi <- function(model, data, truncation=NULL, meta.data=list(),
 
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, binned=FALSE, int.range=NA,
-                                     mono=FALSE, mono.strict=TRUE, point=FALSE)
+                                     mono=FALSE, mono.strict=TRUE)
 
   # Set up control values
   control <- assign.default.values(control, showit=0, doeachint=FALSE,
@@ -133,7 +135,8 @@ ddf.trial.fi <- function(model, data, truncation=NULL, meta.data=list(),
 
   # Create result list with some arguments
   result <- list(call=call,data=data,model=model,truncation=truncation,
-                 meta.data=meta.data,control=control,method="trial.fi")
+                 meta.data=meta.data,control=control,method="trial.fi",
+                 truncation=truncation,transect=transect)
   class(result) <- c("trial.fi","ddf")
 
   # Fit the conditional detection function using glm; need to add gam capability
@@ -176,7 +179,7 @@ ddf.trial.fi <- function(model, data, truncation=NULL, meta.data=list(),
   if(method=="trial.fi"){
     distances <- xmat$distance[xmat$observer==1&xmat$detected==1]
     if(!meta.data$binned){
-      if(meta.data$point){
+      if(transect=="point"){
         result$lnl <- result$lnl +
                       sum(log(predict(result,
                                newdat=xmat[xmat$observer==1&xmat$detected==1,],

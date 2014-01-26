@@ -3,7 +3,7 @@
 \title{Compute probability that a object was detected by at least one observer}
 \usage{
 pdot.dsr.integrate.logistic(right, width, beta, x, integral.numeric, BT, models,
-  GAM = FALSE, rem = FALSE, point = FALSE)
+  GAM = FALSE, rem = FALSE, transect = "line")
 }
 \arguments{
   \item{right}{???}
@@ -24,7 +24,8 @@ pdot.dsr.integrate.logistic(right, width, beta, x, integral.numeric, BT, models,
 
   \item{rem}{???=FALSE}
 
-  \item{point}{\code{TRUE} for point transects}
+  \item{transect}{\code{"point"} or \code{"line"} for
+  transects}
 }
 \description{
 Computes probability that a object was detected by at least

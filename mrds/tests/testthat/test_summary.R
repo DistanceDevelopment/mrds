@@ -67,8 +67,8 @@ test_that("summary results are correct",{
 
   pt.result <- ddf(method="io", data=ptdata.dual, dsmodel=~cds(key="hn"),
                    mrmodel=~glm(formula=~distance*observer),
-                   meta.data=list(point=TRUE, binned=TRUE,
-                                  breaks=10*(0:10)),truncation=100)
+                   meta.data=list(binned=TRUE,breaks=10*(0:10)),
+                   truncation=100, transect="point")
 
 
   expect_that(summary(pt.result)$mr.summary,equals(pt.result.summ$mr.summary,

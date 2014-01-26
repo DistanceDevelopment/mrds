@@ -7,7 +7,6 @@ predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
   #                 predict.glm (could also use predict.gam eventually)
   model <- object
   width <- model$truncation$right
-  point <- model$meta.data$point
 
   # if no new data supplied, use the data from the model
   if(is.null(newdata)){
@@ -60,10 +59,10 @@ predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
     # now int.range is a vector with lower and upper bounds
     if(is.null(int.range)){
       pdot.list <- pdot.dsr.integrate.logistic(width,width, model$mr$coef,
-                     newdata,integral.numeric, FALSE, models,GAM, point=point)
+                     newdata,integral.numeric, FALSE, models,GAM, model$transect)
     }else{
       pdot.list <- pdot.dsr.integrate.logistic(int.range,width, model$mr$coef,
-                       newdata,integral.numeric, FALSE, models,GAM, point=point)
+                       newdata,integral.numeric, FALSE, models,GAM, model$transect)
     }
 
     # if there is left truncation, take that off the integral
@@ -71,7 +70,7 @@ predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
       pdot.list$pdot <- pdot.list$pdot -
                     pdot.dsr.integrate.logistic(left, width, model$mr$coef,
                                    newdata,integral.numeric, FALSE, models,GAM,
-                                   point=point)$pdot
+                                   model$transect)$pdot
     }
 
     fitted <- pdot.list$pdot

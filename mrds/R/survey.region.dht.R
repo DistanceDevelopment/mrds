@@ -3,17 +3,17 @@
 #' @param Nhat.by.sample dataframe of abundance by sample
 #' @param samples samples table
 #' @param width transect width
-#' @param point if TRUE point count otherwise line transect
+#' @param transect is the transect a \code{"point"} or \code{"line"}?
 #' @return Revised Nhat.by.sample dataframe containing estimates extrapolated
 #'   to survey region
 #' @note Internal function called by \code{\link{dht}} and related functions.
 #' @author Jeff Laake
 #' @keywords utility
-survey.region.dht <- function(Nhat.by.sample, samples, width, point){
+survey.region.dht <- function(Nhat.by.sample, samples, width, transect){
 
   # Compute effort in each region and the area in the covered region
   Effort.by.region <- by(samples$Effort,samples$Region.Label,sum)
-  if(point){
+  if(transect=="point"){
     CoveredArea <- pi*as.vector(Effort.by.region)*width^2
   }else{
     CoveredArea <- 2*as.vector(Effort.by.region)*width
@@ -22,9 +22,9 @@ survey.region.dht <- function(Nhat.by.sample, samples, width, point){
   # Scale up abundance in covered region to the survey region
   #  unless no areas given
   Nhat.by.sample <- merge(Nhat.by.sample,
-                          data.frame(Region.Label=names(Effort.by.region),
-                                     CoveredArea=CoveredArea,
-                                     Effort=as.vector(Effort.by.region)),
+                          data.frame(Region.Label = names(Effort.by.region),
+                                     CoveredArea  = CoveredArea,
+                                     Effort       =as.vector(Effort.by.region)),
                           by.x="Region.Label",
                           by.y="Region.Label",
                           all.x=TRUE)

@@ -55,7 +55,7 @@
 #' egdata <- book.tee.data$book.tee.dataframe
 #' xx <- ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
 #'           data = egdata[egdata$observer==1, ],
-#'           method = "ds", meta.data = list(width = 4))
+#'           method = "ds", truncation = 4)
 #'
 #' # not showing predicted probabilities
 #' plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
@@ -99,7 +99,7 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   width <- model$truncation$right
   left <- model$truncation$left
   ddfobj <- ltmodel$aux$ddfobj
-  point <- ltmodel$aux$point
+
   if(is.null(ltmodel$aux$int.range)){
     int.range <- c(0,width)
   }else{
@@ -226,7 +226,7 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   angval1 <- pl.ang[1]
 
   # Scaling for grouped data:
-  if(normalize&!point){
+  if(normalize & ddfobj$transect=="line"){
     bindata <- function(x,r,breaks){
       return(hist(r[r>=x[1]&r<=x[2]],breaks=breaks,plot=FALSE)$counts)
     }
@@ -237,7 +237,7 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
                              r=(0:1000)*width/1001,breaks=breaks)
     expected.counts <- apply(expected.counts,1,sumit,n=1001,wt=pdot)
   }else{
-    if(!point){
+    if(ddfobj$transect=="line"){
       expected.counts <- (breaks[2:(nc+1)]-breaks[1:nc])*(Nhat/breaks[nc+1])
     }else{
       expected.counts <- -apply(matrix(c(breaks[2:(nc+1)]^2,breaks[1:nc]^2),

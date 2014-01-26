@@ -37,6 +37,8 @@
 #'  \code{right} (at least \code{right} must be supplied in list form). Default
 #'  is \code{NULL} which uses the largest observed distance (not usually a good
 #'  idea with unbinned data).
+#' @param transect is the survey \code{"point"} or \code{"line"} transects?
+#'  (Default \code{"line"}.)
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -49,8 +51,8 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.rem<-function(dsmodel,mrmodel,data,truncation=NULL,meta.data=list(),control=list(),call=""){
-
+ddf.rem <- function(dsmodel, mrmodel, data, truncation=NULL, transect="line",
+                    meta.data=list(), control=list(), call=""){
 
   # Test to make sure that observer not used in mrmodel
   if(length(grep("observer",mrmodel))!=0){
@@ -62,7 +64,7 @@ ddf.rem<-function(dsmodel,mrmodel,data,truncation=NULL,meta.data=list(),control=
 
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, binned=FALSE, int.range=NA,
-                                     mono=FALSE, mono.strict=TRUE, point=FALSE)
+                                     mono=FALSE, mono.strict=TRUE)
 
   # Set up control values
   control <- assign.default.values(control, showit=0, doeachint=FALSE,
@@ -78,12 +80,13 @@ ddf.rem<-function(dsmodel,mrmodel,data,truncation=NULL,meta.data=list(),control=
 
   # Create result list
   result <- list(call=call, data=data, mrmodel=mrmodel, dsmodel=dsmodel,
-                 meta.data=meta.data, control=control, method="rem",truncation=truncation)
+                 meta.data=meta.data, control=control, method="rem",
+                 truncation=truncation,transect=transect)
   class(result) <- c("rem","ddf")
 
   #  Fit the conditional detection functions using ddf.rem.fi
-  result$mr <- ddf.rem.fi(model=mrmodel, data, truncation, meta.data, control,
-                          call, method="rem")
+  result$mr <- ddf.rem.fi(model=mrmodel, data, truncation, transect, meta.data,
+                          control, call, method="rem")
 
   #  Fit the unconditional detection functions using ddf.ds
   #  5/24/05 - jll add call to process.data for unique.data because it
@@ -96,8 +99,8 @@ ddf.rem<-function(dsmodel,mrmodel,data,truncation=NULL,meta.data=list(),control=
   unique.data$observer <- 1
   unique.data  <-  process.data(unique.data,truncation,meta.data,control,
                                 mr.check=FALSE)$xmat
-  result$ds <- ddf.ds(model=dsmodel,unique.data,truncation,meta.data,
-                      control,call)
+  result$ds <- ddf.ds(model=dsmodel, unique.data, truncation, transect,
+                      meta.data, control, call)
 
   # stop if ds model didn't converge
   if(is.null(result$ds$Nhat)){

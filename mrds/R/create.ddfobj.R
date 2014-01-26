@@ -12,6 +12,7 @@
 #'  \code{right} (at least \code{right} must be supplied in list form). Default
 #'  is \code{NULL} which uses the largest observed distance (not usually a good
 #'  idea with unbinned data).
+#' @param transect is the survey \code{"point"} or \code{"line"} transects?
 #' @param xmat model data frame
 #' @param meta.data list of options
 #' @param initial vector of initial values for parameters of the detection
@@ -33,7 +34,7 @@
 #' @note Internal function not meant to be called by user
 #' @author Jeff Laake
 #' @seealso \code{\link{detfct}}, \code{\link{ddf}}
-create.ddfobj <- function(model,truncation,xmat,meta.data,initial){
+create.ddfobj <- function(model,truncation,transect,xmat,meta.data,initial){
 
   # Create empty object and get values from cds or mcds function
   ddfobj <- vector("list")
@@ -41,8 +42,7 @@ create.ddfobj <- function(model,truncation,xmat,meta.data,initial){
   modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
 
   # basic information about the detection function
-  point <- meta.data$point
-  ddfobj$transect <- ifelse(point,"point","line")
+  ddfobj$transect <- transect
   ddfobj$truncation <- truncation
   ddfobj$type <- modelvalues$key
 
@@ -120,13 +120,13 @@ create.ddfobj <- function(model,truncation,xmat,meta.data,initial){
   # it is not an intercept.only and likelihood will incorporate integrals
   if(ddfobj$type%in%c("hn","unif")){
     ddfobj$cgftab <- tablecgf(ddfobj=ddfobj, width=truncation$right,
-                              point=point, standardize=FALSE)
+                              standardize=FALSE)
   }else{
     ddfobj$cgftab <- NULL
   }
 
   # Compute initialvalues unless uniform
-  initialvalues <- setinitial.ds(ddfobj,width=truncation$right,initial,point)
+  initialvalues <- setinitial.ds(ddfobj,width=truncation$right,initial)
 
   # Delete columns of dm that end up as NA from initialvalues
   if(!is.null(ddfobj$scale)){

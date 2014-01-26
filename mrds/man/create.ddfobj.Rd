@@ -2,7 +2,7 @@
 \alias{create.ddfobj}
 \title{Create detection function object}
 \usage{
-create.ddfobj(model, truncation, xmat, meta.data, initial)
+create.ddfobj(model, truncation, transect, xmat, meta.data, initial)
 }
 \arguments{
   \item{model}{model list with key function and possibly
@@ -15,6 +15,9 @@ create.ddfobj(model, truncation, xmat, meta.data, initial)
   \code{right} must be supplied in list form). Default is
   \code{NULL} which uses the largest observed distance (not
   usually a good idea with unbinned data).}
+
+  \item{transect}{is the survey \code{"point"} or
+  \code{"line"} transects?}
 
   \item{xmat}{model data frame}
 

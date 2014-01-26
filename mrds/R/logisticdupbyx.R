@@ -9,11 +9,11 @@
 #' @param x2 covariate data for fct 2
 #' @param models model list
 #' @param beta logistic parameters
-#' @param point \code{TRUE} for point transect data
+#' @param transect \code{"line"} or \code{"point"} transect data
 #'
 #' @return vector of probabilities
 #' @author Jeff Laake
-logisticdupbyx <- function (distance, x1, x2, models, beta, point){
+logisticdupbyx <- function (distance, x1, x2, models, beta, transect){
   #  Functions used: g0, setcov
   xlist <- as.list(x1)
   xlist$distance <- distance
@@ -24,7 +24,7 @@ logisticdupbyx <- function (distance, x1, x2, models, beta, point){
   xlist$distance <- distance
   xmat <- expand.grid(xlist)
 
-  if(!point){
+  if(transect=="line"){
     return(gx1 * g0(beta, setcov(xmat, models$g0model)$cov))
   }else{
     return(gx1 * g0(beta, setcov(xmat, models$g0model)$cov)*2*distance)

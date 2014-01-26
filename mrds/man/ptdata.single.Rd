@@ -14,7 +14,7 @@ p(0)=1; hn sigma=30; w=100
 \donttest{
 data(ptdata.single)
 xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.single,
-         method = "ds", meta.data = list(point=TRUE))
+         method = "ds", transect="point")
 summary(xx)
 plot(xx,main="Simulated point count data")
 }

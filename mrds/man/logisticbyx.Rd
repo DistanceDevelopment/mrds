@@ -2,7 +2,7 @@
 \alias{logisticbyx}
 \title{Logistic as a function of covariates}
 \usage{
-logisticbyx(distance, x, models, beta, point)
+logisticbyx(distance, x, models, beta, transect)
 }
 \arguments{
   \item{distance}{vector of distance values}
@@ -13,7 +13,8 @@ logisticbyx(distance, x, models, beta, point)
 
   \item{beta}{logistic parameters}
 
-  \item{point}{\code{TRUE} if a point transect model}
+  \item{transect}{\code{"line"} or \code{"point"} transect
+  model}
 }
 \value{
 vector of probabilities

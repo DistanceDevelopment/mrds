@@ -301,7 +301,7 @@ NULL
 #' \donttest{
 #' data(ptdata.distance)
 #' xx <- ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.distance,
-#'           method = "ds", meta.data = list(point=TRUE))
+#'           method = "ds", transect="point")
 #' summary(xx)
 #' plot(xx,main="Distance point count data")
 #' ddf.gof(xx)
@@ -331,7 +331,7 @@ NULL
 #' \donttest{
 #' data(ptdata.single)
 #' xx=ddf(dsmodel = ~cds(key="hn", formula = ~1), data = ptdata.single,
-#'          method = "ds", meta.data = list(point=TRUE))
+#'          method = "ds", transect="point")
 #' summary(xx)
 #' plot(xx,main="Simulated point count data")
 #' }
@@ -357,7 +357,7 @@ NULL
 #' data(ptdata.dual)
 #' xx <- ddf(mrmodel=~glm(formula=~distance),
 #'           dsmodel = ~cds(key="hn", formula = ~1),
-#'           data = ptdata.dual, method = "io", meta.data = list(point=TRUE))
+#'           data = ptdata.dual, method = "io", transect="point")
 #' summary(xx)
 #' plot(xx,main="Simulated point count data")
 #' }
@@ -385,7 +385,7 @@ NULL
 #' xx <- ddf(mrmodel=~glm(formula=~distance),
 #'           dsmodel = ~cds(key="hn", formula = ~1),
 #'           data = ptdata.removal, method = "rem",
-#'           meta.data = list(point=TRUE))
+#'           transect="point")
 #' summary(xx)
 #' plot(xx,main="Simulated point count data")
 #' }

@@ -63,7 +63,7 @@
 #' data(book.tee.data)
 #' egdata <- book.tee.data$book.tee.dataframe
 #' result.io <- ddf(dsmodel=~cds(key = "hn"), mrmodel=~glm(~distance),
-#'                  data=egdata, method="io", meta.data=list(width=4))
+#'                  data=egdata, method="io", truncation=4)
 #'
 #' # just plot everything
 #' plot(result.io)

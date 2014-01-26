@@ -2,8 +2,8 @@
 \alias{ddf.trial}
 \title{Mark-Recapture Distance Sampling (MRDS) Trial Configuration - PI}
 \usage{
-ddf.trial(dsmodel, mrmodel, data, truncation = NULL, meta.data = list(),
-  control = list(), call = "")
+ddf.trial(dsmodel, mrmodel, data, truncation = NULL, transect = "line",
+  meta.data = list(), control = list(), call = "")
 }
 \arguments{
   \item{dsmodel}{distance sampling model specification;
@@ -21,6 +21,9 @@ ddf.trial(dsmodel, mrmodel, data, truncation = NULL, meta.data = list(),
   \code{right} must be supplied in list form). Default is
   \code{NULL} which uses the largest observed distance (not
   usually a good idea with unbinned data).}
+
+  \item{transect}{is the survey \code{"point"} or
+  \code{"line"} transects?  (Default \code{"line"}.)}
 
   \item{meta.data}{list containing settings controlling
   data structure}

@@ -69,8 +69,8 @@ test_that("average.line for plot.io is correct (unconditional df)",{
 
   model <- ddf(method="io", data=ptdata.dual, dsmodel=~cds(key="hn"),
                mrmodel=~glm(formula=~distance*observer),
-               meta.data=list(point=TRUE, binned=TRUE,
-                              breaks=10*(0:10)),truncation=100)
+               meta.data=list(binned=TRUE, breaks=10*(0:10)),
+               truncation=100, transect="point")
   finebr <- (100/divisions)*(0:divisions)
 
   # obs==1

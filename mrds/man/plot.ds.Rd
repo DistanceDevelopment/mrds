@@ -88,7 +88,7 @@ data(book.tee.data)
 egdata <- book.tee.data$book.tee.dataframe
 xx <- ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
           data = egdata[egdata$observer==1, ],
-          method = "ds", meta.data = list(width = 4))
+          method = "ds", truncation = 4)
 
 # not showing predicted probabilities
 plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)

@@ -8,11 +8,11 @@
 #' @param x covariate data
 #' @param models model list
 #' @param beta logistic parameters
-#' @param point \code{TRUE} if a point transect model
+#' @param transect \code{"line"} or \code{"point"} transect model
 #'
 #' @return vector of probabilities
 #' @author Jeff Laake
-logisticbyx <- function (distance, x, models, beta, point){
+logisticbyx <- function (distance, x, models, beta, transect){
 
   # Functions used: g0, setcov
 
@@ -20,7 +20,7 @@ logisticbyx <- function (distance, x, models, beta, point){
   xlist$distance <- distance
   xmat <- expand.grid(xlist)
 
-  if(!point){
+  if(transect=="line"){
     return(g0(beta, setcov(xmat, models$g0model)$cov))
   }else{
     return(g0(beta, setcov(xmat, models$g0model)$cov)*2*distance)

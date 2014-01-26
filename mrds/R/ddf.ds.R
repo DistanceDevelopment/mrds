@@ -25,6 +25,8 @@
 #'  \code{right} (at least \code{right} must be supplied in list form). Default
 #'  is \code{NULL} which uses the largest observed distance (not usually a good
 #'  idea with unbinned data).
+#' @param transect is the survey \code{"point"} or \code{"line"} transects?
+#'  (Default \code{"line"}.)
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call if this function not called directly from
@@ -69,8 +71,8 @@
 #'           se=TRUE))
 #' print(ddf.gof(result))
 #' }
-ddf.ds <-function(model, data, truncation=NULL, meta.data=list(),control=list(),
-                  call, method="ds"){
+ddf.ds <-function(model, data, truncation=NULL, transect="line",
+                  meta.data=list(),control=list(), call, method="ds"){
   #   Code structure for optimization with optim
   #
   # ddf.ds --> detfct.fit --> detfct.fit.opt --> optimx or solnp --> flnl
@@ -85,7 +87,7 @@ ddf.ds <-function(model, data, truncation=NULL, meta.data=list(),control=list(),
 
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, binned=FALSE, int.range=NA,
-                                     mono=FALSE, mono.strict=TRUE, point=FALSE)
+                                     mono=FALSE, mono.strict=TRUE)
   # Set up control values
   control <- assign.default.values(control, showit=0, doeachint=FALSE,
                                    estimate=TRUE, refit=TRUE, nrefits=25,
@@ -100,7 +102,7 @@ ddf.ds <-function(model, data, truncation=NULL, meta.data=list(),control=list(),
   save.options <- options()
   options(contrasts=c("contr.treatment","contr.poly"))
 
-  # Process data based on values of meta.data
+  # Process data
   datalist <- process.data(data,truncation,meta.data,control,mr.check=FALSE)
   xmat <- datalist$xmat
   truncation <- datalist$truncation
@@ -137,7 +139,8 @@ ddf.ds <-function(model, data, truncation=NULL, meta.data=list(),control=list(),
   }
 
   # Setup detection model
-  ddfobj <- create.ddfobj(model,truncation,xmat,meta.data,control$initial)
+  ddfobj <- create.ddfobj(model,truncation,transect,xmat,meta.data,
+                          control$initial)
 
   # set doeachint=TRUE if a shape formula is used
   if(!is.null(ddfobj$shape) && ncol(ddfobj$shape$dm)>1){
@@ -160,7 +163,7 @@ ddf.ds <-function(model, data, truncation=NULL, meta.data=list(),control=list(),
     bounds <- NULL
   }
 
-  misc.options<-list(point=meta.data$point, int.range=meta.data$int.range,
+  misc.options<-list(int.range=meta.data$int.range,
                      showit=control$showit, doeachint=control$doeachint,
                      integral.numeric=control$integral.numeric, breaks=breaks,
                      maxiter=control$maxiter, refit=control$refit,
@@ -196,7 +199,8 @@ ddf.ds <-function(model, data, truncation=NULL, meta.data=list(),control=list(),
   stored_data$detected <- 1
   result <- list(call=call, data=stored_data, model=substitute(model),
                  meta.data=meta.data, control=control, method=method,
-                 ds=lt, par=lt$par, lnl=-lt$value, truncation=truncation)
+                 ds=lt, par=lt$par, lnl=-lt$value, truncation=truncation,
+                 transect=transect)
 
   # if there was no convergence, return the fitting object incase it's useful
   # it won't be of the correct class or have the correct elements

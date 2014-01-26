@@ -6,8 +6,8 @@ predict.rem.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
   # Functions Used: pdot.dsr.integrate.logistic, is.linear.logistic,
   #                 predict.glm (could also use predict.gam eventually) 
   model <- object
-  point <- model$meta.data$point
   width <- model$truncation$right
+
   if(is.null(newdata)){
     newdata <- model$data
     newdata <- newdata[newdata$object %in% as.numeric(model$data$object),]
@@ -35,11 +35,11 @@ predict.rem.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
     if(is.null(int.range)){
       pdot.list <- pdot.dsr.integrate.logistic(width, width, coef(model$mr),
                                                newdata,integral.numeric,FALSE,
-                                               models, rem=TRUE, point=point)
+                                               models, rem=TRUE, model$transect)
     }else{
       pdot.list <- pdot.dsr.integrate.logistic(int.range, width, coef(model$mr),
                                                newdata,integral.numeric, FALSE,
-                                               models, rem=TRUE, point=point)
+                                               models, rem=TRUE, model$transect)
     }
 
     if(left !=0){
@@ -47,7 +47,7 @@ predict.rem.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
                         pdot.dsr.integrate.logistic(left, width, coef(model$mr),
                                                     newdata,integral.numeric,
                                                     FALSE, models, rem=TRUE,
-                                                    point=point)$pdot
+                                                    model$transect)$pdot
     }
 
     fitted <- pdot.list$pdot

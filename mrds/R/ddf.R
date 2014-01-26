@@ -98,8 +98,7 @@
 #' The argument \code{meta.data} is a list that enables various options about
 #' the data to be set.  These options include:
 #'
-#' \tabular{ll}{ Option \tab Value \cr \code{point} \tab if TRUE the data are
-#' from point counts and FALSE (default) implies line transect data \cr
+#' \tabular{ll}{Option \tab Value \cr
 #' \code{binned} \tab TRUE or FALSE to specify whether distances should be
 #' binned for analysis \cr
 #' \code{breaks} \tab if binned=TRUE, this is a required sequence of break
@@ -115,7 +114,7 @@
 #' \code{truncation=list(left=1,width=10)}.  If
 #' \code{meta.data=list(binned=TRUE)} is used, the dataframe needs to contain
 #' the fields \code{distbegin} and \code{distend} for each observation which
-#' specify the left and right hand end points of the distance interval
+#' specify the left and right end points of the distance interval
 #' containing the observation. This is a general data structure that allows the
 #' intervals to change rather than being fixed as in the standard distance
 #' analysis tools. Typically, if the intervals are changing so is the
@@ -175,6 +174,8 @@
 #'  \code{right} (at least \code{right} must be supplied in list form). Default
 #'  is \code{NULL} which uses the largest observed distance (not usually a good
 #'  idea with unbinned data).
+#' @param transect is the survey \code{"point"} or \code{"line"} transects?
+#'  (Default \code{"line"}.)
 #' @param method analysis method
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
@@ -218,15 +219,15 @@
 #' data(ptdata.single)
 #' ptdata.single$distbegin <- (as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
 #' ptdata.single$distend <- (as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
-#' model <- ddf(data=ptdata.single, dsmodel=~cds(key="hn"),
-#'              meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
+#' model <- ddf(data=ptdata.single, dsmodel=~cds(key="hn"),transect="point",
+#'              meta.data=list(binned=TRUE,breaks=10*(0:10)))
 #'
 #' summary(model)
 #'
 #' plot(model,main="Single observer binned point data - half normal")
 #'
-#' model <- ddf(data=ptdata.single, dsmodel=~cds(key="hr"),
-#'              meta.data=list(point=TRUE, binned=TRUE, breaks=10*(0:10)))
+#' model <- ddf(data=ptdata.single, dsmodel=~cds(key="hr"),transect="point",
+#'              meta.data=list(binned=TRUE, breaks=10*(0:10)))
 #'
 #' summary(model)
 #'
@@ -241,8 +242,8 @@
 #' ptdata.dual$distend <- (as.numeric(cut(ptdata.dual$distance,10*(0:10))))*10
 #'
 #' model <- ddf(method="io", data=ptdata.dual, dsmodel=~cds(key="hn"),
-#'              mrmodel=~glm(formula=~distance*observer),
-#'              meta.data=list(point=TRUE, binned=TRUE, breaks=10*(0:10)))
+#'              mrmodel=~glm(formula=~distance*observer),transect="point",
+#'              meta.data=list(binned=TRUE, breaks=10*(0:10)))
 #'
 #' summary(model)
 #'
@@ -251,8 +252,8 @@
 #'
 #' model <- ddf(method="io", data=ptdata.dual,
 #'              dsmodel=~cds(key="unif", adj.series="cos", adj.order=1),
-#'              mrmodel=~glm(formula=~distance*observer),
-#'              meta.data=list(point=TRUE, binned=TRUE, breaks=10*(0:10)))
+#'              mrmodel=~glm(formula=~distance*observer),transect="point",
+#'              meta.data=list(binned=TRUE, breaks=10*(0:10)))
 #'
 #' summary(model)
 #'
@@ -261,7 +262,7 @@
 #'
 #' }
 ddf <- function(dsmodel=call(), mrmodel=call(),data, truncation=NULL,
-                method="ds", meta.data=list(), control=list()){
+                transect="line", method="ds", meta.data=list(), control=list()){
   # Functions Used: ddf.ds, ddf.io, ddf.trial, ddf.io.fi, ddf.trial.fi,
   #                 ddf.rem, ddf.rem.fi
 
@@ -291,25 +292,31 @@ ddf <- function(dsmodel=call(), mrmodel=call(),data, truncation=NULL,
   # call method specific fitting function
   result <- switch(method,
                    ds=ddf.ds(model=dsmodel,data,truncation=truncation,
-                             meta.data=meta.data,control=control,
-                             call=match.call()),
-                   io=ddf.io(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
-                             truncation=truncation,meta.data=meta.data,
+                             transect=transect,meta.data=meta.data,
                              control=control,call=match.call()),
+                   io=ddf.io(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
+                             truncation=truncation,transect=transect,
+                             meta.data=meta.data, control=control,
+                             call=match.call()),
                    io.fi=ddf.io.fi(model=mrmodel,data,meta.data=meta.data,
-                                   truncation=truncation, control=control,
+                                   truncation=truncation,transect=transect,
+                                   control=control,
                                    call=match.call(),method=method),
                    trial=ddf.trial(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
-                                   truncation=truncation,meta.data=meta.data,
+                                   truncation=truncation,transect=transect,
+                                   meta.data=meta.data,
                                    control=control,call=match.call()),
                    trial.fi=ddf.trial.fi(model=mrmodel,data=data,
                                          truncation=truncation,
+                                         transect=transect,
                                          meta.data=meta.data,control=control,
                                          call=match.call(),method="trial.fi"),
                    rem=ddf.rem(dsmodel=dsmodel,mrmodel=mrmodel,data,
-                               truncation=truncation,meta.data=meta.data,
+                               truncation=truncation,transect=transect,
+                               meta.data=meta.data,
                                control=control,call=match.call()),
                    rem.fi=ddf.rem.fi(model=mrmodel,data,truncation=truncation,
+                                     transect=transect,
                                      meta.data=meta.data, control=control,
                                      call=match.call(),method="rem.fi"))
 

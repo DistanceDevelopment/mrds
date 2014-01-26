@@ -37,6 +37,8 @@
 #'  \code{right} (at least \code{right} must be supplied in list form). Default
 #'  is \code{NULL} which uses the largest observed distance (not usually a good
 #'  idea with unbinned data).
+#' @param transect is the survey \code{"point"} or \code{"line"} transects?
+#'  (Default \code{"line"}.)
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -52,8 +54,8 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.io.fi <- function(model,data,truncation=NULL,meta.data=list(),
-                      control=list(),call="",method){
+ddf.io.fi <- function(model, data, truncation=NULL, transect="line",
+                      meta.data=list(), control=list(), call="", method){
   # Functions used: assign.default.values, process.data, create.model.frame
   #                 ioglm, predict(predict.io.fi), NCovered (NCovered.io.fi)
 
@@ -70,7 +72,7 @@ ddf.io.fi <- function(model,data,truncation=NULL,meta.data=list(),
         stop("Invalid formula")
       }
     }else{
-      formula <- paste(as.character(formula),collapse="") 
+      formula <- paste(as.character(formula),collapse="")
     }
     if(class(link)=="function"){
       link <- substitute(link)
@@ -103,7 +105,7 @@ ddf.io.fi <- function(model,data,truncation=NULL,meta.data=list(),
 
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, binned=FALSE, int.range=NA,
-                                     mono=FALSE,mono.strict=TRUE, point=FALSE)
+                                     mono=FALSE,mono.strict=TRUE)
 
   # Set up control values
   control <- assign.default.values(control,showit = 0, doeachint=FALSE,
@@ -139,7 +141,8 @@ ddf.io.fi <- function(model,data,truncation=NULL,meta.data=list(),
 
   # Create result list with some arguments
   result <- list(call=call,data=data,model=model,meta.data=meta.data,
-                 control=control,method="io.fi", truncation=truncation)
+                 control=control,method="io.fi", truncation=truncation,
+                 transect=transect)
   class(result) <- c("io.fi","ddf")
 
   # Create formula and model frame (if not GAM)
@@ -239,7 +242,7 @@ ddf.io.fi <- function(model,data,truncation=NULL,meta.data=list(),
     result$Nhat <- NCovered(result$par,result)
     distances <- result$data$distance[result$data$observer==1]
     if(!meta.data$binned){
-      if(meta.data$point){
+      if(transect=="point"){
         result$lnl <- result$lnl +
             sum(log(cond.det$fitted*2*distances/truncation$right^2)) -
             sum(log(result$fitted))

@@ -6,7 +6,7 @@
 # Dave Miller's fault.
 
 
-# function to evaluate a set of `reference points' (distances) 
+# function to evaluate a set of `reference points' (distances)
 # used to define the inequality constraints
 getRefPoints<- function(no_d,width){
 

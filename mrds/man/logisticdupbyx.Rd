@@ -2,7 +2,7 @@
 \alias{logisticdupbyx}
 \title{Logistic for duplicates as a function of covariates}
 \usage{
-logisticdupbyx(distance, x1, x2, models, beta, point)
+logisticdupbyx(distance, x1, x2, models, beta, transect)
 }
 \arguments{
   \item{distance}{vector of distance values}
@@ -15,7 +15,8 @@ logisticdupbyx(distance, x1, x2, models, beta, point)
 
   \item{beta}{logistic parameters}
 
-  \item{point}{\code{TRUE} for point transect data}
+  \item{transect}{\code{"line"} or \code{"point"} transect
+  data}
 }
 \value{
 vector of probabilities

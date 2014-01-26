@@ -3,7 +3,7 @@
 \title{Integral of pdf of distances}
 \usage{
 gstdint(x, ddfobj, index = NULL, select = NULL, width, standardize = TRUE,
-  point = FALSE, stdint = TRUE)
+  stdint = TRUE)
 }
 \arguments{
   \item{x}{lower,upper value for integration}
@@ -19,9 +19,6 @@ gstdint(x, ddfobj, index = NULL, select = NULL, width, standardize = TRUE,
 
   \item{standardize}{logical used to decide whether to
   divide through by the function evaluated at 0}
-
-  \item{point}{logical to determine if point count(TRUE) or
-  line transect(FALSE)}
 
   \item{stdint}{if TRUE, scale=1 otherwise specified scale
   used}

@@ -19,7 +19,7 @@ dependency y>0, gamma=0.1
 data(ptdata.dual)
 xx <- ddf(mrmodel=~glm(formula=~distance),
           dsmodel = ~cds(key="hn", formula = ~1),
-          data = ptdata.dual, method = "io", meta.data = list(point=TRUE))
+          data = ptdata.dual, method = "io", transect="point")
 summary(xx)
 plot(xx,main="Simulated point count data")
 }

@@ -2,7 +2,7 @@
 \alias{tablecgf}
 \title{Spline approximation to scale dependent integration of detection function}
 \usage{
-tablecgf(ddfobj, width, standardize = TRUE, point = FALSE)
+tablecgf(ddfobj, width, standardize = TRUE)
 }
 \arguments{
   \item{ddfobj}{distance detection function specification}
@@ -11,9 +11,6 @@ tablecgf(ddfobj, width, standardize = TRUE, point = FALSE)
 
   \item{standardize}{logical used to decide whether to
   divide through by the function evaluated at 0}
-
-  \item{point}{logical to determine if point count(TRUE) or
-  line transect(FALSE)}
 }
 \value{
 a smooth.spline result object

@@ -1,13 +1,13 @@
 #' Cumulative distribution function (cdf) for fitted distance sampling
 #' detection function
-#' 
+#'
 #' Computes cdf values of observed distances from fitted distribution.  For a
 #' set of observed x it returns the integral of f(x) for the range= (inner, x),
 #' where inner is the innermost distance which is observable (either 0 or left
 #' if left truncated).  In terms of g(x) this is the integral of g(x) over
 #' range divided by the integral of g(x) over the entire range of the data
 #' (inner, W).
-#' 
+#'
 #' @param model fitted distance sampling model
 #' @param newdata new data values if computed for values other than the
 #'   original observations
@@ -18,49 +18,24 @@
 #' @author Jeff Laake
 #' @seealso \code{\link{qqplot.ddf}}
 #' @keywords utility
-cdf.ds <-
-function(model,newdata=NULL)
-{
-#
-# cdf.ds - Computes cdf values of observed distances from fitted distribution.  For a set of observed x
-# it returns the integral of f(x) for the range= (inner, x), where inner is the innermost distance which is
-# observable (either 0 or left if left truncated).  In terms of g(x) this is the integral of g(x) over range divided
-# by the integral of g(x) over the entire range of the data (inner, W).  the
-# is somewhat more complicated to allow for variable integration ranges (int.range).
-#
-# arguments:
-#
-# model    - object from fit.ds
-# newdata  - new data for computation if any
-#
-#
-# return value
-#  cdf for each detection
-# 
-# Uses: integratedetfct, integratedetfct.logistic
-#   
-# 
-#      Extract values from model
-#
+cdf.ds <- function(model,newdata=NULL){
   ltmodel <- model$ds
   fpar <- model$par
-  width <- ltmodel$aux$width
-  ddfobj <-ltmodel$aux$ddfobj 
-  x <- ddfobj$xmat  
+  ddfobj <- ltmodel$aux$ddfobj
+  width <- ddfobj$truncation$right
+  x <- ddfobj$xmat
   z <- ddfobj$scale$dm
   zdim <- dim(z)
   ftype <- ddfobj$type
   intercept.only <- ddfobj$intercept.only
   cgftab <- ddfobj$cgftab
-  point <- model$meta.data$point
-#
-# Set up integration ranges
-#
+
+  # Set up integration ranges
   if(is.null(ltmodel$aux$int.range)){
     int.range=as.matrix(cbind(rep(0,nrow(x)+1),c(width,x$distance)))
   }else{
     int.range=ltmodel$aux$int.range
-	if(is.vector(int.range))int.range=matrix(int.range,nrow=1)
+  if(is.vector(int.range))int.range=matrix(int.range,nrow=1)
     if(nrow(int.range)>1)
       int.range[,2]=c(width,x$distance)
     else
@@ -68,22 +43,15 @@ function(model,newdata=NULL)
   }
   int.range <- int.range[-1,]
 
-#
-# If there are no adjustments
-#
-#  if(any(is.null(ddfobj$adjustment$order))){
-#
-#      Do integration of g(x) from inner (0 or left) to x
-#
-	int1<-integratepdf(ddfobj=ddfobj,select=rep(TRUE,nrow(x)),width=width,
+  # Do integration of g(x) from inner (0 or left) to x
+  int1 <- integratepdf(ddfobj=ddfobj,select=rep(TRUE,nrow(x)),width=width,
                           int.range=int.range, doeachint=TRUE,
-                          standardize=TRUE,point=point)
-	  
-#   integral of g(x) over entire integration range 
-    int2=predict(model,integrate=TRUE,esw=FALSE,compute=TRUE)$fitted
-		
-#
-# If there are adjustments...
+                          standardize=TRUE)
+
+  # integral of g(x) over entire integration range
+  int2 <- predict(model,integrate=TRUE,esw=FALSE,compute=TRUE)$fitted
+
+  # If there are adjustments...
 #
 #  }else{
 

@@ -57,7 +57,7 @@ dht.deriv <- function(par,model,obs,samples,options=list()){
   Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,
                                       model$truncation$right*
                                        options$convert.units,
-                                   model$meta.data$point)
+                                      model$transect)
   Nhat.by.region <- by(Nhat.by.sample$Nhat,Nhat.by.sample$Region.Label,sum)
 
   # Return vector of predicted abundances

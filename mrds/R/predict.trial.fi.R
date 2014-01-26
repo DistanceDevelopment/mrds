@@ -6,7 +6,6 @@ predict.trial.fi <- function(object, newdata=NULL,compute=FALSE, int.range=NULL,
   # Functions Used: pdot.dsr.integrate.logistic, is.linear.logistic,
   #                 predict.glm (could also use predict.gam eventually)
   model <- object
-  point <- model$meta.data$point
   width <- model$truncation$right
 
   # set newdata to be the model data if we don't have any
@@ -33,11 +32,11 @@ predict.trial.fi <- function(object, newdata=NULL,compute=FALSE, int.range=NULL,
     if(is.null(int.range)){
       pdot.list <- pdot.dsr.integrate.logistic(width, width, coef(model$mr),
                                                newdata,integral.numeric, TRUE,
-                                               models, point=point)
+                                               models, model$transect)
     }else{
       pdot.list <- pdot.dsr.integrate.logistic(int.range, width, coef(model$mr),
                                                newdata,integral.numeric, TRUE,
-                                               models, point=point)
+                                               models, model$transect)
     }
 
     if(left !=0){
@@ -45,7 +44,7 @@ predict.trial.fi <- function(object, newdata=NULL,compute=FALSE, int.range=NULL,
                         pdot.dsr.integrate.logistic(left, width, coef(model$mr),
                                                     newdata,integral.numeric,
                                                     TRUE, models,
-                                                    point=point)$pdot
+                                                    model$transect)$pdot
     }
 
     fitted <- pdot.list$pdot

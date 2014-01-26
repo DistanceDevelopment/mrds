@@ -13,13 +13,13 @@
 #' @param models list of models including \code{g0model}
 #' @param GAM ???=FALSE
 #' @param rem ???=FALSE
-#' @param point \code{TRUE} for point transects
+#' @param transect \code{"point"} or \code{"line"} for transects
 #'
 #' @author Jeff Laake
 #'
 pdot.dsr.integrate.logistic <- function(right, width, beta, x,
                                         integral.numeric, BT, models, GAM=FALSE,
-                                        rem=FALSE, point=FALSE){
+                                        rem=FALSE, transect="line"){
   # Functions called:
   # integratelogistic - computes integral (numerically) over x from 0 to width
   #                     of a logistic detection function
@@ -51,7 +51,7 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
     stop("data must have a column named \"observer\"")
   }
 
-  if(integral.numeric | point){
+  if(integral.numeric | transect=="point"){
 
     if(GAM|length(right)>1){
       is.constant <- FALSE
@@ -62,26 +62,26 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
 
     if(is.constant){
       int1 <- rep(integratelogistic(x=x[x$observer==1,][1,], models, beta,
-                                    lower=0,right, point),
+                                    lower=0,right, transect),
                   nrow(x[x$observer==1,]))
     }else{
       int1 <- NULL
       for(i in 1:nrow(x[x$observer==1,])){
         int1 <- c(int1, integratelogistic(x=(x[x$observer==1,])[i,], models,
-                                          beta,lower=lower,right,point))
+                                          beta, lower=lower, right, transect))
       }
     }
 
     if(!BT){
       if(is.logistic.constant(x[x$observer==2,],models$g0model,width)){
         int2 <- rep(integratelogistic(x=x[x$observer==2,][1,], models, beta,
-                                      lower=lower,right, point),
+                                      lower=lower,right, transect),
                     nrow(x[x$observer==2,]))
       }else{
         int2 <- NULL
         for(i in 1:nrow(x[x$observer==2,])){
           int2 <- c(int2, integratelogistic(x=x[x$observer==2,][i,], models,
-                                            beta,lower=lower,right, point))
+                                            beta,lower=lower,right, transect))
         }
       }
     }else{
@@ -106,7 +106,7 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
 
       int3 <- rep(integratelogisticdup(x1=x[x$observer==1,][1,],
                                        x2=x[x$observer==2,][1,],models,beta,
-                                       lower=lower,right, point),
+                                       lower=lower,right, transect),
                   nrow(x[x$observer==2,]))
     }else{
       int3 <- NULL
@@ -114,7 +114,7 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
         int3 <- c(int3, integratelogisticdup(x1=(x[x$observer==1,])[i,],
                                              x2=(x[x$observer==2,])[i,],
                                              models, beta, lower=lower,
-                                             right, point))
+                                             right, transect))
       }
     }
     pdot <- int1 + int2 - int3
@@ -123,7 +123,7 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
     pdot <- int1
   }
 
-  if(!point){
+  if(transect=="line"){
     div <- width
   }else{
     div <- width^2

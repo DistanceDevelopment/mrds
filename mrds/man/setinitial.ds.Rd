@@ -3,7 +3,7 @@
 \alias{setinitial.ds}
 \title{Set initial values for detection function based on distance sampling}
 \usage{
-setinitial.ds(ddfobj,width,initial,point)
+setinitial.ds(ddfobj,width,initial)
        sethazard(ddfobj,dmat,width)
 }
 \arguments{
@@ -14,9 +14,6 @@ setinitial.ds(ddfobj,width,initial,point)
 
   \item{initial}{list of user-defined initial values with
   possible elements scale,shape,adjustment}
-
-  \item{point}{if TRUE, point count data; otherwise, line
-  transect data}
 
   \item{dmat}{xmat from ddfobj}
 }

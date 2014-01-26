@@ -54,7 +54,7 @@
 #' fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
 #'
 #' distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
-#'            stdint=FALSE,point=FALSE)
+#'            stdint=FALSE)
 #'
 #' @param distance  vector of distances
 #' @param ddfobj distance sampling object (see \code{\link{create.ddfobj}})
@@ -70,7 +70,6 @@
 #'  function evaluated at 0
 #' @param scaling the scaling for the adjustment terms
 #' @param stdint logical used to decide whether integral is standardized
-#' @param point if TRUE, point counts; otherwise line transects
 #' @param adj.exp if TRUE uses exp(adj) for adjustment to keep f(x)>0
 #' @return
 #' For \code{detfct}, the value is a vector of detection probabilities for the
@@ -89,9 +88,9 @@
 #' line transect surveys with mark-recapture and covariate data. Journal of
 #' Agricultural Biological and Environmental Statistics 14:207-223.
 distpdf <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
-                    standardize=TRUE,stdint=FALSE,point=FALSE){
+                    standardize=TRUE,stdint=FALSE){
 
- if(!point){
+ if(ddfobj$transect == "line"){
    return(fx(distance=distance,ddfobj=ddfobj,select=select,index=index,
              width=width,standardize=standardize,stdint=stdint))
  }else
