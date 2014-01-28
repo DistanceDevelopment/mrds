@@ -12,7 +12,8 @@ adj.check.order(adj.series, adj.order)
 }
 \value{
 Logical value, true if there have been errors, false
-otherwise.
+otherwise.  Usually doesn't matter as we already called
+\code{stop()} if something went wrong.
 }
 \description{
 'adj.check.order' checks that the Cosine, Hermite or simple
@@ -22,10 +23,10 @@ polynomials are of the correct order.
 Only even functions are allowed as adjustment terms. Also
 Hermite polynomials must be of degree at least 4 and Cosine
 of order at least 3. If incorrect terms are supplied then
-\code{errors} is called.
+\code{stop} is called.
 }
 \author{
-David Miller
+David L Miller
 }
 \references{
 S.T.Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake. 1993.

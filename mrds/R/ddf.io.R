@@ -92,8 +92,8 @@ ddf.io<-function(dsmodel,mrmodel,data,truncation=NULL,transect="line",
                       control,call)
   if(is.null(result$ds$Nhat)){
     if(control$debug){
-      errors("ds model did not converge; no further results possible")
-      errors("Returned object is for debugging ONLY!")
+      message("ds model did not converge; no further results possible")
+      message("Returned object is for debugging ONLY!")
       return(result)
     }
     stop("ds model did not converge; no further results possible")

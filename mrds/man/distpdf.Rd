@@ -6,7 +6,6 @@
 \alias{distpdf}
 \alias{fr}
 \alias{fx}
-\alias{hermite.poly}
 \alias{keyfct.gamma}
 \alias{keyfct.hn}
 \alias{keyfct.hz}

@@ -205,8 +205,8 @@ ddf.ds <-function(model, data, truncation=NULL, transect="line",
   # if there was no convergence, return the fitting object incase it's useful
   # it won't be of the correct class or have the correct elements
   if(lt$converge!=0 & misc.options$debug){
-    errors("No convergence, not calculating Hessian, predicted values, abundance")
-    errors("Returned object is for debugging ONLY!")
+    message("No convergence, not calculating Hessian, predicted values, abundance")
+    warning("Returned object is for debugging ONLY!")
     options(save.options)
     return(result)
   }
@@ -253,7 +253,7 @@ ddf.ds <-function(model, data, truncation=NULL, transect="line",
   }
 
   if(lt$message == "FALSE CONVERGENCE"){
-    errors("Model fitting did not converge.  Try different initial values or different model")
+    message("Model fitting did not converge.  Try different initial values or different model")
   }else{
     result$fitted <- predict(result,esw=FALSE)$fitted
     if(control$estimate){

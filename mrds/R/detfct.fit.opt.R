@@ -46,7 +46,7 @@
 #' @author Dave Miller; Jeff Laake; Lorenzo Milazzo
 detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            fitting="all"){
-  # Functions Used: assign.par, detfct.fit.opt, errors, get.par
+  # Functions Used: assign.par, detfct.fit.opt, get.par
 
   # grab the initial values
   initialvalues <- getpar(ddfobj)
@@ -109,7 +109,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     misc.options$parscale <- abs(initialvalues)
   }else{
     if(length(misc.options$parscale)!=length(initialvalues)){
-      errors("Incorrect length of parameter scale vector; using default values\n")
+      warning("Incorrect length of parameter scale vector; using default values")
       misc.options$parscale <- abs(initialvalues)
     }
   }
@@ -153,7 +153,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           lt$par <- initialvalues
 
           if(showit==3){
-            errors("Optimisation failed, ignoring and carrying on...")
+            message("Optimisation failed, ignoring and carrying on...")
           }
         }
 
@@ -182,7 +182,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
       # Print debug information
       if(showit==3){
-        errors(paste("Converge = ",lt$conv,"\n",
+        message(paste("Converge = ",lt$conv,"\n",
                      "lnl = ",lt$value,"\n",
                      "parameters = ",paste(lt$par,collapse=", ")))
       }
@@ -202,7 +202,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       # If we don't have convergence what do we do
         refit.count <- refit.count+1
         if(is.null(nrefits) | refit.count<=nrefits){
-          if(showit>=1) errors("No convergence. Refitting ...")
+          if(showit>=1) message("No convergence. Refitting ...")
 
           # use the new pars only if they gave a better lnl than last time
           if(lt$value <= lnl.last){
@@ -246,7 +246,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
     if(any(is.na(lt$par)) | lt$conv!=0){
       # if there was no convergence then just return the lt object for debugging
-      errors("Problem with fitting data: no convergence.")
+      message("Problem with fitting data: no convergence.")
       if(misc.options$debug){
         lt$optim.history <- optim.history
         return(lt)
@@ -290,7 +290,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       }
 
       if(showit>=1)
-        errors("Refitting ...")
+        message("Refitting ...")
 
     }
   }

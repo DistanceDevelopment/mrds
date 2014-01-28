@@ -30,7 +30,7 @@
 #' \code{fx,fr} non-normalized probability density for line transects and point
 #' counts respectively
 #'
-#' @aliases detfct adjfct.cos adjfct.herm hermite.poly adjfct.poly keyfct.hn
+#' @aliases detfct adjfct.cos adjfct.herm adjfct.poly keyfct.hn
 #'  keyfct.hz keyfct.gamma scalevalue fx fr distpdf
 #' @usage detfct(distance, ddfobj, select=NULL, index=NULL, width=NULL,
 #'               standardize = TRUE, stdint=FALSE)
@@ -90,24 +90,28 @@
 distpdf <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
                     standardize=TRUE,stdint=FALSE){
 
- if(ddfobj$transect == "line"){
-   return(fx(distance=distance,ddfobj=ddfobj,select=select,index=index,
-             width=width,standardize=standardize,stdint=stdint))
- }else
-   return(fr(distance=distance,ddfobj=ddfobj,select=select,index=index,
-             width=width,standardize=standardize,stdint=stdint))
+  if(ddfobj$transect == "line"){
+    ret <- fx(distance=distance,ddfobj=ddfobj,select=select,index=index,
+              width=width,standardize=standardize,stdint=stdint)
+ }else{
+   ret <- fr(distance=distance,ddfobj=ddfobj,select=select,index=index,
+             width=width,standardize=standardize,stdint=stdint)
+  }
+  return(ret)
 }
 
 
 fx <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
                standardize=TRUE,stdint=FALSE){
-  return(detfct(distance,ddfobj,select,index,width,standardize,stdint)/width)
+  ret <- detfct(distance,ddfobj,select,index,width,standardize,stdint)/width
+  return(ret)
 }
 
 fr <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
                standardize=TRUE,stdint=FALSE){
-  return(detfct(distance,ddfobj,select,index,width,standardize,stdint)*
-         2*distance/width^2)
+  ret <- detfct(distance,ddfobj,select,index,width,standardize,stdint)*
+          2*distance/width^2
+  return(ret)
 }
 
 

@@ -117,7 +117,7 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   }
 
   if(range.varies&showpoints){
-    errors("Point values can be misleading for g(x) when the range varies")
+    message("Point values can be misleading for g(x) when the range varies")
   }
 
   if(!is.null(substitute(subset))){
@@ -127,8 +127,7 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   }
 
   if(all(!selected)){
-    errors("Specified subset is empty.")
-    return()
+    stop("Specified subset is empty.")
   }
 
   if(is.matrix(int.range)){

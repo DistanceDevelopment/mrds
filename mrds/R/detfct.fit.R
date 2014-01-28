@@ -42,7 +42,6 @@
 #'   }}
 #' @author Dave Miller; Jeff Laake
 detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
-  # Functions Used: assign.par, detfct.fit.opt, errors, get.par
 
   # show debug information
   showit <- misc.options$showit
@@ -98,7 +97,7 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
 
     # Now start to alternate between adjustment and key
     if(showit>=2)
-      errors("starting to cycle the optimisation...",preamble="Info")
+      message("starting to cycle the optimisation...")
 
     # Fudge to make this work the first time.
     firstrun<-TRUE
@@ -122,9 +121,9 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
         }
 
         if(showit==3) {
-          errors(paste(fitting," iteration ",iter,".",metaiter,preamble="Info"))
-          errors(paste("initial values = ",
-                 paste(initialvalues,collapse=", "),sep=""),preamble="Info")
+          message(paste(fitting," iteration ",iter,".",metaiter))
+          message(paste("initial values = ",
+                 paste(initialvalues,collapse=", "),sep=""))
         }
 
         lt <- try(detfct.fit.opt(ddfobj,optim.options,bounds,misc.options,
@@ -135,8 +134,8 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
         # report failure
         if(all(class(lt)=="try-error")){
           if(showit==3){
-            errors(paste("iteration ",iter,", fitting ",
-                         fitting," failed.",sep=""),preamble="Info")
+            message(paste("iteration ",iter,", fitting ",
+                         fitting," failed.",sep=""))
           }
           if(fitting=="all"){
             stop("*** Warning: fitting failed! Try again with different initial values.\n")
@@ -146,11 +145,10 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
           bounds <- lt$bounds
 
           if(showit==3){
-            errors(paste("iteration ",iter,".",metaiter,
-                         ":\nConverge = ",lt$converge,
-                         "\nlnl = ",lt$value,
-                         "\nparameters = ",paste(lt$par,collapse=", "),sep=""),
-                   preamble="Info")
+            message(paste("iteration ",iter,".",metaiter,
+                          ":\nConverge = ",lt$converge,
+                          "\nlnl = ",lt$value,
+                          "\nparameters = ",paste(lt$par,collapse=", "),sep=""))
           }
 
           # reset pars to initialvalues if NA
@@ -174,14 +172,13 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
     }
 
     if(iter>misc.options$maxiter)
-      errors(paste("Maximum iterations exceeded!",
-                   iter,">",misc.options$maxiter,sep=""),preamble="Info")
+      message(paste("Maximum iterations exceeded!",
+                    iter,">",misc.options$maxiter,sep=""))
 
     if(showit>=2){
-      errors(paste("Convergence!\nIteration ",iter,".",metaiter,
-                   "\nConverge = ",lt$converge,"\nlnl = ",lt$value,
-                   "\nparameters = ",paste(lt$par,collapse=", "),sep=""),
-             preamble="Info")
+      message(paste("Convergence!\nIteration ",iter,".",metaiter,
+                    "\nConverge = ",lt$converge,"\nlnl = ",lt$value,
+                    "\nparameters = ",paste(lt$par,collapse=", "),sep=""))
     }
   }
 

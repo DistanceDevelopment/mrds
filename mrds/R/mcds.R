@@ -62,9 +62,9 @@ mcds <- function(formula=NULL, key=NULL, adj.series=NULL, adj.order=c(NULL),
       }
       adj.scale <- "width"
     }
-    if(adj.check.order(adj.series,adj.order)){
-      stop("Problem with adjustment terms, see above errors")
-    }
+
+    # check adjustment terms are correct -- no return, will stop() if not ok
+    adj.check.order(adj.series,adj.order)
   }
 
   return(list(fct           = "mcds",
