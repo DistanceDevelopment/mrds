@@ -5,6 +5,6 @@
   version <- utils::packageVersion("mrds")
   built <- utils::packageDescription("mrds",fields="Built")
 
-  hello <- paste("This is mrds ",version,"\nBuilt: ",built,sep="")
+  hello <- paste0("This is mrds ",version,"\nBuilt: ",built)
   packageStartupMessage(hello)
 }
