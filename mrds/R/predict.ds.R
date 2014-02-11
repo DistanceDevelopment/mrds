@@ -19,11 +19,11 @@
 #'
 #' For \code{method="io.fi"} or \code{method="trial.fi"} if
 #' \code{integrate=FALSE}, \code{predict} returns the value of the conditional
-#  detection probability and if \code{integrate=TRUE}, it returns the average
+#'  detection probability and if \code{integrate=TRUE}, it returns the average
 #' conditional detection probability by integrating over x (distance) with
 #' respect to a uniform distribution.
 #'
-#' @aliases predict.ds predict.ddf predict.io predict.io.fi predict.trial
+#' @aliases predict predict.ds predict.ddf predict.io predict.io.fi predict.trial
 #'  predict.trial.fi predict.rem predict.rem.fi
 #' @param object \code{ddf} model object.
 #' @param newdata new \code{data.frame} for prediction.
@@ -36,10 +36,22 @@
 #'   (\code{width}) of p(y)dy; otherwise it returns the integral from 0 to
 #'   truncation width of p(y)*pi(y) where pi(y)=1/W for lines and pi(y)=2r/W^2
 #'   for points.
-#' @param integrate for \code{io.fi} methods, see Details below.
+#' @param integrate for \code{*.fi} methods, see Details below.
 #' @param \dots for S3 consistency
+#' @usage \method{predict}{ds}(object,newdata,compute=FALSE,int.range=NULL,esw=FALSE,...)
+#'        \method{predict}{io.fi}(object,newdata,compute=FALSE, int.range=NULL,integrate=FALSE,...)
+#'        \method{predict}{io}(object,newdata,compute=FALSE,int.range=NULL,...)
+#'        \method{predict}{trial}(object,newdata,compute=FALSE,int.range=NULL,...)
+#'        \method{predict}{trial.fi}(object,newdata,compute=FALSE, int.range=NULL,integrate=FALSE,...)
+#'        \method{predict}{rem}(object,newdata,compute=FALSE,int.range=NULL,...)
+#'        \method{predict}{rem.fi}(object,newdata,compute=FALSE, int.range=NULL,integrate=FALSE,...)
 #' @S3method predict ds
-#' @method predict ds
+#' @S3method predict io
+#' @S3method predict io.fi
+#' @S3method predict trial
+#' @S3method predict trial.fi
+#' @S3method predict rem
+#' @S3method predict rem.fi
 #' @return For all but the exceptions below, the value is a list with a single
 #'   element: \tabular{ll}{ \code{fitted} \tab vector of average detection
 #'   probabilities or esw values for each observation in the original data or

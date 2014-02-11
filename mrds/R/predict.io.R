@@ -1,6 +1,4 @@
 # see predict.ds for documentation
-#' @rdname predict.ds
-#' @S3method predict io
 predict.io <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
   # Functions Used: predict.io.fi and predict.ds
 

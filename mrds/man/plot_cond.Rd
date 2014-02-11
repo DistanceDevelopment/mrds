@@ -2,10 +2,11 @@
 \alias{plot_cond}
 \title{Plot conditional detection function from distance sampling model}
 \usage{
-plot_cond(obs, xmat, gxvalues, model, nc, breaks, finebr, showpoints, showlines,
-  maintitle, ylim, angle = -45, density = 20, col = "black",
-  jitter = NULL, xlab = "Distance", ylab = "Detection probability",
-  subtitle = TRUE, ...)
+  plot_cond(obs, xmat, gxvalues, model, nc, breaks, finebr,
+    showpoints, showlines, maintitle, ylim, angle = -45,
+    density = 20, col = "black", jitter = NULL,
+    xlab = "Distance", ylab = "Detection probability",
+    subtitle = TRUE, ...)
 }
 \arguments{
   \item{obs}{obsever code}
@@ -56,16 +57,16 @@ plot_cond(obs, xmat, gxvalues, model, nc, breaks, finebr, showpoints, showlines,
   \code{lines}, \code{points}, etc)}
 }
 \value{
-NULL
+  NULL
 }
 \description{
-Plot proportion of observations detected within distance
-intervals (for conditional detection functions) to compare
-visually the fitted model and data. Internal function
-called by \code{plot} methods.
+  Plot proportion of observations detected within distance
+  intervals (for conditional detection functions) to
+  compare visually the fitted model and data. Internal
+  function called by \code{plot} methods.
 }
 \author{
-Jeff Laake, Jon Bishop, David Borchers
+  Jeff Laake, Jon Bishop, David Borchers
 }
 \keyword{plot}
 

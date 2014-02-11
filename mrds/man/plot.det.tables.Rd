@@ -2,8 +2,9 @@
 \alias{plot.det.tables}
 \title{Observation detection tables}
 \usage{
-\method{plot}{det.tables}(x, which = 1:6, angle = -45, density = 20,
-  col1 = "black", col2 = "blue", new = TRUE, ...)
+  \method{plot}{det.tables} (x, which = 1:6, angle = -45,
+    density = 20, col1 = "black", col2 = "blue",
+    new = TRUE, ...)
 }
 \arguments{
   \item{x}{object returned by \code{\link{det.tables}}}
@@ -26,13 +27,13 @@
   plotting functions}
 }
 \value{
-Just plots.
+  Just plots.
 }
 \description{
-Plot the tables created by \code{\link{det.tables}}.
-Produces a series of tables for dual observer data that
-shows the number missed and detected for each observer
-within defined distance classes.
+  Plot the tables created by \code{\link{det.tables}}.
+  Produces a series of tables for dual observer data that
+  shows the number missed and detected for each observer
+  within defined distance classes.
 }
 \examples{
 \donttest{
@@ -50,6 +51,6 @@ plot(tabs,which=1:6,new=FALSE)
 }
 }
 \author{
-Jeff Laake
+  Jeff Laake
 }
 

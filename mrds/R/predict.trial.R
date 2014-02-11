@@ -1,6 +1,4 @@
 # see predict.ds for documentation
-#' @rdname predict.ds
-#' @S3method predict trial
 predict.trial <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
   # Functions Used: predict.trial.fi and predict.ds
   model <- object

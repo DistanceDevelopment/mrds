@@ -2,7 +2,8 @@
 \alias{prob.deriv}
 \title{Derivatives for variance of average p and average p(0) variance}
 \usage{
-prob.deriv(par, model, parfct, observer = NULL, fittedmodel = NULL)
+  prob.deriv(par, model, parfct, observer = NULL,
+    fittedmodel = NULL)
 }
 \arguments{
   \item{par}{detection function parameter values}
@@ -22,21 +23,21 @@ prob.deriv(par, model, parfct, observer = NULL, fittedmodel = NULL)
   \code{trial} or \code{io} respectively}
 }
 \value{
-Vector of values from fct at specified parameter values
+  Vector of values from fct at specified parameter values
 }
 \description{
-Used in call to DeltaMethod from prob.se to get first
-derivatives
+  Used in call to DeltaMethod from prob.se to get first
+  derivatives
 }
 \details{
-Need to add equations here as I do not think they exist in
-any of the texts. These should probably be checked with
-simulation.
+  Need to add equations here as I do not think they exist
+  in any of the texts. These should probably be checked
+  with simulation.
 }
 \author{
-Jeff Laake
+  Jeff Laake
 }
 \seealso{
-prob.se
+  prob.se
 }
 

@@ -2,7 +2,7 @@
 \alias{logisticbyz}
 \title{Logistic as a function of distance}
 \usage{
-logisticbyz(x, distance, models, beta)
+  logisticbyz(x, distance, models, beta)
 }
 \arguments{
   \item{x}{covariate data}
@@ -14,14 +14,14 @@ logisticbyz(x, distance, models, beta)
   \item{beta}{logistic parameters}
 }
 \value{
-vector of probabilities
+  vector of probabilities
 }
 \description{
-Treats logistic as a function of distance; for a given
-distance it computes function at all covariate values in
-data.
+  Treats logistic as a function of distance; for a given
+  distance it computes function at all covariate values in
+  data.
 }
 \author{
-Jeff Laake
+  Jeff Laake
 }
 

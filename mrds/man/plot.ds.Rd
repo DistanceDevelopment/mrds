@@ -3,11 +3,12 @@
 \title{Plot fit of detection functions and histograms of data from distance
 sampling model}
 \usage{
-\method{plot}{ds}(x, which = 2, byvar = "", breaks = NULL, nc = NULL,
-  jitter.v = rep(0, 3), showpoints = TRUE, subset = NULL,
-  pl.col = "black", bw.col = grey(0), black.white = FALSE,
-  pl.den = rep(20, 1), pl.ang = rep(-45, 1), main = NULL, pages = 0,
-  ...)
+  \method{plot}{ds} (x, which = 2, byvar = "",
+    breaks = NULL, nc = NULL, jitter.v = rep(0, 3),
+    showpoints = TRUE, subset = NULL, pl.col = "black",
+    bw.col = grey(0), black.white = FALSE,
+    pl.den = rep(20, 1), pl.ang = rep(-45, 1), main = NULL,
+    pages = 0, ...)
 }
 \arguments{
   \item{x}{fitted model from \code{ddf}.}
@@ -64,23 +65,24 @@ sampling model}
   \code{\link{points}}, etc).}
 }
 \value{
-Just plots.
+  Just plots.
 }
 \description{
-Plots the fitted detection functions with a histogram of
-the observed
+  Plots the fitted detection functions with a histogram of
+  the observed
 }
 \details{
-The structure of the histogram can be controlled by the
-user-defined arguments \code{nc} or \code{breaks}.  The
-observation specific detection probabilities along with the
-line representing the fitted average detection probability.
+  The structure of the histogram can be controlled by the
+  user-defined arguments \code{nc} or \code{breaks}.  The
+  observation specific detection probabilities along with
+  the line representing the fitted average detection
+  probability.
 
-It is not intended for the user to call \code{plot.ds} but
-its arguments are documented here. Instead the generic
-\code{plot} command should be used and it will call the
-appropriate function based on the class of the \code{ddf}
-object.
+  It is not intended for the user to call \code{plot.ds}
+  but its arguments are documented here. Instead the
+  generic \code{plot} command should be used and it will
+  call the appropriate function based on the class of the
+  \code{ddf} object.
 }
 \examples{
 \donttest{
@@ -102,7 +104,7 @@ plot(xx,breaks=c(0,.5,1,2,3,4),pages=1,which=1:2)
 }
 }
 \author{
-Jeff Laake, Jon Bishop, David Borchers
+  Jeff Laake, Jon Bishop, David Borchers
 }
 \keyword{plot}
 

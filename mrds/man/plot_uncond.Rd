@@ -2,10 +2,11 @@
 \alias{plot_uncond}
 \title{Plot unconditional detection function from distance sampling model}
 \usage{
-plot_uncond(model, obs, xmat, gxvalues, nc, finebr, breaks, showpoints,
-  showlines, maintitle, ylim, return.lines = FALSE, angle = -45,
-  density = 20, col = "black", jitter = NULL, xlab = "Distance",
-  ylab = "Detection probability", subtitle = TRUE, ...)
+  plot_uncond(model, obs, xmat, gxvalues, nc, finebr,
+    breaks, showpoints, showlines, maintitle, ylim,
+    return.lines = FALSE, angle = -45, density = 20,
+    col = "black", jitter = NULL, xlab = "Distance",
+    ylab = "Detection probability", subtitle = TRUE, ...)
 }
 \arguments{
   \item{model}{fitted model from \code{ddf}}
@@ -58,17 +59,17 @@ plot_uncond(model, obs, xmat, gxvalues, nc, finebr, breaks, showpoints,
   \code{lines}, \code{points}, etc)}
 }
 \value{
-if \code{return.lines==TRUE} returns dataframe
-\code{average.line} otherwise just plots
+  if \code{return.lines==TRUE} returns dataframe
+  \code{average.line} otherwise just plots
 }
 \description{
-Plots unconditional detection function for observer=obs
-observations overlays histrogram, average detection
-function and values for individual observations data.
-Internal function called by \code{plot} methods.
+  Plots unconditional detection function for observer=obs
+  observations overlays histrogram, average detection
+  function and values for individual observations data.
+  Internal function called by \code{plot} methods.
 }
 \author{
-Jeff Laake, Jon Bishop, David Borchers
+  Jeff Laake, Jon Bishop, David Borchers
 }
 \keyword{plot}
 

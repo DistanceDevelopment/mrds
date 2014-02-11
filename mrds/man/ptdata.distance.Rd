@@ -10,7 +10,7 @@
   Sample.Label: point label
   Region.Label: single region label}
 \description{
-Single observer point count data example from Distance
+  Single observer point count data example from Distance
 }
 \examples{
 \donttest{

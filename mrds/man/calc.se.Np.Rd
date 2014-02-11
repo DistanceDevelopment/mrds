@@ -2,7 +2,7 @@
 \alias{calc.se.Np}
 \title{Find se of average p and N}
 \usage{
-calc.se.Np(model, avgp, n, average.p)
+  calc.se.Np(model, avgp, n, average.p)
 }
 \arguments{
   \item{model}{a \code{ddf} model object}
@@ -15,9 +15,9 @@ calc.se.Np(model, avgp, n, average.p)
   the model}
 }
 \description{
-Find se of average p and N
+  Find se of average p and N
 }
 \author{
-David L. Miller
+  David L. Miller
 }
 

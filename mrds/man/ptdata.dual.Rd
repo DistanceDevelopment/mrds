@@ -10,9 +10,9 @@ person: Factor with 2 levels A,B
 pair: Factor with 2 levels "AB" BA" $
 object : sequential object number}
 \description{
-Simulated dual observer point count data with detection
-p(0)=0.8; hn sigma=30; w=100 for both observers with
-dependency y>0, gamma=0.1
+  Simulated dual observer point count data with detection
+  p(0)=0.8; hn sigma=30; w=100 for both observers with
+  dependency y>0, gamma=0.1
 }
 \examples{
 \donttest{

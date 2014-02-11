@@ -390,3 +390,589 @@ NULL
 #' plot(xx,main="Simulated point count data")
 #' }
 NULL
+
+#' Golden-cheeked warbler mark-recapture distance sampling analysis
+#' 
+#' These data represent avian point count surveys conducted at 453 point sample survey locations on the 24,000 (approx) live-fire region of Fort Hood
+#' in central Texas.  Surveys were conducted by independent double observers (2 per survey occasion) and as such we had a maximum of 3 paired survey histories, giving a maximum of 
+#' 6 sample occasions (see MacKenzie et al. 2006, MacKenzie and Royle 2005, and Laake et al. 2011 for various sample survey design details).  At each point, we surveyed for 5 minutes (technically broken into
+#' 3 time intervals of 2, 2, and 1 minutes; not used here) and we noted detections by each observer and collected distance to each observation within a set of distance bins (0-50, 50-100m; Laake et al. 2011)
+#' of the target species (Golden-cheeked warblers in this case) for each surveyor.  Our primary focus was to use mark-recapture distance sampling methods to estimate density of 
+#' Golden-cheeked warblers, and to estimate detection rates for the mark-recapture, distance, and composite model.
+#'
+#' @details  In addition to detailing the analysis used by Collier et al. (2013, In Review), this example documents the use of \code{mrds} for avian point count surveys and shows how density models
+#' can be incorporated with occupancy models to develop spatially explicit density surface maps. For those that are interested, for the distance sampling portion of our analysis, we 
+#' used both conventional distance sampling (\code{cds}) and multiple covariate distance sampling (\code{mcds}) with uniform and half-normal key functions.  For the mark-recapture portion of 
+#' our analysis, we tended to use covariates for distance (median bin width), observer, and date of survey (days since 15 March 2011).  
+#' 
+#' We combined our \code{mrds} density estimates via a Horvitz-Thompson styled estimator with the resource selection function gradient developed 
+#' in Farrell et al. (2013) and estimated density on an ~3.14ha hexagonal grid across our study area, which provided a density gradient for Fort Hood.  Because there 
+#' was considerable data manipulation needed for each analysis to structure the data appropriately for use in \code{mrds}, rather than wrap each analysis in a single function, we have provided 
+#' both the Golden-cheeked warbler and Black-capped vireo analyses in their full detail.  The primary differences you will see will be changes to
+#' model structures and model outputs between the two species.    
+#' 
+#' @name lfgcwa
+#' @docType data
+#' @format The format is a data frame with the following covariate metrics.
+#' \describe{\item{PointID}{Unique identifier for each sample location; locations are the same for both species}
+#' \item{VisitNumber}{Visit number to the point}
+#' \item{Species}{Species designation, either Golden-cheeked warbler (GW) or Black-capped Vireo (BV)}
+#' \item{Distance}{Distance measure, which is either NA (representing no detection), or the median of the binned detection distances}
+#' \item{PairNumber}{ID value indicating which observers were paired for that sampling occasion}
+#' \item{Observer}{Observer ID, either primary(1), or secondary (2)}
+#' \item{Detected}{Detection of a bird, either 1 = detected, or 0 = not detected}
+#' \item{Date}{Date of survey since 15 March 2011, numeric value}
+#' \item{Pred}{Predicted occupancy value for that survey hexagon based on Farrell et al. (2013)}
+#' \item{Category}{Region.Label categorization, see R package \code{mrds} help file for details on data structure}
+#' \item{Effort}{Amount of survey effort at the point}
+#' \item{Day}{Number of days since 15 March 2011, numeric value}
+#' \item{ObjectID}{Unique ID for each paired observations} }
+#'  
+#' @references Farrell, S. F., B. A. Collier, K. L. Skow, A. M. Long, A. J. Campomizzi, M. L. Morrison, B. Hays, and R. N. Wilkins.  2013. Using LiDAR-derived structural vegetation characteristics to 
+#' develop high-resolution, small-scale, species distribution models for conservation planning. Ecosphere 43(3): 42. http://dx.doi.org/10.1890
+#' @references Laake, J. L., B. A. Collier, M. L. Morrison, and R. N. Wilkins. 2011. Point-based mark recapture distance sampling. Journal of Agricultural, Biological and Environmental Statistics 16: 389-408.
+#' @references Collier, B.A., S. L. Farrell, K. L. Skow, A. M. Long, A. J. Campomizzi, K. B. Hays, J. L. Laake, M. L. Morrison, and R. N. Wilkins.  2013. Spatially explicit density of endangered avian species in a disturbed landscape.  Auk, In Review.   
+#' @keywords datasets
+#' @author Bret Collier and Jeff Laake
+#' @examples 
+#' 
+#' \donttest{
+#' data(lfgcwa)
+#' xy=cut(lfgcwa$Pred, c(-0.0001, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1), 
+#'  labels=c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"))
+#' x=data.frame(lfgcwa, New=xy)
+#' 
+#' #Note that I scaled the individual covariate of day-helps with convergence issues
+#' bird.data=data.frame(object=x$ObjectID, observer=x$Observer, detected=x$Detected, 
+#' distance=x$Distance, Region.Label=x$New, Sample.Label=x$PointID, Day=(x$Day/max(x$Day)))
+#' 
+#' # make observer a factor variable
+#' bird.data$observer=factor(bird.data$observer)
+#' 
+#' #Jeff Laake suggested this snippet to quickly create distance medians which adds bin 
+#' # information to the \code{bird.data} dataframe
+#' 
+#' bird.data$distbegin=0
+#' bird.data$distend=100
+#' bird.data$distend[bird.data$distance==12.5]=50
+#' bird.data$distbegin[bird.data$distance==37.5]=0
+#' bird.data$distend[bird.data$distance==37.5]=50
+#' bird.data$distbegin[bird.data$distance==62.5]=50
+#' bird.data$distend[bird.data$distance==62.5]=100
+#' bird.data$distbegin[bird.data$distance==87.5]=50
+#' bird.data$distend[bird.data$distance==87.5]=100
+#' 
+#' #Removed all survey points with distance=NA for a survey event; hence no observations for use 
+#' #in \code{ddf()} but needed later
+#' bird.data=bird.data[complete.cases(bird.data),] 
+#' 
+#' #Manipulations on full dataset for various data.frame creation for use in density estimation 
+#' #using \code{dht()}
+#' 
+#' #Samples dataframe
+#' xx=x
+#' x=data.frame(PointID=x$PointID, Species=x$Species, Category=x$New, Effort=x$Effort)
+#' x=x[!duplicated(x$PointID),]
+#' point.num=table(x$Category)
+#' samples=data.frame(PointID=x$PointID, Region.Label=x$Category, Effort=x$Effort)
+#' final.samples=data.frame(Sample.Label=samples$PointID, Region.Label=samples$Region.Label, 
+#'  Effort=samples$Effort)
+#' 
+#' #obs dataframe
+#' obs=data.frame(ObjectID=xx$ObjectID, PointID=xx$PointID)
+#' #used to get Region and Sample assigned to ObjectID
+#' obs=merge(obs, samples, by=c("PointID", "PointID")) 
+#' obs=obs[!duplicated(obs$ObjectID),]
+#' obs=data.frame(object=obs$ObjectID, Region.Label=obs$Region.Label, Sample.Label=obs$PointID)
+#' 
+#' #Region.Label dataframe
+#' region.data=data.frame(Region.Label=c(1,2,3,4,5,6,7,8,9), 
+#' 		Area=c(point.num[1]*3.14,point.num[2]*3.14,point.num[3]*3.14,point.num[4]*3.14,
+#'             point.num[5]*3.14,
+#' 			   point.num[6]*3.14,point.num[7]*3.14,point.num[8]*3.14,point.num[9]*3.14))
+#' 
+#' #Candidate Models
+#' 
+#' GW1=ddf(
+#' 		dsmodel=~cds(key="unif", adj.series="cos", adj.order=1, adj.scale="width"),				
+#' 		mrmodel=~glm(~distance),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
+#' GW2=ddf(
+#' 		dsmodel=~cds(key="unif", adj.series="cos", adj.order=1, adj.scale="width"),				
+#' 		mrmodel=~glm(~distance+observer),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100))) 
+#' GW3=ddf(
+#' 		dsmodel=~cds(key="unif", adj.series="cos", adj.order=1, adj.scale="width"),				
+#' 		mrmodel=~glm(~distance*observer),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100))) 
+#' GW4=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100))) 
+#' GW4FI=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance),					  		
+#' 		data=bird.data,										
+#' 		method="io.fi",
+#' 		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100))) 
+#' GW5=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance+observer),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' GW5FI=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance+observer),					  		
+#' 		data=bird.data,										
+#' 		method="io.fi",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' GW6=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*observer),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' GW6FI=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*observer),					  		
+#' 		data=bird.data,										
+#' 		method="io.fi",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' GW7=ddf(
+#' 		dsmodel=~cds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*Day),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#' GW7FI=ddf(
+#' 		dsmodel=~cds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*Day),					  		
+#' 		data=bird.data,										
+#' 		method="io.fi",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#' GW8=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*observer*Day),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#' GW8FI=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*observer*Day),					  		
+#' 		data=bird.data,										
+#' 		method="io.fi",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#'#GWDS=ddf(
+#'#		dsmodel=~mcds(key="hn",formula=~1),								  		
+#'#		data=bird.data,										
+#'#		method="ds",
+#'#		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' 
+#'
+#' 
+#' ####GCWA Summary Metrics
+#' 
+#' #AIC table building code, not exactly elegant, but I did not want to add more package 
+#' #dependencies
+#' AIC = c(GW1$criterion,GW2$criterion, GW3$criterion,GW4$criterion, GW4FI$criterion,  
+#'         GW5$criterion,GW5FI$criterion,
+#' 		   GW6$criterion,GW6FI$criterion,GW7$criterion,GW7FI$criterion,GW8$criterion,
+#'         GW8FI$criterion)
+#' 
+#' #creates a set of row names for me to check my grep() call below		
+#' rn = c("GW1","GW2", "GW3","GW4", "GW4FI", "GW5", "GW5FI", "GW6", "GW6FI","GW7", 
+#'            "GW7FI","GW8", "GW8FI")
+#' 
+#' #number of parameters for each model
+#' k = c(length(GW1$par),length(GW2$par),  length(GW3$par),length(GW4$par),  length(GW4FI$par), 
+#'       length(GW5$par), length(GW5FI$par),length(GW6$par), length(GW6FI$par),length(GW7$par), 
+#'       length(GW7FI$par),length(GW8$par),  length(GW8FI$par))
+#' 
+#' #build AIC table and 
+#' AIC.table=data.frame(AIC = AIC, rn=rn, k=k, dAIC = abs(min(AIC)-AIC) , 
+#'                         likg=exp(-.5*(abs(min(AIC)-AIC))))
+#' #row.names(AIC.table)=grep("GW", ls(), value=TRUE)
+#' AIC.table=AIC.table[with(AIC.table, order(-likg, -dAIC, AIC, k)),]
+#' AIC.table=data.frame(AIC.table, wi=AIC.table$likg/sum(AIC.table$likg))
+#' AIC.table
+#' 
+#' #Model average N_hat_covered estimates
+#' #not very clean, but I wanted to show full process, need to use collect.models and model.table 
+#' #here
+#' 
+#' estimate=c(GW1$Nhat,GW2$Nhat, GW3$Nhat,GW4$Nhat, GW4FI$Nhat,  GW5$Nhat,GW5FI$Nhat,GW6$Nhat,
+#'                   GW6FI$Nhat,GW7$Nhat,GW7FI$Nhat,GW8$Nhat,GW8FI$Nhat)  
+#' AIC.values=AIC
+#' # Nhat.se is calculated in mrds:::summary.io, not in ddf(), so it takes a bit to pull out
+#' std.err=c(summary(GW1)$Nhat.se,summary(GW2)$Nhat.se,summary(GW3)$Nhat.se,summary(GW4)$Nhat.se, 
+#'     summary(GW4FI)$Nhat.se, summary(GW5)$Nhat.se, summary(GW5FI)$Nhat.se, 
+#' 	   summary(GW6)$Nhat.se, summary(GW6FI)$Nhat.se, summary(GW7)$Nhat.se, 
+#'     summary(GW7FI)$Nhat.se,summary(GW8)$Nhat.se, summary(GW8FI)$Nhat.se)  
+#' 
+#' #requires RMark
+#' #uses model.average structure to model average real abundance estimates for
+#' #covered area of the surveys
+#' mmi.list=list(estimate=estimate, AIC=AIC.values, se=std.err)
+#' model.average(mmi.list, revised=TRUE)
+#' 
+#'#Not Run
+#'#Best Model FI
+#'#best.modelFI=AIC.table[1,]
+#'#best.model
+#'#Best Model PI
+#'#best.modelPI=AIC.table[2,]
+#'#best.modelPI
+#' 
+#'#Not Run
+#'#summary(GW7FI, se=TRUE)
+#'#summary(GW7, se=TRUE)
+#'
+#'#Not Run 
+#'#GOF for models
+#'#ddf.gof(GW7, breaks=c(0,50,100))
+#'
+#'#Not Run 
+#'#Density estimation across occupancy categories
+#'#out.GW=dht(GW7, region.data, final.samples, obs, se=TRUE, options=list(convert.units=.01))
+#'  
+#' #Plots--Not Run
+#' #Composite Detection Function examples
+#' #plot(GW7, which=3, showpoints=FALSE, angle=0, density=0, col="black", lwd=3, 
+#' # main="Golden-cheeked Warbler",
+#' #   xlab="Distance (m)", las=1, cex.axis=1.25, cex.lab=1.25)
+#' 
+#' #Conditional Detection Function
+#' #dd=expand.grid(distance=0:100,Day=(4:82)/82) 
+#' #dmat=model.matrix(~distance*Day,dd) 
+#' #dd$p=plogis(model.matrix(~distance*Day,dd)%*%coef(GW7$mr)$estimate) 
+#' #dd$Day=dd$Day*82 
+#' #with(dd[dd$Day==12,],plot(distance,p,ylim=c(0,1), las=1, ylab="Detection probability",
+#' # xlab="Distance (m)", 
+#' #  type="l",lty=1, lwd=3, bty="l", cex.axis=1.5, cex.lab=1.5))
+#' #with(dd[dd$Day==65,],lines(distance,p,lty=2, lwd=3))
+#' #ch=paste(bird.data$detected[bird.data$observer==1],bird.data$detected[bird.data$observer==2],
+#' #sep="")
+#' #tab=table(ch,cut(82*bird.data$Day[bird.data$observer==1],c(0,45,83)),
+#' # cut(bird.data$distance[bird.data$observer==1],c(0,50,100)))
+#' #tabmat=cbind(colMeans(rbind(tab[3,,1]/colSums(tab[2:3,,1],tab[3,,1]/colSums(tab[c(1,3),,1])))),
+#' #colMeans(rbind(tab[3,,2]/colSums(tab[2:3,,2],tab[3,,2]/colSums(tab[c(1,3),,2])))))
+#' #colnames(tabmat)=c("0-50","51-100") 
+#' #points(c(25,75),tabmat[1,],pch=1, cex=1.5) 
+#' #points(c(25,75),tabmat[2,],pch=2, cex=1.5)
+#' 
+#' #Another alternative plot using barplot instead of points (this is one in paper)
+#' 
+#' #ch=paste(bird.data$detected[bird.data$observer==1],bird.data$detected[bird.data$observer==2],
+#' #sep="")
+#' #tab=table(ch,cut(82*bird.data$Day[bird.data$observer==1],c(0,45,83)),
+#' # cut(bird.data$distance[bird.data$observer==1],c(0,50,100)))
+#' #tabmat=cbind(colMeans(rbind(tab[3,,1]/colSums(tab[2:3,,1],tab[3,,1]/colSums(tab[c(1,3),,1])))),
+#' #colMeans(rbind(tab[3,,2]/colSums(tab[2:3,,2],tab[3,,2]/colSums(tab[c(1,3),,2])))))
+#' #colnames(tabmat)=c("0-50","51-100") 
+#' #par(mfrow=c(2, 1), mai=c(1,1,1,1))
+#' #with(dd[dd$Day==12,],plot(distance,p,ylim=c(0,1), las=1, ylab="Detection probability", xlab="",
+#' # type="l",lty=1, lwd=4, bty="l", cex.axis=1.5, cex.lab=1.5))
+#' #segments(0, 0, .0, tabmat[1,1], lwd=3)
+#' #segments(0, tabmat[1,1], 50, tabmat[1,1], lwd=4)
+#' #segments(50, tabmat[1,1], 50, 0, lwd=4)
+#' #segments(50, tabmat[1,2], 100, tabmat[1,2], lwd=4)
+#' #segments(0, tabmat[1,1], 50, tabmat[1,1], lwd=4)
+#' #segments(100, tabmat[1,2], 100, 0, lwd=4)
+#' #mtext("a",line=-1, at=90)
+#' #with(dd[dd$Day==65,],plot(distance,p,ylim=c(0,1), las=1, ylab="Detection probability", 
+#' # xlab="Distance", type="l",lty=1,
+#' # lwd=4, bty="l", cex.axis=1.5, cex.lab=1.5))
+#' #segments(0, 0, .0, tabmat[2,1], lwd=4)
+#' #segments(0, tabmat[2,1], 50, tabmat[2,1], lwd=4)
+#' #segments(50, tabmat[2,1], 50, 0, lwd=4)
+#' #segments(50, tabmat[2,2], 50, tabmat[2,1], lwd=4)
+#' #segments(50, tabmat[2,2], 100, tabmat[2,2], lwd=4)
+#' #segments(100, tabmat[2,2], 100, 0, lwd=4)
+#' #mtext("b",line=-1, at=90)
+#' }
+#' 
+NULL
+
+#' Black-capped vireo mark-recapture distance sampling analysis 
+#' 
+#' These data represent avian point count surveys conducted at 453 point sample survey locations on the 24,000 (approx) live-fire region of Fort Hood
+#' in central Texas.  Surveys were conducted by independent double observers (2 per survey occasion) and as such we had a maximum of 3 paired survey histories, giving a maximum of 
+#' 6 sample occasions (see MacKenzie et al. 2006, MacKenzie and Royle 2005, and Laake et al. 2011 for various sample survey design details).  At each point, we surveyed for 5 minutes (technically broken into
+#' 3 time intervals of 2, 2, and 1 minutes; not used here) and we noted detections by each observer and collected distance to each observation within a set of distance bins (0-25, 25-50, 50-75, 75-100m)
+#' of the target species (Black-capped vireo's in this case) for each surveyor.  Our primary focus was to use mark-recapture distance sampling methods to estimate density of 
+#' Black-capped vireo's, and to estimate detection rates for the mark-recapture, distance, and composite model.
+#'
+#' @details  In addition to detailing the analysis used by Collier et al. (2013, In Review), this example documents the use of \code{mrds} for avian point count surveys and shows how density models
+#' can be incorporated with occupancy models to develop spatially explicit density surface maps. For those that are interested, for the distance sampling portion of our analysis, we 
+#' used both conventional distance sampling (\code{cds}) and multiple covariate distance sampling (\code{mcds}) with uniform and half-normal key functions.  For the mark-recapture portion of 
+#' our analysis, we tended to use covariates for distance (median bin width), observer, and date of survey (days since 15 March 2011).  
+#' 
+#' We combined our \code{mrds} density estimates via a Horvitz-Thompson styled estimator with the resource selection function gradient developed 
+#' in Farrell et al. (2013) and estimated density on an ~3.14ha hexagonal grid across our study area, which provided a density gradient for the Fort Hood military installation.  Because there 
+#' was considerable data manipulation needed for each analysis to structure the data appropriately for use in \code{mrds}, rather than wrap each analysis in a single function, we have provided 
+#' both the Golden-cheeked warbler and Black-capped vireo analyses in their full detail.  The primary differences you will see will be changes to
+#' model structures and model outputs between the two species.    
+#' 
+#' @name lfbcvi
+#' @docType data
+#' @format The format is a data frame with the following covariate metrics.
+#' \describe{\item{PointID}{Unique identifier for each sample location; locations are the same for both species}
+#' \item{VisitNumber}{Visit number to the point}
+#' \item{Species}{Species designation, either Golden-cheeked warbler (GW) or Black-capped Vireo (BV)}
+#' \item{Distance}{Distance measure, which is either NA (representing no detection), or the median of the binned detection distances}
+#' \item{PairNumber}{ID value indicating which observers were paired for that sampling occasion}
+#' \item{Observer}{Observer ID, either primary(1), or secondary (2)}
+#' \item{Detected}{Detection of a bird, either 1 = detected, or 0 = not detected}
+#' \item{Date}{Date of survey since 15 march 2011}
+#' \item{Pred}{Predicted occupancy value for that survey hexagon based on Farrell et al. (2013)}
+#' \item{Category}{Region.Label categorization, see \code{mrds} help file for details on data structure}
+#' \item{Effort}{Amount of survey effort at the point}
+#' \item{Day}{Number of days since 15 March 2011}
+#' \item{ObjectID}{Unique ID for each paired observations} }
+#'  
+#' @references Farrell, S. F., B. A. Collier, K. L. Skow, A. M. Long, A. J. Campomizzi, M. L. Morrison, B. Hays, and R. N. Wilkins.  2013. Using LiDAR-derived structural vegetation characteristics to 
+#' develop high-resolution, small-scale, species distribution models for conservation planning. Ecosphere 43(3): 42. http://dx.doi.org/10.1890
+#' @references Laake, J. L., B. A. Collier, M. L. Morrison, and R. N. Wilkins. 2011. Point-based mark recapture distance sampling. Journal of Agricultural, Biological and Environmental Statistics 16: 389-408.
+#' @references Collier, B.A., S. L. Farrell, K. L. Skow, A. M. Long, A. J. Campomizzi, K. B. Hays, J. L. Laake, M. L. Morrison, and R. N. Wilkins.  2013. Spatially explicit density of 
+#' endangered avian species in a disturbed landscape.  Auk, In Review.   
+#' @keywords datasets
+#' @author Bret Collier and Jeff Laake
+#' @examples 
+#' 
+#' \donttest{
+#' data(lfbcvi)
+#' xy=cut(lfbcvi$Pred, c(-0.0001, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1), 
+#'   labels=c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"))
+#' x=data.frame(lfbcvi, New=xy)
+#' 
+#' #Note that I scaled the individual covariate of day-helps with convergence issues
+#' bird.data=data.frame(object=x$ObjectID, observer=x$Observer, detected=x$Detected,
+#'   distance=x$Distance, Region.Label=x$New, Sample.Label=x$PointID, Day=(x$Day/max(x$Day)))
+#' 
+#' # make observer a factor variable
+#' bird.data$observer=factor(bird.data$observer)
+#' 
+#' #Jeff Laake suggested this snippet to quickly create distance medians which adds bin 
+#'  information to the \code{bird.data} dataframe
+#' 
+#' bird.data$distbegin=0
+#' bird.data$distend=100
+#' bird.data$distend[bird.data$distance==12.5]=25
+#' bird.data$distbegin[bird.data$distance==37.5]=25
+#' bird.data$distend[bird.data$distance==37.5]=50
+#' bird.data$distbegin[bird.data$distance==62.5]=50
+#' bird.data$distend[bird.data$distance==62.5]=75
+#' bird.data$distbegin[bird.data$distance==87.5]=75
+#' bird.data$distend[bird.data$distance==87.5]=100
+#' 
+#'#Removed all survey points with distance=NA for a survey event; hence no observations
+#'# for use in \code{ddf()} but needed later
+#' bird.data=bird.data[complete.cases(bird.data),] 
+#' 
+#' #Manipulations on full dataset for various data.frame creation for use in density 
+#' #estimation using \code{dht()}
+#' 
+#' #Samples dataframe
+#' xx=x
+#' x=data.frame(PointID=x$PointID, Species=x$Species, Category=x$New, Effort=x$Effort)
+#' x=x[!duplicated(x$PointID),]
+#' point.num=table(x$Category)
+#' samples=data.frame(PointID=x$PointID, Region.Label=x$Category, Effort=x$Effort)
+#' final.samples=data.frame(Sample.Label=samples$PointID, Region.Label=samples$Region.Label, 
+#'  Effort=samples$Effort)
+#' 
+#' #obs dataframe
+#' obs=data.frame(ObjectID=xx$ObjectID, PointID=xx$PointID)
+#' #used to get Region and Sample assigned to ObjectID
+#' obs=merge(obs, samples, by=c("PointID", "PointID"))
+#' obs=obs[!duplicated(obs$ObjectID),]
+#' obs=data.frame(object=obs$ObjectID, Region.Label=obs$Region.Label, Sample.Label=obs$PointID)
+#' 
+#' region.data=data.frame(Region.Label=c(1, 2, 3,4,5,6,7,8,9, 10), 
+#' Area=c(point.num[1]*3.14,point.num[2]*3.14,point.num[3]*3.14,point.num[4]*3.14,
+#' point.num[5]*3.14,point.num[6]*3.14,point.num[7]*3.14,point.num[8]*3.14,
+#' point.num[9]*3.14, point.num[10]*3.14))
+#' 
+#' #Candidate Models
+#' 
+#' BV1=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100))) 
+#' BV1FI=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance),					  		
+#' 		data=bird.data,										
+#' 		method="io.fi",
+#' 		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
+#' BV2=ddf(
+#' 		dsmodel=~mcds(key="hr",formula=~1),				
+#' 		mrmodel=~glm(~distance),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100))) 
+#' BV3=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance+observer),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' BV3FI=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance+observer),					  		
+#' 		data=bird.data,										
+#' 		method="io.fi",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#' BV4=ddf(
+#' 		dsmodel=~mcds(key="hr",formula=~1),				
+#' 		mrmodel=~glm(~distance+observer),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' BV5=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*observer),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' BV5FI=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*observer),					  		
+#' 		data=bird.data,										
+#' 		method="io.fi",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' BV6=ddf(
+#' 		dsmodel=~mcds(key="hr",formula=~1),				
+#' 		mrmodel=~glm(~distance*observer),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' BV7=ddf(
+#' 		dsmodel=~cds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*Day),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#' BV7FI=ddf(
+#' 		dsmodel=~cds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*Day),					  		
+#' 		data=bird.data,										
+#' 		method="io.fi",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#' BV8=ddf(
+#' 		dsmodel=~cds(key="hr",formula=~1),				
+#' 		mrmodel=~glm(~distance*Day),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#' BV9=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*observer*Day),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#' BV9FI=ddf(
+#' 		dsmodel=~mcds(key="hn",formula=~1),				
+#' 		mrmodel=~glm(~distance*observer*Day),					  		
+#' 		data=bird.data,										
+#' 		method="io.fi",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#' BV10=ddf(
+#' 		dsmodel=~mcds(key="hr",formula=~1),				
+#' 		mrmodel=~glm(~distance*observer*Day),					  		
+#' 		data=bird.data,										
+#' 		method="io",
+#' 		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#' #BV.DS=ddf(
+#' #		dsmodel=~mcds(key="hn",formula=~1),								  		
+#' #		data=bird.data,										
+#' #		method="ds",
+#' #		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100))) 
+#' 
+#' #AIC table building code.
+#' AIC = c(BV1$criterion,BV1FI$criterion, BV2$criterion, BV3$criterion, BV3FI$criterion, 
+#'      BV4$criterion,  BV5$criterion, BV5FI$criterion,
+#' 		BV6$criterion, BV7$criterion, BV7FI$criterion, BV8$criterion, BV9$criterion, 
+#'      BV9FI$criterion, BV10$criterion)
+#' 
+#' #creates a set of row names for me to check my grep() call below		
+#' rn = c("BV1","BV1FI", "BV2", "BV3",  "BV3FI", "BV4", "BV5","BV5FI", "BV6", "BV7", 
+#'           "BV7FI", "BV8", "BV9", "BV9FI", "BV10")
+#' 
+#' #Number parameters
+#' k = c(length(BV1$par), length(BV1FI$par), length(BV2$par), length(BV3$par),
+#'      length(BV3FI$par), length(BV4$par),  length(BV5$par),length(BV5FI$par), 
+#' 		length(BV6$par), length(BV7$par), length(BV7FI$par), length(BV8$par), 
+#'      length(BV9$par), length(BV9FI$par), length(BV10$par))
+#' 
+#' #build AIC table 
+#' AIC.table=data.frame(AIC = AIC, rn=rn, k=k, dAIC = abs(min(AIC)-AIC) , 
+#'                      likg=exp(-.5*(abs(min(AIC)-AIC))))
+#' #row.names(AIC.table)=grep("BV", ls(), value=TRUE)
+#' AIC.table=AIC.table[with(AIC.table, order(-likg, -dAIC, AIC, k)),]
+#' AIC.table=data.frame(AIC.table, wi=AIC.table$likg/sum(AIC.table$likg))
+#' AIC.table
+#' 
+#' #Model average N_hat_covered estimates
+#' #not very clean, but I wanted to show full process, need to use collect.models 
+#' # and model.table here later on
+#' estimate=c(BV1$Nhat,BV1FI$Nhat, BV2$Nhat, BV3$Nhat, BV3FI$Nhat, BV4$Nhat,  BV5$Nhat, BV5FI$Nhat,
+#' 		BV6$Nhat, BV7$Nhat, BV7FI$Nhat, BV8$Nhat, BV9$Nhat, BV9FI$Nhat, BV10$Nhat)
+#' 
+#' AIC.values=AIC
+#' 
+#' #had to use str() to extract here as Nhat.se is calculated in mrds:::summary.io, 
+#' not in ddf(), so it takes a bit
+#' std.err=c(summary(BV1)$Nhat.se,summary(BV1FI)$Nhat.se,summary(BV2)$Nhat.se,summary(BV3)$Nhat.se, 
+#'           summary(BV3FI)$Nhat.se, summary(BV4)$Nhat.se, summary(BV5)$Nhat.se, 
+#' 		     summary(BV5FI)$Nhat.se, summary(BV6)$Nhat.se, summary(BV7)$Nhat.se, 
+#'           summary(BV7FI)$Nhat.se,summary(BV8)$Nhat.se, summary(BV9)$Nhat.se,
+#'            summary(BV9FI)$Nhat.se, summary(BV10)$Nhat.se)  
+#'  
+#' #requires RMark
+#' #uses model.average structure to model average real abundance estimates for
+#' #covered area of the surveys
+#'   mmi.list=list(estimate=estimate, AIC=AIC.values, se=std.err)
+#'   model.average(mmi.list, revised=TRUE)
+#' 
+#' #Not Run 
+#' #Summary for the top 2 models
+#'  #summary(BV5, se=TRUE)
+#'  #summary(BV5FI, se=TRUE)
+#' 	
+#' #Not Run 
+#' #Best Model
+#' 	#best.model=AIC.table[1,]
+#' 	
+#' #Not Run
+#' #GOF for models
+#' #ddf.gof(BV5, breaks=c(0, 25, 50, 75, 100))
+#' 
+#' #Not Run
+#' #Density estimation across occupancy categories
+#' #out.BV=dht(BV5, region.data, final.samples, obs, se=TRUE, options=list(convert.units=.01))
+#' 
+#' #Plot--Not Run
+#'  
+#' #Composite Detection Function
+#' #plot(BV5, which=3, showpoints=FALSE, angle=0, density=0, col="black", lwd=3,
+#' # main="Black-capped Vireo",xlab="Distance (m)", las=1, cex.axis=1.25, 
+#' # cex.lab=1.25)
+#' 
+#' }
+#' 	
+NULL
+
+
+

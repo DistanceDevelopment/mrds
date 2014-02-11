@@ -1,6 +1,4 @@
 # see predict.ds for documentation
-#' @rdname predict.ds
-#' @S3method predict io.fi
 predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
                           integrate=FALSE,...){
   # Functions Used: pdot.dsr.integrate.logistic, is.linear.logistic,

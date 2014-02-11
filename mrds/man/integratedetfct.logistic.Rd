@@ -2,7 +2,8 @@
 \alias{integratedetfct.logistic}
 \title{Integrate a logistic detection function}
 \usage{
-integratedetfct.logistic(x, scalemodel, width, theta1, integral.numeric, w)
+  integratedetfct.logistic(x, scalemodel, width, theta1,
+    integral.numeric, w)
 }
 \arguments{
   \item{x}{logistic design matrix values}
@@ -19,16 +20,16 @@ integratedetfct.logistic(x, scalemodel, width, theta1, integral.numeric, w)
   \item{w}{design covariates}
 }
 \value{
-vector of integral values
+  vector of integral values
 }
 \description{
-Integrates a logistic detection function; a separate
-function is used because in certain cases the integral can
-be solved analytically and also because the scale trick
-used with the half-normal and hazard rate doesn't work with
-the logistic.
+  Integrates a logistic detection function; a separate
+  function is used because in certain cases the integral
+  can be solved analytically and also because the scale
+  trick used with the half-normal and hazard rate doesn't
+  work with the logistic.
 }
 \author{
-Jeff Laake
+  Jeff Laake
 }
 

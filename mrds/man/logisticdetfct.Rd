@@ -2,7 +2,7 @@
 \alias{logisticdetfct}
 \title{Logistic detection function}
 \usage{
-logisticdetfct(distance, theta, w, std = FALSE)
+  logisticdetfct(distance, theta, w, std = FALSE)
 }
 \arguments{
   \item{distance}{perpendicular distance vector}
@@ -19,6 +19,6 @@ logisticdetfct(distance, theta, w, std = FALSE)
   standard line transect detection function).}
 }
 \description{
-Logistic detection function
+  Logistic detection function
 }
 

@@ -1,6 +1,4 @@
 # see predict.ds for documentation
-#' @rdname predict.ds
-#' @S3method predict rem
 predict.rem <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
   # Functions Used: predict.rem.fi and predict.ds 
 

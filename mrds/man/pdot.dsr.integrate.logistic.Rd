@@ -2,8 +2,9 @@
 \alias{pdot.dsr.integrate.logistic}
 \title{Compute probability that a object was detected by at least one observer}
 \usage{
-pdot.dsr.integrate.logistic(right, width, beta, x, integral.numeric, BT, models,
-  GAM = FALSE, rem = FALSE, point = FALSE)
+  pdot.dsr.integrate.logistic(right, width, beta, x,
+    integral.numeric, BT, models, GAM = FALSE, rem = FALSE,
+    point = FALSE)
 }
 \arguments{
   \item{right}{???}
@@ -27,11 +28,11 @@ pdot.dsr.integrate.logistic(right, width, beta, x, integral.numeric, BT, models,
   \item{point}{\code{TRUE} for point transects}
 }
 \description{
-Computes probability that a object was detected by at least
-one observer (\code{pdot} or p_.) for a logistic detection
-function that contains distance.
+  Computes probability that a object was detected by at
+  least one observer (\code{pdot} or p_.) for a logistic
+  detection function that contains distance.
 }
 \author{
-Jeff Laake
+  Jeff Laake
 }
 
