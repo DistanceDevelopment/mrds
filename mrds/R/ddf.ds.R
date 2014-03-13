@@ -77,10 +77,26 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   # created by create.ddfobj. That function creates list structure and
   # sets up initial values.
 
+  ### handle monotonicity before processing default meta.data values
+  # if monotonicity is turned on via mono.strict, turn on mono
+  if(!is.null(meta.data$mono.strict)){
+    if(meta.data$mono.strict){
+      meta.data$mono <- TRUE
+    }
+  }
+  # if mono.strict was not set, but mono was TRUE then turn on mono.strict
+  if(!is.null(meta.data$mono)){
+    if(meta.data$mono & is.null(meta.data$mono.strict)){
+      meta.data$mono <- TRUE
+    }
+  }
+
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
-                                     int.range=NA, mono=FALSE, mono.strict=TRUE,
-                                     point=FALSE)
+                                    int.range=NA, mono=FALSE, mono.strict=FALSE,
+                                    point=FALSE)
+
+
   # Set up control values
   control <- assign.default.values(control, showit=0, doeachint=FALSE,
                                    estimate=TRUE, refit=TRUE, nrefits=25,

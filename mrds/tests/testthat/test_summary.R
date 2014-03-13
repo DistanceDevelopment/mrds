@@ -10,14 +10,14 @@ context("Summary tests")
 test_that("summary results are correct",{
 
   ### load the results (summary objects)
-  #> pt.result.summ<-summary(pt.result)
-  #> tee.result.summ<-summary(tee.result)
-  #> tee.result.trial.summ<-summary(tee.result.trial)
-  #> tee.result.trial.fi.summ<-summary(tee.result.trial.fi)
-  #> tee.result.rem.summ<-summary(tee.result.rem)
-  #> save(pt.result.summ,tee.result.summ,tee.result.trial.summ,
-  #       tee.result.trial.fi.summ,tee.result.rem.summ,
-  #       file="mrds/inst/testData/summaryresults.rda")
+  #pt.result.summ<-summary(pt.result)
+  #tee.result.summ<-summary(tee.result)
+  #tee.result.trial.summ<-summary(tee.result.trial)
+  #tee.result.trial.fi.summ<-summary(tee.result.trial.fi)
+  #tee.result.rem.summ<-summary(tee.result.rem)
+  #save(pt.result.summ,tee.result.summ,tee.result.trial.summ,
+  #     tee.result.trial.fi.summ,tee.result.rem.summ,
+  #     file="mrds/inst/testData/summaryresults.rda")
   res.filename<-system.file("testData/summaryresults.rda", package="mrds")
   load(res.filename)
 

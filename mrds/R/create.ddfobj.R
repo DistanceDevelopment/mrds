@@ -155,12 +155,14 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   # can't constrain monotonicity with covariates
   # don't use monotonicity unless we have adjustment terms
   if(meta.data$mono){
-    if(ddfobj$scale$formula!="~1"){
-      stop("Covariate models cannot be constrained for monotonicity.")
+    if(ddfobj$type !="unif"){
+      if(ddfobj$scale$formula!="~1"){
+        stop("Covariate models cannot be constrained for monotonicity.")
+      }
     }
 
     if(is.null(ddfobj$adjustment)){
-      message("Monotonicity constraints are unnecessary with key only models, not constraining model for monotonicity.")
+      message("Key only models do not require monotonicity contraints. Not constraining model for monotonicity.")
       meta.data$mono <- FALSE
     }
   }

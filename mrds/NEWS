@@ -7,6 +7,12 @@ CHANGES
  * which= argument in plot.* now sorts the which first, so plots will always be in order
  * plot.ds is now more friendly to par() users, thanks to Jason Roberts for the pointer
 
+BUGS FIX
+
+ * uniform+cosine detection functions were ignored when using monotonicity constraints, now they can be used together
+ * mono.strict=TRUE didn't automatically turn on mono=TRUE, extra logic to correct this
+
+
 
 mrds 2.1.4-3
 ------------

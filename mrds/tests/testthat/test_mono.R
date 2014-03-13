@@ -51,7 +51,7 @@ test_that("ddf when monotonicity is not required", {
   expect_that(result<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1),
                   data = egdata[egdata$observer ==1, ], method = "ds",
                   meta.data = list(width = 4,mono=TRUE)),
-     shows_message("Monotonicity constraints are unnecessary with key only models, not constraining model for monotonicity."))
+     shows_message("Key only models do not require monotonicity contraints. Not constraining model for monotonicity."))
 
 })
 

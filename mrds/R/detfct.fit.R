@@ -59,7 +59,7 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
   metaiter <- 0
 
   # If we have no adjustments then we can just do some straight optimisation.
-  # OR if we have uniform detection function
+  # OR if we have uniform detection function with no adjustments
   # OR if we're enforcing monotonicity
   if(is.null(ddfobj$adjustment) | ddfobj$type=="unif" |
      misc.options$mono | misc.options$nofit){

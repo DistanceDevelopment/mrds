@@ -59,8 +59,7 @@ ddf.trial <- function(dsmodel,mrmodel,data,meta.data=list(),control=list(),
 
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
-                                     int.range=NA, mono=FALSE, mono.strict=TRUE,
-                                     point=FALSE)
+                                     int.range=NA, point=FALSE)
 
   # Set up control values
   control <- assign.default.values(control, showit = 0, doeachint=FALSE,

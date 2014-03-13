@@ -53,8 +53,8 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
 
   # Set up meta data values
   meta.data=assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
-                                   int.range=NA, mono=FALSE, mono.strict=TRUE,
-                                   point=FALSE)
+                                   int.range=NA,point=FALSE)
+
   # Set up control values
   control=assign.default.values(control, showit=0, doeachint=FALSE,
                                 estimate=TRUE, refit=TRUE, nrefits=25,
@@ -78,6 +78,8 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   unique.data <- data[data$observer==1,]
   unique.data$detected <- 1
   result$ds <- ddf.ds(model=dsmodel,unique.data,meta.data,control,call)
+  # use the ds meta data (as this has correct mono values)
+  result$meta.data <- result$ds$meta.data
   if(is.null(result$ds$Nhat)){
     if(control$debug){
       errors("ds model did not converge; no further results possible")
