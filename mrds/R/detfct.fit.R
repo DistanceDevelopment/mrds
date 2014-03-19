@@ -65,17 +65,16 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
      misc.options$mono | misc.options$nofit){
 
     if(misc.options$mono & ddfobj$type!="unif"){
-      # get best key pars first
+      ## get best key pars first, not enforcing monotonicity
       save.mono<-misc.options$mono
       save.mono.strict<-misc.options$mono.strict
-
       misc.options$mono<-FALSE
       misc.options$mono.strict<-FALSE
       lt <- detfct.fit.opt(ddfobj,optim.options,bounds,
                            misc.options,fitting="key")
       misc.options$mono<-save.mono
       misc.options$mono.strict<-save.mono.strict
-
+      # assign those parameters
       ddfobj<-assign.par(ddfobj,lt$par)
     }
 

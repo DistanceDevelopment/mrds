@@ -11,6 +11,7 @@ BUGS FIX
 
  * uniform+cosine detection functions were ignored when using monotonicity constraints, now they can be used together
  * mono.strict=TRUE didn't automatically turn on mono=TRUE, extra logic to correct this
+ * montonicity constraints did not use standardised (g(x)/g(0) detection functions, so if g(x)>1 monotonicity constraints were voilated. Now standardised detection functions are used. Thanks to Len Thomas for noticing this bug.
 
 
 

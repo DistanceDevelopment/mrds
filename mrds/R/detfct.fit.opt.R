@@ -144,6 +144,18 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                       control=list(trace=as.integer(showit),
                                    tol=misc.options$mono.tol,
                                    delta=misc.options$mono.delta)))
+        # this code randomly generates starting values see ?gosolnp
+        #lt<-try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+        #              ineqfun=flnl.constr,
+        #              ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+        #              LB=lowerbounds, UB=upperbounds,
+        #              ddfobj=ddfobj, misc.options=misc.options,
+        #              control=list(trace=as.integer(showit),
+        #                           tol=misc.options$mono.tol,
+        #                           delta=misc.options$mono.delta),
+        #              distr = rep(1, length(lowerbounds)),
+        #              distr.opt = list(), n.restarts = 2, n.sim = 20000))
+
 
         # if that failed then make a dummy object
         if(class(lt)=="try-error"){
