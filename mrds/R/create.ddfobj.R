@@ -137,11 +137,14 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
     ddfobj$adjustment$parameters <- initialvalues$adjustment
   }
 
-  # Add restriction to prevent adjustments if scale formula isn't ~1
+  # If the model includes both covariates (in scale/shape) and adjustments
   if(!is.null(ddfobj$adjustment) & ddfobj$type!="unif"){
     if(ddfobj$scale$formula != ~1){
-      stop("\nAdjustment functions cannot be used with scale covariates")
+      # commented-out line below prevents models with adjustments and
+      # covariates being fitted
+      #stop("\nAdjustment functions cannot be used with scale covariates")
     }else{
+      # shape covariates
       if(!is.null(ddfobj$shape)){
         if(ddfobj$shape$formula != ~1){
           stop("\nAdjustment functions cannot be used with shape covariates")

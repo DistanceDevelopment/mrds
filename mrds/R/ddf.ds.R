@@ -261,7 +261,13 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   npar <- length(lt$par)
   result$criterion <- 2*lt$value + 2*npar
 
+  # give the object some class
   class(result) <- c("ds","ddf")
+
+  # if we have adjustments then check the monotonicity constraints
+  if(!is.null(ddfobj$adjustment)){
+    result$monotonicity.check <- mono.check(result,n.pts=control$mono.points)
+  }
 
   if(is.null(lt$message)){
     result$ds$message <- ""

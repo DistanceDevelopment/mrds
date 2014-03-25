@@ -13,7 +13,7 @@ egdata <- book.tee.data$book.tee.dataframe
 
 context("Monotonicity: bookexamples tests")
 
-test_that("bookexamples parameter estimates and likelihood is correct", {
+test_that("bookexamples par. ests. and likelihood are correct", {
 
   # run with Rsolnp, mono=TRUE, mono.strict=FALSE
   result.mono<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1, adj.series="cos",
@@ -39,9 +39,9 @@ test_that("bookexamples parameter estimates and likelihood is correct", {
 
 })
 
-test_that("ddf when monotonicity is not required", {
+test_that("ddf tells you when monotonicity is not required", {
 
-  # covariate models die
+  ## covariate models die
   expect_that(result<-ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
                   data = egdata[egdata$observer ==1, ], method = "ds",
                   meta.data = list(width = 4,mono=TRUE)),
@@ -58,64 +58,81 @@ test_that("ddf when monotonicity is not required", {
 
 context("Monotonicity: mixture tests")
 
-test_that("monotonic and non-monotonic fits differ for non-monotone data",{
+# save the seed
+#rngsave<-.Random.seed
+set.seed(341)
 
-  # save the seed
-  #rngsave<-.Random.seed
-  set.seed(3141)
+# simulate some non-monotonic data
+dat<-mrds:::sim.mix(1000,c(0.1,0.5),c(0.2,0.8),10,means=c(0,2.5))
+dat<-data.frame(distance=dat,
+                object=1:length(dat),
+                observed=rep(1,length(dat)))
 
-  # simulate some non-monotonic data
-  dat<-mrds:::sim.mix(100,c(0.1,3),c(0.3,0.7),10,means=c(0,4))
-  dat<-data.frame(distance=dat,
-                  object=1:length(dat),
-                  observed=rep(1,length(dat)))
+trunc<-5
 
-  trunc<-7
+# fit without constraint
+expect_message(result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,
+                             adj.series="cos", adj.order=c(2,3)),
+                             data=dat, method = "ds",
+                             meta.data=list(width=trunc,mono=FALSE)),
+               "Detection function is not strictly monotonic!")
+# with weak monotonicity
+expect_message(result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,
+                             adj.series="cos", adj.order=c(2,3)),
+                             data=dat, method = "ds",
+                             meta.data=list(width=trunc,mono=TRUE,
+                                            mono.strict=FALSE)),
+               "Detection function is not strictly monotonic!")
+# with strong monotonicity
+result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
+              adj.order=c(2,3)), data=dat, method = "ds",
+              meta.data=list(width=trunc,mono=TRUE,mono.strict=TRUE))
 
-  # fit without constraint
-  result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
-                adj.order=c(2)), data=dat, method = "ds",
-                meta.data=list(width=trunc,mono=FALSE))
-  # with weak monotonicity
-  result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
-                adj.order=c(2)), data=dat, method = "ds",
-                meta.data=list(width=trunc,mono=TRUE,mono.strict=FALSE))
-  # with strong monotonicity
-  result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
-                adj.order=c(2)), data=dat, method = "ds",
-                meta.data=list(width=trunc,mono=TRUE,mono.strict=TRUE))
+## plot
+#par(mfrow=c(2,3))
+#plot(result.n,main="no constraints")
+#plot(result.w,main="weak constraints")
+#plot(result.s,main="strict constraints")
+#mono.check(result.n,plot=TRUE,n.pts=20)
+#mono.check(result.w,plot=TRUE,n.pts=20)
+#mono.check(result.s,plot=TRUE,n.pts=20)
 
-  # plot
-  #par(mfrow=c(1,3))
-  #plot(result.n);plot(result.w);plot(result.s)
-
-  # evaluate the detection function at a bunch of points
-  # should we standardise the detection function here g(x)/g(0)?
-  std <- FALSE
-  x <- seq(0,trunc,len=100)
-  newdata <- data.frame(distance=x,object=1:length(x),observed=rep(1,length(x)))
-
-  ddfobj<-result.n$ds$aux$ddfobj
-  ddfobj$scale$dm<-mrds:::setcov(newdata, as.formula(ddfobj$scale$formula))$cov
-  pred.n<-mrds:::detfct(x,ddfobj,width=trunc,standardize=std)
-
-  ddfobj<-result.w$ds$aux$ddfobj
-  ddfobj$scale$dm<-mrds:::setcov(newdata, as.formula(ddfobj$scale$formula))$cov
-  pred.w<-mrds:::detfct(x,ddfobj,width=trunc,standardize=std)
-
-  ddfobj<-result.s$ds$aux$ddfobj
-  ddfobj$scale$dm<-mrds:::setcov(newdata, as.formula(ddfobj$scale$formula))$cov
-  pred.s<-mrds:::detfct(x,ddfobj,width=trunc,standardize=std)
-
+test_that("non-monotonic for non-monotone data",{
   # expect a non-monotonic fit
-  expect_that(max(diff(pred.n))>tol,is_true())
-  # differences are all -ve for strict
-  expect_that(max(diff(pred.s))<tol,is_true())
-  # differences between eval and g(0) are -ve for weak
-  expect_that(max(pred.w-pred.w[1])<tol,is_true())
-
-  # recover the seed
-  #.Random.seed<-rngsave
+  expect_message(mono.chk <- mono.check(result.n,n.pts=20),"Detection function is not strictly monotonic!")
+  expect_that(mono.chk,is_false())
 })
 
+
+test_that("weakly monotone for weakly monotone constraints",{
+  # check the weak fit is weak
+  expect_that(mono.check(result.w,strict=FALSE,n.pts=20),is_true())
+
+  expect_message(mono.chk <- mono.check(result.w,n.pts=20),"Detection function is not strictly monotonic!")
+  expect_that(mono.chk,is_false())
+})
+
+
+test_that("strictly monotonic for strictly monotone constaints",{
+  # expect that the strict fit is strict
+  expect_that(mono.check(result.s,strict=FALSE,n.pts=20),is_true())
+  expect_that(mono.check(result.s,strict=TRUE,n.pts=20),is_true())
+})
+
+
+
+#context("Monotonicity checks for covariates")
+#
+#test_that("Montonicity checks for covariate models",{
+#  result.nm<-ddf(dsmodel = ~mcds(key = "hn", formula = ~size, adj.series="cos",
+#                                 adj.order=2,adj.scale="scale"),
+#                 data = egdata[egdata$observer ==1, ], method = "ds",
+#                 meta.data = list(width = 4))
+#mrds:::mono.check(result.nm,plot=TRUE)
+#
+#
+#
+#
+#
+#})
 

@@ -1,3 +1,12 @@
+mrds 2.1.5
+------------
+
+CHANGES
+ * models with both adjustment terms and covariates are now allowed
+ * mono.check function checks that a detection function is monotonic over its range (at the observed covariate combinations if covariates are included)
+
+
+
 mrds 2.1.4-5
 ------------
 
@@ -7,7 +16,7 @@ CHANGES
  * which= argument in plot.* now sorts the which first, so plots will always be in order
  * plot.ds is now more friendly to par() users, thanks to Jason Roberts for the pointer
 
-BUGS FIX
+BUG FIXES
 
  * uniform+cosine detection functions were ignored when using monotonicity constraints, now they can be used together
  * mono.strict=TRUE didn't automatically turn on mono=TRUE, extra logic to correct this

@@ -14,20 +14,20 @@ test_that("golf tee data gives the same results as Distance",{
 
 
   #CDS
-  result.cds<-ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance), 
+  result.cds<-ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance),
                   data = egdata, method = "io", meta.data = list(width = 4))
   expect_that(result.cds$Nhat, equals(232.0015,tolerance=1e-6))
 
   #GLM
-  result.glm<-ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi", 
+  result.glm<-ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi",
                   meta.data = list(width = 4))
   expect_that(result.glm$Nhat, equals(186.0947,tolerance=1e-6))
 
   #MCDS
   #checkException(ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = newdata, method = "ds", meta.data = list(width = 4)))
 
-  result.mcds<-ddf(dsmodel=~mcds(key = "hn", formula=~1), 
-                   data=egdata[egdata$observer==1,], method="ds", 
+  result.mcds<-ddf(dsmodel=~mcds(key = "hn", formula=~1),
+                   data=egdata[egdata$observer==1,], method="ds",
                    meta.data=list(width=4))
   expect_that(result.mcds$Nhat, equals(212.229,tolerance=1e-3))
 
@@ -65,10 +65,10 @@ width<-25
 # same order as here, so just iterate over the list
 
 test.df<-function(mcds.bit,dat,width,mono=FALSE,strict=FALSE,mono.tol=1e-7,showit=0){
-  ddf(dsmodel=mcds.bit,data=dat,method="ds",
+  suppressMessages(ddf(dsmodel=mcds.bit,data=dat,method="ds",
       meta.data=list(width=width,mono=mono,mono.strict=strict),
 #      control=list(mono.tol=mono.tol,showit=showit))
-      control=list(mono.tol=1e-5,mono.delta=1e-5,showit=showit))
+      control=list(mono.tol=1e-5,mono.delta=1e-5,showit=showit)))
 }
 
 models<-ltmodels
@@ -95,7 +95,7 @@ for(i in model.set){
   set.seed(1245)
 
   # uncomment for debug
-  #cat("\nmodel",i,":")
+  #cat("\nmodel",i,":\n")
 
   # construct the model
   mcds.call<-paste("~mcds(key=\"")

@@ -90,7 +90,6 @@ flnl.constr<- function(pars, ddfobj, misc.options,...){
         }
       }
     }
-
     # inequality constraints ensuring that
     # the detection function is always >=0
     ic_p <- double(no_d)
