@@ -3,7 +3,7 @@
 library(testthat)
 library(mrds)
 
-tol <- sqrt(.Machine$double.eps)
+tol <- 1e-7
 
 context("Summary tests")
 
