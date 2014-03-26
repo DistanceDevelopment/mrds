@@ -51,7 +51,7 @@ mono.check <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
     }
 
     # make predictions over the data
-    ps <- as.vector(mrds:::detfct(x,ddfobj,width=right.trunc,standardize=TRUE))
+    ps <- as.vector(detfct(x,ddfobj,width=right.trunc,standardize=TRUE))
 
     ## check for monotonicity
     # first: weak monotonicity
