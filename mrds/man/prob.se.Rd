@@ -2,8 +2,7 @@
 \alias{prob.se}
 \title{Average p and average p(0) variance}
 \usage{
-  prob.se(model, fct, vcov, observer = NULL,
-    fittedmodel = NULL)
+prob.se(model, fct, vcov, observer = NULL, fittedmodel = NULL)
 }
 \arguments{
   \item{model}{ddf model object}
@@ -24,24 +23,24 @@
   \code{trial} or \code{io} respectively}
 }
 \value{
-  \item{var}{variance} \item{partial}{partial derivatives
-  of parameters with respect to fct}
-  \item{covar}{covariance of n and average p or p(0)}
+\item{var}{variance} \item{partial}{partial derivatives of
+parameters with respect to fct} \item{covar}{covariance of
+n and average p or p(0)}
 }
 \description{
-  Computes components of variance for average p=n/N and
-  average p(0) with weights based on empirical covariate
-  distribution, if it contains covariates.
+Computes components of variance for average p=n/N and
+average p(0) with weights based on empirical covariate
+distribution, if it contains covariates.
 }
 \details{
-  Need to add equations here as I do not think they exist
-  in any of the texts. These should probably be checked
-  with simulation.
+Need to add equations here as I do not think they exist in
+any of the texts. These should probably be checked with
+simulation.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  prob.deriv
+prob.deriv
 }
 

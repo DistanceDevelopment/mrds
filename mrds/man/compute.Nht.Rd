@@ -2,7 +2,7 @@
 \alias{compute.Nht}
 \title{Horvitz-Thompson estimates 1/p_i or s_i/p_i}
 \usage{
-  compute.Nht(pdot, group = TRUE, size = NULL)
+compute.Nht(pdot, group = TRUE, size = NULL)
 }
 \arguments{
   \item{pdot}{vector of estimated detection probabilities}
@@ -14,20 +14,20 @@
   populations}
 }
 \value{
-  vector of H-T components for abundance estimate
+vector of H-T components for abundance estimate
 }
 \description{
-  Compute individual components of Horvitz-Thompson
-  abundance estimate in covered region for a particular
-  subset of the data depending on value of group = TRUE (do
-  group abundance); FALSE(do individual abundance)
+Compute individual components of Horvitz-Thompson abundance
+estimate in covered region for a particular subset of the
+data depending on value of group = TRUE (do group
+abundance); FALSE(do individual abundance)
 }
 \note{
-  Internal function called by
-  \code{\link{covered.region.dht}}
+Internal function called by
+\code{\link{covered.region.dht}}
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{utility}
 

@@ -2,8 +2,7 @@
 \alias{detfct.fit.opt}
 \title{Fit detection function using key-adjustment functions}
 \usage{
-  detfct.fit.opt(ddfobj, optim.options, bounds,
-    misc.options, fitting = "all")
+detfct.fit.opt(ddfobj, optim.options, bounds, misc.options, fitting = "all")
 }
 \arguments{
   \item{ddfobj}{detection function object}
@@ -19,54 +18,51 @@
   allowed to vary in the fitting}
 }
 \value{
-  fitted detection function model object with the following
-  list structure \item{par}{final parameter vector}
-  \item{value}{final negative log likelihood value}
-  \item{counts}{number of function evaluations}
-  \item{convergence}{see codes in optim}
-  \item{message}{string about convergence}
-  \item{hessian}{hessian evaluated at final parameter
-  values} \item{aux}{ a list with 20 elements \itemize{
-  \item maxit: maximum number of iterations allowed for
-  optimization \item lower: lower bound values for
-  parameters \item upper: upper bound values for parameters
-  \item setlower: TRUE if they are user set bounds \item
-  setupper: TRUE if they are user set bounds \item point:
-  TRUE if point counts and FALSE if line transect \item
-  int.range: integration range values \item showit: integer
-  value that determines information printed during
-  iteration \item doeachint: if TRUE each integral is
-  computed numerically rather using tabled values \item
-  integral.numeric if TRUE compute logistic integrals
-  numerically \item breaks: breaks in distance for defined
-  fixed bins for analysis \item maxiter: maximum iterations
-  used \item refit: if TRUE, detection function will be
-  fitted more than once if parameters are at a boundary or
-  when convergence is not achieved \item nrefits: number of
-  refittings \item parscale: parameter scale values \item
-  mono: if TRUE, montonicity will be enforced \item
-  mono.strict: if TRUE, then strict monotonicity is
-  enforced; otherwise weak \item width: radius of point
-  count or half-width of strip \item standardize: if TRUE,
-  detection function is scaled so g(0)=1 \item ddfobj:
-  distance detection function object; see
-  \code{\link{create.ddfobj}} \item bounded: TRUE if
-  parameters ended up a boundary (I think) \item model:
-  list of formulas for detection function model (probably
-  can remove this) }}
+fitted detection function model object with the following
+list structure \item{par}{final parameter vector}
+\item{value}{final negative log likelihood value}
+\item{counts}{number of function evaluations}
+\item{convergence}{see codes in optim}
+\item{message}{string about convergence}
+\item{hessian}{hessian evaluated at final parameter values}
+\item{aux}{ a list with 20 elements \itemize{ \item maxit:
+maximum number of iterations allowed for optimization \item
+lower: lower bound values for parameters \item upper: upper
+bound values for parameters \item setlower: TRUE if they
+are user set bounds \item setupper: TRUE if they are user
+set bounds \item point: TRUE if point counts and FALSE if
+line transect \item int.range: integration range values
+\item showit: integer value that determines information
+printed during iteration \item doeachint: if TRUE each
+integral is computed numerically rather using tabled values
+\item integral.numeric if TRUE compute logistic integrals
+numerically \item breaks: breaks in distance for defined
+fixed bins for analysis \item maxiter: maximum iterations
+used \item refit: if TRUE, detection function will be
+fitted more than once if parameters are at a boundary or
+when convergence is not achieved \item nrefits: number of
+refittings \item parscale: parameter scale values \item
+mono: if TRUE, montonicity will be enforced \item
+mono.strict: if TRUE, then strict monotonicity is enforced;
+otherwise weak \item width: radius of point count or
+half-width of strip \item standardize: if TRUE, detection
+function is scaled so g(0)=1 \item ddfobj: distance
+detection function object; see \code{\link{create.ddfobj}}
+\item bounded: TRUE if parameters ended up a boundary (I
+think) \item model: list of formulas for detection function
+model (probably can remove this) }}
 }
 \description{
-  Fit detection function to observed distances using the
-  key-adjustment function approach.  If adjustment
-  functions are included it will alternate between fitting
-  parameters of key and adjustment functions and then all
-  parameters much like the approach in the CDS and MCDS
-  Distance FORTRAN code. This function is called by the
-  driver functioin \code{detfct.fit}.  This function does
-  the calls the optimx() function (from the package
-  optimx).
+Fit detection function to observed distances using the
+key-adjustment function approach.  If adjustment functions
+are included it will alternate between fitting parameters
+of key and adjustment functions and then all parameters
+much like the approach in the CDS and MCDS Distance FORTRAN
+code. This function is called by the driver functioin
+\code{detfct.fit}.  This function does the calls the
+optimx() function (from the package optimx).
 }
 \author{
-  Dave Miller; Jeff Laake; Lorenzo Milazzo
+Dave Miller; Jeff Laake; Lorenzo Milazzo
 }
 

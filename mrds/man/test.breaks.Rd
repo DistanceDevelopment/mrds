@@ -2,7 +2,7 @@
 \alias{test.breaks}
 \title{Test validity for histogram breaks(cutpoints)}
 \usage{
-  test.breaks(breaks, left, width)
+test.breaks(breaks, left, width)
 }
 \arguments{
   \item{breaks}{vector of cutpoints (breaks) for distance
@@ -14,14 +14,13 @@
   point count or half-width of transect}
 }
 \value{
-  vector of breaks modified to be valid if necessary
+vector of breaks modified to be valid if necessary
 }
 \description{
-  Determines whether user specified breaks for histograms
-  are properly ordered and match the left and right
-  truncation.
+Determines whether user specified breaks for histograms are
+properly ordered and match the left and right truncation.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 

@@ -2,8 +2,8 @@
 \alias{rem.glm}
 \title{Iterative offset model fitting of mark-recapture with removal model}
 \usage{
-  rem.glm(datavec, fitformula, eps = 1e-05,
-    iterlimit = 500, GAM = FALSE, gamplot = TRUE, datavec2)
+rem.glm(datavec, fitformula, eps = 1e-05, iterlimit = 500, GAM = FALSE,
+  gamplot = TRUE, datavec2)
 }
 \arguments{
   \item{datavec}{dataframe containing records seen by
@@ -25,49 +25,48 @@
   in case there is an observer(not platform effect)}
 }
 \value{
-  list of class("remglm","glm","lm") or
-  class("remglm","gam") \item{glmobj}{GLM or GAM object}
-  \item{offsetvalue}{offsetvalues from iterative fit}
-  \item{plotobj}{gam plot object (if GAM & gamplot==TRUE,
-  else NULL)}
+list of class("remglm","glm","lm") or class("remglm","gam")
+\item{glmobj}{GLM or GAM object}
+\item{offsetvalue}{offsetvalues from iterative fit}
+\item{plotobj}{gam plot object (if GAM & gamplot==TRUE,
+else NULL)}
 }
 \description{
-  Detection function fitting from mark-recapture data with
-  a removal configuration in which a secondary observer
-  knows what the primary observer detects and detects
-  objects missed by the primary observer.  The iterative
-  offset glm/gam uses an offset to compensate for the
-  conditioning on the set of objects seen by either
-  observer (eg 00 those missed by both observers are not
-  included in the analysis.  This function is similar to
-  \code{\link{io.glm}}.
+Detection function fitting from mark-recapture data with a
+removal configuration in which a secondary observer knows
+what the primary observer detects and detects objects
+missed by the primary observer.  The iterative offset
+glm/gam uses an offset to compensate for the conditioning
+on the set of objects seen by either observer (eg 00 those
+missed by both observers are not included in the analysis.
+This function is similar to \code{\link{io.glm}}.
 }
 \details{
-  The only difference between this function and
-  \code{\link{io.glm}} is the offset and the data
-  construction because there is only one detection function
-  being estimated for the primary observer. The two
-  functions could be merged.
+The only difference between this function and
+\code{\link{io.glm}} is the offset and the data
+construction because there is only one detection function
+being estimated for the primary observer. The two functions
+could be merged.
 }
 \note{
-  currently the code in this function for GAMs has been
-  commented out until the remainder of the mrds package
-  will work with GAMs.
+currently the code in this function for GAMs has been
+commented out until the remainder of the mrds package will
+work with GAMs.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \references{
-  Buckland, S.T., J.M. breiwick, K.L. Cattanach, and J.L.
-  Laake.  1993. Estimated population size of the California
-  gray whale.  Marine Mammal Science, 9:235-249.
+Buckland, S.T., J.M. breiwick, K.L. Cattanach, and J.L.
+Laake.  1993. Estimated population size of the California
+gray whale.  Marine Mammal Science, 9:235-249.
 
-  Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers,
-  T.A. Marques, J.R.B. Bishop, and L. Thomas. 2004.
-  Further topics in distance sampling.  pp: 360-363. In:
-  Advanced Distance Sampling, eds. S.T. Buckland,
-  D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers,
-  and L. Thomas.  Oxford University Press.
+Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers,
+T.A. Marques, J.R.B. Bishop, and L. Thomas. 2004.  Further
+topics in distance sampling.  pp: 360-363. In: Advanced
+Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
+Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.  Oxford
+University Press.
 }
 \keyword{Models}
 \keyword{Statistical}

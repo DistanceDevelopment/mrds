@@ -2,7 +2,7 @@
 \alias{covered.region.dht}
 \title{Covered region estimate of abundance from Horvitz-Thompson-like estimator}
 \usage{
-  covered.region.dht(obs, samples, group)
+covered.region.dht(obs, samples, group)
 }
 \arguments{
   \item{obs}{observations table}
@@ -13,17 +13,17 @@
   abundance of individuals}
 }
 \value{
-  Nhat.by.sample - dataframe of abundance by sample
+Nhat.by.sample - dataframe of abundance by sample
 }
 \description{
-  Computes H-T abundance within covered region by sample.
+Computes H-T abundance within covered region by sample.
 }
 \note{
-  Internal function called by \code{\link{dht}} and related
-  functions
+Internal function called by \code{\link{dht}} and related
+functions
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{utility}
 

@@ -2,8 +2,8 @@
 \alias{ddf.trial}
 \title{Mark-Recapture Distance Sampling (MRDS) Trial Configuration - PI}
 \usage{
-  ddf.trial(dsmodel, mrmodel, data, meta.data = list(),
-    control = list(), call = "")
+ddf.trial(dsmodel, mrmodel, data, meta.data = list(), control = list(),
+  call = "")
 }
 \arguments{
   \item{dsmodel}{distance sampling model specification;
@@ -24,55 +24,55 @@
   \code{ddf}}
 }
 \value{
-  result: a trial model object which is composed of
-  trial.fi and ds model objects
+result: a trial model object which is composed of trial.fi
+and ds model objects
 }
 \description{
-  Mark-Recapture Distance Sampling (MRDS) Analysis of Trial
-  Observer Configuration and Point Independence
+Mark-Recapture Distance Sampling (MRDS) Analysis of Trial
+Observer Configuration and Point Independence
 }
 \details{
-  MRDS analysis based on point independence involves two
-  separate and independent analyses of the mark-recapture
-  data and the distance sampling data.  For the trial
-  configuration, the mark-recapture data are analysed with
-  a call to \code{\link{ddf.trial.fi}} (see likelihood eq
-  6.12 and 6.17 in Laake and Borchers 2004) to fit a
-  conditional distance sampling detection function for
-  observer 1 based on trials (observations) from observer 2
-  to estimate p_1(0), detection probability at distance
-  zero for observer 1. Independently, the distance data
-  from observer 1 are used to fit a conventional distance
-  sampling (CDS) (likelihood eq 6.6) or multi-covariate
-  distance sampling (MCDS) (likelihood eq 6.14) model for
-  the detection function, g(y), such that g(0)=1.  The
-  detection function for observer 1 is then created as
-  p_1(y)=p_1(0)*g(y) (eq 6.28 of Laake and Borchers 2004)
-  from which predictions are made. \code{ddf.trial} is not
-  called directly by the user and is called from
-  \code{\link{ddf}} with \code{method="trial"}.
+MRDS analysis based on point independence involves two
+separate and independent analyses of the mark-recapture
+data and the distance sampling data.  For the trial
+configuration, the mark-recapture data are analysed with a
+call to \code{\link{ddf.trial.fi}} (see likelihood eq 6.12
+and 6.17 in Laake and Borchers 2004) to fit a conditional
+distance sampling detection function for observer 1 based
+on trials (observations) from observer 2 to estimate
+p_1(0), detection probability at distance zero for observer
+1. Independently, the distance data from observer 1 are
+used to fit a conventional distance sampling (CDS)
+(likelihood eq 6.6) or multi-covariate distance sampling
+(MCDS) (likelihood eq 6.14) model for the detection
+function, g(y), such that g(0)=1.  The detection function
+for observer 1 is then created as p_1(y)=p_1(0)*g(y) (eq
+6.28 of Laake and Borchers 2004) from which predictions are
+made. \code{ddf.trial} is not called directly by the user
+and is called from \code{\link{ddf}} with
+\code{method="trial"}.
 
-  For a complete description of each of the calling
-  arguments, see \code{\link{ddf}}.  The argument
-  \code{dataname} is the name of the dataframe specified by
-  the argument \code{data} in \code{ddf}. The arguments
-  \code{dsmodel}, \code{mrmodel}, \code{control} and
-  \code{meta.data} are defined the same as in \code{ddf}.
+For a complete description of each of the calling
+arguments, see \code{\link{ddf}}.  The argument
+\code{dataname} is the name of the dataframe specified by
+the argument \code{data} in \code{ddf}. The arguments
+\code{dsmodel}, \code{mrmodel}, \code{control} and
+\code{meta.data} are defined the same as in \code{ddf}.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \references{
-  Laake, J.L. and D.L. Borchers. 2004. Methods for
-  incomplete detection at distance zero. In: Advanced
-  Distance Sampling, eds. S.T.  Buckland, D.R.Anderson,
-  K.P. Burnham, J.L. Laake, D.L. Borchers, and L.  Thomas.
-  Oxford University Press.
+Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
+detection at distance zero. In: Advanced Distance Sampling,
+eds. S.T.  Buckland, D.R.Anderson, K.P. Burnham, J.L.
+Laake, D.L. Borchers, and L.  Thomas. Oxford University
+Press.
 }
 \seealso{
-  \code{\link{ddf.trial.fi}},
-  \code{\link{ddf.ds}},\code{\link{summary.trial}},\code{\link{coef.trial}},\code{\link{plot.trial}},
-  \code{\link{gof.trial}}
+\code{\link{ddf.trial.fi}},
+\code{\link{ddf.ds}},\code{\link{summary.trial}},\code{\link{coef.trial}},\code{\link{plot.trial}},
+\code{\link{gof.trial}}
 }
 \keyword{Models}
 \keyword{Statistical}

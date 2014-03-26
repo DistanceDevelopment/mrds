@@ -2,8 +2,7 @@
 \alias{errors}
 \title{Error function}
 \usage{
-  errors(errmsg = NULL, errmode = "report",
-    preamble = "Warning")
+errors(errmsg = NULL, errmode = "report", preamble = "Warning")
 }
 \arguments{
   \item{errmsg}{the message to be stored/printed
@@ -15,12 +14,12 @@
   message}
 }
 \value{
-  None
+None
 }
 \description{
-  Writes error messages for various errors that can occur
+Writes error messages for various errors that can occur
 }
 \author{
-  Dave Miller
+Dave Miller
 }
 

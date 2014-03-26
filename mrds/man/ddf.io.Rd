@@ -2,8 +2,8 @@
 \alias{ddf.io}
 \title{Mark-Recapture Distance Sampling (MRDS) IO - PI}
 \usage{
-  ddf.io(dsmodel, mrmodel, data, meta.data = list(),
-    control = list(), call = "")
+ddf.io(dsmodel, mrmodel, data, meta.data = list(), control = list(),
+  call = "")
 }
 \arguments{
   \item{dsmodel}{distance sampling model specification;
@@ -24,56 +24,56 @@
   \code{ddf}}
 }
 \value{
-  result: an io model object which is composed of io.fi and
-  ds model objects
+result: an io model object which is composed of io.fi and
+ds model objects
 }
 \description{
-  Mark-Recapture Distance Sampling (MRDS) Analysis of
-  Independent Observer Configuration and Point Independence
+Mark-Recapture Distance Sampling (MRDS) Analysis of
+Independent Observer Configuration and Point Independence
 }
 \details{
-  MRDS analysis based on point independence involves two
-  separate and independent analyses of the mark-recapture
-  data and the distance sampling data.  For the independent
-  observer configuration, the mark-recapture data are
-  analysed with a call to \code{\link{ddf.io.fi}} (see
-  likelihood eq 6.8 and 6.16 in Laake and Borchers 2004) to
-  fit conditional distance sampling detection functions to
-  estimate p(0), detection probability at distance zero for
-  the independent observer team based on independence at
-  zero (eq 6.22 in Laake and Borchers 2004). Independently,
-  the distance data, the union of the observations from the
-  independent observers, are used to fit a conventional
-  distance sampling (CDS) (likelihood eq 6.6) or
-  multi-covariate distance sampling (MCDS) (likelihood eq
-  6.14) model for the detection function, g(y), such that
-  g(0)=1. The detection function for the observer team is
-  then created as p(y)=p(0)*g(y) (eq 6.28 of Laake and
-  Borchers 2004) from which predictions are made.
-  \code{ddf.io} is not called directly by the user and is
-  called from \code{\link{ddf}} with \code{method="io"}.
+MRDS analysis based on point independence involves two
+separate and independent analyses of the mark-recapture
+data and the distance sampling data.  For the independent
+observer configuration, the mark-recapture data are
+analysed with a call to \code{\link{ddf.io.fi}} (see
+likelihood eq 6.8 and 6.16 in Laake and Borchers 2004) to
+fit conditional distance sampling detection functions to
+estimate p(0), detection probability at distance zero for
+the independent observer team based on independence at zero
+(eq 6.22 in Laake and Borchers 2004). Independently, the
+distance data, the union of the observations from the
+independent observers, are used to fit a conventional
+distance sampling (CDS) (likelihood eq 6.6) or
+multi-covariate distance sampling (MCDS) (likelihood eq
+6.14) model for the detection function, g(y), such that
+g(0)=1. The detection function for the observer team is
+then created as p(y)=p(0)*g(y) (eq 6.28 of Laake and
+Borchers 2004) from which predictions are made.
+\code{ddf.io} is not called directly by the user and is
+called from \code{\link{ddf}} with \code{method="io"}.
 
-  For a complete description of each of the calling
-  arguments, see \code{\link{ddf}}.  The argument
-  \code{dataname} is the name of the dataframe specified by
-  the argument \code{data} in \code{ddf}. The arguments
-  \code{dsmodel}, \code{mrmodel}, \code{control} and
-  \code{meta.data} are defined the same as in \code{ddf}.
+For a complete description of each of the calling
+arguments, see \code{\link{ddf}}.  The argument
+\code{dataname} is the name of the dataframe specified by
+the argument \code{data} in \code{ddf}. The arguments
+\code{dsmodel}, \code{mrmodel}, \code{control} and
+\code{meta.data} are defined the same as in \code{ddf}.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \references{
-  Laake, J.L. and D.L. Borchers. 2004. Methods for
-  incomplete detection at distance zero. In: Advanced
-  Distance Sampling, eds. S.T.  Buckland, D.R.Anderson,
-  K.P. Burnham, J.L. Laake, D.L. Borchers, and L.  Thomas.
-  Oxford University Press.
+Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
+detection at distance zero. In: Advanced Distance Sampling,
+eds. S.T.  Buckland, D.R.Anderson, K.P. Burnham, J.L.
+Laake, D.L. Borchers, and L.  Thomas. Oxford University
+Press.
 }
 \seealso{
-  \code{\link{ddf.io.fi}},
-  \code{\link{ddf.ds}},\code{\link{summary.io}},\code{\link{coef.io}},\code{\link{plot.io}},
-  \code{\link{gof.io}}
+\code{\link{ddf.io.fi}},
+\code{\link{ddf.ds}},\code{\link{summary.io}},\code{\link{coef.io}},\code{\link{plot.io}},
+\code{\link{gof.io}}
 }
 \keyword{Models}
 \keyword{Statistical}

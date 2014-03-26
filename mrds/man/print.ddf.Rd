@@ -2,7 +2,7 @@
 \alias{print.ddf}
 \title{Simple pretty printer for distance sampling analyses}
 \usage{
-  \method{print}{ddf} (x, ...)
+\method{print}{ddf}(x, ...)
 }
 \arguments{
   \item{x}{a \code{ddf} object}
@@ -11,10 +11,10 @@
   compatibility.}
 }
 \description{
-  Simply prints out summary of the model which was fitted.
-  For more detailed information see \code{\link{summary}}.
+Simply prints out summary of the model which was fitted.
+For more detailed information see \code{\link{summary}}.
 }
 \author{
-  David L. Miller
+David L. Miller
 }
 

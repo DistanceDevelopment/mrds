@@ -2,8 +2,8 @@
 \alias{io.glm}
 \title{Iterative offset GLM/GAM for fitting detection function}
 \usage{
-  io.glm(datavec, fitformula, eps = 1e-05, iterlimit = 500,
-    GAM = FALSE, gamplot = TRUE)
+io.glm(datavec, fitformula, eps = 1e-05, iterlimit = 500, GAM = FALSE,
+  gamplot = TRUE)
 }
 \arguments{
   \item{datavec}{dataframe}
@@ -20,45 +20,45 @@
   \code{GAM=TRUE}}
 }
 \value{
-  list of class("ioglm","glm","lm") or class("ioglm","gam")
-  \item{glmobj}{GLM or GAM object}
-  \item{offsetvalue}{offsetvalues from iterative fit}
-  \item{plotobj}{gam plot object (if GAM & gamplot==TRUE,
-  else NULL)}
+list of class("ioglm","glm","lm") or class("ioglm","gam")
+\item{glmobj}{GLM or GAM object}
+\item{offsetvalue}{offsetvalues from iterative fit}
+\item{plotobj}{gam plot object (if GAM & gamplot==TRUE,
+else NULL)}
 }
 \description{
-  Provides an iterative algorithm for finding the MLEs of
-  detection (capture) probabilities for a two-occasion
-  (double observer) mark-recapture experiment using
-  standard algorithms GLM/GAM and an offset to compensate
-  for conditioning on the set of observations.  While the
-  likelihood can be formulated and solved numerically, the
-  use of GLM/GAM provides all of the available tools for
-  fitting, predictions, plotting etc without any further
-  development.
+Provides an iterative algorithm for finding the MLEs of
+detection (capture) probabilities for a two-occasion
+(double observer) mark-recapture experiment using standard
+algorithms GLM/GAM and an offset to compensate for
+conditioning on the set of observations.  While the
+likelihood can be formulated and solved numerically, the
+use of GLM/GAM provides all of the available tools for
+fitting, predictions, plotting etc without any further
+development.
 }
 \details{
-  Note that currently the code in this function for GAMs
-  has been commented out until the remainder of the mrds
-  package will work with GAMs.  This is an internal
-  function that is used as by \code{ddf.io.fi} to fit
-  mark-recapture models with 2 occasions.  The argument
-  \code{mrmodel} is used for \code{fitformula}.
+Note that currently the code in this function for GAMs has
+been commented out until the remainder of the mrds package
+will work with GAMs.  This is an internal function that is
+used as by \code{ddf.io.fi} to fit mark-recapture models
+with 2 occasions.  The argument \code{mrmodel} is used for
+\code{fitformula}.
 }
 \author{
-  Jeff Laake, David Borchers, Charles Paxton
+Jeff Laake, David Borchers, Charles Paxton
 }
 \references{
-  Buckland, S.T., J.M. breiwick, K.L. Cattanach, and J.L.
-  Laake.  1993. Estimated population size of the California
-  gray whale.  Marine Mammal Science, 9:235-249.
+Buckland, S.T., J.M. breiwick, K.L. Cattanach, and J.L.
+Laake.  1993. Estimated population size of the California
+gray whale.  Marine Mammal Science, 9:235-249.
 
-  Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers,
-  T.A. Marques, J.R.B. Bishop, and L. Thomas. 2004.
-  Further topics in distance sampling.  pp: 360-363. In:
-  Advanced Distance Sampling, eds. S.T. Buckland,
-  D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers,
-  and L. Thomas.  Oxford University Press.
+Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers,
+T.A. Marques, J.R.B. Bishop, and L. Thomas. 2004.  Further
+topics in distance sampling.  pp: 360-363. In: Advanced
+Distance Sampling, eds. S.T. Buckland, D.R.Anderson, K.P.
+Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.  Oxford
+University Press.
 }
 \keyword{Models}
 \keyword{Statistical}

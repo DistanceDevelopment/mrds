@@ -3,7 +3,7 @@
 \title{Cumulative distribution function (cdf) for fitted distance sampling
 detection function}
 \usage{
-  cdf.ds(model, newdata = NULL)
+cdf.ds(model, newdata = NULL)
 }
 \arguments{
   \item{model}{fitted distance sampling model}
@@ -12,28 +12,27 @@ detection function}
   other than the original observations}
 }
 \value{
-  vector of cdf values for each observation
+vector of cdf values for each observation
 }
 \description{
-  Computes cdf values of observed distances from fitted
-  distribution.  For a set of observed x it returns the
-  integral of f(x) for the range= (inner, x), where inner
-  is the innermost distance which is observable (either 0
-  or left if left truncated).  In terms of g(x) this is the
-  integral of g(x) over range divided by the integral of
-  g(x) over the entire range of the data (inner, W).
+Computes cdf values of observed distances from fitted
+distribution.  For a set of observed x it returns the
+integral of f(x) for the range= (inner, x), where inner is
+the innermost distance which is observable (either 0 or
+left if left truncated).  In terms of g(x) this is the
+integral of g(x) over range divided by the integral of g(x)
+over the entire range of the data (inner, W).
 }
 \note{
-  This is an internal function that is not intended to be
-  invoked directly.  It is called by
-  \code{\link{qqplot.ddf}} to compute values for K-S and
-  CvM tests and the Q-Q plot.
+This is an internal function that is not intended to be
+invoked directly.  It is called by \code{\link{qqplot.ddf}}
+to compute values for K-S and CvM tests and the Q-Q plot.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  \code{\link{qqplot.ddf}}
+\code{\link{qqplot.ddf}}
 }
 \keyword{utility}
 

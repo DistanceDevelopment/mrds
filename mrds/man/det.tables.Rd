@@ -2,7 +2,7 @@
 \alias{det.tables}
 \title{Observation detection tables}
 \usage{
-  det.tables(model, nc = NULL, breaks = NULL)
+det.tables(model, nc = NULL, breaks = NULL)
 }
 \arguments{
   \item{model}{fitted model from \code{ddf}}
@@ -12,18 +12,18 @@
   \item{breaks}{user define breakpoints}
 }
 \value{
-  list object of class "det.tables" \item{Observer1}{table
-  for observer 1} \item{Observer2}{table for observer 2}
-  \item{Duplicates}{histogram counts for duplicates}
-  \item{Pooled}{histogram counts for all observations by
-  either observer} \item{Obs1_2}{table for observer 1
-  within subset seen by observer 2} \item{Obs2_1}{table for
-  observer 2 within subset seen by observer 1}
+list object of class "det.tables" \item{Observer1}{table
+for observer 1} \item{Observer2}{table for observer 2}
+\item{Duplicates}{histogram counts for duplicates}
+\item{Pooled}{histogram counts for all observations by
+either observer} \item{Obs1_2}{table for observer 1 within
+subset seen by observer 2} \item{Obs2_1}{table for observer
+2 within subset seen by observer 1}
 }
 \description{
-  Creates a series of tables for dual observer data that
-  shows the number missed and detected for each observer
-  within defined distance classes.
+Creates a series of tables for dual observer data that
+shows the number missed and detected for each observer
+within defined distance classes.
 }
 \examples{
 \donttest{
@@ -41,6 +41,6 @@ plot(tabs,new=FALSE,which=c(1,2,5,6))
 }
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 

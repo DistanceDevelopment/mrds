@@ -2,7 +2,7 @@
 \alias{p.det}
 \title{Double-platform detection probability}
 \usage{
-  p.det(dpformula, dplink, dppars, dpdata)
+p.det(dpformula, dplink, dppars, dpdata)
 }
 \arguments{
   \item{dpformula}{formula for detection function}
@@ -14,14 +14,14 @@
   \item{dpdata}{double platform data}
 }
 \value{
-  vector of predicted detection probabilities
+vector of predicted detection probabilities
 }
 \description{
-  Computes detection probability for detection function
-  computed from mark-recapture data with possibly different
-  link functions.
+Computes detection probability for detection function
+computed from mark-recapture data with possibly different
+link functions.
 }
 \author{
-  ?????
+?????
 }
 

@@ -2,7 +2,7 @@
 \alias{logisticbyx}
 \title{Logistic as a function of covariates}
 \usage{
-  logisticbyx(distance, x, models, beta, point)
+logisticbyx(distance, x, models, beta, point)
 }
 \arguments{
   \item{distance}{vector of distance values}
@@ -16,14 +16,14 @@
   \item{point}{\code{TRUE} if a point transect model}
 }
 \value{
-  vector of probabilities
+vector of probabilities
 }
 \description{
-  treats logistic as a function of covariates; for a given
-  covariate combination it computes function at with those
-  covariate values at a range of distances
+treats logistic as a function of covariates; for a given
+covariate combination it computes function at with those
+covariate values at a range of distances
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 

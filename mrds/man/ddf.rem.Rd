@@ -2,8 +2,8 @@
 \alias{ddf.rem}
 \title{Mark-Recapture Distance Sampling (MRDS) Removal - PI}
 \usage{
-  ddf.rem(dsmodel, mrmodel, data, meta.data = list(),
-    control = list(), call = "")
+ddf.rem(dsmodel, mrmodel, data, meta.data = list(), control = list(),
+  call = "")
 }
 \arguments{
   \item{dsmodel}{distance sampling model specification;
@@ -24,53 +24,53 @@
   \code{ddf}}
 }
 \value{
-  result: an rem model object which is composed of rem.fi
-  and ds model objects
+result: an rem model object which is composed of rem.fi and
+ds model objects
 }
 \description{
-  Mark-Recapture Distance Sampling (MRDS) Analysis of
-  Removal Observer Configuration and Point Independence
+Mark-Recapture Distance Sampling (MRDS) Analysis of Removal
+Observer Configuration and Point Independence
 }
 \details{
-  MRDS analysis based on point independence involves two
-  separate and independent analyses of the mark-recapture
-  data and the distance sampling data.  For the removal
-  observer configuration, the mark-recapture data are
-  analysed with a call to \code{\link{ddf.rem.fi}} (see
-  Laake and Borchers 2004) to fit conditional distance
-  sampling detection functions to estimate p(0), detection
-  probability at distance zero for the primary observer
-  based on independence at zero (eq 6.22 in Laake and
-  Borchers 2004). Independently, the distance data, the
-  observations from the primary observer, are used to fit a
-  conventional distance sampling (CDS) (likelihood eq 6.6)
-  or multi-covariate distance sampling (MCDS) (likelihood
-  eq 6.14) model for the detection function, g(y), such
-  that g(0)=1. The detection function for the primary
-  observer is then created as p(y)=p(0)*g(y) (eq 6.28 of
-  Laake and Borchers 2004) from which predictions are made.
-  \code{ddf.rem} is not called directly by the user and is
-  called from \code{\link{ddf}} with \code{method="rem"}.
+MRDS analysis based on point independence involves two
+separate and independent analyses of the mark-recapture
+data and the distance sampling data.  For the removal
+observer configuration, the mark-recapture data are
+analysed with a call to \code{\link{ddf.rem.fi}} (see Laake
+and Borchers 2004) to fit conditional distance sampling
+detection functions to estimate p(0), detection probability
+at distance zero for the primary observer based on
+independence at zero (eq 6.22 in Laake and Borchers 2004).
+Independently, the distance data, the observations from the
+primary observer, are used to fit a conventional distance
+sampling (CDS) (likelihood eq 6.6) or multi-covariate
+distance sampling (MCDS) (likelihood eq 6.14) model for the
+detection function, g(y), such that g(0)=1. The detection
+function for the primary observer is then created as
+p(y)=p(0)*g(y) (eq 6.28 of Laake and Borchers 2004) from
+which predictions are made. \code{ddf.rem} is not called
+directly by the user and is called from \code{\link{ddf}}
+with \code{method="rem"}.
 
-  For a complete description of each of the calling
-  arguments, see \code{\link{ddf}}.  The argument
-  \code{data} is the dataframe specified by the argument
-  \code{data} in \code{ddf}. The arguments \code{dsmodel},
-  \code{mrmodel}, \code{control} and \code{meta.data} are
-  defined the same as in \code{ddf}.
+For a complete description of each of the calling
+arguments, see \code{\link{ddf}}.  The argument \code{data}
+is the dataframe specified by the argument \code{data} in
+\code{ddf}. The arguments \code{dsmodel}, \code{mrmodel},
+\code{control} and \code{meta.data} are defined the same as
+in \code{ddf}.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \references{
-  Laake, J.L. and D.L. Borchers. 2004. Methods for
-  incomplete detection at distance zero. In: Advanced
-  Distance Sampling, eds. S.T.  Buckland, D.R.Anderson,
-  K.P. Burnham, J.L. Laake, D.L. Borchers, and L.  Thomas.
-  Oxford University Press.
+Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
+detection at distance zero. In: Advanced Distance Sampling,
+eds. S.T.  Buckland, D.R.Anderson, K.P. Burnham, J.L.
+Laake, D.L. Borchers, and L.  Thomas. Oxford University
+Press.
 }
 \seealso{
-  \code{\link{ddf.rem.fi}}, \code{\link{ddf.ds}}
+\code{\link{ddf.rem.fi}}, \code{\link{ddf.ds}}
 }
 \keyword{Models}
 \keyword{Statistical}

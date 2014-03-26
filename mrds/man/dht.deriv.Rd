@@ -3,7 +3,7 @@
 \title{Computes abundance estimates at specified parameter values using
 Horvitz-Thompson-like estimator}
 \usage{
-  dht.deriv(par, model, obs, samples, options = list())
+dht.deriv(par, model, obs, samples, options = list())
 }
 \arguments{
   \item{par}{detection function parameter values}
@@ -18,24 +18,24 @@ Horvitz-Thompson-like estimator}
   \code{\link{dht}}}
 }
 \value{
-  vector of abundance estimates at values of parameters
-  specified in par
+vector of abundance estimates at values of parameters
+specified in par
 }
 \description{
-  Computes abundance at specified values of parameters for
-  numerical computation of first derivative with respect to
-  parameters in detection function.  An internal function
-  called by DeltaMethod which is invoked by dht.se
+Computes abundance at specified values of parameters for
+numerical computation of first derivative with respect to
+parameters in detection function.  An internal function
+called by DeltaMethod which is invoked by dht.se
 }
 \note{
-  Internal function; not intended to be called by user
+Internal function; not intended to be called by user
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  \code{\link{dht}}, \code{\link{dht.se}},
-  \code{\link{DeltaMethod}}
+\code{\link{dht}}, \code{\link{dht.se}},
+\code{\link{DeltaMethod}}
 }
 \keyword{utility}
 

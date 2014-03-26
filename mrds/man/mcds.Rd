@@ -2,9 +2,8 @@
 \alias{mcds}
 \title{MCDS function definition}
 \usage{
-  mcds(formula = NULL, key = NULL, adj.series = NULL,
-    adj.order = c(NULL), adj.scale = "width",
-    adj.exp = FALSE, shape.formula = ~1)
+mcds(formula = NULL, key = NULL, adj.series = NULL, adj.order = c(NULL),
+  adj.scale = "width", adj.exp = FALSE, shape.formula = ~1)
 }
 \arguments{
   \item{formula}{formula for scale function}
@@ -29,21 +28,20 @@
   \item{shape.formula}{formula for shape function}
 }
 \value{
-  A formula list used to define the detection function
-  model \item{fct}{string "mcds"} \item{key}{key function
-  string} \item{adj.series}{adjustment function string}
-  \item{adj.order}{adjustment function orders}
-  \item{adj.scale}{adjustment function scale type}
-  \item{formula}{formula for scale function}
-  \item{shape.formula}{formula for shape function}
+A formula list used to define the detection function model
+\item{fct}{string "mcds"} \item{key}{key function string}
+\item{adj.series}{adjustment function string}
+\item{adj.order}{adjustment function orders}
+\item{adj.scale}{adjustment function scale type}
+\item{formula}{formula for scale function}
+\item{shape.formula}{formula for shape function}
 }
 \description{
-  Creates model formula list for multiple covariate
-  distance sampling using values supplied in call to
-  \code{\link{ddf}}
+Creates model formula list for multiple covariate distance
+sampling using values supplied in call to \code{\link{ddf}}
 }
 \author{
-  Jeff Laake; Dave Miller
+Jeff Laake; Dave Miller
 }
 \keyword{utility}
 

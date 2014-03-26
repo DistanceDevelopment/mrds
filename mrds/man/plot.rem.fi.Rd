@@ -3,12 +3,11 @@
 \title{Plot fit of detection functions and histograms of data from removal distance
 sampling model}
 \usage{
-  \method{plot}{rem.fi} (x, which = 1:3, breaks = NULL,
-    nc = NULL, maintitle = "", showlines = TRUE,
-    showpoints = TRUE, ylim = c(0, 1), angle = -45,
-    density = 20, col = "black", jitter = NULL,
-    divisions = 25, pages = 0, xlab = "Distance",
-    ylab = "Detection probability", subtitle = TRUE, ...)
+\method{plot}{rem.fi}(x, which = 1:3, breaks = NULL, nc = NULL,
+  maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
+  angle = -45, density = 20, col = "black", jitter = NULL,
+  divisions = 25, pages = 0, xlab = "Distance",
+  ylab = "Detection probability", subtitle = TRUE, ...)
 }
 \arguments{
   \item{x}{fitted model from \code{ddf}}
@@ -63,32 +62,28 @@ sampling model}
   plotting functions (\code{plot}, \code{hist},
   \code{lines}, \code{points}, etc)}
 }
-\value{
-  NULL
-}
 \description{
-  Plots the fitted detection functions for a distance
-  sampling model and histograms of the distances (for
-  unconditional detection functions) or proportion of
-  observations detected within distance intervals (for
-  conditional detection functions) to compare visually the
-  fitted model and data.
+Plots the fitted detection functions for a distance
+sampling model and histograms of the distances (for
+unconditional detection functions) or proportion of
+observations detected within distance intervals (for
+conditional detection functions) to compare visually the
+fitted model and data.
 }
 \details{
-  The structure of the histogram can be controlled by the
-  user-defined arguments \code{nc} or \code{breaks}.  The
-  observation specific detection probabilities along with
-  the line representing the fitted average detection
-  probability.
+The structure of the histogram can be controlled by the
+user-defined arguments \code{nc} or \code{breaks}.  The
+observation specific detection probabilities along with the
+line representing the fitted average detection probability.
 
-  It is not intended for the user to call
-  \code{plot.rem.fi} but its arguments are documented here.
-  Instead the generic \code{plot} command should be used
-  and it will call the appropriate function based on the
-  class of the \code{ddf} object.
+It is not intended for the user to call \code{plot.rem.fi}
+but its arguments are documented here. Instead the generic
+\code{plot} command should be used and it will call the
+appropriate function based on the class of the \code{ddf}
+object.
 }
 \author{
-  Jeff Laake, Jon Bishop, David Borchers, David L Miller
+Jeff Laake, Jon Bishop, David Borchers, David L Miller
 }
 \keyword{plot}
 

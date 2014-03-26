@@ -2,8 +2,8 @@
 \alias{gstdint}
 \title{Integral of pdf of distances}
 \usage{
-  gstdint(x, ddfobj, index = NULL, select = NULL, width,
-    standardize = TRUE, point = FALSE, stdint = TRUE)
+gstdint(x, ddfobj, index = NULL, select = NULL, width, standardize = TRUE,
+  point = FALSE, stdint = TRUE)
 }
 \arguments{
   \item{x}{lower,upper value for integration}
@@ -27,21 +27,21 @@
   used}
 }
 \value{
-  vector of integral values of detection function
+vector of integral values of detection function
 }
 \description{
-  Computes the integral of distpdf with scale=1
-  (stdint=TRUE) or specified scale (stdint=FALSE)
+Computes the integral of distpdf with scale=1 (stdint=TRUE)
+or specified scale (stdint=FALSE)
 }
 \note{
-  This is an internal function that is not intended to be
-  invoked directly.
+This is an internal function that is not intended to be
+invoked directly.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  \code{\link{tablecgf}}
+\code{\link{tablecgf}}
 }
 \keyword{utility}
 

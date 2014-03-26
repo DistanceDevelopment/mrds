@@ -2,7 +2,7 @@
 \alias{is.linear.logistic}
 \title{Collection of functions for logistic detection functions}
 \usage{
-  is.linear.logistic(xmat, g0model, zdim, width)
+is.linear.logistic(xmat, g0model, zdim, width)
 }
 \arguments{
   \item{xmat}{data matrix}
@@ -14,27 +14,27 @@
   \item{width}{transect width}
 }
 \value{
-  Logical TRUE if condition holds and FALSE otherwise
+Logical TRUE if condition holds and FALSE otherwise
 }
 \description{
-  These functions are used to test whether a logistic
-  detection function is a linear function of distance
-  (\code{is.linear.logistic}) or is constant (varies by
-  distance but no other covariates)
-  \code{is.logistic.constant}). Based on these tests, the
-  most appropriate manner for integrating the detection
-  function with respect to distance is chosen.  The
-  integrals are needed to estimate the average detection
-  probability for a given set of covariates.
+These functions are used to test whether a logistic
+detection function is a linear function of distance
+(\code{is.linear.logistic}) or is constant (varies by
+distance but no other covariates)
+\code{is.logistic.constant}). Based on these tests, the
+most appropriate manner for integrating the detection
+function with respect to distance is chosen.  The integrals
+are needed to estimate the average detection probability
+for a given set of covariates.
 }
 \details{
-  If the logit is linear in distance then the integral can
-  be computed analytically. If the logit is constant or
-  only varies by distance then only one integral needs to
-  be computed rather than an integral for each observation.
+If the logit is linear in distance then the integral can be
+computed analytically. If the logit is constant or only
+varies by distance then only one integral needs to be
+computed rather than an integral for each observation.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{utility}
 

@@ -2,7 +2,7 @@
 \alias{print.det.tables}
 \title{Prints results of observer detection tables}
 \usage{
-  \method{print}{det.tables} (x, ...)
+\method{print}{det.tables}(x, ...)
 }
 \arguments{
   \item{x}{result of call to ddf}
@@ -11,16 +11,16 @@
   print}
 }
 \value{
-  None
+None
 }
 \description{
-  Provides formatted output for detection tables
+Provides formatted output for detection tables
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  \code{\link{plot.det.tables}}
+\code{\link{plot.det.tables}}
 }
 \keyword{utility}
 

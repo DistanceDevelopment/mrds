@@ -3,8 +3,8 @@
 \title{Prints density and abundance estimates based on Horvitz-Thompson-like
 estimator}
 \usage{
-  \method{print}{dht} (x, cor = FALSE, bysample = FALSE,
-    vcmatrices = FALSE, ...)
+\method{print}{dht}(x, cor = FALSE, bysample = FALSE, vcmatrices = FALSE,
+  ...)
 }
 \arguments{
   \item{x}{dht object that results from call to dht for a
@@ -22,18 +22,18 @@ estimator}
   consistency}
 }
 \value{
-  None
+None
 }
 \description{
-  Outputs summary statistics, abundance and density by
-  region (if any) and optionally a correlation matrix if
-  more than one region.
+Outputs summary statistics, abundance and density by region
+(if any) and optionally a correlation matrix if more than
+one region.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  \code{\link{dht}}
+\code{\link{dht}}
 }
 \keyword{utility}
 

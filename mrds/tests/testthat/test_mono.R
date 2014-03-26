@@ -93,30 +93,30 @@ result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
 #plot(result.n,main="no constraints")
 #plot(result.w,main="weak constraints")
 #plot(result.s,main="strict constraints")
-#mono.check(result.n,plot=TRUE,n.pts=20)
-#mono.check(result.w,plot=TRUE,n.pts=20)
-#mono.check(result.s,plot=TRUE,n.pts=20)
+#check.mono(result.n,plot=TRUE,n.pts=20)
+#check.mono(result.w,plot=TRUE,n.pts=20)
+#check.mono(result.s,plot=TRUE,n.pts=20)
 
 test_that("non-monotonic for non-monotone data",{
   # expect a non-monotonic fit
-  expect_message(mono.chk <- mono.check(result.n,n.pts=20),"Detection function is not strictly monotonic!")
+  expect_message(mono.chk <- check.mono(result.n,n.pts=20),"Detection function is not strictly monotonic!")
   expect_that(mono.chk,is_false())
 })
 
 
 test_that("weakly monotone for weakly monotone constraints",{
   # check the weak fit is weak
-  expect_that(mono.check(result.w,strict=FALSE,n.pts=20),is_true())
+  expect_that(check.mono(result.w,strict=FALSE,n.pts=20),is_true())
 
-  expect_message(mono.chk <- mono.check(result.w,n.pts=20),"Detection function is not strictly monotonic!")
+  expect_message(mono.chk <- check.mono(result.w,n.pts=20),"Detection function is not strictly monotonic!")
   expect_that(mono.chk,is_false())
 })
 
 
 test_that("strictly monotonic for strictly monotone constaints",{
   # expect that the strict fit is strict
-  expect_that(mono.check(result.s,strict=FALSE,n.pts=20),is_true())
-  expect_that(mono.check(result.s,strict=TRUE,n.pts=20),is_true())
+  expect_that(check.mono(result.s,strict=FALSE,n.pts=20),is_true())
+  expect_that(check.mono(result.s,strict=TRUE,n.pts=20),is_true())
 })
 
 
@@ -128,7 +128,7 @@ test_that("strictly monotonic for strictly monotone constaints",{
 #                                 adj.order=2,adj.scale="scale"),
 #                 data = egdata[egdata$observer ==1, ], method = "ds",
 #                 meta.data = list(width = 4))
-#mrds:::mono.check(result.nm,plot=TRUE)
+#mrds:::check.mono(result.nm,plot=TRUE)
 #
 #
 #

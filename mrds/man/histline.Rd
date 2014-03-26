@@ -2,9 +2,8 @@
 \alias{histline}
 \title{Plot histogram line}
 \usage{
-  histline(height, breaks, lineonly = FALSE,
-    outline = FALSE, fill = FALSE, ylim = range(height),
-    xlab = "x", ylab = "y", det.plot = FALSE, ...)
+histline(height, breaks, lineonly = FALSE, outline = FALSE, fill = FALSE,
+  ylim = range(height), xlab = "x", ylab = "y", det.plot = FALSE, ...)
 }
 \arguments{
   \item{height}{heights of histogram bars}
@@ -32,15 +31,15 @@
   (fill==TRUE}
 }
 \value{
-  None
+None
 }
 \description{
-  Takes bar heights (height) and cutpoints (breaks), and
-  constructs a line-only histogram from them using the
-  function plot() (if lineonly==FALSE) or lines() (if
-  lineonly==TRUE).
+Takes bar heights (height) and cutpoints (breaks), and
+constructs a line-only histogram from them using the
+function plot() (if lineonly==FALSE) or lines() (if
+lineonly==TRUE).
 }
 \author{
-  ???
+???
 }
 

@@ -2,8 +2,8 @@
 \alias{ddf.rem.fi}
 \title{Mark-Recapture Distance Sampling (MRDS) Removal - FI}
 \usage{
-  ddf.rem.fi(model, data, meta.data = list(),
-    control = list(), call = "", method)
+ddf.rem.fi(model, data, meta.data = list(), control = list(), call = "",
+  method)
 }
 \arguments{
   \item{model}{mark-recapture model specification}
@@ -23,58 +23,57 @@
   function called from \code{ddf.io}}
 }
 \value{
-  result: an rem.fi model object
+result: an rem.fi model object
 }
 \description{
-  Mark-Recapture Distance Sampling (MRDS) Analysis of
-  Removal Observer Configuration with Full Independence
+Mark-Recapture Distance Sampling (MRDS) Analysis of Removal
+Observer Configuration with Full Independence
 }
 \details{
-  The mark-recapture data derived from an removal observer
-  distance sampling survey can only derive conditional
-  detection functions (p_j(y)) for both observers (j=1)
-  because technically it assumes that detection probability
-  does not vary by occasion (observer in this case).  It is
-  a conditional detection function because detection
-  probability for observer 1 is conditional on the
-  observations seen by either of the observers. Thus,
-  p_1(y) is estimated by p_1|2(y).
+The mark-recapture data derived from an removal observer
+distance sampling survey can only derive conditional
+detection functions (p_j(y)) for both observers (j=1)
+because technically it assumes that detection probability
+does not vary by occasion (observer in this case).  It is a
+conditional detection function because detection
+probability for observer 1 is conditional on the
+observations seen by either of the observers. Thus, p_1(y)
+is estimated by p_1|2(y).
 
-  If detections by the observers are independent (full
-  independence) then p_1(y)=p_1|2(y) and for the union,
-  full independence means that p(y)=p_1(y) + p_2(y) -
-  p_1(y)*p_2(y) for each distance y.  In fitting the
-  detection functions the likelihood from Laake and
-  Borchers (2004) are used. That analysis does not require
-  the usual distance sampling assumption that perpendicular
-  distances are uniformly distributed based on line
-  placement that is random relative to animal distribution.
-  However, that assumption is used in computing predicted
-  detection probability which is averaged based on a
-  uniform distribution (see eq 6.11 of Laake and Borchers
-  2004).
+If detections by the observers are independent (full
+independence) then p_1(y)=p_1|2(y) and for the union, full
+independence means that p(y)=p_1(y) + p_2(y) -
+p_1(y)*p_2(y) for each distance y.  In fitting the
+detection functions the likelihood from Laake and Borchers
+(2004) are used. That analysis does not require the usual
+distance sampling assumption that perpendicular distances
+are uniformly distributed based on line placement that is
+random relative to animal distribution.  However, that
+assumption is used in computing predicted detection
+probability which is averaged based on a uniform
+distribution (see eq 6.11 of Laake and Borchers 2004).
 
-  For a complete description of each of the calling
-  arguments, see \code{\link{ddf}}.  The argument
-  \code{model} in this function is the same as
-  \code{mrmodel} in \code{ddf}.  The argument
-  \code{dataname} is the name of the dataframe specified by
-  the argument \code{data} in \code{ddf}. The arguments
-  \code{control},\code{meta.data},and \code{method} are
-  defined the same as in \code{ddf}.
+For a complete description of each of the calling
+arguments, see \code{\link{ddf}}.  The argument
+\code{model} in this function is the same as \code{mrmodel}
+in \code{ddf}.  The argument \code{dataname} is the name of
+the dataframe specified by the argument \code{data} in
+\code{ddf}. The arguments
+\code{control},\code{meta.data},and \code{method} are
+defined the same as in \code{ddf}.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \references{
-  Laake, J.L. and D.L. Borchers. 2004. Methods for
-  incomplete detection at distance zero. In: Advanced
-  Distance Sampling, eds. S.T.  Buckland, D.R.Anderson,
-  K.P. Burnham, J.L. Laake, D.L. Borchers, and L.  Thomas.
-  Oxford University Press.
+Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
+detection at distance zero. In: Advanced Distance Sampling,
+eds. S.T.  Buckland, D.R.Anderson, K.P. Burnham, J.L.
+Laake, D.L. Borchers, and L.  Thomas. Oxford University
+Press.
 }
 \seealso{
-  \code{\link{ddf.io}},\code{\link{rem.glm}}
+\code{\link{ddf.io}},\code{\link{rem.glm}}
 }
 \keyword{Models}
 \keyword{Statistical}

@@ -4,7 +4,7 @@
 Allows one to simulate line transect distance sampling data using
 a mixture of half-normal detection functions.}
 \usage{
-  sim.mix(n, sigma, mix.prop, width, means = 0)
+sim.mix(n, sigma, mix.prop, width, means = 0)
 }
 \arguments{
   \item{n}{number of samples to generate}
@@ -20,18 +20,18 @@ a mixture of half-normal detection functions.}
   non-monotonic data)}
 }
 \value{
-  distances a vector of distances
+distances a vector of distances
 }
 \description{
-  Simulation of distance sampling data via mixture models
-  Allows one to simulate line transect distance sampling
-  data using a mixture of half-normal detection functions.
+Simulation of distance sampling data via mixture models
+Allows one to simulate line transect distance sampling data
+using a mixture of half-normal detection functions.
 }
 \note{
-  At the moment this is TOTALLY UNSUPPORTED!  Please don't
-  use it for anything important!
+At the moment this is TOTALLY UNSUPPORTED!  Please don't
+use it for anything important!
 }
 \author{
-  David Lawrence Miller
+David Lawrence Miller
 }
 

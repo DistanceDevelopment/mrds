@@ -2,7 +2,7 @@
 \alias{print.ddf.gof}
 \title{Prints results of goodness of fit tests for detection functions}
 \usage{
-  \method{print}{ddf.gof} (x, ...)
+\method{print}{ddf.gof}(x, ...)
 }
 \arguments{
   \item{x}{result of call to \code{\link{ddf.gof}}}
@@ -11,18 +11,18 @@
   print}
 }
 \value{
-  None
+None
 }
 \description{
-  Provides formatted output for results of goodness of fit
-  tests: chi-square, Kolmogorv-Smirnov and Cramer-von Mises
-  test as approrpriate.
+Provides formatted output for results of goodness of fit
+tests: chi-square, Kolmogorv-Smirnov and Cramer-von Mises
+test as approrpriate.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \seealso{
-  \code{\link{ddf.gof}}
+\code{\link{ddf.gof}}
 }
 \keyword{utility}
 

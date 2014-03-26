@@ -23,7 +23,7 @@
 #' @keywords utility
 #' @author David L. Miller
 #' @export
-mono.check <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.plots=6){
+check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.plots=6){
 
   # extract the ddf object from the fitted model
   ddfobj <- df$ds$aux$ddfobj
@@ -179,7 +179,7 @@ mono.check <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
                                   strict=strict,plot=TRUE))
     }
   }else if(plot & all(mono.status)){
-    message("Nothing to plot!")
+    message("Function is monotonic at test points, nothing to plot.")
   }
 
   # AND together the per-(covariate combination) montonicity statuses

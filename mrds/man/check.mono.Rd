@@ -1,8 +1,8 @@
-\name{mono.check}
-\alias{mono.check}
+\name{check.mono}
+\alias{check.mono}
 \title{Check that a detection function is monotone}
 \usage{
-mono.check(df, strict = TRUE, n.pts = 100, tolerance = 1e-06,
+check.mono(df, strict = TRUE, n.pts = 100, tolerance = 1e-06,
   plot = FALSE, max.plots = 6)
 }
 \arguments{
@@ -31,7 +31,8 @@ mono.check(df, strict = TRUE, n.pts = 100, tolerance = 1e-06,
 }
 \value{
 \code{TRUE} if the detection function is monotone,
-\code{FALSE} if it's not. \code{warning}s are issued.
+\code{FALSE} if it's not. \code{message}s are issued to
+warn the user that the function is non-monotonic.
 }
 \description{
 Check that a fitted detection function is monotone
@@ -50,8 +51,12 @@ detection function is never less than 0 (\code{g(x)>=0}).
 4. The detection function is never greater than 1
 (\code{g(x)<=1}).
 
-For covariate models the detection function is evaluated at
-all observed covariate combinations.
+For models with covarates in the scale parameter of the
+detection function is evaluated at all observed covariate
+combinations.
+
+Currently parameters in the shape parameter are not
+supported.
 }
 \author{
 David L. Miller

@@ -9,7 +9,7 @@
 \alias{NCovered.trial.fi}
 \title{Compute estimated abundance in covered (sampled) region}
 \usage{
-  NCovered(par, model = NULL, group = TRUE)
+NCovered(par, model = NULL, group = TRUE)
 }
 \arguments{
   \item{par}{parameter values (used when computing
@@ -22,15 +22,15 @@
   FALSE individual abundance}
 }
 \value{
-  abundance estimate
+abundance estimate
 }
 \description{
-  Generic function that computes abundance within the
-  covered region.  It calls method (class) specific
-  functions for the computation.
+Generic function that computes abundance within the covered
+region.  It calls method (class) specific functions for the
+computation.
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{utility}
 

@@ -3,12 +3,11 @@
 \title{Plot fit of detection functions and histograms of data from distance
 sampling independent observer (\code{io}) model}
 \usage{
-  \method{plot}{io} (x, which = 1:6, breaks = NULL,
-    nc = NULL, maintitle = "", showlines = TRUE,
-    showpoints = TRUE, ylim = c(0, 1), angle = -45,
-    density = 20, col = "black", jitter = NULL,
-    divisions = 25, pages = 0, xlab = "Distance",
-    ylab = "Detection probability", subtitle = TRUE, ...)
+\method{plot}{io}(x, which = 1:6, breaks = NULL, nc = NULL,
+  maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
+  angle = -45, density = 20, col = "black", jitter = NULL,
+  divisions = 25, pages = 0, xlab = "Distance",
+  ylab = "Detection probability", subtitle = TRUE, ...)
 }
 \arguments{
   \item{x}{fitted model from \code{ddf}}
@@ -69,28 +68,27 @@ sampling independent observer (\code{io}) model}
   \code{lines}, \code{points}, etc)}
 }
 \value{
-  Just plots
+Just plots
 }
 \description{
-  Plots the fitted detection functions for a distance
-  sampling model and histograms of the distances (for
-  unconditional detection functions) or proportion of
-  observations detected within distance intervals (for
-  conditional detection functions) to compare visually the
-  fitted model and data.
+Plots the fitted detection functions for a distance
+sampling model and histograms of the distances (for
+unconditional detection functions) or proportion of
+observations detected within distance intervals (for
+conditional detection functions) to compare visually the
+fitted model and data.
 }
 \details{
-  The structure of the histogram can be controlled by the
-  user-defined arguments \code{nc} or \code{breaks}.  The
-  observation specific detection probabilities along with
-  the line representing the fitted average detection
-  probability.
+The structure of the histogram can be controlled by the
+user-defined arguments \code{nc} or \code{breaks}.  The
+observation specific detection probabilities along with the
+line representing the fitted average detection probability.
 
-  It is not intended for the user to call \code{plot.io.fi}
-  but its arguments are documented here. Instead the
-  generic \code{plot} command should be used and it will
-  call the appropriate function based on the class of the
-  \code{ddf} object.
+It is not intended for the user to call \code{plot.io.fi}
+but its arguments are documented here. Instead the generic
+\code{plot} command should be used and it will call the
+appropriate function based on the class of the \code{ddf}
+object.
 }
 \examples{
 \donttest{
@@ -109,7 +107,7 @@ plot(result.io,which=c(1,2,5,6),pages=2)
 }
 }
 \author{
-  Jeff Laake, Jon Bishop, David Borchers, David L Miller
+Jeff Laake, Jon Bishop, David Borchers, David L Miller
 }
 \keyword{plot}
 

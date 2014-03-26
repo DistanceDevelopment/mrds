@@ -2,7 +2,7 @@
 \alias{average.line}
 \title{Average detection function line for plotting}
 \usage{
-  average.line(finebr, obs, model)
+average.line(finebr, obs, model)
 }
 \arguments{
   \item{finebr}{set of fine breaks in distance over which
@@ -15,26 +15,26 @@
   \item{model}{ddf model object}
 }
 \value{
-  list with 2 elements \tabular{ll}{\code{xgrid} \tab
-  vector of gridded distance values\cr \code{values} \tab
-  vector of average detection function values at the
-  \code{xgrid} values\cr}
+list with 2 elements \tabular{ll}{\code{xgrid} \tab vector
+of gridded distance values\cr \code{values} \tab vector of
+average detection function values at the \code{xgrid}
+values\cr}
 }
 \description{
-  For models with covariates the detection probability for
-  each observation can vary. This function computes an
-  average value for a set of distances to plot an average
-  line to graphically represent the fitted model in plots
-  that compare histograms and the scatter of individual
-  estimated detection probabilities. Averages are
-  calculated over the observed covariate combinations.
+For models with covariates the detection probability for
+each observation can vary. This function computes an
+average value for a set of distances to plot an average
+line to graphically represent the fitted model in plots
+that compare histograms and the scatter of individual
+estimated detection probabilities. Averages are calculated
+over the observed covariate combinations.
 }
 \note{
-  Internal function called from plot functions for ddf
-  objects
+Internal function called from plot functions for ddf
+objects
 }
 \author{
-  Jeff Laake
+Jeff Laake
 }
 \keyword{utility}
 
