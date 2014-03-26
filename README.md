@@ -1,6 +1,8 @@
 mrds - Mark-Recapture Distance Sampling
 =======================================
 
+[![Build Status](https://travis-ci.org/DistanceDevelopment/mrds.svg?        branch=master)](https://travis-ci.org/DistanceDevelopment/mrds)
+
 This package for R analyzes single or double observer distance sampling data for line or
 point sampling.  It is used in program [DISTANCE](http://www.ruwpa.st-and.ac.uk/distance/) as one of the analysis engines. 
 Supported double observer configurations include independent, trial and removal. All options in mrds are not yet fully supported via DISTANCE.
