@@ -155,31 +155,33 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
   mono.status <- apply(udat,1,chpply,x=x,strict=strict)
 
   # if plotting was requested and there are non-monotonicity
-  if(plot & !all(mono.status)){
+  if(plot){
     # if no covariates or only 1 unique combination
     if(nrow(udat)==1){
       # re-run doing plotting but not producing the warnings a second time
       d <- suppressMessages(apply(udat,1,chpply,x=x,strict=strict,plot=TRUE))
     }else{
-
-      # data frame of non-monotonic covariate combinations
-      trouble.data <- udat[!mono.status,]
+      if(!all(mono.status)){
+        # data frame of non-monotonic covariate combinations
+        plot.data <- udat[!mono.status,]
+      }else{
+        # all plot data
+        plot.data <- udat
+      }
 
       # might be fewer combinations than max.plots
-      max.plots <- min(max.plots,nrow(trouble.data))
+      max.plots <- min(max.plots,nrow(plot.data))
+
+      # take a sample
+      plot.sample <- plot.data[sample(1:nrow(plot.data),max.plots),]
 
       # use plot.layout to get the layout
       dd<-plot.layout(1:max.plots,pages=1)
 
-      # take a sample
-      trouble.sample <- trouble.data[sample(1:nrow(trouble.data),max.plots),]
-
       # make the plots
-      d <- suppressMessages(apply(trouble.sample,1,chpply,x=x,
+      d <- suppressMessages(apply(plot.sample,1,chpply,x=x,
                                   strict=strict,plot=TRUE))
     }
-  }else if(plot & all(mono.status)){
-    message("Function is monotonic at test points, nothing to plot.")
   }
 
   # AND together the per-(covariate combination) montonicity statuses
