@@ -117,95 +117,95 @@ obs=data.frame(object=obs$ObjectID, Region.Label=obs$Region.Label, Sample.Label=
 
 #Region.Label dataframe
 region.data=data.frame(Region.Label=c(1,2,3,4,5,6,7,8,9),
-		Area=c(point.num[1]*3.14,point.num[2]*3.14,point.num[3]*3.14,point.num[4]*3.14,
+   Area=c(point.num[1]*3.14,point.num[2]*3.14,point.num[3]*3.14,point.num[4]*3.14,
             point.num[5]*3.14,
-			   point.num[6]*3.14,point.num[7]*3.14,point.num[8]*3.14,point.num[9]*3.14))
+        point.num[6]*3.14,point.num[7]*3.14,point.num[8]*3.14,point.num[9]*3.14))
 
 #Candidate Models
 
 GW1=ddf(
-		dsmodel=~cds(key="unif", adj.series="cos", adj.order=1, adj.scale="width"),
-		mrmodel=~glm(~distance),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
+   dsmodel=~cds(key="unif", adj.series="cos", adj.order=1, adj.scale="width"),
+   mrmodel=~glm(~distance),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
 GW2=ddf(
-		dsmodel=~cds(key="unif", adj.series="cos", adj.order=1, adj.scale="width"),
-		mrmodel=~glm(~distance+observer),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
+   dsmodel=~cds(key="unif", adj.series="cos", adj.order=1, adj.scale="width"),
+   mrmodel=~glm(~distance+observer),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
 GW3=ddf(
-		dsmodel=~cds(key="unif", adj.series="cos", adj.order=1, adj.scale="width"),
-		mrmodel=~glm(~distance*observer),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
+   dsmodel=~cds(key="unif", adj.series="cos", adj.order=1, adj.scale="width"),
+   mrmodel=~glm(~distance*observer),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
 GW4=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
 GW4FI=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance),
-		data=bird.data,
-		method="io.fi",
-		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance),
+   data=bird.data,
+   method="io.fi",
+   meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
 GW5=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance+observer),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance+observer),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 GW5FI=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance+observer),
-		data=bird.data,
-		method="io.fi",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance+observer),
+   data=bird.data,
+   method="io.fi",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 GW6=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*observer),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*observer),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 GW6FI=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*observer),
-		data=bird.data,
-		method="io.fi",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*observer),
+   data=bird.data,
+   method="io.fi",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 GW7=ddf(
-		dsmodel=~cds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*Day),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~cds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*Day),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 GW7FI=ddf(
-		dsmodel=~cds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*Day),
-		data=bird.data,
-		method="io.fi",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~cds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*Day),
+   data=bird.data,
+   method="io.fi",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 GW8=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*observer*Day),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*observer*Day),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 GW8FI=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*observer*Day),
-		data=bird.data,
-		method="io.fi",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*observer*Day),
+   data=bird.data,
+   method="io.fi",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 #GWDS=ddf(
-#		dsmodel=~mcds(key="hn",formula=~1),
-#		data=bird.data,
-#		method="ds",
-#		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#   dsmodel=~mcds(key="hn",formula=~1),
+#   data=bird.data,
+#   method="ds",
+#   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 
 
 
@@ -215,7 +215,7 @@ GW8FI=ddf(
 #dependencies
 AIC = c(GW1$criterion,GW2$criterion, GW3$criterion,GW4$criterion, GW4FI$criterion,
         GW5$criterion,GW5FI$criterion,
-		   GW6$criterion,GW6FI$criterion,GW7$criterion,GW7FI$criterion,GW8$criterion,
+      GW6$criterion,GW6FI$criterion,GW7$criterion,GW7FI$criterion,GW8$criterion,
         GW8FI$criterion)
 
 #creates a set of row names for me to check my grep() call below
@@ -245,7 +245,7 @@ AIC.values=AIC
 # Nhat.se is calculated in mrds:::summary.io, not in ddf(), so it takes a bit to pull out
 std.err=c(summary(GW1)$Nhat.se,summary(GW2)$Nhat.se,summary(GW3)$Nhat.se,summary(GW4)$Nhat.se,
     summary(GW4FI)$Nhat.se, summary(GW5)$Nhat.se, summary(GW5FI)$Nhat.se,
-	   summary(GW6)$Nhat.se, summary(GW6FI)$Nhat.se, summary(GW7)$Nhat.se,
+    summary(GW6)$Nhat.se, summary(GW6FI)$Nhat.se, summary(GW7)$Nhat.se,
     summary(GW7FI)$Nhat.se,summary(GW8)$Nhat.se, summary(GW8FI)$Nhat.se)
 
 #requires RMark

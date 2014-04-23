@@ -1,8 +1,8 @@
 #' CDS function definition
-#' 
+#'
 #' Creates model formula list for conventional distance sampling using values
 #' supplied in call to \code{\link{ddf}}
-#' 
+#'
 #' @param key string identifying key function (currently either "hn"
 #'   (half-normal),"hr" (hazard-rate), "unif" (uniform) or "gamma" (gamma
 #'   distribution)
@@ -22,27 +22,9 @@
 #'   for shape function}
 #' @author Jeff Laake; Dave Miller
 #' @keywords utility
-cds <-
-		function(key=NULL,adj.series=NULL,adj.order=NULL,adj.scale="width",adj.exp=FALSE,formula=~1,shape.formula=~1)
-#
-#  cds - creates model formula list for conventional distance sampling
-#
-#  Arguments:
-#
-#  key		- either hn (half-normal) or hr (hazard rate)
-#  adj.series	- cos (Cosine), herm (Hermite polynomials), 
-#		  poly (simple polynomials) or NULL
-#  adj.order	- order of terms to include
-#  adj.scale	- whether to scale the adjustment terms by "width" or "scale"
-#  formula  	- formula for scale function = ~1 for cds
-#
-#  Value:
-#
-#   model list
-#
+cds <- function(key=NULL,adj.series=NULL,adj.order=NULL,adj.scale="width",
+                adj.exp=FALSE,formula=~1,shape.formula=~1){
 # Since we only have a special case of mcds here, lets just let it
 # do the work.
-{
-	return(mcds(formula,shape.formula=shape.formula,key=key,adj.series=adj.series,adj.order=adj.order,adj.scale=adj.scale,adj.exp=adj.exp))
+  return(mcds(formula,shape.formula=shape.formula,key=key,adj.series=adj.series,adj.order=adj.order,adj.scale=adj.scale,adj.exp=adj.exp))
 }
-

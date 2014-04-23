@@ -122,105 +122,105 @@ point.num[9]*3.14, point.num[10]*3.14))
 #Candidate Models
 
 BV1=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
 BV1FI=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance),
-		data=bird.data,
-		method="io.fi",
-		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance),
+   data=bird.data,
+   method="io.fi",
+   meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
 BV2=ddf(
-		dsmodel=~mcds(key="hr",formula=~1),
-		mrmodel=~glm(~distance),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hr",formula=~1),
+   mrmodel=~glm(~distance),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE,point=TRUE,width=100,breaks=c(0,50,100)))
 BV3=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance+observer),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance+observer),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV3FI=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance+observer),
-		data=bird.data,
-		method="io.fi",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance+observer),
+   data=bird.data,
+   method="io.fi",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV4=ddf(
-		dsmodel=~mcds(key="hr",formula=~1),
-		mrmodel=~glm(~distance+observer),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hr",formula=~1),
+   mrmodel=~glm(~distance+observer),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV5=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*observer),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*observer),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV5FI=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*observer),
-		data=bird.data,
-		method="io.fi",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*observer),
+   data=bird.data,
+   method="io.fi",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV6=ddf(
-		dsmodel=~mcds(key="hr",formula=~1),
-		mrmodel=~glm(~distance*observer),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hr",formula=~1),
+   mrmodel=~glm(~distance*observer),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV7=ddf(
-		dsmodel=~cds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*Day),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~cds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*Day),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV7FI=ddf(
-		dsmodel=~cds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*Day),
-		data=bird.data,
-		method="io.fi",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~cds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*Day),
+   data=bird.data,
+   method="io.fi",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV8=ddf(
-		dsmodel=~cds(key="hr",formula=~1),
-		mrmodel=~glm(~distance*Day),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~cds(key="hr",formula=~1),
+   mrmodel=~glm(~distance*Day),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV9=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*observer*Day),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*observer*Day),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV9FI=ddf(
-		dsmodel=~mcds(key="hn",formula=~1),
-		mrmodel=~glm(~distance*observer*Day),
-		data=bird.data,
-		method="io.fi",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hn",formula=~1),
+   mrmodel=~glm(~distance*observer*Day),
+   data=bird.data,
+   method="io.fi",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 BV10=ddf(
-		dsmodel=~mcds(key="hr",formula=~1),
-		mrmodel=~glm(~distance*observer*Day),
-		data=bird.data,
-		method="io",
-		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+   dsmodel=~mcds(key="hr",formula=~1),
+   mrmodel=~glm(~distance*observer*Day),
+   data=bird.data,
+   method="io",
+   meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 #BV.DS=ddf(
-#		dsmodel=~mcds(key="hn",formula=~1),
-#		data=bird.data,
-#		method="ds",
-#		meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
+#    dsmodel=~mcds(key="hn",formula=~1),
+#    data=bird.data,
+#    method="ds",
+#    meta.data=list(binned=TRUE, point=TRUE, width=100,breaks=c(0,50,100)))
 
 #AIC table building code.
 AIC = c(BV1$criterion,BV1FI$criterion, BV2$criterion, BV3$criterion, BV3FI$criterion,
      BV4$criterion,  BV5$criterion, BV5FI$criterion,
-		BV6$criterion, BV7$criterion, BV7FI$criterion, BV8$criterion, BV9$criterion,
+   BV6$criterion, BV7$criterion, BV7FI$criterion, BV8$criterion, BV9$criterion,
      BV9FI$criterion, BV10$criterion)
 
 #creates a set of row names for me to check my grep() call below
@@ -230,7 +230,7 @@ rn = c("BV1","BV1FI", "BV2", "BV3",  "BV3FI", "BV4", "BV5","BV5FI", "BV6", "BV7"
 #Number parameters
 k = c(length(BV1$par), length(BV1FI$par), length(BV2$par), length(BV3$par),
      length(BV3FI$par), length(BV4$par),  length(BV5$par),length(BV5FI$par),
-		length(BV6$par), length(BV7$par), length(BV7FI$par), length(BV8$par),
+   length(BV6$par), length(BV7$par), length(BV7FI$par), length(BV8$par),
      length(BV9$par), length(BV9FI$par), length(BV10$par))
 
 #build AIC table
@@ -245,7 +245,7 @@ AIC.table
 #not very clean, but I wanted to show full process, need to use collect.models
 # and model.table here later on
 estimate=c(BV1$Nhat,BV1FI$Nhat, BV2$Nhat, BV3$Nhat, BV3FI$Nhat, BV4$Nhat,  BV5$Nhat, BV5FI$Nhat,
-		BV6$Nhat, BV7$Nhat, BV7FI$Nhat, BV8$Nhat, BV9$Nhat, BV9FI$Nhat, BV10$Nhat)
+   BV6$Nhat, BV7$Nhat, BV7FI$Nhat, BV8$Nhat, BV9$Nhat, BV9FI$Nhat, BV10$Nhat)
 
 AIC.values=AIC
 
@@ -253,7 +253,7 @@ AIC.values=AIC
 not in ddf(), so it takes a bit
 std.err=c(summary(BV1)$Nhat.se,summary(BV1FI)$Nhat.se,summary(BV2)$Nhat.se,summary(BV3)$Nhat.se,
           summary(BV3FI)$Nhat.se, summary(BV4)$Nhat.se, summary(BV5)$Nhat.se,
-		     summary(BV5FI)$Nhat.se, summary(BV6)$Nhat.se, summary(BV7)$Nhat.se,
+        summary(BV5FI)$Nhat.se, summary(BV6)$Nhat.se, summary(BV7)$Nhat.se,
           summary(BV7FI)$Nhat.se,summary(BV8)$Nhat.se, summary(BV9)$Nhat.se,
            summary(BV9FI)$Nhat.se, summary(BV10)$Nhat.se)
 
@@ -270,7 +270,7 @@ std.err=c(summary(BV1)$Nhat.se,summary(BV1FI)$Nhat.se,summary(BV2)$Nhat.se,summa
 
 #Not Run
 #Best Model
-	#best.model=AIC.table[1,]
+ #best.model=AIC.table[1,]
 
 #Not Run
 #GOF for models

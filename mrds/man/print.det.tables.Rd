@@ -1,6 +1,6 @@
 \name{print.det.tables}
 \alias{print.det.tables}
-\title{Prints results of observer detection tables}
+\title{Print results of observer detection tables}
 \usage{
 \method{print}{det.tables}(x, ...)
 }
