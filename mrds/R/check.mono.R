@@ -169,11 +169,17 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
         plot.data <- udat
       }
 
-      # might be fewer combinations than max.plots
-      max.plots <- min(max.plots,nrow(plot.data))
 
       # take a sample
-      plot.sample <- plot.data[sample(1:nrow(plot.data),max.plots),]
+      if(is.matrix(plot.data)){
+        # might be fewer combinations than max.plots
+        max.plots <- min(max.plots,nrow(plot.data))
+        plot.sample <- plot.data[sample(1:nrow(plot.data),max.plots),]
+      }else{
+        # if we have only 1 row
+        plot.sample <- matrix(plot.data,nrow=1)
+        max.plots <- 1
+      }
 
       # use plot.layout to get the layout
       dd<-plot.layout(1:max.plots,pages=1)
