@@ -44,6 +44,17 @@ test_that("golf tee data gives the same results as Distance",{
 
 })
 
+context("errors thrown for invalid models")
+test_that("golf tee data gives the same results as Distance",{
+  data(book.tee.data)
+  egdata<-book.tee.data$book.tee.dataframe
+
+
+  # half-normal with order 1 cosine adjustment
+  expect_error(result.cds<-ddf(dsmodel = ~cds(key = "hn",adj.series="cos", adj.order=1),
+                  data = egdata, method = "ds", meta.data = list(width = 4)))
+})
+
 context("easy tests: line transect example")
 # line transect example from Distance
 ### check likelihood and pars

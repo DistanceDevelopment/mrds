@@ -2,7 +2,7 @@
 \alias{errors}
 \title{Error function}
 \usage{
-errors(errmsg = NULL, errmode = "report", preamble = "Warning")
+errors(errmsg = NULL, preamble = "Warning")
 }
 \arguments{
   \item{errmsg}{the message to be stored/printed

@@ -8,11 +8,6 @@
 #' @param preamble character string to paste before the message 
 #' @return None
 #' @author Dave Miller
-errors <- function(errmsg=NULL,errmode="report",preamble="Warning"){
-
-  if(errmode == "report"){
-    cat(paste("\n** ",preamble,": ",errmsg,"**\n",sep=""))
-  }else{
-    cat("\nOnly report is implemented at the moment.\n")
-  }
+errors <- function(errmsg=NULL,preamble="Warning"){
+  cat(paste("\n** ",preamble,": ",errmsg,"**\n",sep=""))
 }

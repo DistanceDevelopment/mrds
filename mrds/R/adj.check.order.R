@@ -11,9 +11,9 @@
 #' @param adj.series Adjustment series used
 #'   ('\code{cos}','\code{herm}','\code{poly}')
 #' @param adj.order Integer to check
-#' @return
+#' @param key key function to be used with this adjustment series
+#' @return Nothing! Just calls \code{stop} if something goes wrong.
 #'
-#' Logical value, true if there have been errors, false otherwise.
 #' @author David Miller
 #' @seealso \code{\link{adjfct.cos}}, \code{\link{adjfct.poly}},
 #'   \code{\link{adjfct.herm}}, \code{\link{detfct}}, \code{\link{mcds}},
@@ -22,30 +22,29 @@
 #'   Robust Models. In: Distance Sampling, eds. S.T.Buckland, D.R.Anderson,
 #'   K.P. Burnham, J.L. Laake. Chapman & Hall.
 #' @keywords methods
-adj.check.order <- function(adj.series,adj.order){
-
-  # Nothing has gone wrong yet!
-  err <- FALSE
+adj.check.order <- function(adj.series,adj.order,key){
 
   if(adj.series == "poly"){
     # If polynomial, check even in a very crude way
     if(any(as.integer(adj.order/2) != (adj.order/2))){
-      errors("Odd polynomial adjustment terms selected")
-      err <- TRUE
+      stop("Odd polynomial adjustment terms selected")
     }
 
   }else if(adj.series == "herm"){
     # If hermite, check even and greater than (or equal to) order 4
     if(any(adj.order < 4)){
-      errors("Hermite polynomial adjustment terms of order < 4 selected")
-      err <- TRUE
+      stop("Hermite polynomial adjustment terms of order < 4 selected")
     }
 
     if(any(as.integer(adj.order/2) != (adj.order/2))){
       errors("Odd Hermite polynomial adjustment terms selected")
-      err <- TRUE
     }
 
+  }else if(adj.series=="cos"){
+    if((key %in% c("hn","hr")) & any(adj.order<2)){
+      stop("Cosine adjustments must be of order >2 for half-normal and hazard-rate key functions")
+    }
   }
-  return(err)
+
+  invisible()
 }
