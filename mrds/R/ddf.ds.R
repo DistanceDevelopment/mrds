@@ -265,7 +265,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   class(result) <- c("ds","ddf")
 
   # if we have adjustments then check the monotonicity constraints
-  if(!is.null(ddfobj$adjustment)){
+  if(!is.null(ddfobj$adjustment) & (ddfobj$type %in% c("hn","hr","unif"))){
     result$monotonicity.check <- check.mono(result,n.pts=control$mono.points)
   }
 

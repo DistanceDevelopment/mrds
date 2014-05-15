@@ -35,17 +35,28 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
   x <- seq(left.trunc,right.trunc,len=n.pts)
 
   # grab the unique covariate combinations from the data
-  udat <- unique(model.matrix(as.formula(ddfobj$scale$formula), data=df$dat))
+  if(ddfobj$type=="unif"){
+    # no covariates or scale parameter for uniform, so
+    # just return a 1x1 matrix of 1
+    udat <- matrix(1,1,1)
+  }else{
+    udat <- unique(model.matrix(as.formula(ddfobj$scale$formula), data=df$dat))
+  }
 
   # function to apply over the unique rows
-  chpply <- function(this.udat,x,strict,plot=FALSE){
+  chpply <- function(this.udat,ddfobj,x,strict,plot=FALSE){
 
     # build the design matrix for this covariate combination
     this.udat.save <- this.udat
     this.udat <- as.matrix(matrix(this.udat,nrow=1)[rep(1,length(x),by=1),])
-    ddfobj$scale$dm <- this.udat
+
+    # don't set scale matrix if not needed, e.g. for uniform
+    if(!is.null(ddfobj$scale)){
+      ddfobj$scale$dm <- this.udat
+    }
 
     # dummy data matrix for shape
+    # ignore shape covariates at the moment
     if(!is.null(ddfobj$shape)){
       ddfobj$shape$dm <- matrix(1,nrow=length(x),ncol=1)
     }
@@ -152,14 +163,15 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
   }
 
   # apply the check function to all the unique covariate combinations
-  mono.status <- apply(udat,1,chpply,x=x,strict=strict)
+  mono.status <- apply(udat,1,chpply,x=x,strict=strict,ddfobj=ddfobj)
 
   # if plotting was requested and there are non-monotonicity
   if(plot){
     # if no covariates or only 1 unique combination
     if(nrow(udat)==1){
       # re-run doing plotting but not producing the warnings a second time
-      d <- suppressMessages(apply(udat,1,chpply,x=x,strict=strict,plot=TRUE))
+      d <- suppressMessages(apply(udat,1,chpply,x=x,strict=strict,
+                                  ddfobj=ddfobj,plot=TRUE))
     }else{
       if(!all(mono.status)){
         # data frame of non-monotonic covariate combinations
@@ -185,7 +197,7 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
       dd<-plot.layout(1:max.plots,pages=1)
 
       # make the plots
-      d <- suppressMessages(apply(plot.sample,1,chpply,x=x,
+      d <- suppressMessages(apply(plot.sample,1,chpply,x=x,ddfobj=ddfobj,
                                   strict=strict,plot=TRUE))
     }
   }
