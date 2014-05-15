@@ -4,9 +4,7 @@
 #' of the correct order.
 #'
 #'
-#' Only even functions are allowed as adjustment terms. Also Hermite
-#' polynomials must be of degree at least 4 and Cosine of order at least 3. If
-#' incorrect terms are supplied then \code{errors} is called.
+#' Only even functions are allowed as adjustment terms. Also Hermite polynomials must be of degree at least 4 and Cosine of order at least 3. Finally, also checks that order of the terms >1 for half-normal/hazard-rate, as per p.47 of Buckland et al (2001). If incorrect terms are supplied then an error is throw via \code{stop}.
 #'
 #' @param adj.series Adjustment series used
 #'   ('\code{cos}','\code{herm}','\code{poly}')
@@ -40,10 +38,22 @@ adj.check.order <- function(adj.series,adj.order,key){
       errors("Odd Hermite polynomial adjustment terms selected")
     }
 
-  }else if(adj.series=="cos"){
-    if((key %in% c("hn","hr")) & any(adj.order<2)){
-      stop("Cosine adjustments must be of order >2 for half-normal and hazard-rate key functions")
-    }
+  }
+
+  adj.name <- switch(adj.series,
+                     cos = "Cosine",
+                     herm = "Hermite",
+                     poly = "Simple polynomial",
+                     NULL)
+
+  key.name <- switch(key,
+                     hn = "half-normal",
+                     hr = "hazard-rate",
+                     NULL)
+
+  if((key %in% c("hn","hr")) & any(adj.order<2)){
+    stop(paste0(adj.name," adjustments must be of order >2 for ",
+                key.name," key functions"))
   }
 
   invisible()

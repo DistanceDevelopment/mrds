@@ -1,10 +1,11 @@
-#' Compute chi-square gof test for trial.fi models
-#'
-#' @param model ddf model object
-#' @param breaks distance cut points
-#' @param nc number of distance classes
-#'
-#' @return lists with observed,expected, chi-square value, df and p-value
+# Compute chi-square gof test for trial.fi models
+#
+# model ddf model object
+# breaks distance cut points
+# nc number of distance classes
+#
+# return lists with observed,expected, chi-square value, df and p-value
+# documented in ?ddf.gof
 gof.trial.fi <- function(model,breaks=NULL,nc=NULL){
   width <- model$meta.data$width 
   left <- model$meta.data$left

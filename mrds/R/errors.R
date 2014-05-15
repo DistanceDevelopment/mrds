@@ -4,7 +4,6 @@
 #'
 #'
 #' @param errmsg the message to be stored/printed (optional)
-#' @param errmode report or print errors (default report)
 #' @param preamble character string to paste before the message 
 #' @return None
 #' @author Dave Miller

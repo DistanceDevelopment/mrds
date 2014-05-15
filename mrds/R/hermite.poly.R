@@ -1,11 +1,12 @@
-#' Hermite polynomial generating function
-#'
-#' Using formula found at http://functions.wolfram.com/Polynomials/HermiteH/02/0001/ This may not be the fastest way of finding the value.
-#'
-#' @param z points to evaluate
-#' @param n order Hermite polynomial
-#'
-#' @return Hermite polynomials evaluated at z
+# Hermite polynomial generating function
+#
+# Using formula found at http://functions.wolfram.com/Polynomials/HermiteH/02/0001/ This may not be the fastest way of finding the value.
+#
+# z points to evaluate
+# n order Hermite polynomial
+#
+# return Hermite polynomials evaluated at z
+# documented in ?distpdf
 hermite.poly <-function(z,n){
   end <- floor(n/2)
   herm <- 0
