@@ -14,8 +14,8 @@ sampling model}
 
   \item{which}{index to specify which plots should be
   produced: \tabular{ll}{1 \tab histogram of observed
-  distances\cr 2 \tab histogram od observed distanes with
-  fitted line and points \cr}}
+  distances\cr 2 \tab histogram of observed distanes with
+  fitted line and points (default)\cr}}
 
   \item{byvar}{name of variable to be used to color points
   - not currently implemented.}
@@ -67,12 +67,13 @@ sampling model}
 Just plots.
 }
 \description{
-Plots the fitted detection functions with a histogram of
-the observed
+Plots the fitted detection function(s) with a histogram of
+the observed distances to compare visually the fitted model
+and data.
 }
 \details{
 The structure of the histogram can be controlled by the
-user-defined arguments \code{nc} or \code{breaks}.  The
+user-defined arguments \code{nc} or \code{breaks}. The
 observation specific detection probabilities along with the
 line representing the fitted average detection probability.
 

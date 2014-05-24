@@ -1,11 +1,10 @@
 #' Plot fit of detection functions and histograms of data from distance
 #' sampling model
 #'
-#' Plots the fitted detection functions with a histogram of the observed
-#  distances to compare visually the fitted model and data.
+#' Plots the fitted detection function(s) with a histogram of the observed distances to compare visually the fitted model and data.
 #'
 #' The structure of the histogram can be controlled by the user-defined
-#' arguments \code{nc} or \code{breaks}.  The observation specific detection
+#' arguments \code{nc} or \code{breaks}. The observation specific detection
 #' probabilities along with the line representing the fitted average detection
 #' probability.
 #'
@@ -21,7 +20,7 @@
 #' @param x fitted model from \code{ddf}.
 #' @param which index to specify which plots should be produced:
 #'  \tabular{ll}{1 \tab histogram of observed distances\cr
-#'               2 \tab histogram od observed distanes with fitted line and points \cr}
+#'               2 \tab histogram of observed distanes with fitted line and points (default)\cr}
 #' @param byvar name of variable to be used to color points - not currently
 #'   implemented.
 #' @param breaks user define breakpoints
