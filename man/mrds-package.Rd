@@ -19,11 +19,6 @@ C.L.G. "Accommodating unmodelled heterogeneity in
 double-observer distance sampling surveys". 2006.
 Biometrics 62:372-378.)
 }
-\details{
-\tabular{ll}{ Package: \tab mrds \cr Type: \tab Package\cr
-Version: \tab 2.0.5\cr Date: \tab 2012-3-23\cr License:
-\tab GPL (>=2)\cr LazyLoad: \tab yes\cr }
-}
 \author{
 Jeff Laake <jeff.laake@noaa.gov>, David Borchers
 <dlb@mcs.st-and.ac.uk>, Len Thomas <len@mcs.st-and.ac.uk>,

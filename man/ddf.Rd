@@ -315,7 +315,8 @@ D.L. Borchers, and L. Thomas.  Oxford University Press.
 }
 \seealso{
 \code{\link{ddf.ds}},
-\code{\link{ddf.io}},\code{\link{ddf.io.fi}},\code{\link{ddf.trial}},\code{\link{ddf.trial.fi}},\code{\link{ddf.rem}},\code{\link{ddf.rem.fi}}
+\code{\link{ddf.io}},\code{\link{ddf.io.fi}},\code{\link{ddf.trial}},\code{\link{ddf.trial.fi}},\code{\link{ddf.rem}},\code{\link{ddf.rem.fi}},
+\code{\link{mrds-opt}}
 }
 \keyword{Models}
 \keyword{~Statistical}

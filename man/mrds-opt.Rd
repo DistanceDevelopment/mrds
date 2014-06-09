@@ -1,0 +1,85 @@
+\docType{methods}
+\name{mrds-opt}
+\alias{mrds-opt}
+\title{Tips on optimisation issues in \code{mrds} models}
+\description{
+Occasionally when fitting an `mrds` model one can run into
+optimisation issues. In general such problems can be quite
+complex so these "quick fixes" may not work. If you come up
+against problems that are not fixed by these tips, or you
+feel the results are dubious please go ahead and contact
+the package authors.
+}
+\section{Debug mode}{
+  One can obtain debug output at each stage of the
+  optimisation using the \code{showit} option. This is set
+  via \code{control}, so adding
+  \code{control=list(showit=3)} gives the highest level of
+  debug output (setting \code{showit} to 1 or 2 gives less
+  output).
+}
+
+\section{Re-scaling covariates}{
+  Sometimes convergence issues in covariate (MCDS) models
+  are caused by values of the covariate being very large,
+  so a rescaling of that covariate is then necessary.
+  Simply scaling by the standard deviation of the covariate
+  can help (e.g. \code{dat$size.scaled <-
+  dat$scale/sd(dat$scale)} for a covariate \code{size},
+  then including \code{size.scaled} in the model instead of
+  \code{size}).
+
+  It is important to note that one needs to use the
+  original covariate (size) when computing Horvitz-Thompson
+  estimates of population size if the group size is used in
+  that estimate. i.e. use the unscaled size in the
+  numerator of the H-T estimator.
+}
+
+\section{Initial values}{
+  Initial (or starting) values can be set via the
+  \code{initial} element of the \code{control} list.
+  \code{initial} is a list itself with elements
+  \code{scale}, \code{shape} and \code{adjustment},
+  corresponding to the associated parameters. If a model
+  has covariates then the \code{scale} or \code{shape}
+  elements will be vectors with parameter initial values in
+  the same order as they are specific in the model formula
+  (using \code{showit} is a good check they are in the
+  correct order). Adjustment starting values are in order
+  of the order of that term (cosine order 2 is before
+  cosine order 3 terms).
+
+  One way of obtaining starting values is to fit a simpler
+  model first (say with fewer covariates or adjustments)
+  and then use the starting values from this simpler model
+  for the corresponding parameters.
+
+  Another alternative to obtain starting values is to fit
+  the model (or some submodel) using Distance for Windows.
+  Note that Distance reports the scale parameter (or
+  intercept in a covariate model) on the exponential
+  sclale, so one must \code{log} this before supplying it
+  to \code{ddf}.
+}
+
+\section{Bounds}{
+  One can change the upper and lower bounds for the
+  parameters. These specify the largest and smallest values
+  individual parameters can be. By placing these
+  constraints on the parameters, it is possible to "temper"
+  the optimisation problem, making fitting possible.
+
+  Again, one uses the \code{control} list, the elements
+  \code{upperbounds} and \code{lowerbounds}. In this case,
+  each of \code{upperbounds} and \code{lowerbounds} are
+  vectors, which one can think of as each of the vectors
+  \code{scale}, \code{shape} and \code{adjustment} from the
+  "Initial values" section above, concatenated in that
+  order. If one does not occur (e.g. no shape parameter)
+  then it is simple omitted from the vector.
+}
+\author{
+David L. Miller <dave@ninepointeightone.net>
+}
+
