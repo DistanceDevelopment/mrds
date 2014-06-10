@@ -159,7 +159,7 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
   # if(GAM)result$mr$data=xmat
 
   if(result$mr$converged){
-    # if the glm did converge, then do one quick round of BFGS to 
+    # if the glm did converge, then do one quick round of BFGS to 
     #  compute the hessian
     result$hessian<- optimHess(result$mr$coefficients, lnl.io, 
                                x1=xmat1, x2=xmat2, 
