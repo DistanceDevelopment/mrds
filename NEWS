@@ -1,3 +1,13 @@
+mrds 2.1.6
+----------
+
+BUG FIXES
+ * some key+adjustment models failed to converge due to bugs in the optimisation code (mainly unif+cosine models)
+
+NEW FEATURES
+ * optimisation tips help page at ?"mrds-opt"
+
+
 mrds 2.1.5
 ------------
 

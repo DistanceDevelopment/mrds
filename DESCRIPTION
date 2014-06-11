@@ -22,8 +22,8 @@ Description: This package implements mark-recapture distance sampling
     J.L., Southwell, C. and Paxton, C.L.G. "Accommodating unmodelled
     heterogeneity in double-observer distance sampling surveys". 2006.
     Biometrics 62:372-378.)
-Version: 2.1.5
-Date: 2014-03-25
+Version: 2.1.6
+Date: 2014-06-10
 Depends:
     R (>= 3.0)
 Suggests:
