@@ -159,6 +159,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   # Setup detection model
   ddfobj <- create.ddfobj(model,xmat,meta.data,control$initial)
 
+  ## Some cases we can't use spline approximation to integrate
+  ## the detection function
   # set doeachint=TRUE if a shape formula is used
   if(!is.null(ddfobj$shape) && ncol(ddfobj$shape$dm)>1){
     control$doeachint <- TRUE
