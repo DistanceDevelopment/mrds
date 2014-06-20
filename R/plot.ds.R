@@ -310,6 +310,12 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
       if(!is.null(ddfobj$shape)){
          ddfobj$shape$dm <- ddfobj$shape$dm[rep(1,length(xgrid)),]
       }
+
+      # goofy workaround -- gamma is 0 at x=0, so add a little to the grid
+      #  value so we don't have a weird drop
+      if(ddfobj$type=="gamma"){
+        xgrid[1] <- xgrid[1]+1e-6
+      }
       linevalues <- detfct(xgrid,ddfobj,width=width)
     }
 

@@ -1,3 +1,14 @@
+mrds 2.1.7
+----------
+
+BUG FIXES
+
+ * Standardisation was being applied to detection functions (such that g(0)=1) when there were no adjustments (which is uneccesary) but also caused issues when using gamma detection functions as this should be calculated at g(apex) instead. Standardisation code has been removed for when there are no adjustments and the correct scaling used for the gamma when there are. Thanks to Thomas Doniol-Valcroze for alerting us to this bug.
+
+NEW FEATURES
+
+ * Tests for gamma detection functions
+
 mrds 2.1.6
 ----------
 

@@ -161,9 +161,10 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
     key.shape <- scalevalue(ddfobj$shape$parameters,shape.dm)
   }
 
+  # for gamma shape parameter must be >1, see Becker and Quang (2009) p 213
   if(key=="gamma"){
-    key.shape=key.shape+1
-    key.shape[key.shape==1]=key.shape[key.shape==1]+0.000001
+    key.shape <- key.shape+1
+    key.shape[key.shape==1] <- key.shape[key.shape==1]+0.000001
   }
 
   # 19-Jan-06 jll; added proper standardize code to get std integral.
@@ -224,7 +225,11 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
       }else if(key == "hr"){
         key.val.0 <- keyfct.hz(rep(0,length(distance)), key.scale, key.shape)
       }else if(key == "gamma"){
-        key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
+        # for the gammma, use apex.gamma to find the apex first, then eval
+        # need to update the scale to be +1 in this apex call
+        ddfobj$shape$parameters <- log(exp(ddfobj$shape$parameters)+1)
+        g.apex <- as.vector(apex.gamma(ddfobj))[1]
+        key.val.0 <- keyfct.gamma(g.apex,key.scale, key.shape)
       }else if(key == "unif"){
         key.val.0 <- rep(1/width,length(distance))
       }else if(key == "th1"){
@@ -250,26 +255,7 @@ detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
       return(key.vals*(1+adj.vals))
     }
   }else{
-    # jll 26 June 2012 -- added standardization for key to handle unif key only
-    # and any other non-standard keys that could be added
     # If we have no adjustment terms then just return the key value.
-    if(standardize == TRUE){
-      if(key == "hn"){
-        key.val.0 <- keyfct.hn(rep(0,length(distance)), key.scale)
-      }else if(key == "hr"){
-        key.val.0 <- keyfct.hz(rep(0,length(distance)), key.scale, key.shape)
-      }else if(key == "gamma"){
-        key.val.0 <- keyfct.gamma(rep(0,length(distance)), key.scale, key.shape)
-      }else if(key == "unif"){
-        key.val.0 <- rep(1/width,length(distance))
-      }else if(key == "th1"){
-        key.val.0 <- keyfct.th1(rep(0,length(distance)), key.scale, key.shape)
-      }else if(key == "th2"){
-        key.val.0 <- keyfct.th2(rep(0,length(distance)),key.scale, key.shape)
-      }      # Now return the standardized value of the detection function
-      return(key.vals/key.val.0)
-    }else{
-      return(key.vals)
-    }
+    return(key.vals)
   }
 }
