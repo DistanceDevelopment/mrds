@@ -4,10 +4,13 @@ mrds 2.1.7
 BUG FIXES
 
  * Standardisation was being applied to detection functions (such that g(0)=1) when there were no adjustments (which is uneccesary) but also caused issues when using gamma detection functions as this should be calculated at g(apex) instead. Standardisation code has been removed for when there are no adjustments and the correct scaling used for the gamma when there are. Thanks to Thomas Doniol-Valcroze for alerting us to this bug.
+ * Partial name-matching in dht was fixed. Produced warning but not error.
 
 NEW FEATURES
 
  * Tests for gamma detection functions
+ * Observations are automatically ordered by object and observer fields (if included) in ddf as expected by double observer analysis. A erroneous error message can be created if they are not ordered correctly or worse. Thanks to Ainars Aunins for bringing this to our attention.
+ * Added function create_document() which will run a shiny application interface to mrds and will create a knitr document from a template. The template currently is only for a single observer analysis and is behind on all of the features for the app which is fairly complete. 
 
 mrds 2.1.6
 ----------

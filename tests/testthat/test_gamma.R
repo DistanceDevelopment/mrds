@@ -1,7 +1,7 @@
 library(mrds)
 library(testthat)
 
-par.tol<-1e-6
+par.tol<-1e-3
 
 context("gamma detection function")
 

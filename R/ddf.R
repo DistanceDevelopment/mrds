@@ -265,8 +265,12 @@ ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
 
   save.options <- options()
   options(contrasts=c("contr.treatment","contr.poly"))
-  library(stats)
-
+#  library(stats)
+  
+  # order data to meet expectations of the code
+  if(!is.null(data$observer) & !is.null(data$object))
+	  data <- data[order(data$object,data$observer),]
+  
   # Check to make sure method is valid and correct model components
   # have been specified
   method <- match.arg(method,c("ds","io","io.fi","trial","trial.fi",
