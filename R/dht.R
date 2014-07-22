@@ -465,11 +465,11 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
         for(i in 1:numRegions){
           c.stratum.data <- clusters$Nhat.by.sample[
               as.character(clusters$Nhat.by.sample$Region.Label) ==
-              as.character(region.table$Region[i]), ]
+              as.character(region.table$Region.Label[i]), ]
 
           i.stratum.data <- individuals$Nhat.by.sample[
               as.character(individuals$Nhat.by.sample$Region.Label) ==
-              as.character(region.table$Region[i]), ]
+              as.character(region.table$Region.Label[i]), ]
 
           Li <- sum(c.stratum.data$Effort.x)
           cov.Nc.Ncs[i] <- covn(c.stratum.data$Effort.x/(scale[i]*Li),

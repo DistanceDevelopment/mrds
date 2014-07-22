@@ -2,7 +2,10 @@ Package: mrds
 Imports:
     optimx (>= 2013.8.6),
     mgcv,
-    Rsolnp
+    Rsolnp,
+    shiny,
+    rmarkdown,
+    knitr
 Maintainer: David Miller <dave@ninepointeightone.net>
 License: GPL (>=2)
 Title: Mark-Recapture Distance Sampling (mrds)
@@ -22,8 +25,8 @@ Description: This package implements mark-recapture distance sampling
     J.L., Southwell, C. and Paxton, C.L.G. "Accommodating unmodelled
     heterogeneity in double-observer distance sampling surveys". 2006.
     Biometrics 62:372-378.)
-Version: 2.1.6
-Date: 2014-06-10
+Version: 2.1.7
+Date: 2014-07-16
 Depends:
     R (>= 3.0)
 Suggests:
