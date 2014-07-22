@@ -108,7 +108,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
 
   # Set up integral table if this is a half-normal detection function and
   # it is not an intercept.only and likelihood will incorporate integrals
-  if(ddfobj$type%in%c("hn","unif")){
+  if(ddfobj$type%in%c("hn","unif") & is.null(ddfobj$adjustment)){
     ddfobj$cgftab <- tablecgf(ddfobj=ddfobj, width=meta.data$width,
                               point=point, standardize=FALSE)
   }else{
