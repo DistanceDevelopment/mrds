@@ -2,10 +2,7 @@ Package: mrds
 Imports:
     optimx (>= 2013.8.6),
     mgcv,
-    Rsolnp,
-    shiny,
-    rmarkdown,
-    knitr
+    Rsolnp
 Maintainer: David Miller <dave@ninepointeightone.net>
 License: GPL (>=2)
 Title: Mark-Recapture Distance Sampling (mrds)
