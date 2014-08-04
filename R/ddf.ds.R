@@ -103,7 +103,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                                    initial=NA, lowerbounds=NA, upperbounds=NA,
                                    limit=TRUE, parscale=NA, maxiter=12,
                                    standardize=TRUE, mono.points=20,
-                                   mono.tol=1e-7, mono.delta=1e-7, debug=FALSE,
+                                   mono.tol=1e-8, mono.delta=1e-7, debug=FALSE,
                                    nofit=FALSE, optimx.method="nlminb",
                                    optimx.maxit=300)
 
@@ -121,7 +121,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   if(is.null(data$object)){
     stop("\nobject field is missing in the data\n")
   }
-  # Next call function to process data based on values of meta.data 
+  # Next call function to process data based on values of meta.data
   datalist <- process.data(data,meta.data,check=FALSE)
   xmat <- datalist$xmat
   meta.data <- datalist$meta.data

@@ -290,8 +290,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     # initial value was opposite of the mle.
     # Additional statement skips over 0.
     if(bounded){
-      bound.low <- abs(lt$par-lowerbounds)<0.000001
-      bound.hi <- abs(lt$par-upperbounds)<0.000001
+      bound.low <- abs(lt$par-lowerbounds)<1e-6
+      bound.hi <- abs(lt$par-upperbounds)<1e-6
       if(!setlower) {
         lowerbounds[bound.low] <- lowerbounds[bound.low] -
                                    0.5*abs(lowerbounds[bound.low])
