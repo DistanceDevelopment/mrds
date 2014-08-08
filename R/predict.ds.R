@@ -97,7 +97,6 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
     fpar <- model$par
     ddfobj <- ltmodel$aux$ddfobj
     ddfobj <- assign.par(ddfobj,fpar)
-    doeachint <- ltmodel$aux$doeachint
 
     # Get integration ranges either from specified argument or from
     # values stored in the model.
@@ -153,12 +152,11 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
     #   int1=integratedetfct.logistic(x,ltmodel$model$scalemodel,width,
     #                         int.range,theta1,ltmodel$aux$integral.numeric,z)
     # else
-    ddfobj$cgftab <- tablecgf(ddfobj,width=width,standardize=TRUE, point=point)
     int1 <- integratepdf(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),width=width,
-                         int.range=int.range,doeachint=doeachint,
+                         int.range=int.range,
                          standardize=TRUE,point=point)
     # int1=integratedetfct(ddfobj,select=rep(TRUE,nrow(ddfobj$xmat)),
-    #           width=width,int.range=int.range,doeachint=doeachint,point=point)
+    #           width=width,int.range=int.range,point=point)
 
     # If the predicted values don't need to be computed, then use the values
     # in the model object (model$fitted) and change to integral (esw) values.

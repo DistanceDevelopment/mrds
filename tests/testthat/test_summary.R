@@ -3,13 +3,14 @@
 library(testthat)
 library(mrds)
 
-tol <- 1e-7
+tol <- 1e-6
 
 context("Summary tests")
 
 test_that("summary results are correct",{
 
-  ### load the results (summary objects)
+  # run the non-expect_that() code then the commented section below
+  #  to "update" results
   #pt.result.summ<-summary(pt.result)
   #tee.result.summ<-summary(tee.result)
   #tee.result.trial.summ<-summary(tee.result.trial)
@@ -18,6 +19,8 @@ test_that("summary results are correct",{
   #save(pt.result.summ,tee.result.summ,tee.result.trial.summ,
   #     tee.result.trial.fi.summ,tee.result.rem.summ,
   #     file="mrds/inst/testData/summaryresults.rda")
+
+  ### load the results (summary objects)
   res.filename<-system.file("testData/summaryresults.rda", package="mrds")
   load(res.filename)
 
@@ -42,7 +45,7 @@ test_that("summary results are correct",{
                              meta.data=list(width=4))
   expect_that(summary(tee.result.trial.fi),equals(tee.result.trial.fi.summ))
 
-  ### trial.fi method -- line transect
+  ### trial method -- line transect
   tee.result.trial <- ddf(mrmodel=~glm(formula=~distance),
                           dsmodel = ~mcds(key = "hn", formula = ~sex),
                           data=egdata, method="trial",

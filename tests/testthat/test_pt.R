@@ -3,7 +3,7 @@
 library(mrds)
 library(testthat)
 
-par.tol <- 1e-6
+par.tol <- 1e-5
 lnl.tol <- 1e-4
 
 context("Point transects: ptexample")

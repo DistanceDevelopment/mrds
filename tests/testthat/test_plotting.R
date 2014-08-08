@@ -3,6 +3,8 @@
 library(testthat)
 library(mrds)
 
+line.tol <- 1e-4
+
 context("Plotting tests: average.line")
 
 test_that("average.line for plot.io is correct (unconditional df)",{
@@ -32,7 +34,7 @@ test_that("average.line for plot.io is correct (unconditional df)",{
                    0.342189456128584,0.309134492201619,0.278304718215714,
                    0.249737174975323,0.223418735462668,0.199296054654547,
                    0.177285396274316)
-  expect_that(aline$value,equals(aline.truth,tol=1e-6))
+  expect_that(aline$value,equals(aline.truth,tol=line.tol))
 
   # obs == 3 (duplicates)
   aline <- mrds:::average.line(finebr,obs=3,result)
@@ -45,7 +47,7 @@ test_that("average.line for plot.io is correct (unconditional df)",{
                    0.49931699639121,0.462405875840549,0.426495955861535,
                    0.391787945447792,0.35845265391595,0.326630781154814,
                    0.29643330601488)
-  expect_that(aline$value,equals(aline.truth,tol=1e-6))
+  expect_that(aline$value,equals(aline.truth,tol=line.tol))
 
   # obs == 4 (pooled)
   aline <- mrds:::average.line(finebr,obs=4,result)
@@ -58,7 +60,7 @@ test_that("average.line for plot.io is correct (unconditional df)",{
                    0.185061915865959,0.155863108562689,0.130113480569892,
                    0.107686404502854,0.0883848170093864,0.0719613281542805,
                    0.058137486533752)
-  expect_that(aline$value,equals(aline.truth,tol=1e-6))
+  expect_that(aline$value,equals(aline.truth,tol=line.tol))
 
 
   ## for the simulated point data
@@ -84,7 +86,7 @@ test_that("average.line for plot.io is correct (unconditional df)",{
                    0.0379278959421831,0.0266319796455126,0.0183497112799511,
                    0.0124063973398744,0.0082311701060649,0.00535901392610466,
                    0.003423913832683)
-  expect_that(aline$value,equals(aline.truth,tol=1e-6))
+  expect_that(aline$value,equals(aline.truth,tol=line.tol))
 
   # obs==2
   aline <- mrds:::average.line(finebr,obs=2,model)
@@ -97,7 +99,7 @@ test_that("average.line for plot.io is correct (unconditional df)",{
                    0.0383739010110256,0.0269253861028954,0.018537355247498,
                    0.012523279734689,0.00830218169750567,0.00540114004009108,
                    0.00344833635941182)
-  expect_that(aline$value,equals(aline.truth,tol=1e-6))
+  expect_that(aline$value,equals(aline.truth,tol=line.tol))
 
   # obs==3
   aline <- mrds:::average.line(finebr,obs=3,model)
@@ -110,7 +112,7 @@ test_that("average.line for plot.io is correct (unconditional df)",{
                    0.0385860728953481,0.0270416370791242,0.0185998392101543,
                    0.0125562284978859,0.00831922827697337,0.00540979343898331,
                    0.00345264665538174)
-  expect_that(aline$value,equals(aline.truth,tol=1e-6))
+  expect_that(aline$value,equals(aline.truth,tol=line.tol))
 
   # obs==4
   aline <- mrds:::average.line(finebr,obs=4,model)
@@ -123,7 +125,7 @@ test_that("average.line for plot.io is correct (unconditional df)",{
                    0.0377157240578607,0.0265157286692839,0.0182872273172947,
                    0.0123734485766775,0.0082141235265972,0.00535036052721243,
                    0.00341960353671309)
-  expect_that(aline$value,equals(aline.truth,tol=1e-6))
+  expect_that(aline$value,equals(aline.truth,tol=line.tol))
 
 
 

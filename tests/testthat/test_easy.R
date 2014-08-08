@@ -1,7 +1,6 @@
 library(mrds)
-library(testthat)
 
-lnl.tol<-1e-4
+lnl.tol<-1e-3#4
 par.tol<-1e-6
 
 context("easy tests: golf tees")
