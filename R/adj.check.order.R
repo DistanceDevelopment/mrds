@@ -35,7 +35,7 @@ adj.check.order <- function(adj.series,adj.order,key){
     }
 
     if(any(as.integer(adj.order/2) != (adj.order/2))){
-      errors("Odd Hermite polynomial adjustment terms selected")
+      stop("Odd Hermite polynomial adjustment terms selected")
     }
 
   }

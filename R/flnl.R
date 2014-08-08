@@ -20,9 +20,7 @@
 #' f(r)=r*g(r)/mu where mu in both cases is the normalizing constant.  Both
 #' functions are in source code file for \code{link{detfct}} and are called from
 #' \code{distpdf} and the integral calculations are made with
-#' \code{\link{integratepdf}} and \code{\link{tablecgf}} is used to create a
-#' "lookup" table of sorts for standardized integral values that can be scaled
-#' much like standard normal distribution.
+#' \code{\link{integratepdf}}.
 #'
 #' @aliases flnl flpt.lnl
 #' @param fpar parameter values for detection function at which log-likelihood
@@ -30,8 +28,7 @@
 #' @param ddfobj distance sampling object
 #' @param misc.options width-transect width (W); int.range-integration range
 #'   for observations; showit- 0 to 3 controls level of iteration output; 
-#'   doeachint-if TRUE doesn't use cgftab and does each
-#'   integral; integral.numeric-if TRUE integral is computed numerically rather
+#'   integral.numeric-if TRUE integral is computed numerically rather
 #'   than analytically
 #' @param fitting "key" if only fitting key fct parameters, "adjust" if fitting
 #'   adjustment function parameters or "all" to fit both

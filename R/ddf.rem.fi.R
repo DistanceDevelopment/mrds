@@ -98,7 +98,7 @@ ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
                                      int.range=NA, point=FALSE)
 
   # Set up control values
-  control <- assign.default.values(control, showit=0, doeachint=FALSE,
+  control <- assign.default.values(control, showit=0,
                                    estimate=TRUE, refit=TRUE, nrefits=25,
                                    initial=NA, lowerbounds=NA, upperbounds=NA,
                                    mono.points=20)

@@ -27,9 +27,8 @@
 #'   TRUE if they are user set bounds \item setupper: TRUE if they are user set
 #'   bounds \item point: TRUE if point counts and FALSE if line transect \item
 #'   int.range: integration range values \item showit: integer value that
-#'   determines information printed during iteration \item doeachint: if TRUE
-#'   each integral is computed numerically rather using tabled values \item
-#'   integral.numeric if TRUE compute logistic integrals numerically \item
+#'   determines information printed during iteration \item integral.numeric
+#'   if TRUE compute logistic integrals numerically \item
 #'   breaks: breaks in distance for defined fixed bins for analysis \item
 #'   maxiter: maximum iterations used \item refit: if TRUE, detection function
 #'   will be fitted more than once if parameters are at a boundary or when
@@ -134,27 +133,29 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       if(misc.options$mono){
         # lower and upper bounds of the inequality constraints
         lowerbounds.ic <- rep(0,2*misc.options$mono.points)
-        upperbounds.ic <- rep(10^6,2*misc.options$mono.points)
+        upperbounds.ic <- rep(10^10,2*misc.options$mono.points)
 
-        lt<-try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
-                      ineqfun=flnl.constr,
-                      ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
-                      LB=lowerbounds, UB=upperbounds,
-                      ddfobj=ddfobj, misc.options=misc.options,
-                      control=list(trace=as.integer(showit),
-                                   tol=misc.options$mono.tol,
-                                   delta=misc.options$mono.delta)))
-        # this code randomly generates starting values see ?gosolnp
-        #lt<-try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+        #lt<-try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
         #              ineqfun=flnl.constr,
         #              ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
         #              LB=lowerbounds, UB=upperbounds,
         #              ddfobj=ddfobj, misc.options=misc.options,
         #              control=list(trace=as.integer(showit),
         #                           tol=misc.options$mono.tol,
-        #                           delta=misc.options$mono.delta),
-        #              distr = rep(1, length(lowerbounds)),
-        #              distr.opt = list(), n.restarts = 2, n.sim = 20000))
+        #                           delta=misc.options$mono.delta)))
+
+        # this code randomly generates starting values see ?gosolnp
+        lt<-try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+                      ineqfun=flnl.constr,
+                      ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                      LB=lowerbounds, UB=upperbounds,
+                      ddfobj=ddfobj, misc.options=misc.options,
+                      control=list(trace=as.integer(showit),
+                                   tol=misc.options$mono.tol,
+                                   delta=misc.options$mono.delta),
+                      distr = rep(1, length(lowerbounds)),
+                      n.restarts = 2, n.sim = 200,
+                      rseed=as.integer(runif(1)*1e9)))
 
 
         # if that failed then make a dummy object
@@ -167,6 +168,13 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           if(showit==3){
             errors("Optimisation failed, ignoring and carrying on...")
           }
+        }else{
+          # above gosolnp code stores best lnl as last value
+          # recover that information!
+          lt$conv <- lt$convergence[length(lt$values)]
+          lt$par <- lt$pars[length(lt$values)]
+          lt$value <- lt$values[length(lt$values)]
+          lt$message <- ""
         }
 
         # re-jig some stuff so that this looks like an optim result...
@@ -218,35 +226,19 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
             errors("No convergence. Refitting ...")
           }
 
-          # use the new pars only if they gave a better lnl than last time
-          if(lt$value<=lnl.last){
-            # conv==1 has a different meaning in optimx() and solnp()
-            if(lt$conv==1 && !misc.options$mono){
-              initialvalues <- lt$par
-            }else{
-              initialvalues <- lt$par*(runif(length(initialvalues))+.5)
-              # monotonicity constraints, reset the adjustments to zero
-              # otherwise we end up with an infeasible problem
-              if(misc.options$mono & !is.null(ddfobj$adjustment)){
-                initialvalues[(length(initialvalues)-
-                              length(ddfobj$adjustment$parameters)+1):
-                              length(initialvalues)] <- 0
-              }
+          # if the new values weren't as good, take the last set
+          # and jiggle them a bit...
 
-            }
-            lnl.last <- lt$value
-          }else{
-              # if the new values weren't as good, take the last set
-              # and jiggle them a bit...
-              initialvalues <- initialvalues*(runif(length(initialvalues))+.5)
-              # monotonicity constraints, reset the adjustments to zero
-              # otherwise we end up with an infeasible problem
-              if(misc.options$mono & !is.null(ddfobj$adjustment)){
-                initialvalues[(length(initialvalues)-
-                              length(ddfobj$adjustment$parameters)+1):
-                              length(initialvalues)] <- 0
-              }
-          }
+          # previously this was a bit weird? That addition should be the
+          # same sign (and be allowed to be negative) otherwise we're
+          # just making it more positive
+          #initialvalues <- lt$par*(runif(length(initialvalues))+.5)
+
+          initialvalues <- lt$par*runif(length(initialvalues),
+                                        sign(lowerbounds-1),
+                                        sign(upperbounds+1))
+
+          lnl.last <- lt$value
 
           # if we just replace NAs with 0s then sometimes these are out
           # of bounds so replace with the values we started with
@@ -260,7 +252,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
     if(any(is.na(lt$par)) | lt$conv!=0){
       # if there was no convergence then just return the lt object for debugging
-      errors("Problems with fitting data. Did not converge")
+      errors("Problems with fitting model. Did not converge")
       if(misc.options$debug){
         lt$optim.history <- optim.history
         return(lt)
@@ -290,8 +282,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     # initial value was opposite of the mle.
     # Additional statement skips over 0.
     if(bounded){
-      bound.low <- abs(lt$par-lowerbounds)<0.000001
-      bound.hi <- abs(lt$par-upperbounds)<0.000001
+      bound.low <- abs(lt$par-lowerbounds)<1e-6
+      bound.hi <- abs(lt$par-upperbounds)<1e-6
       if(!setlower) {
         lowerbounds[bound.low] <- lowerbounds[bound.low] -
                                    0.5*abs(lowerbounds[bound.low])

@@ -143,8 +143,6 @@
 #'    about refitting and bound changes is printed, >=2 - information about
 #'    adjustment term fitting is printed, ==3 -per-iteration parameter
 #'    estimates and log-likelihood printed. \cr
-#'   \code{doeachint} \tab if TRUE forces numerical integration rather than
-#'    interpolation method \cr
 #'   \code{estimate} \tab if FALSE fits model but doesn't estimate predicted
 #'    probabilities \cr
 #'   \code{refit} \tab if TRUE the algorithm will attempt multiple optimizations

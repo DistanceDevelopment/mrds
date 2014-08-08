@@ -14,7 +14,6 @@
 #'   null except type: \item{type}{type of detection function
 #'   hn,hr,gamma,unif,logistic} \item{xmat}{model data frame}
 #'   \item{intercept.only}{TRUE if scale = ~1 and any shape formula =~1}
-#'   \item{cgftab}{table of standardized integral values}
 #'   \item{scale}{sublist with elements (can be NULL i.e., unif key):formula,
 #'   parameters, design matrix (dm)} \item{shape}{sublist with elements (power
 #'   of hazard rate or gamma) (can be NULL i.e., unif or hn key):formula,
@@ -104,15 +103,6 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   if(!is.null(ddfobj$shape)){
     ddfobj$shape$dm <- setcov(ddfobj$xmat,ddfobj$shape$formula)$cov
     ddfobj$shape$parameters <- rep(0,ncol(ddfobj$shape$dm))
-  }
-
-  # Set up integral table if this is a half-normal detection function and
-  # it is not an intercept.only and likelihood will incorporate integrals
-  if(ddfobj$type%in%c("hn","unif")){
-    ddfobj$cgftab <- tablecgf(ddfobj=ddfobj, width=meta.data$width,
-                              point=point, standardize=FALSE)
-  }else{
-    ddfobj$cgftab <- NULL
   }
 
   # Compute initialvalues unless uniform

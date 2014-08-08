@@ -17,7 +17,7 @@ check.bounds <- function(lt,lowerbounds,upperbounds,ddfobj,showit,
 
   # function to check upper/lower bounds
   chk.bnds <- function(par,bounds,bound.label,set){
-    if(any(abs(par-bounds)<0.000001)){
+    if(any(abs(par-bounds)<1e-6)){
       if(showit>=1){
         # Issue warning if any of the parameters are at their bounds
         message(paste("One or more parameters was at a",bound.label,"bound\n",

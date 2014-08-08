@@ -1,3 +1,13 @@
+mrds 2.1.8
+----------
+
+CHANGES
+  * removed doeachint/cgftab code, which used a spline approximation to the effective strip width/effective area when a half-normal detection function was used. This has been replaced with exact calculation via the error function (erf). Analytic expression for hazard-rate included too.
+  * tests updated accordingly
+  * monotonically constrained models now use a bunch of random start points -- uses gosolnp() from Rsolnp
+  * re-fitting by jiggling parameters refined to multiply by a uniform variable with limits set as the upper and lower bounds (+/-1) so jiggling can go either way, on approximately the same scale as the parameters
+
+
 mrds 2.1.7
 ----------
 
@@ -11,6 +21,7 @@ NEW FEATURES
  * Tests for gamma detection functions
  * Observations are automatically ordered by object and observer fields (if included) in ddf as expected by double observer analysis. A erroneous error message can be created if they are not ordered correctly or worse. Thanks to Ainars Aunins for bringing this to our attention.
  * Added function create_document() which will run a shiny application interface to mrds and will create a knitr document from a template. The template currently is only for a single observer analysis and is behind on all of the features for the app which is fairly complete. 
+
 
 mrds 2.1.6
 ----------

@@ -24,9 +24,8 @@
 #'   TRUE if they are user set bounds \item setupper: TRUE if they are user set
 #'   bounds \item point: TRUE if point counts and FALSE if line transect \item
 #'   int.range: integration range values \item showit: integer value that
-#'   determines information printed during iteration \item doeachint: if TRUE
-#'   each integral is computed numerically rather using tabled values \item
-#'   integral.numeric if TRUE compute logistic integrals numerically \item
+#'   determines information printed during iteration \item integral.numeric
+#'   if TRUE compute logistic integrals numerically \item
 #'   breaks: breaks in distance for defined fixed bins for analysis \item
 #'   maxiter: maximum iterations used \item refit: if TRUE, detection function
 #'   will be fitted more than once if parameters are at a boundary or when
