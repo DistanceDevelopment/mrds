@@ -30,11 +30,7 @@ values stored in the model object.}
 \item{int.range}{integration range for variable range analysis; either
 vector or matrix.}
 
-\item{esw}{if \code{TRUE}, returns effective strip half-width (or effective
-detection radius for points) integral from 0 to the truncation distance
-(\code{width}) of p(y)dy; otherwise it returns the integral from 0 to
-truncation width of p(y)*pi(y) where pi(y)=1/W for lines and pi(y)=2r/W^2
-for points.}
+\item{esw}{if \code{TRUE}, returns effective strip half-width (or effective area of detection for point transect models) integral from 0 to the truncation distance (\code{width}) of p(y)dy; otherwise it returns the integral from 0 to truncation width of p(y)*pi(y) where pi(y)=1/W for lines and pi(y)=2r/W^2 for points.}
 
 \item{integrate}{for \code{*.fi} methods, see Details below.}
 
@@ -61,23 +57,12 @@ For \code{predict.io.fi}, \code{predict.trial.fi}, or \code{predict.rem.fi}
   detection probability of being seen by either observer) \cr }
 }
 \description{
-Predict detection probabilities (or effective strip widths) values from a
-fitted distance sampling model using either the original data (i.e. "fitted"
-values) or using new data.
+Predict detection probabilities (or effective strip widths/effective areas of detection) from a fitted distance sampling model using either the original data (i.e. "fitted" values) or using new data.
 }
 \details{
-The first 4 arguments are the same in each predict function.  The latter 2
-are specific to certain functions. The effective strip half-width
-(\code{esw}) is the integral of the fitted detection function over
-either 0 to W or the specified \code{int.range}.  The predicted
-detection probability is the average probability which is simply the
-integral divided by the distance range.
+The first 4 arguments are the same in each predict function.  The latter 2 are specific to certain functions. For line transects, the effective strip half-width (\code{esw=TRUE}) is the integral of the fitted detection function over either 0 to W or the specified \code{int.range}.  The predicted detection probability is the average probability which is simply the integral divided by the distance range. For point transect models, \code{esw=TRUE} calculates the effective area of detection (commonly referred to as "nu", this is the integral of \code{2/width^2 * rg(r)}.
 
-Fitted detection probabilities are stored in the \code{model} object and
-these are returned unless \code{compute=TRUE} or \code{newdata} is specified.
-
-\code{compute=TRUE} is used to estimate numerical derivatives for use in
-delta method approximations to the variance.
+Fitted detection probabilities are stored in the \code{model} object and these are returned unless \code{compute=TRUE} or \code{newdata} is specified. \code{compute=TRUE} is used to estimate numerical derivatives for use in delta method approximations to the variance.
 
 For \code{method="io.fi"} or \code{method="trial.fi"} if
 \code{integrate=FALSE}, \code{predict} returns the value of the conditional

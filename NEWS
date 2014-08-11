@@ -6,6 +6,7 @@ CHANGES
   * tests updated accordingly
   * monotonically constrained models now use a bunch of random start points -- uses gosolnp() from Rsolnp
   * re-fitting by jiggling parameters refined to multiply by a uniform variable with limits set as the upper and lower bounds (+/-1) so jiggling can go either way, on approximately the same scale as the parameters
+  * corrected documentation for predict methods, which incorrectly stated what is returned for point transect models. Thanks to Thibault Dieuleveut for spotting this.
 
 
 mrds 2.1.7
