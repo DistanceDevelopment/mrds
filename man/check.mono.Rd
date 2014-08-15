@@ -23,9 +23,11 @@ check.mono(df, strict = TRUE, n.pts = 100, tolerance = 1e-06,
 \code{TRUE} if the detection function is monotone, \code{FALSE} if it's not. \code{message}s are issued to warn the user that the function is non-monotonic.
 }
 \description{
-Check that a fitted detection function is monotone decreasing. Evaluates a series of points over the range of the detection function (left to right truncation) then determines:
+Check that a fitted detection function is monotone non-increasing.
 }
 \details{
+Evaluates a series of points over the range of the detection function (left to right truncation) then determines:
+
 1. If the detection function is always less than or equal to its value at the left truncation poin (\code{g(x)<=g(left)}, or usually \code{g(x)<=g(0)}).
 2. (Optionally) The detection function is always monotone decreasing (\code{g(x[i])<=g(x[i-1])}). This check is only performed when \code{strict=TRUE} (the default).
 3. The detection function is never less than 0 (\code{g(x)>=0}).

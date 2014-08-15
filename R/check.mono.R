@@ -1,6 +1,8 @@
 #' Check that a detection function is monotone
 #'
-#' Check that a fitted detection function is monotone decreasing. Evaluates a series of points over the range of the detection function (left to right truncation) then determines:
+#' Check that a fitted detection function is monotone non-increasing.
+#'
+#' Evaluates a series of points over the range of the detection function (left to right truncation) then determines:
 #'
 #' 1. If the detection function is always less than or equal to its value at the left truncation poin (\code{g(x)<=g(left)}, or usually \code{g(x)<=g(0)}).
 #' 2. (Optionally) The detection function is always monotone decreasing (\code{g(x[i])<=g(x[i-1])}). This check is only performed when \code{strict=TRUE} (the default).
