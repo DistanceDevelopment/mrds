@@ -33,7 +33,7 @@ Check that a fitted detection function is monotone decreasing. Evaluates a serie
 
 For models with covarates in the scale parameter of the detection function is evaluated at all observed covariate combinations.
 
-Currently parameters in the shape parameter are not supported.
+Currently covariates in the shape parameter are not supported.
 }
 \author{
 David L. Miller

@@ -9,7 +9,7 @@
 #'
 #' For models with covarates in the scale parameter of the detection function is evaluated at all observed covariate combinations.
 #'
-#' Currently parameters in the shape parameter are not supported.
+#' Currently covariates in the shape parameter are not supported.
 #'
 #' @param df a fitted detection function object
 #' @param strict if \code{TRUE} (default) the detection function must be "strictly" monotone, that is that (\code{g(x[i])<=g(x[i-1])}) over the whole range (left to right truncation points).
