@@ -15,11 +15,12 @@
 #' @param ylab label for y axis
 #' @param det.plot if TRUE, plot is of detection so yaxis limited to unit
 #'   interval
+#' @param add should this plot add to a previous window
 #' @param \dots Additional unspecified arguments for plot (fill==TRUE
 #' @return None
 #' @author ???
 histline<-function(height, breaks, lineonly=FALSE, outline=FALSE, fill=FALSE,
-                   ylim=range(height), xlab="x", ylab="y", det.plot=FALSE,...){
+                   ylim=range(height), xlab="x", ylab="y", det.plot=FALSE,add=FALSE,...){
 
   # make hist object
   hh <- list()
@@ -33,9 +34,9 @@ histline<-function(height, breaks, lineonly=FALSE, outline=FALSE, fill=FALSE,
 
   # make the plot
   if(det.plot){
-    plot(hh,ylim=ylim,xlab=xlab,ylab=ylab,yaxp=c(0,1,5),main="",...)
+    plot(hh,ylim=ylim,xlab=xlab,ylab=ylab,yaxp=c(0,1,5),main="",add=add,freq=FALSE,...)
   }else{
-    plot(hh,ylim=ylim,xlab=xlab,ylab=ylab,main="",...)
+    plot(hh,ylim=ylim,xlab=xlab,ylab=ylab,main="",add=add,freq=FALSE,...)
   }
   # put a box around
   box()
