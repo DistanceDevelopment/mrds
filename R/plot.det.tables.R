@@ -43,9 +43,10 @@ plot.det.tables <- function(x,which=1:6,angle=-45,density=20,col1="black",
     detected <- x[,"Detected"]
     ymax <- max(missed+detected)
     histline(detected,breaks=breaks,lineonly=FALSE,ylim=c(0,ymax),
-             xlab="Distance",ylab="Frequency",fill=TRUE,angle=angle,
+             xlab="Distance",ylab="Frequency",angle=angle,
              density=density,col=col2,...)
-    histline(missed+detected,breaks,lineonly=TRUE,col=col1,...)
+    histline(missed+detected,breaks,lineonly=TRUE,col=col1,add=TRUE,
+             density=0,det.plot=TRUE,...)
     legend("topright",legend=leg.title,lty=1,lwd=3,col=c(col1,col2))
   }
 
