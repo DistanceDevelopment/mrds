@@ -25,7 +25,8 @@
 #' arguments \code{control},\code{meta.data},and \code{method} are defined the
 #' same as in \code{ddf}.
 #'
-#' @S3method ddf trial.fi
+#' @export
+#' @method ddf trial.fi
 #' @param model mark-recapture model specification
 #' @param data analysis dataframe
 #' @param meta.data list containing settings controlling data structure

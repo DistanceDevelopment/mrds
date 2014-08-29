@@ -1,3 +1,4 @@
+#' @export
 # see predict.ds for documentation
 predict.rem <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
   # Functions Used: predict.rem.fi and predict.ds 

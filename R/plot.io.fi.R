@@ -18,8 +18,6 @@
 #' \code{ddf} object.
 #'
 #' @aliases plot.io.fi
-#' @S3method plot io.fi
-#' @method plot io.fi
 #' @export
 #' @param x fitted model from \code{ddf}
 #' @param which index to specify which plots should be produced.

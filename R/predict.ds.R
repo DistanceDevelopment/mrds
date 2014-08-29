@@ -30,13 +30,6 @@
 #'        \method{predict}{trial.fi}(object,newdata,compute=FALSE, int.range=NULL,integrate=FALSE,...)
 #'        \method{predict}{rem}(object,newdata,compute=FALSE,int.range=NULL,...)
 #'        \method{predict}{rem.fi}(object,newdata,compute=FALSE, int.range=NULL,integrate=FALSE,...)
-#' @S3method predict ds
-#' @S3method predict io
-#' @S3method predict io.fi
-#' @S3method predict trial
-#' @S3method predict trial.fi
-#' @S3method predict rem
-#' @S3method predict rem.fi
 #' @return For all but the exceptions below, the value is a list with a single
 #'   element: \tabular{ll}{ \code{fitted} \tab vector of average detection
 #'   probabilities or esw values for each observation in the original data or
@@ -63,6 +56,7 @@
 #' @seealso \code{\link{ddf}}, \code{\link{summary.ds}},
 #'   \code{\link{plot.ds}}
 #' @keywords utility
+#' @export
 # Uses: integratedetfct, integratedetfct.logistic
 predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
                        esw=FALSE,...){

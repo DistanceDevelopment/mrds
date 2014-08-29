@@ -5,9 +5,7 @@
 #' covered (sampled) region and its standard error. What is printed depends
 #' on the corresponding call to summary.
 #'
-#' @aliases print.summary.rem
-#' @method print summary.rem
-#' @S3method print summary.rem
+#' @export
 #' @param x a summary of \code{ddf} model object
 #' @param \dots unspecified and unused arguments for S3 consistency
 #' @return NULL

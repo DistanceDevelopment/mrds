@@ -1,3 +1,4 @@
+#' @export
 coef.io <- function(object,...){
   par <- coef(object$mr)
   row.names(par) <- paste("mr      :",row.names(coef(object$mr)))

@@ -6,8 +6,7 @@
 #' on the corresponding call to summary.
 #'
 #' @aliases print.summary.io
-#' @method print summary.io
-#' @S3method print summary.io
+#' @export
 #' @param x a summary of \code{ddf} model object
 #' @param \dots unspecified and unused arguments for S3 consistency
 #' @return NULL

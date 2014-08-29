@@ -11,9 +11,7 @@
 #' \code{ds} model object and a mark-recapture model object. The corresponding
 #' print function is called to print the summary results.
 #'
-#' @S3method summary rem.fi
-#' @method summary rem.fi
-#' @aliases summary.rem.fi
+#' @export
 #' @param object a \code{ddf} model object
 #' @param se if TRUE, computes standard errors
 #' @param N if TRUE, computes abundance in covered (sampled) region

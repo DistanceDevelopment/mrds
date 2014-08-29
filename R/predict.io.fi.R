@@ -1,3 +1,4 @@
+#' @export
 # see predict.ds for documentation
 predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
                           integrate=FALSE,...){

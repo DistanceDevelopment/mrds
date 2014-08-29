@@ -3,8 +3,8 @@
 \alias{ddf.rem}
 \title{Mark-Recapture Distance Sampling (MRDS) Removal - PI}
 \usage{
-ddf.rem(dsmodel, mrmodel, data, meta.data = list(), control = list(),
-  call = "")
+\method{ddf}{rem}(dsmodel, mrmodel, data, meta.data = list(),
+  control = list(), call = "")
 }
 \arguments{
 \item{dsmodel}{distance sampling model specification; model list with key

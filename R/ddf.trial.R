@@ -24,7 +24,8 @@
 #' \code{dsmodel}, \code{mrmodel}, \code{control} and \code{meta.data} are
 #' defined the same as in \code{ddf}.
 #'
-#' @S3method ddf trial
+#' @export
+#' @method ddf trial
 #' @param dsmodel distance sampling model specification; model list with key
 #'   function and scale formula if any
 #' @param mrmodel mark-recapture model specfication; model list with formula

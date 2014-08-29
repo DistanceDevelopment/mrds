@@ -11,9 +11,7 @@
 #' \code{ds} model object and a mark-recapture model object. The corresponding
 #' print function is called to print the summary results.
 #'
-#' @S3method summary io
-#' @method summary io
-#' @aliases summary.io
+#' @export
 #' @param object a \code{ddf} model object
 #' @param se if TRUE, computes standard errors
 #' @param \dots unspecified and unused arguments for S3 consistency

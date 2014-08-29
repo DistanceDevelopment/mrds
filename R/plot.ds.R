@@ -14,8 +14,6 @@
 #' \code{ddf} object.
 #'
 #' @aliases plot.ds
-#' @S3method plot ds
-#' @method plot ds
 #' @export
 #' @param x fitted model from \code{ddf}.
 #' @param which index to specify which plots should be produced:

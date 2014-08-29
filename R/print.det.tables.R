@@ -3,8 +3,6 @@
 #' Provides formatted output for detection tables
 #'
 #' @aliases print.det.tables
-#' @method print det.tables
-#' @S3method print det.tables
 #' @export
 #' @param x result of call to ddf
 #' @param \dots unused unspecified arguments for generic print

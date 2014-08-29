@@ -15,13 +15,7 @@
 #'        \method{coef}{trial.fi}(object,...)
 #'        \method{coef}{rem}(object,...)
 #'        \method{coef}{rem.fi}(object,...)
-#' @S3method coef ds
-#' @S3method coef io
-#' @S3method coef io.fi
-#' @S3method coef trial
-#' @S3method coef trial.fi
-#' @S3method coef rem
-#' @S3method coef rem.fi
+#' @export
 #' @return
 #'
 #' For \code{coef.ds} List of data frames for coefficients (scale and exponent
@@ -34,7 +28,7 @@
 #'   \code{ddf} model object.  It can be called directly by the user, but it is
 #'   typically safest to use \code{coef} which calls the appropriate function
 #'   based on the type of model.
-#' @author Jeff Laake;
+#' @author Jeff Laake
 coef.ds <- function(object,...){
   ltmodel <- object$ds
   coeff <- NULL

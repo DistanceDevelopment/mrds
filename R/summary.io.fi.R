@@ -11,6 +11,7 @@
 #' \code{ds} model object and a mark-recapture model object. The corresponding
 #' print function is called to print the summary results.
 #'
+#' @export
 #' @param object a \code{ddf} model object
 #' @param se if TRUE, computes standard errors
 #' @param N if TRUE, computes abundance in covered (sampled) region
@@ -18,9 +19,6 @@
 #'   \code{io}
 #' @param ddfobj distance sampling object description
 #' @param \dots unspecified and unused arguments for S3 consistency
-#' @S3method summary io.fi
-#' @method summary io.fi
-#' @aliases summary.io.fi
 #' @return list of extracted and summarized objects 
 #' @note This function is called by the generic function \code{summary} for any
 #'   \code{ddf} model object.  Each function can be called directly by the

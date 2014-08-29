@@ -5,8 +5,6 @@
 #' each observer within defined distance classes.
 #'
 #' @aliases plot.det.tables
-#' @method plot det.tables
-#' @S3method plot det.tables
 #' @export
 #' @param x object returned by \code{\link{det.tables}}
 #' @param which items in x to plot (vector with values in 1:6)

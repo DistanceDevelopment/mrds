@@ -43,6 +43,6 @@ These functions are called by the generic function \code{coef} for any
   based on the type of model.
 }
 \author{
-Jeff Laake;
+Jeff Laake
 }
 

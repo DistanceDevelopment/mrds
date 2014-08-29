@@ -5,8 +5,7 @@
 #'
 #' @param x a \code{ddf} object 
 #' @param ... not passed through, just for S3 compatibility.
-#' @S3method print ddf
-#' @method print ddf 
+#' @export
 #' @aliases print.ddf
 #'
 #' @author David L. Miller

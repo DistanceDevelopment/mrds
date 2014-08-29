@@ -18,9 +18,7 @@
 #' \code{ddf} object.
 #'
 #' @aliases plot.rem.fi
-#' @S3method plot rem.fi
-#' @method plot rem.fi
-#' @export plot.rem.fi
+#' @export
 #' @param x fitted model from \code{ddf}
 #' @param which index to specify which plots should be produced.
 #'  \tabular{ll}{1 \tab Plot primary unconditional detection function \cr

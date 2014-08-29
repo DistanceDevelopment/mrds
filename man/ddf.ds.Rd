@@ -3,7 +3,7 @@
 \alias{ddf.ds}
 \title{CDS/MCDS Distance Detection Function Fitting}
 \usage{
-ddf.ds(model, data, meta.data = list(), control = list(), call,
+\method{ddf}{ds}(model, data, meta.data = list(), control = list(), call,
   method = "ds")
 }
 \arguments{

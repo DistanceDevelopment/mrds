@@ -16,7 +16,8 @@
 #' arguments \code{control},\code{meta.data},and \code{method} are defined the
 #' same as in \code{ddf}.
 #'
-#' @S3method ddf ds
+#' @export
+#' @method ddf ds
 #' @param model model list with key function and scale formula if any
 #' @param data analysis dataframe
 #' @param meta.data list containing settings controlling data structure

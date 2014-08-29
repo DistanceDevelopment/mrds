@@ -18,8 +18,6 @@
 #' \code{ddf} object.
 #'
 #' @aliases plot.trial
-#' @method plot trial
-#' @S3method plot trial
 #' @export
 #' @param x fitted model from \code{ddf}
 #' @param which index to specify which plots should be produced.

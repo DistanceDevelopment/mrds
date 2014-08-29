@@ -17,10 +17,7 @@
 #' and it will call the appropriate function based on the class of the
 #' \code{ddf} object.
 #'
-#' @aliases plot.io
-#' @S3method plot io
-#' @method plot io
-#' @export plot.io
+#' @export
 #' @param x fitted model from \code{ddf}
 #' @param which index to specify which plots should be produced.
 #'  \tabular{ll}{1 \tab Plot primary unconditional detection function \cr
