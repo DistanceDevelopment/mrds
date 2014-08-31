@@ -35,21 +35,29 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
   x <- seq(left.trunc,right.trunc,len=n.pts)
 
   # grab the unique covariate combinations from the data
-  udat <- unique(model.matrix(as.formula(ddfobj$scale$formula), data=df$dat))
+  # unless we have uniform key, in which case no formula, so just make
+  # a matrix of 1s, though this is ignored
+  if(ddfobj$type!="unif"){
+    udat <- unique(model.matrix(as.formula(ddfobj$scale$formula), data=df$dat))
+  }else{
+    udat <- matrix(1,nrow=1,ncol=1)
+  }
 
   # function to apply over the unique rows
   chpply <- function(this.udat,x,strict,plot=FALSE){
 
-    # build the design matrix for this covariate combination
-    this.udat.save <- this.udat
-    this.udat <- as.matrix(matrix(this.udat,nrow=1)[rep(1,length(x),by=1),])
-    ddfobj$scale$dm <- this.udat
+    # uniform doesn't need a design matrix update, as there is no formula
+    if(ddfobj$type!="unif"){
+      # build the design matrix for this covariate combination
+      this.udat.save <- this.udat
+      this.udat <- as.matrix(matrix(this.udat,nrow=1)[rep(1,length(x),by=1),])
+      ddfobj$scale$dm <- this.udat
 
-    # dummy data matrix for shape
-    if(!is.null(ddfobj$shape)){
-      ddfobj$shape$dm <- matrix(1,nrow=length(x),ncol=1)
+      # dummy data matrix for shape
+      if(!is.null(ddfobj$shape)){
+        ddfobj$shape$dm <- matrix(1,nrow=length(x),ncol=1)
+      }
     }
-
     # make predictions over the data
     ps <- as.vector(detfct(x,ddfobj,width=right.trunc,standardize=TRUE))
 
