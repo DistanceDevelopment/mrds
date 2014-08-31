@@ -48,21 +48,18 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
   # function to apply over the unique rows
   chpply <- function(this.udat,ddfobj,x,strict,plot=FALSE){
 
-    # build the design matrix for this covariate combination
-    this.udat.save <- this.udat
-    this.udat <- as.matrix(matrix(this.udat,nrow=1)[rep(1,length(x),by=1),])
-
-    # don't set scale matrix if not needed, e.g. for uniform
-    if(!is.null(ddfobj$scale)){
+    # uniform doesn't need a design matrix update, as there is no formula
+    if(ddfobj$type!="unif"){
+      # build the design matrix for this covariate combination
+      this.udat.save <- this.udat
+      this.udat <- as.matrix(matrix(this.udat,nrow=1)[rep(1,length(x),by=1),])
       ddfobj$scale$dm <- this.udat
-    }
 
-    # dummy data matrix for shape
-    # ignore shape covariates at the moment
-    if(!is.null(ddfobj$shape)){
-      ddfobj$shape$dm <- matrix(1,nrow=length(x),ncol=1)
+      # dummy data matrix for shape
+      if(!is.null(ddfobj$shape)){
+        ddfobj$shape$dm <- matrix(1,nrow=length(x),ncol=1)
+      }
     }
-
     # make predictions over the data
     ps <- as.vector(detfct(x,ddfobj,width=right.trunc,standardize=TRUE))
 
