@@ -373,10 +373,14 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   # statement to be added to create obs.table from model data rather than
   # creating obs.table separately. This only works if the data contain the
   # Sample.Label and Region.Label fields.
+  #
+  # jll 3 Sept 2014 if dual observer I added code to use observer 1 only 
+  # or it was doubling sample size
   point <- model$meta.data$point
   objects <- as.numeric(names(model$fitted))
   if(is.null(obs.table)){
     data <- model$data
+	if("observer"%in%names(data)) data <- data[data$observer==1,]
     if("Sample.Label" %in% names(data) & "Region.Label" %in% names(data)){
       if(is.null(substitute(subset))){
          obs.table <- data[,c("object","Sample.Label","Region.Label")]

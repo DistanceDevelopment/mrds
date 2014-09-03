@@ -94,7 +94,7 @@ create.varstructure <- function(model,region,sample,obs){
   # observer =1 to avoid problems with merge; this forces abundance 
   #  to always be estimated using observer 1 as the primary
   obs <- 1
-  if(model$method!="io" & model$method !="io.fi"){
+  if(!model$method %in% c("io","io.fi","rem","rem.fi")){
      if(model$method!="ds"){
        data <- data[data$observer==obs,]
        data <- data[data$detected==1,]

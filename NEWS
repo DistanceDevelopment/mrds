@@ -8,6 +8,9 @@ CHANGES
   * re-fitting by jiggling parameters refined to multiply by a uniform variable with limits set as the upper and lower bounds (+/-1) so jiggling can go either way, on approximately the same scale as the parameters
   * corrected documentation for predict methods, which incorrectly stated what is returned for point transect models. Thanks to Thibault Dieuleveut for spotting this.
 
+BUG FIXES
+
+* fixed 2 bugs in create.varstructure; the first was for removal method which was being treated as a trial method. The second was when obs.table was not specified (Region and sample labels in dataframe for each obs) and there was dual observers. In that case it was doubling the number of observations.
 
 mrds 2.1.7
 ----------

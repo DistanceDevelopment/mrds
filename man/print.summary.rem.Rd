@@ -3,7 +3,7 @@
 \alias{print.summary.rem}
 \title{Print summary of distance detection function model object}
 \usage{
-\method{print}{summary.rem}(x, ...)
+print.summary.rem(x, ...)
 }
 \arguments{
 \item{x}{a summary of \code{ddf} model object}

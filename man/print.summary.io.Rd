@@ -3,7 +3,7 @@
 \alias{print.summary.io}
 \title{Print summary of distance detection function model object}
 \usage{
-\method{print}{summary.io}(x, ...)
+print.summary.io(x, ...)
 }
 \arguments{
 \item{x}{a summary of \code{ddf} model object}
