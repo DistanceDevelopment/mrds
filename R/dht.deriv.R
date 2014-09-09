@@ -24,7 +24,7 @@ dht.deriv <- function(par,model,obs,samples,options=list()){
   #  uses coefficients instead of coef; needed for trial.fi and io.fi 
   model$par=par
   if(model$method!="ds"){
-    if(model$method=="io" | model$method=="trial"){
+    if(model$method%in%c("io","trial","rem")){
       model$mr$mr$coefficients <- model$par[1:length(model$mr$mr$coefficients)]
       model$ds$par <-model$par[(length(model$mr$mr$coefficients)+1):length(par)]
     }else{

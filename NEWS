@@ -11,6 +11,7 @@ CHANGES
 BUG FIXES
 
 * fixed 2 bugs in create.varstructure; the first was for removal method which was being treated as a trial method. The second was when obs.table was not specified (Region and sample labels in dataframe for each obs) and there was dual observers. In that case it was doubling the number of observations.
+* fixed a bug in dht.deriv which had not been setup for removal; thanks to John Boulanger for noticing and reporting both of these bugs
 
 mrds 2.1.7
 ----------
