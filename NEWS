@@ -1,3 +1,15 @@
+mrds 2.1.10
+-----------
+
+  * added testing directory to .Rbuildignore, tests are now not included in built packages and are not run on CRAN, for test use the source packages on github.
+
+
+mrds 2.1.9
+----------
+
+BUG FIXES
+  * removed test that failed on CRAN's testing
+
 mrds 2.1.8
 ----------
 
