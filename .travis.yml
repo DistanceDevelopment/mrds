@@ -7,10 +7,12 @@
 language: c
 
 before_install:
-#  - cd mrds
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
+# replace the .Rbuildignore, so tests actually run
+  - rm .Rbuildignore
+  - echo '^travis-tool\.sh$' >>.Rbuildignore
 install:
   - ./travis-tool.sh install_deps
 script: ./travis-tool.sh run_tests
