@@ -1,3 +1,9 @@
+mrds 2.1.11
+-----------
+
+  * Bug in unif+cos(1) models when using monotonicity constraints and randomised starting points. Since the model only has 1 parameter, there is a bug in selecting columns in Rsolnp starting value code that makes the result be a vector, which then doesn't work with an apply later. Workaround of not using randomised starting values in mrds for that model. Thanks to Nathalie Cavada for finding this bug.
+
+
 mrds 2.1.10
 -----------
 
