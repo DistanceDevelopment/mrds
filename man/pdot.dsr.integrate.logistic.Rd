@@ -7,7 +7,7 @@ pdot.dsr.integrate.logistic(right, width, beta, x, integral.numeric, BT, models,
   GAM = FALSE, rem = FALSE, point = FALSE)
 }
 \arguments{
-\item{right}{???}
+\item{right}{either an integration range for binned data (vector of 2) or the rightmost value for integration (from 0 to right)}
 
 \item{width}{transect width}
 
@@ -15,15 +15,15 @@ pdot.dsr.integrate.logistic(right, width, beta, x, integral.numeric, BT, models,
 
 \item{x}{data matrix}
 
-\item{integral.numeric}{???}
+\item{integral.numeric}{set to TRUE unless data are binned (done in this fct) or the model is such that distance is not linear (eg distance^2), If integral.numeric is FALSE it will compute the integral analytically. It should only be FALSE if is.linear.logistic function is TRUE.}
 
-\item{BT}{???}
+\item{BT}{FALSE except for the trial configuration; BT stands for Buckland-Turnock who initially proposed a trial configuration for dual observers}
 
 \item{models}{list of models including \code{g0model}}
 
-\item{GAM}{???=FALSE}
+\item{GAM}{Not used at present. The idea was to be able to use a GAM for g(0) portion of detection function; shoudl always be F}
 
-\item{rem}{???=FALSE}
+\item{rem}{only TRUE for the removal configuration but not used and could be removed if pulled from the function calls. Originally thought the pdot integral would differ but it is the same as the io formula. The only thing that differes with removal is that p(2|1)=1. Observer 2 sees everything seen by observer 1,}
 
 \item{point}{\code{TRUE} for point transects}
 }
