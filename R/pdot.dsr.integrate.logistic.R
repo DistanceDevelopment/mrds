@@ -16,7 +16,6 @@
 #' @param point \code{TRUE} for point transects
 #'
 #' @author Jeff Laake
-#'
 pdot.dsr.integrate.logistic <- function(right, width, beta, x,
                                         integral.numeric, BT, models, GAM=FALSE,
                                         rem=FALSE, point=FALSE){
@@ -37,18 +36,20 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
   #
   # Uniform detection function for g' but g* includes distance
   #
-  # If the models are non-linear in distance or data are binned, numerical integation is
-  # required for int1 and int2
-	
-  # the name right is a bit confusing in that it is either an integration range for binned data or
-  # it came be width or left.  In the case that it is width then it is integration from 0 to width. When
-  # set to left, the integration is 0 to left and that is subtracted off the integral from 0 to width to
-  # yield the integral from left to width. It was done that way to take advantage of the analytical integral 
-  # function because typically distance is linear in the model.
+  # If the models are non-linear in distance or data are binned, numerical
+  # integation is required for int1 and int2
+
+  # the name right is a bit confusing in that it is either an integration range
+  # for binned data or it came be width or left.  In the case that it is width
+  # then it is integration from 0 to width. When set to left, the integration
+  # is 0 to left and that is subtracted off the integral from 0 to width to
+  # yield the integral from left to width. It was done that way to take
+  # advantage of the analytical integral function because typically distance is
+  # linear in the model.
   if(length(right)>1){
     lower <- right[1]
     right <- right[2]
-	integral.numeric=TRUE
+    integral.numeric <- TRUE
   }else{
     lower <- 0
   }
