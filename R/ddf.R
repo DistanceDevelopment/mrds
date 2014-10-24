@@ -9,24 +9,24 @@
 #'
 #' The fitting code has certain expectations about \code{data}.  It should be a
 #' dataframe with at least the following fields named and defined as follows:
-#' \tabular{ll}{ \code{object} \tab object number \cr \code{observer} \tab
-#' observer number (1 or 2) for double observer; only 1 if single observer\cr
-#' \code{detected} \tab 1 if detected by the observer and 0 if missed; always 1
-#' for single observer\cr \code{distance} \tab perpendicular distance\cr } If
-#' the data are for clustered objects, the dataframe should also contain a
-#' field named \code{size} that gives the observed number in the cluster.  If
+#' \tabular{ll}{ \code{object} \tab object number \cr
+#'               \code{observer} \tab observer number (1 or 2) for double observer; only 1 if single observer \cr
+#'               \code{detected} \tab 1 if detected by the observer and 0 if missed; always 1 for single observer \cr
+#'               \code{distance} \tab perpendicular distance\cr }
+#' If the data are for clustered objects, the dataframe should also contain a
+#' field named \code{size} that gives the observed number in the cluster. If
 #' the data are for a double observer survey, then there are two records for
-#' each observation and each should have the same object number.  The code
+#' each observation and each should have the same object number. The code
 #' assumes the observations are listed in the same order for each observer such
 #' that if the data are subsetted by \code{observer} there will be the same
 #' number of records in each and each subset will be in the same \code{object}
-#' order.  In addition to these predefined and pre-named fields, the dataframe
+#' order. In addition to these predefined and pre-named fields, the dataframe
 #' can have any number and type of fields that are used as covariates in the
-#' \code{dsmodel} and \code{mrmodel}.  At present, discrepancies between
+#' \code{dsmodel} and \code{mrmodel}. At present, discrepancies between
 #' observations in \code{distance}, \code{size} and any user-specified
-#' covariates cannot be assimilated into the uncertainty of the estimate.  The
+#' covariates cannot be assimilated into the uncertainty of the estimate. The
 #' code presumes the values for those fields are the same for both records
-#' (observer=1 and observer=2) and it uses the value from observer 1.  Thus it
+#' (observer=1 and observer=2) and it uses the value from observer 1. Thus it
 #' makes sense to make the values the same for both records in each pair even
 #' when both detect the object or when observer 1 doesn't detect the object the
 #' data would have to be taken from observer 2 and would not be consistent.
@@ -34,17 +34,20 @@
 #' Five different fitting methods are currently available and these in turn
 #' define whether \code{dsmodel} and \code{mrmodel} need to be defined.
 #'
-#' \tabular{llll}{ Method \tab Single or Double \tab \code{dsmodel} used? \tab
-#' \code{mrmodel} used? \cr \code{ds} \tab Single \tab yes \tab no \cr
-#' \code{io} \tab Double \tab yes \tab yes \cr \code{io.fi} \tab Double \tab no
-#' \tab yes \cr \code{trial} \tab Double \tab yes \tab yes \cr
-#' \code{trial.fi}\tab Double \tab no \tab yes \cr \code{rem} \tab Double \tab
-#' yes \tab yes \cr \code{rem.fi}\tab Double \tab no \tab yes \cr }
+#' \tabular{llll}{
+#' Method          \tab Single/Double \tab \code{dsmodel} \tab \code{mrmodel}\cr
+#' \code{ds}       \tab    Single     \tab      yes       \tab    no \cr
+#' \code{io}       \tab    Double     \tab      yes       \tab    yes \cr
+#' \code{io.fi}    \tab    Double     \tab      no        \tab    yes \cr
+#' \code{trial}    \tab    Double     \tab      yes       \tab    yes \cr
+#' \code{trial.fi} \tab    Double     \tab      no        \tab    yes \cr
+#' \code{rem}      \tab    Double     \tab      yes       \tab    yes \cr
+#' \code{rem.fi}   \tab    Double     \tab      no        \tab    yes \cr }
 #'
-#' Methods with the suffix ".fi" use the assumption of full independence and do
-#' not use the distance sampling portion of the likelihood which is why a
-#' \code{dsmodel} is not needed.  An \code{mrmodel} is only needed for double
-#' observer surveys and' thus is not needed for method \code{ds}.
+#' Methods with the suffix "\code{.fi}" use the assumption of full independence
+#' and do not use the distance sampling portion of the likelihood which is why a
+#' \code{dsmodel} is not needed. An \code{mrmodel} is only needed for double
+#' observer surveys and thus is not needed for method \code{ds}.
 #'
 #' The \code{dsmodel} specifies the detection function g(y) for the distance
 #' sampling data and the models restrict g(0)=1. For single observer data g(y)
@@ -76,7 +79,7 @@
 #' adjustment terms (\code{adj.order}) and a scaling (\code{adj.scale}) which
 #' may be "width" or "scale" (for scaling by the scale parameter). Note that 
 #' the uniform key can only be used with adjustments (usually cosine adjustments
-#' for a Fourier-type analysis.
+#' for a Fourier-type analysis).
 #'
 #' The \code{mrmodel} specifies the form of the conditional detection functions
 #' (i.e.,probability it is seen by observer j given it was seen by observer
@@ -86,7 +89,7 @@
 #' functions are \code{formula} and \code{link}.  At present, only \code{glm}
 #' is allowed and it is restricted to \code{link=logit}.  Thus, currently the
 #' only form for the conditional detection functions is logistic as expressed
-#' in eq 6.32 of Laake and Borchers(2004).  In contrast to \code{dsmodel}, the
+#' in eq 6.32 of Laake and Borchers (2004).  In contrast to \code{dsmodel}, the
 #' argument \code{formula} will typically include \code{distance} and all other
 #' covariates that affect detection probability.  For example,
 #' \code{mrmodel=~glm(formula=~distance+size+sex)} constructs a conditional
@@ -96,7 +99,7 @@
 #' with an added interaction between distance and size.
 #'
 #' The argument \code{meta.data} is a list that enables various options about
-#' the data to be set.  These options include:
+#' the data to be set. These options include:
 #'
 #' \tabular{ll}{ Option \tab Value \cr \code{point} \tab if TRUE the data are
 #' from point counts and FALSE (default) implies line transect data \cr
@@ -114,7 +117,7 @@
 #' monotonicity is enforced, else only weak monotonicity. \cr}
 #'
 #' Using \code{meta.data=list(int.range=c(1,10))} is the same as
-#' \code{meta.data=list(left=1,width=10)}.  If
+#' \code{meta.data=list(left=1,width=10)}. If
 #' \code{meta.data=list(binned=TRUE)} is used, the dataframe needs to contain
 #' the fields distbegin and distend for each observation which specify the left
 #' and right hand end points of the distance interval containing the
@@ -125,9 +128,9 @@
 #' measurements from an aircraft in which the altitude is varying.  Because all
 #' analyses are truncated (i.e., the last interval does not go to infinity),
 #' the transect width (and the left truncation point if there is a blindspot
-#' below the aircraft) can potentially change for each observation.  The
+#' below the aircraft) can potentially change for each observation. The
 #' argument \code{int.range} can also be entered as a matrix with 2 columns
-#' (left and width) and a row for each observation.  Currently, a binned
+#' (left and width) and a row for each observation. Currently, a binned
 #' analysis can only be done for \code{method="ds"} and eventually
 #' \code{int.range} will be incorporated into the dataframe.
 #'
