@@ -266,12 +266,11 @@ std.err=c(summary(BV1)$Nhat.se,summary(BV1FI)$Nhat.se,summary(BV2)$Nhat.se,summa
 Bret Collier and Jeff Laake
 }
 \references{
-Farrell, S. F., B. A. Collier, K. L. Skow, A. M. Long, A. J. Campomizzi, M. L. Morrison, B. Hays, and R. N. Wilkins.  2013. Using LiDAR-derived structural vegetation characteristics to
-develop high-resolution, small-scale, species distribution models for conservation planning. Ecosphere 43(3): 42. http://dx.doi.org/10.1890
+Farrell, S.F., B.A. Collier, K.L. Skow, A.M. Long, A.J. Campomizzi, M.L. Morrison, B. Hays, and R.N. Wilkins. 2013. Using LiDAR-derived structural vegetation characteristics to develop high-resolution, small-scale, species distribution models for conservation planning. Ecosphere 43(3): 42. http://dx.doi.org/10.1890/ES12-000352.1
 
-Laake, J. L., B. A. Collier, M. L. Morrison, and R. N. Wilkins. 2011. Point-based mark recapture distance sampling. Journal of Agricultural, Biological and Environmental Statistics 16: 389-408.
+Laake, J.L., B.A. Collier, M.L. Morrison, and R.N. Wilkins. 2011. Point-based mark recapture distance sampling. Journal of Agricultural, Biological and Environmental Statistics 16: 389-408.
 
-Collier, B.A., S. L. Farrell, K. L. Skow, A. M. Long, A. J. Campomizzi, K. B. Hays, J. L. Laake, M. L. Morrison, and R. N. Wilkins.  2013. Spatially explicit density of
+Collier, B.A., S.L. Farrell, K.L. Skow, A. M. Long, A.J. Campomizzi, K.B. Hays, J.L. Laake, M.L. Morrison, and R.N. Wilkins. 2013. Spatially explicit density of
 endangered avian species in a disturbed landscape.  Auk, In Review.
 }
 \keyword{datasets}
