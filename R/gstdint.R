@@ -23,8 +23,8 @@ gstdint <- function (x, ddfobj, index=NULL,select=NULL,width,
 
   ## NB this is not the integral of the PDF OR the detection function but
   ##    rather the integral of:
-  ##       g(x)/w for line transects
-  ##       2*r*g(r)/width^2
+  ##       g(x)/w             for line transects
+  ##       2*r*g(r)/width^2   for point transects
 
   # when we have half-normal, key only use the exact analytic expression
   # for the integral using the error function/analytic expression

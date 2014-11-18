@@ -30,6 +30,9 @@ test_that("golf tee data gives the same results as Distance",{
                    meta.data=list(width=4))
   expect_that(result.mcds$Nhat, equals(212.229,tolerance=1e-3))
 
+  #rr <- ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
+  #          data=subset(egdata, detected==1 & observer==1), method="ds",
+  #          meta.data=list(width=4))
 
 #  # check that uniform key works
 #  result.unif<-ddf(dsmodel = ~cds(key = "unif",adj.series="cos",adj.order=2), 

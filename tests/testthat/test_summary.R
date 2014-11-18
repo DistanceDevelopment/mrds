@@ -45,7 +45,7 @@ test_that("summary results are correct",{
                              meta.data=list(width=4))
   expect_that(summary(tee.result.trial.fi),equals(tee.result.trial.fi.summ))
 
-  ### trial method -- line transect
+  #### trial method -- line transect
   tee.result.trial <- ddf(mrmodel=~glm(formula=~distance),
                           dsmodel = ~mcds(key = "hn", formula = ~sex),
                           data=egdata, method="trial",

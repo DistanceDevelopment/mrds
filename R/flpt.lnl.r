@@ -137,12 +137,12 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
         int1 <- integratepdf(ddfobj,select=!x$binned,width=width,
                              int.range=intrange[!x$binned,],
                              point=misc.options$point,standardize=FALSE)
-        }
+      }
       doeachint <- TRUE
       i <- i + 1
     }
     if(any(int1<=0)){
-    int1[int1<=0]=1e-25
+      int1[int1<=0] <- 1e-25
       warning("\n Problems with integration. integral <=0. Setting integral to 1E-25\n")
     }
 

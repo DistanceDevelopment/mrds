@@ -30,7 +30,7 @@ The method of computation depends on argument switches set and the type of
 detection function.
 }
 \author{
-Jeff Laake
+Jeff Laake & Dave Miller
 }
 \keyword{utility}
 
