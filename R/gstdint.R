@@ -64,8 +64,17 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL,width,
       # define the error function in terms of pnorm
       erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
       # analytic expression for integral of g(x)/w when g(x) is half-normal
-      int <- (1/width)*sqrt(pi/2)*key.scale*(-erf(x[,1]/(key.scale*sqrt(2)))+
-                                    erf(x[,2]/(key.scale*sqrt(2))))
+      #int <- (1/width)*sqrt(pi/2)*key.scale*(-erf(x[,1]/(key.scale*sqrt(2)))+
+      #                              erf(x[,2]/(key.scale*sqrt(2))))
+
+      # let's speed the above up a bit...
+      if(all(x[,1]==0)){
+        int <- (1/width)*(sqrt(pi/2)*key.scale*(erf(x[,2]/(key.scale*sqrt(2)))))
+
+      }else{
+        int <- (1/width)*sqrt(pi/2)*key.scale*(-erf(x[,1]/(key.scale*sqrt(2)))+
+                                      erf(x[,2]/(key.scale*sqrt(2))))
+      }
     }
     return(int)
   }else{
