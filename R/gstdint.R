@@ -18,9 +18,12 @@
 #'   directly.
 #' @author Jeff Laake and David L Miller
 #' @keywords utility
-gstdint <- function (x, ddfobj, index=NULL,select=NULL,width,
-                      standardize=TRUE, point=FALSE, stdint=TRUE){
+gstdint <- function(x, ddfobj, index=NULL,select=NULL,width,
+                    standardize=TRUE, point=FALSE, stdint=TRUE){
 
+  if(!is.matrix(x)){
+    x <- matrix(x, ncol=2)
+  }
   ## NB this is not the integral of the PDF OR the detection function but
   ##    rather the integral of:
   ##       g(x)/w             for line transects
@@ -55,20 +58,25 @@ gstdint <- function (x, ddfobj, index=NULL,select=NULL,width,
     if(point){
       # analytic expression for integral of 2*r*g(r)/width^2 when
       #  g(r) is half-normal
-      int <- (2*(key.scale^2*exp(-x[1]^2/(2*key.scale^2))-
-                 key.scale^2*exp(-x[2]^2/(2*key.scale^2))))/width^2
+      int <- (2*(key.scale^2*exp(-x[,1]^2/(2*key.scale^2))-
+                 key.scale^2*exp(-x[,2]^2/(2*key.scale^2))))/width^2
     }else{
       # define the error function in terms of pnorm
       erf <- function(x) 2 * pnorm(x * sqrt(2)) - 1
       # analytic expression for integral of g(x)/w when g(x) is half-normal
-      int <- (1/width)*sqrt(pi/2)*key.scale*(-erf(x[1]/(key.scale*sqrt(2)))+
-                                    erf(x[2]/(key.scale*sqrt(2))))
+      int <- (1/width)*sqrt(pi/2)*key.scale*(-erf(x[,1]/(key.scale*sqrt(2)))+
+                                    erf(x[,2]/(key.scale*sqrt(2))))
     }
     return(int)
   }else{
-    return(integrate(distpdf, lower = x[1], upper = x[2], width=width,
-                     ddfobj=ddfobj, select=select, index=index,
-                     rel.tol = 1e-7,standardize=standardize,
-                     stdint=stdint,point=point)$value)
+    # loop over the integration ranges, calculating integrals
+    res <- rep(NA, nrow(x))
+    for(i in 1:nrow(x)){
+      res[i] <- integrate(distpdf, lower = x[i,1], upper = x[i,2], width=width,
+                          ddfobj=ddfobj, select=select[i], index=index[i],
+                          rel.tol = 1e-7,standardize=standardize,
+                          stdint=stdint,point=point)$value
+    }
+    return(res)
   }
 }

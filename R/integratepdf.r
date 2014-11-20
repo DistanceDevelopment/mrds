@@ -49,7 +49,7 @@ integratepdf <- function(ddfobj, select, width, int.range,
   ## Now compute the integrals
 
   # if there is only 1 integral to compute (no covariates/1 set of covariates
-  # & only one set of integration ranges, that's easy
+  # & only one set of integration ranges), that's easy
   if(nobs==1){
     return(gstdint(int.range[1,], ddfobj=ddfobj, index=1, select=NULL,
            width=width, standardize=standardize, point=point, stdint=FALSE))
@@ -84,19 +84,16 @@ integratepdf <- function(ddfobj, select, width, int.range,
     uu.index <- sort(unique(attr(u.rows,"index")))
     u.index <- attr(u.rows,"index")
 
-    # results storage
-    ints <- rep(NA, length(uu.index))
+    # generate the indices that we want to calculate integrals for
+    ind <- match(uu.index, u.index)
 
-    for(i in seq_along(uu.index)){
+    # calculate the integrals
+    ints <- gstdint(int.range[ind,,drop=FALSE], ddfobj=ddfobj,
+                    index=index[ind], select=NULL, width=width,
+                    standardize=standardize, point=point,
+                    stdint=FALSE)
 
-      ind <- which(uu.index[i] == u.index)[1]
-
-      ints[i] <- gstdint(int.range[ind,], ddfobj=ddfobj,
-                           index=index[ind], select=NULL, width=width,
-                           standardize=standardize, point=point,
-                           stdint=FALSE)
-    }
-    ## now rebuild the integrals
+    ## now rebuild the integrals and populate the return vector
     integrals <- ints[attr(u.rows,"index")]
   }
   return(integrals)
