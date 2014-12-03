@@ -10,7 +10,8 @@ LazyLoad: yes
 Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers
     <dlb@mcs.st-and.ac.uk>, Len Thomas <len@mcs.st-and.ac.uk>, David
     Miller <dave@ninepointeightone.net> and Jon Bishop <jonb@mcs.st-and.ac.uk>
-Description: This package implements mark-recapture distance sampling
+Description: Distance sampling detection function fitting and diagnostics. Also
+    implemented are mark-recapture distance sampling
     methods as described in D.L. Borchers, W. Zucchini and Fewster,
     R.M. (1988), "Mark-recapture models for line transect surveys",
     Biometrics 54: 1207-1220. and Laake, J.L. (1999) "Distance sampling
@@ -23,7 +24,7 @@ Description: This package implements mark-recapture distance sampling
     heterogeneity in double-observer distance sampling surveys". 2006.
     Biometrics 62:372-378.)
 Version: 2.1.11
-Date: 2014-10-8
+Date: 2014-12-03
 Depends:
     R (>= 3.0)
 Suggests:

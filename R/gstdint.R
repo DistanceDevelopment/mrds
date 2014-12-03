@@ -97,6 +97,10 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL,width,
     # set up the integration grid (these are values of x/sigma)
     xx <- exp(0.05*(1:100))-1
     xx <- cbind(c(0,xx[1:99]),xx)
+    # fix scale and shape matrices
+    ddfobj$scale$dm <- matrix(1, nrow=nrow(xx))
+    if(!is.null(ddfobj$shape)) ddfobj$shape$dm <- matrix(1, nrow=nrow(xx))
+
     # Create cumulative sums of values of g(x) integrals from grid (xx)
     y <- cumsum(gstdint(xx, ddfobj=ddfobj, index=1:nrow(xx), width=width,
                         standardize=standardize, point=point, doeachint=TRUE))
