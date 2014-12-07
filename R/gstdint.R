@@ -13,13 +13,14 @@
 #' @param point logical to determine if point count(TRUE) or line
 #'   transect(FALSE)
 #' @param stdint if TRUE, scale=1 otherwise specified scale used
+#' @param doeachint if TRUE perform integration using \code{\link{integrate}}
 #' @return vector of integral values of detection function
 #' @note This is an internal function that is not intended to be invoked
 #'   directly.
 #' @author Jeff Laake and David L Miller
 #' @keywords utility
 gstdint <- function(x, ddfobj, index=NULL,select=NULL,width,
-                    standardize=TRUE, point=FALSE, stdint=TRUE, doeachint=FALSE){
+                   standardize=TRUE, point=FALSE, stdint=TRUE, doeachint=FALSE){
 
   if(!is.matrix(x)){
     x <- matrix(x, ncol=2)

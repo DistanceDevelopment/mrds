@@ -4,7 +4,7 @@
 \title{Integral of pdf of distances}
 \usage{
 gstdint(x, ddfobj, index = NULL, select = NULL, width, standardize = TRUE,
-  point = FALSE, stdint = TRUE)
+  point = FALSE, stdint = TRUE, doeachint = FALSE)
 }
 \arguments{
 \item{x}{lower,upper value for integration}
@@ -24,6 +24,8 @@ function evaluated at 0}
 transect(FALSE)}
 
 \item{stdint}{if TRUE, scale=1 otherwise specified scale used}
+
+\item{doeachint}{if TRUE perform integration using \code{\link{integrate}}}
 }
 \value{
 vector of integral values of detection function

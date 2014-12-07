@@ -51,8 +51,8 @@ bird.data=data.frame(object=x$ObjectID, observer=x$Observer, detected=x$Detected
 # make observer a factor variable
 bird.data$observer=factor(bird.data$observer)
 
-#Jeff Laake suggested this snippet to quickly create distance medians which adds bin
- information to the \\code{bird.data} dataframe
+# Jeff Laake suggested this snippet to quickly create distance medians
+# which adds bin information to the \\code{bird.data} dataframe
 
 bird.data$distbegin=0
 bird.data$distend=100
@@ -222,8 +222,8 @@ estimate=c(BV1$Nhat,BV1FI$Nhat, BV2$Nhat, BV3$Nhat, BV3FI$Nhat, BV4$Nhat,  BV5$N
 
 AIC.values=AIC
 
-#had to use str() to extract here as Nhat.se is calculated in mrds:::summary.io,
-not in ddf(), so it takes a bit
+# had to use str() to extract here as Nhat.se is calculated in
+# mrds:::summary.io, not in ddf(), so it takes a bit
 std.err=c(summary(BV1)$Nhat.se,summary(BV1FI)$Nhat.se,summary(BV2)$Nhat.se,summary(BV3)$Nhat.se,
           summary(BV3FI)$Nhat.se, summary(BV4)$Nhat.se, summary(BV5)$Nhat.se,
         summary(BV5FI)$Nhat.se, summary(BV6)$Nhat.se, summary(BV7)$Nhat.se,

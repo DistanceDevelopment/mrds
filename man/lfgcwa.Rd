@@ -51,8 +51,8 @@ distance=x$Distance, Region.Label=x$New, Sample.Label=x$PointID, Day=(x$Day/max(
 # make observer a factor variable
 bird.data$observer=factor(bird.data$observer)
 
-#Jeff Laake suggested this snippet to quickly create distance medians which adds bin
-# information to the \\code{bird.data} dataframe
+# Jeff Laake suggested this snippet to quickly create distance medians
+# which adds bin information to the \\code{bird.data} dataframe
 
 bird.data$distbegin=0
 bird.data$distend=100
