@@ -219,8 +219,11 @@ std.err=c(summary(GW1)$Nhat.se,summary(GW2)$Nhat.se,summary(GW3)$Nhat.se,summary
     summary(GW4FI)$Nhat.se, summary(GW5)$Nhat.se, summary(GW5FI)$Nhat.se,
     summary(GW6)$Nhat.se, summary(GW6FI)$Nhat.se, summary(GW7)$Nhat.se,
     summary(GW7FI)$Nhat.se,summary(GW8)$Nhat.se, summary(GW8FI)$Nhat.se)
-
+}
+\dontrun{
+#Not Run
 #requires RMark
+library(RMark)
 #uses model.average structure to model average real abundance estimates for
 #covered area of the surveys
 mmi.list=list(estimate=estimate, AIC=AIC.values, se=std.err)

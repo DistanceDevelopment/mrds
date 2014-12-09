@@ -57,9 +57,10 @@ extract.stake.pairs <- function(stake,obs1,obs2,removal=FALSE){
                                        sep=""))),select=c("PD",obs1,obs2))
   names(example) <- c("distance","obs1","obs2")
   detected <- c(example$obs1,example$obs2)
-  example <- data.frame(object=rep(1:nrow(example),2),
-                        distance=rep(example$distance,2),
-  detected <- detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
+  example <- data.frame(object   = rep(1:nrow(example),2),
+                        distance = rep(example$distance,2),
+                        detected = detected,
+                        observer = c(rep(1,nrow(example)),rep(2,nrow(example))))
   if(removal) example$detected[example$observer==2] <- 1
   return(example)
 }
@@ -78,6 +79,7 @@ io.model <- ddf(dsmodel = ~mcds(key = "hn", formula=~1),
 summary(io.model)
 par(mfrow=c(3,2))
 plot(io.model,breaks=seq(0,20,2),showpoints=TRUE,new=FALSE)
+dev.new()
 ddf.gof(io.model)
 }
 }

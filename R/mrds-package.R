@@ -151,9 +151,10 @@ NULL
 #'                                        sep=""))),select=c("PD",obs1,obs2))
 #'   names(example) <- c("distance","obs1","obs2")
 #'   detected <- c(example$obs1,example$obs2)
-#'   example <- data.frame(object=rep(1:nrow(example),2),
-#'                         distance=rep(example$distance,2),
-#'   detected <- detected,observer=c(rep(1,nrow(example)),rep(2,nrow(example))))
+#'   example <- data.frame(object   = rep(1:nrow(example),2),
+#'                         distance = rep(example$distance,2),
+#'                         detected = detected,
+#'                         observer = c(rep(1,nrow(example)),rep(2,nrow(example))))
 #'   if(removal) example$detected[example$observer==2] <- 1
 #'   return(example)
 #' }
@@ -163,7 +164,7 @@ NULL
 #'                 method = "ds", meta.data = list(width = 20))
 #' plot(ds.model,breaks=seq(0,20,2),showpoints=TRUE)
 #' ddf.gof(ds.model)
-#'
+#' 
 #' # extract data from observers 1 and 3 and fit an io model
 #' stkpairs <- extract.stake.pairs(stake77,1,3,removal=FALSE)
 #' io.model <- ddf(dsmodel = ~mcds(key = "hn", formula=~1),
@@ -172,6 +173,7 @@ NULL
 #' summary(io.model)
 #' par(mfrow=c(3,2))
 #' plot(io.model,breaks=seq(0,20,2),showpoints=TRUE,new=FALSE)
+#' dev.new()
 #' ddf.gof(io.model)
 #' }
 NULL
@@ -611,8 +613,11 @@ NULL
 #'     summary(GW4FI)$Nhat.se, summary(GW5)$Nhat.se, summary(GW5FI)$Nhat.se,
 #'     summary(GW6)$Nhat.se, summary(GW6FI)$Nhat.se, summary(GW7)$Nhat.se,
 #'     summary(GW7FI)$Nhat.se,summary(GW8)$Nhat.se, summary(GW8FI)$Nhat.se)
-#'
+#'}
+#' \dontrun{
+#' #Not Run
 #' #requires RMark
+#' library(RMark)
 #' #uses model.average structure to model average real abundance estimates for
 #' #covered area of the surveys
 #' mmi.list=list(estimate=estimate, AIC=AIC.values, se=std.err)
@@ -932,8 +937,12 @@ NULL
 #'         summary(BV5FI)$Nhat.se, summary(BV6)$Nhat.se, summary(BV7)$Nhat.se,
 #'           summary(BV7FI)$Nhat.se,summary(BV8)$Nhat.se, summary(BV9)$Nhat.se,
 #'            summary(BV9FI)$Nhat.se, summary(BV10)$Nhat.se)
+#'}
 #'
+#' \dontrun{
+#' #Not Run
 #' #requires RMark
+#' library(RMark)
 #' #uses model.average structure to model average real abundance estimates for
 #' #covered area of the surveys
 #'   mmi.list=list(estimate=estimate, AIC=AIC.values, se=std.err)
