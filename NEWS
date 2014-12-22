@@ -3,7 +3,10 @@ mrds 2.1.11
 
   * Bug in unif+cos(1) models when using monotonicity constraints and randomised starting points. Since the model only has 1 parameter, there is a bug in selecting columns in Rsolnp starting value code that makes the result be a vector, which then doesn't work with an apply later. Workaround of not using randomised starting values in mrds for that model. Thanks to Nathalie Cavada for finding this bug.
 
-  * Fixed bug in pdot.dsr.integrate.logistic which was giving incorrect AIC values for FI models with binned data for points or lines. 
+  * Fixed bug in pdot.dsr.integrate.logistic which was giving incorrect AIC values for FI models with binned data for points or lines.
+
+  * Fixed issue where returned optimisation obejct got accessed without being checked to see if it's result was an error, causing problems when encapsulating ddf in other functions.
+
 
 mrds 2.1.10
 -----------
