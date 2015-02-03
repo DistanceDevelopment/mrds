@@ -432,7 +432,7 @@ NULL
 #' @author Bret Collier and Jeff Laake
 #' @examples
 #'
-#' \donttest{
+#' \dontrun{
 #' data(lfgcwa)
 #' xy=cut(lfgcwa$Pred, c(-0.0001, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1),
 #'  labels=c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"))
@@ -746,7 +746,7 @@ NULL
 #' @author Bret Collier and Jeff Laake
 #' @examples
 #'
-#' \donttest{
+#' \dontrun{
 #' data(lfbcvi)
 #' xy=cut(lfbcvi$Pred, c(-0.0001, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1),
 #'   labels=c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"))

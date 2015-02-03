@@ -208,7 +208,7 @@
 #' # fit an independent observer model with point independence
 #' result.io <- ddf(dsmodel=~cds(key = "hn"), mrmodel=~glm(~distance),
 #'                  data=egdata, method="io", meta.data=list(width=4))
-#' \donttest{
+#' \dontrun{
 #'
 #' # simulated single observer point count data (see ?ptdata.single)
 #' data(ptdata.single)
