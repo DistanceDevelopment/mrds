@@ -1,3 +1,8 @@
+mrds 2.1.12
+-----------
+
+  * \donttest{} examples are now \dontrun{}.
+
 mrds 2.1.11
 -----------
 
@@ -11,7 +16,7 @@ mrds 2.1.11
 mrds 2.1.10
 -----------
 
-  * added testing directory to .Rbuildignore, tests are now not included in built packages and are not run on CRAN, for test use the source packages on github.
+  * added testing directory to .Rbuildignore, tests are now not included in built packages and are not run on CRAN. For tests use the source packages on github.
 
 
 mrds 2.1.9
