@@ -18,16 +18,14 @@
 #' polynomials.
 #' These are specified as arguments to \code{detfct}, as detailed below.
 #'
-#' \code{detfct} function which calls the others and assembles the final result
-#' using either key(x)[1+series(x)] or
-#' (key(x)[1+series(x)])/(key(0)[1+series(0)]) (depending on the value of
-#' standardize)
-#' \code{keyfct.hn, keyfct.hz, keyfct.gamma} calculate half-normal, hazard-rate
-#' or gamma key function values.
-#' \code{adjfct.cos, adjfct.poly, adjfct.herm} calculates adjustment term values
+#' \code{detfct} function which calls the others and assembles the final result using either key(x)[1+series(x)] or (key(x)[1+series(x)])/(key(0)[1+series(0)]) (depending on the value of \code{standardize}).
+#'
+#' \code{keyfct.*} functions calculate key function values and \code{adjfct.*} calculate adjustment term values.
+#'
 #' \code{scalevalue} for either detection function it computes the scale with
 #' the log link using the parameters and the covariate design matrix
-#' \code{fx,fr} non-normalized probability density for line transects and point
+#'
+#' \code{fx}, \code{fr} non-normalized probability density for line transects and point
 #' counts respectively
 #'
 #' @aliases detfct adjfct.cos adjfct.herm hermite.poly adjfct.poly keyfct.hn
@@ -49,9 +47,11 @@
 #'
 #' keyfct.gamma(distance, key.scale, key.shape)
 #'
-#' fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
+#' fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,
+#'    standardize=TRUE,stdint=FALSE)
 #'
-#' fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,stdint=FALSE)
+#' fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,
+#'    standardize=TRUE,stdint=FALSE)
 #'
 #' distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
 #'            stdint=FALSE,point=FALSE)
@@ -75,9 +75,9 @@
 #' @return
 #' For \code{detfct}, the value is a vector of detection probabilities for the
 #'   input set of x and z.
-#' For \code{keyfct.hn, keyfct.hz}, vector of detection probability for that
+#' For \code{keyfct.*}, vector of detection probability for that
 #'   key function at x.
-#' For \code{adjfct.cos, adjfct.poly, adjfct.herm}, vector of the value of the
+#' For \code{adjfct.*}, vector of the value of the
 #'   adjustment term at x.
 #' For \code{scalevalue}, the value is a vector of the computed scales for the
 #'   design matrix z.

@@ -126,7 +126,7 @@
 #' \item{clusters}{result list for object clusters}
 #' \item{individuals}{result list for individuals}
 #' \item{Expected.S}{\code{data.frame} of estimates of expected cluster size
-#'  with fields \code{Region}, \code{Expected.S} and \code{se.Expected.S})
+#'  with fields \code{Region}, \code{Expected.S} and \code{se.Expected.S}
 #'  If each cluster \code{size=1}, then the result only includes individuals
 #'  and not clusters and \code{Expected.S}.}
 #'

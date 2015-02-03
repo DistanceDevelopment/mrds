@@ -31,23 +31,19 @@
 #'        \method{predict}{rem}(object,newdata,compute=FALSE,int.range=NULL,...)
 #'        \method{predict}{rem.fi}(object,newdata,compute=FALSE, int.range=NULL,integrate=FALSE,...)
 #' @return For all but the exceptions below, the value is a list with a single
-#'   element: \tabular{ll}{ \code{fitted} \tab vector of average detection
-#'   probabilities or esw values for each observation in the original data or
-#'   \code{newdata} \cr }
+#'   element: \code{fitted}, a vector of average detection probabilities or esw values for each observation in the original data or\code{newdata}
 #'
-#' For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with
-#'   \code{integrate=TRUE}, the value is a list with the elements:
-#'   \tabular{ll}{\code{fitted} \tab vector of integrated (average) detection
-#'    probabilities for each observation in the original data or
-#'    \code{newdata} \cr }
+#' For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with \code{integrate=TRUE}, the value is a list with one element: \code{fitted}, which is a vector of integrated (average) detection probabilities for each observation in the original data or \code{newdata}.
 #'
 #' For \code{predict.io.fi}, \code{predict.trial.fi}, or \code{predict.rem.fi}
 #'   with \code{integrate=FALSE}, the value is a list with the following
-#'   elements: \tabular{ll}{ \code{fitted} \tab p(y) values \cr \code{p1} \tab
-#'   p_1|2(y) (conditional detection probability for observer 1) \cr \code{p2}
-#'   \tab p_2|1(y) (conditional detection probability for observer 2) \cr
-#'   \code{fitted} \tab p_.(y)=p_1|2(y)+p_2|1(y)-p_1|2(y)*p_2|1(y) (conditional
-#'   detection probability of being seen by either observer) \cr }
+#'   elements:
+#'  \describe{
+#'    \item{\code{fitted}}{\eqn{p(y)} values}
+#'    \item{\code{p1}}{\eqn{p_{1|2}(y)}, conditional detection probability for observer 1}
+#'    \item{\code{p2}}{\eqn{p_{2|1}(y)}, conditional detection probability for observer 2}
+#'    \item{\code{fitted}}{\eqn{p_.(y)=p_{1|2}(y)+p_{2|1}(y)-p_{1|2}(y)*p_{2|1}(y)}, conditional detection probability of being seen by either observer}}
+#'
 #' @note Each function is called by the generic function \code{predict} for the
 #'   appropriate \code{ddf} model object.  They can be called directly by the
 #'   user, but it is typically safest to use \code{predict} which calls the
