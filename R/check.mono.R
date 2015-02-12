@@ -20,7 +20,7 @@
 #' @param plot plot a diagnostic highlighting the non-monotonic areas (default FALSE)
 #' @param max.plots when \code{plot=TRUE}, what is the maximum number of plots of non-monotone covariate combinations that should be plotted? Plotted combinations are a random sample of the non-monotonic subset of evaluations. No effect for non-covariate models.
 #'
-#' @return \code{TRUE} if the detection function is monotone, \code{FALSE} if it's not. \code{message}s are issued to warn the user that the function is non-monotonic.
+#' @return \code{TRUE} if the detection function is monotone, \code{FALSE} if it's not. \code{warning}s are issued to warn the user that the function is non-monotonic.
 #'
 #' @keywords utility
 #' @author David L. Miller
@@ -74,7 +74,7 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
     ps.weak.chk[!ps.weak.chk] <- abs(weak.diff[!ps.weak.chk])<=tolerance
     # combine these two checks and issue a warning
     if(!all(ps.weak.chk)){
-      message("Warning: Detection function is not weakly monotonic!")
+      warning("Detection function is not weakly monotonic!")
     }
 
     # second: strict monotonicity
@@ -86,7 +86,7 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
       ps.strict.chk[!ps.strict.chk] <- abs(strict.diff[!ps.strict.chk])<=tolerance
       # combine these two checks and issue a warning
       if(!all(ps.strict.chk)){
-        message("Warning: Detection function is not strictly monotonic!")
+        warning("Detection function is not strictly monotonic!")
       }
     }else{
       ps.strict.chk <- TRUE
@@ -94,10 +94,10 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
 
     # third: check that the detection function is always in (0,1)
     if(any(ps>1)){
-      message("Warning: Detection function is greater than 1 at some distances")
+      warning("Detection function is greater than 1 at some distances")
     }
     if(any(ps<0)){
-      message("Warning: Detection function is less than 0 at some distances")
+      warning("Detection function is less than 0 at some distances")
     }
 
 

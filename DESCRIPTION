@@ -15,8 +15,8 @@ Description: Animal abundance estimation via conventional, multiple covariate
     fitting is performed via maximum likelihood. Also included are diagnostics
     and plotting for fitted detection functions. Abundance estimation is via a
     Horvitz-Thompson-like estimator.
-Version: 2.1.12
-Date: 2015-02-03
+Version: 2.1.13
+Date: 2015-02-12
 Depends:
     R (>= 3.0)
 Suggests:
