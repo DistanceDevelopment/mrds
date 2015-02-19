@@ -268,9 +268,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     }
 
     if(any(is.na(lt$par)) | lt$conv!=0){
-      # if there was no convergence then just return the lt object for debugging
-      errors("Problems with fitting model. Did not converge")
       if(misc.options$debug){
+        # if there was no convergence then just return the
+        # lt object for debugging
+        warning("Problems with fitting model. Did not converge")
         lt$optim.history <- optim.history
         return(lt)
       }else{

@@ -1,3 +1,9 @@
+mrds 2.1.13
+-----------
+
+  * link to distance sampling Google Groups in help
+  * duplicate non-convergence warning/error removed
+
 mrds 2.1.12
 -----------
 

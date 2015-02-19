@@ -13,6 +13,10 @@
 #'     heterogeneity in double-observer distance sampling surveys". 2006.
 #'     Biometrics 62:372-378.)
 #'
+#' Further information on distance sampling methods and example code is available at \url{http://distancesampling.org/R/}.
+#'
+#' For help with distance sampling and this package, there is a Google Group \url{https://groups.google.com/forum/#!forum/distance-sampling}.
+#'
 #' @name mrds-package
 #' @aliases mrds-package mrds
 #' @docType package
