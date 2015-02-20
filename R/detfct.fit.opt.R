@@ -165,7 +165,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
 
         # if that failed then make a dummy object
-        if(class(lt)=="try-error"){
+        if(any(class(lt)=="try-error")){
           lt <- list()
           lt$conv <- 9
           lt$value <- lnl.last
@@ -197,7 +197,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                      upper=upperbounds,ddfobj=ddfobj, fitting=fitting,
                      misc.options=misc.options), silent=TRUE)
 
-        if(class(lt)=="try-error"){
+        if(any(class(lt)=="try-error")){
           lt <- list()
           lt$conv <- 9
           lt$value <- lnl.last
