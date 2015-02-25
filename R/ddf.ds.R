@@ -226,14 +226,14 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
       # the hessian returned from solnp() is not what we want, warn about
       # that and don't return it
       if(misc.options$mono){
-        cat("First partial hessian calculation failed with monotonicity enforced, no hessian\n")
+        warning("First partial hessian calculation failed with monotonicity enforced, no hessian\n")
       }else{
-        cat("First partial hessian calculation failed; using second-partial hessian\n")
+        warning("First partial hessian calculation failed; using second-partial hessian\n")
         result$hessian <- lt$hessian
       }
     }else if(length(lt$par)>1){
       if(class(try(solve(result$hessian),silent=TRUE))=="try-error"){
-        cat("First partial hessian is singular; using second-partial hessian\n")
+        warning("First partial hessian is singular; using second-partial hessian\n")
         result$hessian <- lt$hessian
       }
     }

@@ -3,6 +3,7 @@ mrds 2.1.13
 
   * link to distance sampling Google Groups in help
   * duplicate non-convergence warning/error removed
+  * warning of singular Hessian is now a warning()
 
 mrds 2.1.12
 -----------
