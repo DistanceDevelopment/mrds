@@ -44,7 +44,7 @@
 #' @author Dave Miller; Jeff Laake; Lorenzo Milazzo
 detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            fitting="all"){
-  # Functions Used: assign.par, detfct.fit.opt, errors, get.par
+  # Functions Used: assign.par, detfct.fit.opt, get.par
 
   # grab the initial values
   initialvalues <- getpar(ddfobj)
@@ -107,7 +107,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     misc.options$parscale <- abs(initialvalues)
   }else{
     if(length(misc.options$parscale)!=length(initialvalues)){
-      errors("Incorrect length of parameter scale vector; using default values\n")
+      warning("Incorrect length of parameter scale vector; using default values\n")
       misc.options$parscale <- abs(initialvalues)
     }
   }
@@ -171,8 +171,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           lt$value <- lnl.last
           lt$par <- initialvalues
 
-          if(showit==3){
-            errors("Optimisation failed, ignoring and carrying on...")
+          if(showit >= 2){
+            cat("DEBUG: Optimisation failed, ignoring and carrying on...\n")
           }
         }else{
           # above gosolnp code stores best lnl as last value
@@ -203,8 +203,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           lt$value <- lnl.last
           lt$par <- initialvalues
 
-          if(showit==3){
-            errors("Optimisation failed, ignoring and carrying on...")
+          if(showit >= 2){
+            cat("DEBUG: Optimisation failed, ignoring and carrying on...\n")
           }
         }else{
           topfit.par <- coef(lt, order="value")[1, ]
@@ -218,10 +218,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       }
 
       # Print debug information
-      if(showit==3){
-        errors(paste("Converge = ",lt$conv,"\n",
-                     "lnl = ",lt$value,"\n",
-                     "parameters = ",paste(lt$par,collapse=", ")))
+      if(showit>=2){
+        cat("DEBUG: Converge   =",lt$conv,"\n",
+            "      lnl        =",lt$value,"\n",
+            "      parameters =",paste(round(lt$par,7),collapse=", "),"\n")
       }
 
       optim.history<-rbind(optim.history,c(lt$conv,-lt$value,lt$par))
@@ -240,7 +240,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         refit.count<-refit.count+1
         if(is.null(nrefits)|refit.count<=nrefits){
           if(showit>=1){
-            errors("No convergence. Refitting ...")
+            cat("DEBUG: No convergence. Refitting ...\n")
           }
 
           # if the new values weren't as good, take the last set
@@ -314,7 +314,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       }
 
       if(showit>=1){
-        errors("Refitting ...")
+        cat("DEBUG: Refitting ...\n")
       }
 
     }

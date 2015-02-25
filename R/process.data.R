@@ -94,7 +94,7 @@ process.data <- function(data,meta.data=list(),check=TRUE){
   #some fields may be validly different
   #  if(any(apply(data[data$observer==1,names(data)!="observer"&names(data)!="detected"],1,paste,collapse="")!=
   #    apply(data[data$observer==2,names(data)!="observer"&names(data)!="detected"],1,paste,collapse="")))
-  #    errors("If analysis fails it may be due to difference in data between observer 1 and 2;\n fields such as distance, size and covariates should be the same")
+  #    warning("If analysis fails it may be due to difference in data between observer 1 and 2;\n fields such as distance, size and covariates should be the same")
 
   # Determine if data are binned by presence of distbegin and distend fields
   if(is.null(data$distend)|is.null(data$distbegin)){

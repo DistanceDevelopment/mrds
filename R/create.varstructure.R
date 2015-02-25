@@ -36,7 +36,7 @@ create.varstructure <- function(model,region,sample,obs){
   # Merge sample and region tables into samples; warn if not all samples used
   samples <- merge(region,sample,by.x="Region.Label",all.x=TRUE,all.y=TRUE)
   if(any(is.na(samples$Area))){
-     errors("Some samples not included in the analysis")
+     warning("Some samples not included in the analysis")
   }
 
   # Test to make sure that sample labels are unique within region
@@ -74,7 +74,7 @@ create.varstructure <- function(model,region,sample,obs){
   data <- merge(obs,samples,by.x="Label",by.y="Label",all.x=TRUE,sort=FALSE)
 
   if(any(is.na(data$Region.Label.y))){
-     errors("Some observations not included in the analysis")
+    warning("Some observations not included in the analysis")
   }
 
   data <- data[!is.na(data$Region.Label.y),]

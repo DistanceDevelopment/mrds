@@ -112,7 +112,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   if(!is.null(ddfobj$scale)){
     if(!ddfobj$intercept.only){
       if(any(is.na(initialvalues$scale))){
-        errors("Model is not full rank - not all parameters are estimable.")
+        warning("Model is not full rank - not all parameters are estimable.")
       }
       ddfobj$scale$dm[,!is.na(initialvalues$scale)]
     }

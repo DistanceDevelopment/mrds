@@ -42,9 +42,6 @@
 #' @keywords utility
 flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
 
-  # If iteration results are printed, output parameter values
-  if(misc.options$showit==3) cat("\npar = ", fpar,"\n")
-
   # During the optimisation we want to make sure that we are keeping the
   # right things constant, so lets do that...
   set.na.pars <- function(par.name,ddfobj,fpar){
@@ -77,9 +74,10 @@ flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
   #  compute total negative log-likelihood
   lnl <- sum(flpt.lnl(fpar, ddfobj, misc.options))
 
-  # If iteration results are printed, output log-likelihood
-  if(misc.options$showit==3){
-    cat("\npar = ", fpar,"\n")
+  # If iteration results are printed, output
+  # log-likelihood and parameter values
+  if(misc.options$showit >= 3){
+    cat("par = ", fpar,"\n")
     cat("lt lnl = ", lnl,   "\n")
   }
   return(lnl)

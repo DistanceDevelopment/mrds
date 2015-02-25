@@ -83,8 +83,7 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   result$meta.data <- result$ds$meta.data
   if(is.null(result$ds$Nhat)){
     if(control$debug){
-      errors("ds model did not converge; no further results possible")
-      errors("Returned object is for debugging ONLY!")
+      warning("ds model did not converge; no further results possible\nReturned object is for debugging ONLY!")
       return(result)
     }
     stop("ds model did not converge; no further results possible")
