@@ -5,6 +5,7 @@ mrds 2.1.13
   * duplicate non-convergence warning/error removed
   * warning of singular Hessian is now a warning()
   * re-wrote the debug output to be easier to read
+  * dht now has an option (ci.width) to specify confidence interval width in output (thanks to David Pavlacky for the suggestion)
 
 mrds 2.1.12
 -----------

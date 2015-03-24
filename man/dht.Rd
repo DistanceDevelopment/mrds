@@ -30,14 +30,7 @@ based on log-normal}
 \item{bootstrap}{if \code{TRUE} uses bootstrap approach (currently not
 implemented)}
 
-\item{options}{a list of options that can be set:
-\code{pdelta} : delta value for computing numerical first derivatives
-  (Default: 0.001)
-\code{varflag} : 0,1,2 (see below) (Default: 2)
-\code{convert.units} :  multiplier for width to convert to units of
-  length (Default: 1)
-\code{ervar} : encounter rate variance type - see type argument to
-  \code{\link{varn}} (Default: \code{"R2"})}
+\item{options}{a list of options that can be set, see "\code{dht} options", beow.}
 }
 \value{
 list object of class \code{dht} with elements:
@@ -166,6 +159,18 @@ The remaining variable \code{pdelta} should not need to be changed but was
 included for completeness.  It controls the precision of the first
 derivative calculation for the delta method variance.
 }
+\section{\code{dht} options}{
+
+ Several options are available to control calculations and output:
+
+\describe{
+ \item{\code{ci.width}}{Confidence iterval width, expressed as a decimal between 0 and 1 (default 0.95, giving a 95\% CI)}
+ \item{\code{pdelta}}{ delta value for computing numerical first derivatives (Default: 0.001)}
+ \item{\code{varflag}}{ 0,1,2 (see Details) (Default: 2)}
+ \item{\code{convert.units}}{ multiplier for width to convert to units of length (Default: 1)}
+ \item{\code{ervar}}{ encounter rate variance type - see type argument to \code{\link{varn}} (Default: "R2")}
+}
+}
 \author{
 Jeff Laake
 }
@@ -203,7 +208,7 @@ Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
   Oxford University Press.
 }
 \seealso{
-\code{\link{print.dht}},\code{\link{dht.se}}
+print.dht dht.se
 }
 \keyword{utility}
 

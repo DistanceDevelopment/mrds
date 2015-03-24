@@ -276,6 +276,15 @@ dht.se <- function(model,region.table,samples,obs,options,numRegions,
                             (diag(vc2)/estimate.table$Estimate^2)^2/df)
     }
 
+    # work out the confidence intervals
+    # if the options$ci.width is set, then use that, else default to
+    # 95% CI
+    if(is.null(options$ci.width)){
+      ci.width <- 0.025
+    }else{
+      ci.width <- (1-options$ci.width)/2
+    }
+
     # compute proper satterthwaite
     # df for total estimate assuming sum of indep region estimates; uses
     # variances instead of cv's because it is a sum of means for encounter
@@ -296,12 +305,12 @@ dht.se <- function(model,region.table,samples,obs,options,numRegions,
     }
 
     estimate.table$df[estimate.table$df < 1 &estimate.table$df >0] <- 1
-    cvalue <- exp((abs(qt(0.025, estimate.table$df)) *
+    cvalue <- exp((abs(qt(ci.width, estimate.table$df)) *
                   sqrt(log(1 + estimate.table$cv^2))))
   }else{
     # intervals for varflag=0; sets df=0
     # and uses normal approximation
-    cvalue <- exp((abs(qnorm(0.025)) * sqrt(log(1 + estimate.table$cv^2))))
+    cvalue <- exp((abs(qnorm(ci.width)) * sqrt(log(1 + estimate.table$cv^2))))
     estimate.table$df <- rep(0,dim(estimate.table)[1])
   }
 

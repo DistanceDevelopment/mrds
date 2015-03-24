@@ -113,14 +113,7 @@
 #'  based on log-normal
 #' @param bootstrap if \code{TRUE} uses bootstrap approach (currently not
 #'  implemented)
-#' @param options a list of options that can be set:
-#'  \code{pdelta} : delta value for computing numerical first derivatives
-#'    (Default: 0.001)
-#'  \code{varflag} : 0,1,2 (see below) (Default: 2)
-#'  \code{convert.units} :  multiplier for width to convert to units of
-#'    length (Default: 1)
-#'  \code{ervar} : encounter rate variance type - see type argument to
-#'    \code{\link{varn}} (Default: \code{"R2"})
+#' @param options a list of options that can be set, see "\code{dht} options", beow.
 #' @export
 #' @return list object of class \code{dht} with elements:
 #' \item{clusters}{result list for object clusters}
@@ -147,8 +140,21 @@
 #'  are returned}
 #' \item{Nhat.by.sample}{another summary of \code{Nhat} by sample used by
 #'  \code{dht.se}}
+#'
+#'
+#' @section \code{dht} options:
+#'  Several options are available to control calculations and output:
+#'
+#' \describe{
+#'  \item{\code{ci.width}}{Confidence iterval width, expressed as a decimal between 0 and 1 (default 0.95, giving a 95\% CI)}
+#'  \item{\code{pdelta}}{ delta value for computing numerical first derivatives (Default: 0.001)}
+#'  \item{\code{varflag}}{ 0,1,2 (see Details) (Default: 2)}
+#'  \item{\code{convert.units}}{ multiplier for width to convert to units of length (Default: 1)}
+#'  \item{\code{ervar}}{ encounter rate variance type - see type argument to \code{\link{varn}} (Default: "R2")}
+#'}
+#'
 #' @author Jeff Laake
-#' @seealso \code{\link{print.dht}},\code{\link{dht.se}}
+#' @seealso print.dht dht.se
 #' @references
 #'
 #' Borchers, D.L., S.T. Buckland, P.W. Goedhart, E.D. Clarke, and S.L. Hedley.
