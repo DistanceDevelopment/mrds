@@ -30,7 +30,9 @@ is.linear.logistic <- function(xmat,g0model,zdim,width){
   xmat$distance <- rep(0, nrow(xmat))
   logit0 <- mean( beta %*% t(setcov(xmat, g0model)$cov))
 
-  if(logit1-logit0==0){
+  if(is.nan(logit1) || is.nan(logit0)){
+    integral.numeric <- TRUE
+  }else if(logit1-logit0==0){
     integral.numeric <- FALSE
   }else if((logit2-logit0)/(logit1-logit0) <= 2.00001 &
           (logit2-logit0)/(logit1-logit0) >= 1.99999){
