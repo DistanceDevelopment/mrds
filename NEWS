@@ -6,6 +6,7 @@ mrds 2.1.13
   * warning of singular Hessian is now a warning()
   * re-wrote the debug output to be easier to read
   * dht now has an option (ci.width) to specify confidence interval width in output (thanks to David Pavlacky for the suggestion)
+  * monotonicity now operates over left->right truncation for models that are left truncated and will fail with an error message if many integration intervals are used. Thanks to Tiago Marques for highlighting this issue.
 
 mrds 2.1.12
 -----------

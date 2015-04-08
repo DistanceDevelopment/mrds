@@ -130,6 +130,12 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
       # if we want monotonicity, use Lorenzo's code...
       if(misc.options$mono){
+
+        # fail if int.range is a matrix
+        if(is.matrix(misc.options$int.range) && nrow(misc.options$int.range)>1){
+          stop("Montonicity constraints not available with multiple integration ranges")
+        }
+
         # lower and upper bounds of the inequality constraints
         lowerbounds.ic <- rep(0,2*misc.options$mono.points)
         upperbounds.ic <- rep(10^10,2*misc.options$mono.points)

@@ -8,13 +8,22 @@
 
 # function to evaluate a set of `reference points' (distances) 
 # used to define the inequality constraints
-getRefPoints<- function(no_d,width){
+getRefPoints<- function(no_d, int.range){
 
-  xlat <- width/(no_d^1.5)
+  # previous versions just used width and assumed that left truncation
+  # was at zero, now using int.range to tell us the interval
+
+  # note this currently doesn't work with multiple integration ranges
+  # i.e. when int.range is a matrix w. > 1 row. This should have been caught
+  # and an error throw before now though.
+
+  xlat <- (int.range[2]-int.range[1])/(no_d^1.5)
   ref_points <- double(no_d)
   for(i in 1:no_d){
     ref_points[i] <- (i^1.5) * xlat
   }
+
+  ref_points <- ref_points+int.range[1]
 
   return(ref_points)
 }
@@ -45,7 +54,7 @@ flnl.constr<- function(pars, ddfobj, misc.options,...){
     # at which the DF is evaluated
     no_d <- misc.options$mono.points
     # reference points (distances)
-    ref_p <- getRefPoints(no_d,misc.options$width)
+    ref_p <- getRefPoints(no_d, misc.options$int.range)
     # to get detfct to play nice need to mudge ddfobj a bit...
     if(!is.null(ddfobj$scale)){
       ddfobj$scale$dm <- rep(1,no_d)
