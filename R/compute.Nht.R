@@ -12,10 +12,6 @@
 #' @author Jeff Laake
 #' @keywords utility
 compute.Nht <- function(pdot,group=TRUE,size=NULL){
-  # Compute Horvitz-Thompson abundance estimate in covered region
-  # depending on value of group = TRUE   (group abundance);
-  #                               FALSE  (individual abundance)
-
   if(group){
      return(1/pdot)
   }else{
