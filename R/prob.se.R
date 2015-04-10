@@ -24,7 +24,7 @@ prob.se <- function(model,fct,vcov,observer=NULL,fittedmodel=NULL){
   # Functions Used:  DeltaMethod, prob.deriv (in DeltaMethod)
 
   # First compute variance component due to estimation of detection function
-  # parameters. Thus uses the delta method and produces a v-c matrix if more 
+  # parameters. This uses the delta method and produces a v-c matrix if more
   # than one strata
   if(is.null(fittedmodel)){
     vc1.list <- DeltaMethod(model$par,prob.deriv,vcov,.0001,model=model,
