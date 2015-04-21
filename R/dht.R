@@ -205,7 +205,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
 
     # Mod 18-Aug-05 jll; added computation of avergage detection probability
     # which is simply n/Nhat in the covered region
-    average.p <- dim(obs)[1]/sum(Nhat.by.sample$Nhat)
+    average.p <- nrow(obs)/sum(Nhat.by.sample$Nhat)
 
     # Scale up abundances to survey region
     # jll 19-Jan-05 - sort Nhat.by.sample by Region.Label and Sample.Label
