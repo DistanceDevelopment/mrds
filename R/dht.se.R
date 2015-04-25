@@ -75,12 +75,12 @@
 #' @seealso \code{\link{dht}}, \code{\link{print.dht}}
 #' @references see \code{\link{dht}}
 #' @keywords utility
-dht.se <- function(model,region.table,samples,obs,options,numRegions,
-                   estimate.table,Nhat.by.sample){
+dht.se <- function(model, region.table, samples, obs, options, numRegions,
+                   estimate.table, Nhat.by.sample){
   #  Functions Used:  DeltaMethod, dht.deriv (in DeltaMethod), varn
 
   # Define function: compute.df
-  compute.df=function(k,type){
+  compute.df<- function(k,type){
     if(type=="O1" | type=="O2"| type=="O3"){
       H.O <- k - 1
       k.h.O <- rep(2, H.O)
@@ -99,7 +99,7 @@ dht.se <- function(model,region.table,samples,obs,options,numRegions,
   }
 
   # First compute variance component due to estimation of detection function
-  # parameters. Thus uses the delta method and produces a v-c matrix if more
+  # parameters. This uses the delta method and produces a v-c matrix if more
   # than one strata
   if(!is.null(model$par)){
     vcov <- solvecov(model$hessian)$inv
