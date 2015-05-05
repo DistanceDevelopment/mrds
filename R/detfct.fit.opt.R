@@ -75,6 +75,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
   # use optimx
   if(misc.options$mono & is.null(ddfobj$adjustment)){
     misc.options$mono <- FALSE
+    # set back to default optimiser
+    opt.method <- optim.options$optimx.method
   }
 
   # if nofit=TRUE, we just want to set the parameters, calculate the
@@ -196,6 +198,19 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         lt$message <- ""
 
       }else{
+
+        if(any(opt.method == "SANN")){
+          lt <- try(optim(initialvalues, flnl, method="SANN",
+                       control=optim.options,
+                       hessian=TRUE, lower=lowerbounds,
+                       upper=upperbounds,ddfobj=ddfobj, fitting=fitting,
+                       misc.options=misc.options), silent=TRUE)
+          opt.method <- opt.method[opt.method != "SANN"]
+          if(class(lt)!="try-error"){
+            initialvalues <- lt$par
+          }
+        }
+
         # use optimx
         lt <- try(optimx(initialvalues, flnl, method=opt.method,
                      control=optim.options,
