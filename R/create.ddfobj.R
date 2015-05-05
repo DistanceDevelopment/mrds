@@ -30,11 +30,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   ddfobj <- vector("list")
   point <- meta.data$point
   modpaste <- paste(model)
-  modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
-
-  if(class(modelvalues)=="try-error"){
-    stop("Invalid model specification: ",model)
-  }
+  modelvalues <- eval(parse(text=modpaste[2:length(modpaste)]))
 
   # Specify key function type
   ddfobj$type <- modelvalues$key
