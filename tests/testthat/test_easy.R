@@ -164,6 +164,7 @@ for(i in model.set){
                 None=FALSE,
                 Weak=FALSE,
                 strict=TRUE)
+
   mcds.call<-paste(mcds.call,",formula=~1)",sep="")
 
   this.model<-ltresults[[i]]
@@ -173,7 +174,7 @@ for(i in model.set){
     result<-try(test.df(eval(parse(text=mcds.call)),ltexample,width,
                     mono=mono,strict=mono.strict,showit=0))
 
-    expect_that(all(class(result)=="try-error"),is_false())
+    expect_that(all(class(result)=="try-error"),is_false(), label=i)
 
     if(all(class(result)!="try-error")){
 

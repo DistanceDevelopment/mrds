@@ -2,10 +2,8 @@
 # test that using Rsolnp gives the same results
 # as optimx() when it should!
 
-library(testthat)
-library(mrds)
-
-tol <- 1e-6
+par.tol <- 1e-6
+tol <- 1e-4
 
 # boring bookexamples-based testing...
 data(book.tee.data)
@@ -23,8 +21,8 @@ test_that("bookexamples par. ests. and likelihood are correct", {
 
   mono.par <- c(0.66068519,  -0.01592319)
   names(result.mono$par) <- NULL
-  expect_that(result.mono$par,equals(mono.par,tol=tol))
-  expect_that(result.mono$lnl,equals(-154.56193,tol=tol))
+  expect_equal(result.mono$par, mono.par, tolerance=par.tol, scale=mono.par)
+  expect_equal(result.mono$lnl, -154.56193, tol=tol)
 
   # run with Rsolnp, mono=TRUE, mono.strict=TRUE
   result.strict<-ddf(dsmodel = ~mcds(key = "hn", formula = ~1, adj.series="cos",
@@ -34,8 +32,8 @@ test_that("bookexamples par. ests. and likelihood are correct", {
 
   strict.par <- c(0.6606852,-0.0159232)
   names(result.strict$par) <- NULL
-  expect_that(result.strict$par,equals(strict.par,tol=tol))
-  expect_that(result.strict$lnl,equals(-154.56193,tol=tol))
+  expect_equal(result.strict$par,strict.par,tol=tol)
+  expect_equal(result.strict$lnl,-154.56193,tol=tol)
 
 })
 
