@@ -19,8 +19,10 @@
 #' @param \dots Additional unspecified arguments for plot (fill==TRUE
 #' @return None
 #' @author ???
-histline<-function(height, breaks, lineonly=FALSE, outline=FALSE, fill=FALSE,
-                   ylim=range(height), xlab="x", ylab="y", det.plot=FALSE,add=FALSE,...){
+#' @importFrom graphics plot box
+histline <- function(height, breaks, lineonly=FALSE, outline=FALSE, fill=FALSE,
+                     ylim=range(height), xlab="x", ylab="y", det.plot=FALSE,
+                     add=FALSE,...){
 
   # make hist object
   hh <- list()

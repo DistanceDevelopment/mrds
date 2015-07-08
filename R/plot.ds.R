@@ -46,6 +46,9 @@
 #' @return Just plots.
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
+#' @importFrom graphics hist par lines points title
+#' @importFrom grDevices devAskNewPage grey
+#' @importFrom stats rnorm
 #' @examples
 #' \donttest{
 #' data(book.tee.data)
@@ -74,20 +77,11 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   show <- rep(FALSE, 2)
   show[which] <- TRUE
   lower <- 0
-  divisions <- 25
   vname <- "distance"
   dpdata <- model$data
-  dspars <- model$ds$par
   #dpdata$offsetvalue<-0
 
-  dspars <- model$ds$par
-  dsmodel <- model$call$dsmodel[[2]][[2]]
-
   xlab <- "Distance"
-  objname <- "object"
-  obsname <- "observer"
-  detname <- "detected"
-  #nclass<-8
 
   dat<-dpdata
 
@@ -147,8 +141,6 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
 
   zdim <- dim(z)[2]
   n <- length(xmat$distance)
-  intercept.only <- ddfobj$intercept.only
-  theta <- model$par
 
   if(!is.null(breaks)){
     nc <- length(breaks)-1
@@ -245,9 +237,7 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   hist.obj <- hist(dat[,vname][keep], breaks=breaks, plot=FALSE)
   hist.obj$density <- hist.obj$counts/expected.counts
   hist.obj$density[expected.counts==0] <- 0
-  freq <- hist.obj$density
   hist.obj$equidist <- FALSE
-
 
 
   ### Actual plotting is here

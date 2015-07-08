@@ -24,6 +24,9 @@
 #'
 #' @keywords utility
 #' @author David L. Miller
+#' @importFrom stats as.formula model.matrix
+#' @importFrom graphics polygon rug
+#' @importFrom grDevices rgb
 #' @export
 check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.plots=6){
 
@@ -193,7 +196,7 @@ check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.pl
       }
 
       # use plot.layout to get the layout
-      dd<-plot.layout(1:max.plots,pages=1)
+      dd <- plot.layout(1:max.plots,pages=1)
 
       # make the plots
       d <- suppressMessages(apply(plot.sample,1,chpply,x=x,ddfobj=ddfobj,

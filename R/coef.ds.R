@@ -29,6 +29,7 @@
 #'   typically safest to use \code{coef} which calls the appropriate function
 #'   based on the type of model.
 #' @author Jeff Laake
+#' @importFrom stats coef
 coef.ds <- function(object,...){
   ltmodel <- object$ds
   coeff <- NULL

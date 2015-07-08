@@ -9,7 +9,6 @@ NCovered.trial <- function(par,model,group=TRUE,...){
   if(!is.null(par)){
     model$mr$mr$coefficients <- par[1:length(model$mr$mr$coefficients)]
     model$ds$par <- par[(length(model$mr$mr$coefficients)+1):length(par)]
-    ddfobj <- model$ds$ds$aux$ddfobj
     model$ds$ds$aux$ddfobj <- assign.par(model$ds$ds$aux$ddfobj,model$ds$par)
     fitted <- predict(model,compute=TRUE,integrate=TRUE)$fitted
   }else{

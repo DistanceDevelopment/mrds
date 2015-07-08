@@ -42,6 +42,7 @@
 #'   list of formulas for detection function model (probably can remove this)
 #'   }}
 #' @author Dave Miller; Jeff Laake; Lorenzo Milazzo
+#' @importFrom stats runif optim
 detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            fitting="all"){
   # Functions Used: assign.par, detfct.fit.opt, get.par

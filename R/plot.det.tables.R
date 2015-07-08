@@ -17,6 +17,8 @@
 #' @param \dots other graphical parameters, passed to plotting functions
 #' @return Just plots.
 #' @author Jeff Laake
+#' @importFrom grDevices dev.new
+#' @importFrom graphics legend
 #' @examples
 #' \donttest{
 #' data(book.tee.data)

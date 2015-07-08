@@ -15,7 +15,7 @@ NCovered.io.fi <- function(par=NULL,model,group=TRUE,...){
   # then extract fitted values
   if(!is.null(par)){
     model$mr$coefficients <- par
-    fitted <- predict.io.fi(model,integrate=TRUE)$fitted
+    fitted <- predict(model,integrate=TRUE)$fitted
   }else{
     fitted <- model$fitted
   }

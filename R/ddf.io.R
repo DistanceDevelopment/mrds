@@ -65,7 +65,6 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   # Process data
   data.list <- process.data(data,meta.data)
   meta.data <- data.list$meta.data
-  xmat <- data.list$xmat
 
   # Create result list
   result <- list(call=call, data=data, mrmodel=mrmodel, dsmodel=dsmodel,

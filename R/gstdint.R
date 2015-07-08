@@ -19,6 +19,7 @@
 #'   directly.
 #' @author Jeff Laake and David L Miller
 #' @keywords utility
+#' @importFrom stats pnorm smooth.spline
 gstdint <- function(x, ddfobj, index=NULL,select=NULL,width,
                    standardize=TRUE, point=FALSE, stdint=TRUE, doeachint=FALSE){
 

@@ -1,5 +1,5 @@
 #' Iterative offset GLM/GAM for fitting detection function
-#' 
+#'
 #' Provides an iterative algorithm for finding the MLEs of detection (capture)
 #' probabilities for a two-occasion (double observer) mark-recapture experiment
 #' using standard algorithms GLM/GAM and an offset to compensate for
@@ -7,13 +7,13 @@
 #' formulated and solved numerically, the use of GLM/GAM provides all of the
 #' available tools for fitting, predictions, plotting etc without any further
 #' development.
-#' 
+#'
 #' Note that currently the code in this function for GAMs has been commented
 #' out until the remainder of the mrds package will work with GAMs.  This is an
 #' internal function that is used as by \code{ddf.io.fi} to fit mark-recapture
 #' models with 2 occasions.  The argument \code{mrmodel} is used for
 #' \code{fitformula}.
-#' 
+#'
 #' @import mgcv
 #' @param datavec dataframe
 #' @param fitformula logit link formula
@@ -29,20 +29,19 @@
 #' @references Buckland, S.T., J.M. breiwick, K.L. Cattanach, and J.L. Laake.
 #'   1993. Estimated population size of the California gray whale.  Marine
 #'   Mammal Science, 9:235-249.
-#' 
+#'
 #' Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers, T.A. Marques,
 #'   J.R.B. Bishop, and L. Thomas. 2004.  Further topics in distance sampling.
 #'   pp: 360-363. In: Advanced Distance Sampling, eds. S.T. Buckland,
 #'   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
 #'   Oxford University Press.
 #' @keywords Statistical Models
-io.glm <-
-function(datavec, fitformula, eps = 0.00001, iterlimit = 500, GAM = FALSE, 
-  gamplot = TRUE)
-{
+#' @importFrom stats glm plogis binomial
+io.glm <- function(datavec, fitformula, eps = 0.00001, iterlimit = 500,
+                   GAM = FALSE, gamplot = TRUE){
 # ---------------------------------------------------------------
 #  This is the code that uses the iterative offset glm or gam
-#  approach; iteration is done until parameters are within a 
+#  approach; iteration is done until parameters are within a
 #  certain epsilon (eps) or iteration limit (iterlimit) exceeded.
 #
 #  Note: David used offset in formula and I've put it as an

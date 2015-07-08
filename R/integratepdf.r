@@ -16,6 +16,7 @@
 #' @author Jeff Laake & Dave Miller
 #' @keywords utility
 # @importFrom mgcv uniquecombs
+#' @importFrom stats integrate
 integratepdf <- function(ddfobj, select, width, int.range,
                          standardize=TRUE, point=FALSE){
   # Make sure there is consistency between integration ranges and data

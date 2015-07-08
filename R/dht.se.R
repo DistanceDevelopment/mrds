@@ -75,6 +75,7 @@
 #' @seealso \code{\link{dht}}, \code{\link{print.dht}}
 #' @references see \code{\link{dht}}
 #' @keywords utility
+#' @importFrom stats qnorm qt var
 dht.se <- function(model, region.table, samples, obs, options, numRegions,
                    estimate.table, Nhat.by.sample){
   #  Functions Used:  DeltaMethod, dht.deriv (in DeltaMethod), varn

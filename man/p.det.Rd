@@ -9,7 +9,7 @@ p.det(dpformula, dplink, dppars, dpdata)
 \arguments{
 \item{dpformula}{formula for detection function}
 
-\item{dplink}{link function ("logit","loglog","cloglog"}
+\item{dplink}{link function ("logit","loglog","cloglog")}
 
 \item{dppars}{parameter vector}
 

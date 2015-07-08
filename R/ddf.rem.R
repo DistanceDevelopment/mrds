@@ -85,7 +85,7 @@ ddf.rem<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   unique.data <- data[data$observer==1&data$detected==1,]
   obs2 <- data[data$observer==2,]
   obs1 <- data[data$observer==1,]
-  missed <- data$detected[data$observer==1]==0
+  #missed <- data$detected[data$observer==1]==0
   unique.data <- rbind(unique.data,obs2[obs1$detected==0,])
   unique.data$observer <- 1
   unique.data  <-  process.data(unique.data, meta.data,check=FALSE)$xmat

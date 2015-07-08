@@ -7,6 +7,7 @@
 #' @return list with chi-square value, df and p-value
 #' @seealso ddf.gof
 #' @author Jeff Laake
+#' @importFrom stats pchisq
 gof.ds <- function(model,breaks=NULL,nc=NULL){
   # Functions used: predict.ds
 

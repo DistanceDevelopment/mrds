@@ -11,13 +11,13 @@
 #' @return vector of breaks modified to be valid if necessary
 #' @author Jeff Laake
 test.breaks <- function(breaks,left,width){
-  # Define function make.bins
-  make.bins <- function(xmat,bins){
-    indices <- as.numeric(cut(xmat$distance,bins,include.lowest=TRUE))
-    xmat$distbegin <- bins[indices]
-    xmat$distend <- bins[indices+1]
-    return(xmat)
-  }
+  ### Define function make.bins
+  ##make.bins <- function(xmat,bins){
+  ##  indices <- as.numeric(cut(xmat$distance,bins,include.lowest=TRUE))
+  ##  xmat$distbegin <- bins[indices]
+  ##  xmat$distend <- bins[indices+1]
+  ##  return(xmat)
+  ##}
 
   # Make sure break points are in order
   if(any(breaks!=sort(breaks))){

@@ -21,14 +21,14 @@
 cdf.ds <- function(model,newdata=NULL) {
 
   ltmodel <- model$ds
-  fpar <- model$par
+  #fpar <- model$par
   width <- ltmodel$aux$width
   ddfobj <-ltmodel$aux$ddfobj
   x <- ddfobj$xmat
   z <- ddfobj$scale$dm
-  zdim <- dim(z)
-  ftype <- ddfobj$type
-  intercept.only <- ddfobj$intercept.only
+  #zdim <- dim(z)
+  #ftype <- ddfobj$type
+  #intercept.only <- ddfobj$intercept.only
   point <- model$meta.data$point
 
   # Set up integration ranges

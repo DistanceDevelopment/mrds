@@ -46,12 +46,12 @@ summary.ds <- function(object,se=TRUE,N=TRUE,...){
   # Number of observations
   ans$n <- length(ddfobj$xmat$distance)
 
-  # Average detection prob for mcds
-  if(is.null(model$fitted)){
-    pdot <- predict(model,esw=FALSE)$fitted
-  }else{
-    pdot <- model$fitted
-  }
+  ## Average detection prob for mcds
+  #if(is.null(model$fitted)){
+  #  pdot <- predict(model,esw=FALSE)$fitted
+  #}else{
+  #  pdot <- model$fitted
+  #}
 
   # Set the key function type
   ans$key <- ddfobj$type

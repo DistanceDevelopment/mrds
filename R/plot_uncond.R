@@ -74,7 +74,6 @@ plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
   line <- average.line(finebr,obs,model)
   linevalues <- line$values
   xgrid <- line$xgrid
-  maxl <- max(freq, gxvalues)
   ylim <- c(0,max(ylim,hist.obj$density))
 
   histline(hist.obj$density,breaks=breaks,lineonly=FALSE,xlab=xlab,ylab=ylab,

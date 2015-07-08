@@ -53,6 +53,7 @@
 #'   \code{\link{plot.ds}}
 #' @keywords utility
 #' @export
+#' @importFrom stats predict
 # Uses: integratedetfct, integratedetfct.logistic
 predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
                        esw=FALSE,...){
