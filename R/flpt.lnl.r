@@ -142,7 +142,7 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
       i <- i + 1
     }
     if(any(int1<=0)){
-      int1[int1<=0] <- 1e-25
+      int1[int1<=0] <- 1e-15
       warning("\n Problems with integration. integral <=0. Setting integral to 1E-25\n")
     }
 

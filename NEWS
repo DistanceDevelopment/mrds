@@ -1,3 +1,10 @@
+mrds 2.1.14
+-----------
+
+ * updated initialvalues calculation for hazard-rate -- now uses Beavers & Ramsay method to scale parameters for hazard-rate
+ * automatic parameter rescaling for covariate models when covariates are poorly scaled. Now default for nlminb method
+
+
 mrds 2.1.13
 -----------
 

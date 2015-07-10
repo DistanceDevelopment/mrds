@@ -32,7 +32,6 @@
 #'   maxiter: maximum iterations used \item refit: if TRUE, detection function
 #'   will be fitted more than once if parameters are at a boundary or when
 #'   convergence is not achieved \item nrefits: number of refittings \item
-#'   parscale: parameter scale values
 #'   \item mono: if TRUE, montonicity will be enforced \item
 #'   mono.strict: if TRUE, then strict monotonicity is enforced; otherwise weak
 #'   \item width: radius of point count or half-width of strip \item
@@ -70,6 +69,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     opt.method <- optim.options$optimx.method
     optim.options$optimx.method <- NULL
     optim.options$follow.on <- TRUE
+  }else{
+    opt.method <- "solnp"
   }
 
   # if monotonicity has been requested but we are using key only then just
@@ -93,7 +94,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     lt$hessian <- NULL
     lt$model <- list(scalemodel=misc.options$scalemodel)
     lt$converge <- 0
-    lt$message<-"MAYBE CONVERGENCE?"
+    lt$message <- "MAYBE CONVERGENCE?"
 
     lt$aux <- c(optim.options,bounds,misc.options)
     ddfobj <- assign.par(ddfobj,lt$par)
@@ -105,21 +106,15 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     lt$conv<-NULL
     return(lt)
   }
-  # 30 Jan 06; jll- modified default parscale values
-  if(any(is.na(misc.options$parscale))){
-    misc.options$parscale <- abs(initialvalues)
-  }else{
-    if(length(misc.options$parscale)!=length(initialvalues)){
-      warning("Incorrect length of parameter scale vector; using default values\n")
-      misc.options$parscale <- abs(initialvalues)
-    }
-  }
 
   # save last value of the lnl -- starting value
   lnl.last <- Inf
 
   # recover the optimisation history
   optim.history <- misc.options$optim.history
+
+  # save the list of optimisation methods
+  opt.method.save <- opt.method
 
   # while parameters are bounded continue refitting and adjusting bounds
   while(bounded){
@@ -131,7 +126,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       # Call optimization routine to find constrained mles; upon
       # completion add the user specified models and return the list.
 
-      # if we want monotonicity, use Lorenzo's code...
+      ### Monotonically constrained optimisation
       if(misc.options$mono){
 
         # fail if int.range is a matrix
@@ -140,8 +135,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         }
 
         # lower and upper bounds of the inequality constraints
-        lowerbounds.ic <- rep(0,2*misc.options$mono.points)
-        upperbounds.ic <- rep(10^10,2*misc.options$mono.points)
+        lowerbounds.ic <- rep(0, 2*misc.options$mono.points)
+        upperbounds.ic <- rep(10^10, 2*misc.options$mono.points)
 
         if(length(initialvalues)==1){
           ## gosolnp (below) doesn't work when there is only 1 parameter
@@ -198,8 +193,14 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         lt$value <- lt$values[length(lt$values)]
         lt$message <- ""
 
+      ## end monotonically constrained estimation
       }else{
+      ## unconstrained optimisation
 
+        # get the list of optimisation methods
+        opt.method <- opt.method.save
+
+        # SANN is not an optimx method, so do that first using optim
         if(any(opt.method == "SANN")){
           lt <- try(optim(initialvalues, flnl, method="SANN",
                        control=optim.options,
@@ -212,32 +213,74 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           }
         }
 
-        # use optimx
-        lt <- try(optimx(initialvalues, flnl, method=opt.method,
-                     control=optim.options,
-                     hessian=TRUE, lower=lowerbounds,
-                     upper=upperbounds,ddfobj=ddfobj, fitting=fitting,
-                     misc.options=misc.options), silent=TRUE)
+        # if one of the methods was nlminb and we need to rescale (see above)
+        # then we need to call nlminb separately to ensure that the scaling is
+        # passed (optimx will phase out scaling according to JC Nash, email
+        # to DLM, 4 Dec 2014)
+        # this code taken from Distance2
 
-        if(any(class(lt)=="try-error")){
-          lt <- list()
-          lt$conv <- 9
-          lt$value <- lnl.last
-          lt$par <- initialvalues
+        # only do this if we have covariates
+        # AND we are fitting all of the parameters
+        # AND parscale is TRUE
+        # AND using nlminb
+        # no rescaling happens if the scaling factor is less than 3 see
+        # rescale_pars
+        if(!is.null(ddfobj$scale$formula) && (ddfobj$scale$formula != ~1) &&
+           !is.null(optim.options$parscale) &&
+           all(optim.options$parscale)&&
+            (opt.method=="nlminb") && (fitting=="all")){
 
-          if(showit >= 2){
-            cat("DEBUG: Optimisation failed, ignoring and carrying on...\n")
+          # get the rescaling
+          if(is.logical(optim.options$parscale)){
+            optim.options$parscale <- rescale_pars(initialvalues, ddfobj)
           }
-        }else{
-          topfit.par <- coef(lt, order="value")[1, ]
-          details <- attr(lt,"details")[1,]
-          lt <- as.list(summary(lt, order="value")[1, ])
-          lt$par <- topfit.par
-          lt$message <- ""
-          names(lt)[names(lt)=="convcode"] <- "conv"
-          lt$hessian <- details$nhatend
-        }
-      }
+
+          # run the optimiser
+          lt <- try(nlminb_wrapper(par=initialvalues, ll=flnl,
+                                   #lower=rep(-Inf, length(initialvalues)),
+                                   #upper=rep(Inf, length(initialvalues)),
+                                   lower=lowerbounds,
+                                   upper=upperbounds,
+                                   mcontrol=optim.options, ddfobj=ddfobj,
+                                   misc.options=misc.options))
+          # remove nlminb from the list
+          opt.method <- opt.method[opt.method != "nlminb"]
+
+          # get new initialvalues
+          if(any(class(lt)=="try-error") || any(is.na(lt[,1:attr(lt,"npar")]))){
+            if(showit >= 2){
+              cat("DEBUG: Optimisation failed, ignoring and carrying on...\n")
+            }
+          }
+          # put the results in a nice format
+          lt <- parse.optimx(lt, lnl.last, initialvalues)
+          initialvalues <- lt$par
+        } # end rescaled nlminb
+
+        ## use optimx if there are methods left
+        if(length(opt.method)>0){
+
+          # remove scaling, as otherwise there's weird conflicts
+          optim.options$parscale <- NULL
+
+          lt <- try(optimx(initialvalues, flnl, method=opt.method,
+                       control=optim.options,
+                       hessian=TRUE, lower=lowerbounds,
+                       upper=upperbounds, ddfobj=ddfobj, fitting=fitting,
+                       misc.options=misc.options), silent=TRUE)
+
+          if(any(class(lt)=="try-error") || any(is.na(lt[,1:attr(lt,"npar")]))){
+            if(showit >= 2){
+              cat("DEBUG: Optimisation failed, ignoring and carrying on...\n")
+            }
+          }
+
+          # put the results in a nice format
+          lt <- parse.optimx(lt, lnl.last, initialvalues)
+          initialvalues <- lt$par
+
+        } # end optimx
+      } # end unconstrained optimisation
 
       # Print debug information
       if(showit>=2){
@@ -246,7 +289,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
             "      parameters =",paste(round(lt$par,7),collapse=", "),"\n")
       }
 
-      optim.history<-rbind(optim.history,c(lt$conv,-lt$value,lt$par))
+      optim.history <- rbind(optim.history, c(lt$conv, -lt$value, lt$par))
 
       ## Convergence?!
       # OR... don't wiggle the pars or do refits if we're doing adjustment
@@ -254,14 +297,14 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       if(lt$conv==0|!refit | fitting!="all"){
         itconverged<-TRUE
 
-        lt$aux <- c(optim.options,bounds,misc.options)
-        ddfobj <- assign.par(ddfobj,lt$par)
+        lt$aux <- c(optim.options, bounds, misc.options)
+        ddfobj <- assign.par(ddfobj, lt$par)
         lt$aux$ddfobj <- ddfobj
       }else{
       # If we don't have convergence what do we do
-        refit.count<-refit.count+1
-        if(is.null(nrefits)|refit.count<=nrefits){
-          if(showit>=1){
+        refit.count <- refit.count + 1
+        if(is.null(nrefits) | (refit.count <= nrefits)){
+          if(showit >= 1){
             cat("DEBUG: No convergence. Refitting ...\n")
           }
 

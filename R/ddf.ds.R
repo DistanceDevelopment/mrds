@@ -102,7 +102,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   control <- assign.default.values(control, showit=0,
                                    estimate=TRUE, refit=TRUE, nrefits=25,
                                    initial=NA, lowerbounds=NA, upperbounds=NA,
-                                   limit=TRUE, parscale=NA, maxiter=12,
+                                   limit=TRUE, parscale=TRUE, maxiter=12,
                                    standardize=TRUE, mono.points=20,
                                    mono.tol=1e-8, mono.delta=1e-7, debug=FALSE,
                                    nofit=FALSE, optimx.method="nlminb",
@@ -191,8 +191,9 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   # Note there is a difference between maxit (the maximum numbr of iterations
   # for optimx() uses) and maxiter (which is what detfct.fit uses.)
-  optim.options <- list(maxit=control$optimx.maxit,
-                        optimx.method=control$optimx.method)
+  optim.options <- list(maxit         = control$optimx.maxit,
+                        optimx.method = control$optimx.method,
+                        parscale      = control$parscale)
 
   # Actually do the optimisation if not just a uniform key!
   if(is.null(initialvalues)) misc.options$nofit <- TRUE

@@ -30,7 +30,6 @@
 #'   maxiter: maximum iterations used \item refit: if TRUE, detection function
 #'   will be fitted more than once if parameters are at a boundary or when
 #'   convergence is not achieved \item nrefits: number of refittings \item
-#'   parscale: parameter scale values
 #'   \item mono: if TRUE montonicity will be enforced \item
 #'   mono.strict: if TRUE, then strict monotonicity is enforced; otherwise weak
 #'   \item width: radius of point count or half-width of strip \item
