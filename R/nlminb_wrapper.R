@@ -17,6 +17,7 @@
 #' @param \dots anything else to pass to \code{ll}
 #' @return \code{optimx} object
 #'
+#' @importFrom stats nlminb
 #' @author David L Miller, modified from \code{optimx.run} by JC Nash, R Varadhan, G Grothendieck.
 nlminb_wrapper <- function(par, ll, ugr=NULL, lower=NULL, upper=NULL,
                            mcontrol, hess=NULL, ddfobj, data, ...){

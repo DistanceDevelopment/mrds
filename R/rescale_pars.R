@@ -7,6 +7,7 @@
 #' @author David L Miller
 #' @param initialvalues starting values for the optimisation
 #' @param ddfobj detection function object
+#' @importFrom stats sd terms
 rescale_pars <- function(initialvalues, ddfobj){
 
   par_scaling <- rep(1, length(initialvalues))
