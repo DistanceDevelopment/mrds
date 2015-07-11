@@ -27,7 +27,7 @@ notifications:
     on_failure: change
 
 after_success:
-  - Rscript -e 'library(covr);coveralls()'
+  - Rscript -e 'library(covr);codecov()'
 
 env:
   matrix:
