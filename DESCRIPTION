@@ -2,6 +2,7 @@ Package: mrds
 Imports:
     optimx (>= 2013.8.6),
     mgcv,
+    numDeriv,
     Rsolnp
 Maintainer: David Miller <dave@ninepointeightone.net>
 License: GPL (>=2)

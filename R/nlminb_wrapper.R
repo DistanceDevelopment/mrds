@@ -22,8 +22,8 @@ nlminb_wrapper <- function(par, ll, ugr=NULL, lower=NULL, upper=NULL,
                            mcontrol, hess=NULL, ddfobj, data, ...){
 
   # need to do this from optimx.R
-  optcfg <- optimx:::optimx.setup(par, ll, ugr, hess, lower, upper,
-                         "nlminb", itnmax=NULL, hessian=FALSE, mcontrol, ...)
+  optcfg <- optimx.setup(par, ll, ugr, hess, lower, upper,
+                "nlminb", itnmax=NULL, hessian=FALSE, mcontrol, ...)
   mcontrol <- optcfg$ctrl
 
   ## most comments here are from optimx.run, optimx version 2014.5.4

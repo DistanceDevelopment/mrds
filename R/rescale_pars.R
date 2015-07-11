@@ -5,7 +5,6 @@
 #' Derivative-free methods like nlminb are sensitive to the parameters being poorly scaled. This can also cause problems for quasi-Newton methods too (at least, bad scaling won't _help_ the optimisation). So here we rescale the parameters if necessary (unless we already got scaling from control)
 #'
 #' @author David L Miller
-#' @importFrom optimx scalecheck
 #' @param initialvalues starting values for the optimisation
 #' @param ddfobj detection function object
 rescale_pars <- function(initialvalues, ddfobj){
@@ -13,8 +12,8 @@ rescale_pars <- function(initialvalues, ddfobj){
   par_scaling <- rep(1, length(initialvalues))
 
   # from optimx:::optimx.setup, scaletol = 3 (so setting 3 here for consistency)
-  if(optimx:::scalecheck(initialvalues, NA, NA,
-                          dowarn=FALSE)$lpratio>3){
+  # here we use a local copy in scalecheck.R
+  if(scalecheck(initialvalues, NA, NA, dowarn=FALSE)$lpratio>3){
     # do the rescaling to the scale parameters only
     # this is (still) a bit hackish
     # divide by the standard deviation of the distances
