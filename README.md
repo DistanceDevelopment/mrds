@@ -3,6 +3,8 @@ mrds - Mark-Recapture Distance Sampling
 
 [![Build Status](https://travis-ci.org/DistanceDevelopment/mrds.svg?        branch=master)](https://travis-ci.org/DistanceDevelopment/mrds)
 [![CRAN (RStudio Mirror) Downloads](http://cranlogs.r-pkg.org/badges/mrds)](http://www.r-pkg.org/pkg/mrds)
+[![CRAN Version](http://www.r-pkg.org/badges/version/)
+![Coverage Status](https://coveralls.io/repos/DistanceDevelopment/mrds/badge.svg?branch=master&service=github)](https://coveralls.io/github/DistanceDevelopment/mrds?branch=master)
 
 # What is `mrds`?
 
