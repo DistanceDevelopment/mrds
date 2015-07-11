@@ -9,6 +9,9 @@ before_install:
   - chmod 755 pkg-build.sh
   - ./pkg-build.sh bootstrap
 
+r_github_packages:
+  - jimhester/covr
+
 install:
   - ./pkg-build.sh install_deps
 
@@ -23,11 +26,8 @@ notifications:
     on_success: change
     on_failure: change
 
-r_github_packages:
-  - jimhester/covr
-
 after_success:
-  - Rscript -e 'library(covr);codecov()'
+  - Rscript -e 'library(covr);coveralls()'
 
 env:
   matrix:
