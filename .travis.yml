@@ -10,7 +10,7 @@ before_install:
   - ./pkg-build.sh bootstrap
 
 after_success:
-  - R -e 'library(covr);coveralls()'
+  - /pkg-build.sh run_script -e 'library(covr);coveralls()'
 
 install:
   - ./pkg-build.sh install_deps
