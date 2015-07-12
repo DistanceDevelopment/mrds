@@ -10,7 +10,7 @@ before_install:
   - ./pkg-build.sh bootstrap
 
 after_success:
-  - Rscript -e 'library(covr);coveralls()'
+  - R -e 'library(covr);coveralls()'
 
 install:
   - ./pkg-build.sh install_deps
