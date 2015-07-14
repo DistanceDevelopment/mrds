@@ -32,9 +32,6 @@ setcov <- function(dmat, model){
   }else{
     #x <- model.matrix(eval(parse(text=model)), data = dmat)
     x <- model.matrix(as.formula(model), data = dmat)
-    #if(!is.matrix(x))
-    #  x <- as.matrix(x)
-    #n <- dim(x)[2]
   }
   return(x)
 }
