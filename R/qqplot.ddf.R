@@ -43,10 +43,11 @@
 qqplot.ddf <- function(model,plot=TRUE,...){
 
   fun <- function(x,z,lt){
-    if(lt)
+    if(lt){
       length(z[z<x])
-    else 
+    }else{
       length(z[z<=x])
+    }
   }
 
   if("ds" %in% class(model)){
