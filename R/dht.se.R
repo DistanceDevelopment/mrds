@@ -259,6 +259,15 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
   estimate.table$cv <- estimate.table$se/estimate.table$Estimate
   estimate.table$cv[is.nan(estimate.table$cv)] <- 0
 
+  # work out the confidence intervals
+  # if the options$ci.width is set, then use that, else default to
+  # 95% CI
+  if(is.null(options$ci.width)){
+    ci.width <- 0.025
+  }else{
+    ci.width <- (1-options$ci.width)/2
+  }
+
   # Use satterthwaite approx for df and log-normal distribution for
   # 95% intervals
   if(options$varflag != 0){
@@ -275,15 +284,6 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
                             estimate.table$Estimate^2)^2/(length(model$fitted) -
                             length(model$par)) +
                             (diag(vc2)/estimate.table$Estimate^2)^2/df)
-    }
-
-    # work out the confidence intervals
-    # if the options$ci.width is set, then use that, else default to
-    # 95% CI
-    if(is.null(options$ci.width)){
-      ci.width <- 0.025
-    }else{
-      ci.width <- (1-options$ci.width)/2
     }
 
     # compute proper satterthwaite
