@@ -16,5 +16,5 @@ logisticbyz <- function (x, distance, models, beta){
 
   x$distance <- rep(distance,length(x$distance))
   zlist <- setcov(x, models$g0model)
-  return(g0(beta,zlist$cov))
+  return(g0(beta,zlist))
 }

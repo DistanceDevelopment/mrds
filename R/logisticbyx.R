@@ -21,8 +21,8 @@ logisticbyx <- function (distance, x, models, beta, point){
   xmat <- expand.grid(xlist)
 
   if(!point){
-    return(g0(beta, setcov(xmat, models$g0model)$cov))
+    return(g0(beta, setcov(xmat, models$g0model)))
   }else{
-    return(g0(beta, setcov(xmat, models$g0model)$cov)*2*distance)
+    return(g0(beta, setcov(xmat, models$g0model))*2*distance)
   }
 }

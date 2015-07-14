@@ -13,20 +13,21 @@
 #'
 #' @return vector of probabilities
 #' @author Jeff Laake
-logisticdupbyx <- function (distance, x1, x2, models, beta, point){
+logisticdupbyx <- function(distance, x1, x2, models, beta, point){
   #  Functions used: g0, setcov
   xlist <- as.list(x1)
   xlist$distance <- distance
   xmat <- expand.grid(xlist)
 
-  gx1 <- g0(beta, setcov(xmat, models$g0model)$cov)
+  gx1 <- g0(beta, setcov(xmat, models$g0model))
+
   xlist <- as.list(x2)
   xlist$distance <- distance
   xmat <- expand.grid(xlist)
 
   if(!point){
-    return(gx1 * g0(beta, setcov(xmat, models$g0model)$cov))
+    return(gx1 * g0(beta, setcov(xmat, models$g0model)))
   }else{
-    return(gx1 * g0(beta, setcov(xmat, models$g0model)$cov)*2*distance)
+    return(gx1 * g0(beta, setcov(xmat, models$g0model))*2*distance)
   }
 }

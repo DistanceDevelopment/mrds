@@ -11,9 +11,9 @@
 #' @author Jeff Laake
 is.logistic.constant <- function(xmat,g0model,width){
   xmat$distance <- rep(width, nrow(xmat))
-  zlist <-setcov(xmat, g0model)
-  beta <- rep(1,zlist$dim)
-  logit1 <- beta %*% t(zlist$cov)
+  zlist <- setcov(xmat, g0model)
+  beta <- rep(1,ncol(zlist))
+  logit1 <- beta %*% t(zlist)
 
   return(all(logit1[1]==logit1))
 }

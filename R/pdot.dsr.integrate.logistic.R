@@ -71,10 +71,10 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
                                     lower=lower,right, point),
                   nrow(x[x$observer==1,]))
     }else{
-      int1 <- NULL
+      int1 <- rep(NA,nrow(x[x$observer==1,]))
       for(i in 1:nrow(x[x$observer==1,])){
-        int1 <- c(int1, integratelogistic(x=(x[x$observer==1,])[i,], models,
-                                          beta,lower=lower,right,point))
+        int1[i] <- integratelogistic(x=(x[x$observer==1,])[i,], models,
+                                     beta,lower=lower,right,point)
       }
     }
 
@@ -84,10 +84,10 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
                                       lower=lower,right, point),
                     nrow(x[x$observer==2,]))
       }else{
-        int2 <- NULL
+        int2 <- rep(NA,nrow(x[x$observer==2,]))
         for(i in 1:nrow(x[x$observer==2,])){
-          int2 <- c(int2, integratelogistic(x=x[x$observer==2,][i,], models,
-                                            beta,lower=lower,right, point))
+          int2[i] <- integratelogistic(x=x[x$observer==2,][i,], models,
+                                            beta,lower=lower,right, point)
         }
       }
     }else{
@@ -115,12 +115,12 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
                                        lower=lower,right, point),
                   nrow(x[x$observer==2,]))
     }else{
-      int3 <- NULL
+      int3 <- rep(NA, nrow(x[x$observer==1,]))
       for(i in 1:nrow(x[x$observer==1,])){
-        int3 <- c(int3, integratelogisticdup(x1=(x[x$observer==1,])[i,],
-                                             x2=(x[x$observer==2,])[i,],
-                                             models, beta, lower=lower,
-                                             right, point))
+        int3[i] <- integratelogisticdup(x1=(x[x$observer==1,])[i,],
+                                        x2=(x[x$observer==2,])[i,],
+                                        models, beta, lower=lower,
+                                        right, point)
       }
     }
     pdot <- int1 + int2 - int3

@@ -72,7 +72,7 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
                     pl.col='black', bw.col=grey(0), black.white=FALSE,
                     pl.den=rep(20,1), pl.ang=rep(-45,1), main=NULL,pages=0,...){
 
-  #  Uses: setcov, detfct, histline, test.breaks
+  #  Uses: detfct, histline, test.breaks
   model<-x
   show <- rep(FALSE, 2)
   show[which] <- TRUE

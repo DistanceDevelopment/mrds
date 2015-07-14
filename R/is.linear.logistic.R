@@ -24,11 +24,11 @@ is.linear.logistic <- function(xmat,g0model,zdim,width){
 
   xmat$distance <- rep(width/2, nrow(xmat))
   beta <- rep(1,zdim)
-  logit1 <- mean(beta %*% t(setcov(xmat, g0model)$cov))
+  logit1 <- mean(beta %*% t(setcov(xmat, g0model)))
   xmat$distance <- rep(width, nrow(xmat))
-  logit2 <- mean(beta %*% t(setcov(xmat, g0model)$cov))
+  logit2 <- mean(beta %*% t(setcov(xmat, g0model)))
   xmat$distance <- rep(0, nrow(xmat))
-  logit0 <- mean( beta %*% t(setcov(xmat, g0model)$cov))
+  logit0 <- mean( beta %*% t(setcov(xmat, g0model)))
 
   if(is.nan(logit1) || is.nan(logit0)){
     integral.numeric <- TRUE

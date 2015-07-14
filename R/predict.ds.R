@@ -99,7 +99,7 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
       if(!is.null(ddfobj$scale)){
         zdim <- ncol(ddfobj$scale$dm)
         znames <- colnames(ddfobj$scale$dm)
-        ddfobj$scale$dm <- setcov(newdata, as.formula(ddfobj$scale$formula))$cov
+        ddfobj$scale$dm <- setcov(newdata, as.formula(ddfobj$scale$formula))
         if(zdim != ncol(ddfobj$scale$dm) |
            !all(znames==colnames(ddfobj$scale$dm)) ){
           stop("fields or factor levels in newdata do not match data used in estimation model for scale model\n")
@@ -109,7 +109,7 @@ predict.ds <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,
       if(!is.null(ddfobj$shape)){
         zdim <- ncol(ddfobj$shape$dm)
         znames <- colnames(ddfobj$shape$dm)
-        ddfobj$shape$dm <- setcov(newdata, as.formula(ddfobj$shape$formula))$cov
+        ddfobj$shape$dm <- setcov(newdata, as.formula(ddfobj$shape$formula))
         if(zdim != ncol(ddfobj$shape$dm) |
            !all(znames==colnames(ddfobj$shape$dm))){
           stop("fields or factor levels in newdata do not match data used in estimation model for shape model\n")
