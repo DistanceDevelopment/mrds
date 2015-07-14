@@ -19,32 +19,25 @@
 #' @param which index to specify which plots should be produced:
 #'  \tabular{ll}{1 \tab histogram of observed distances\cr
 #'               2 \tab histogram of observed distanes with fitted line and points (default)\cr}
-#' @param byvar name of variable to be used to color points - not currently
-#'   implemented.
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
-#' @param jitter.v scaling option for plotting points.  Jitter is applied to
-#'   points by multiplying the fitted value by a random draw from a normal
-#'   distribution with mean 1 and sd \code{jitter.v[j]}.  Where \code{j=1,2}
-#'   corresponds to observer \code{j} and \code{j=3} corresponds to
-#'   pooled/duplicate detections.
-#' @param showpoints logical variable; if \code{TRUE} plots predicted value
-#'   for each observation.
+#' @param jitter.v scaling option for plotting points.  Jitter is applied to points by multiplying the fitted value by a random draw from a normal distribution with mean 1 and sd \code{jitter.v[j]}.  Where \code{j=1,2} corresponds to observer \code{j} and \code{j=3} corresponds to pooled/duplicate detections.
+#' @param showpoints logical variable; if \code{TRUE} plots predicted value for each observation.
 #' @param subset subset of data to plot.
 #' @param pl.col colours plotting colours for obs 1, obs 2 detections.
 #' @param bw.col grayscale plotting colours for obs 1, obs 2 detections.
 #' @param black.white logical variable; if \code{TRUE} plots are grayscale.
-#' @param pl.den shading density for plots of obs 1, obs 2 detections.
-#' @param pl.ang shading angle for plots of obs 1, obs 2 detections.
+# @param pl.den shading density for plots of obs 1, obs 2 detections.
+# @param pl.ang shading angle for plots of obs 1, obs 2 detections.
 #' @param main user-specfied plot title.
 #' @param pages the number of pages over which to spread the plots. For
 #'  example, if \code{pages=1} then all plots will be displayed on one page.
 #'  Default is 0, which prompts the user for the next plot to be displayed.
-#' @param \dots other graphical parameters, passed to the plotting functions
 #'   (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}},
 #'   \code{\link{points}}, etc).
+#' @param covlevels plot covariate level plots, in which case arguments \code{pages} and \code{which} are ignored.
 #' @return Just plots.
-#' @author Jeff Laake, Jon Bishop, David Borchers
+#' @author Jeff Laake, Jon Bishop, David Borchers, David L Miller
 #' @keywords plot
 #' @importFrom graphics hist par lines points title
 #' @importFrom grDevices devAskNewPage grey
@@ -67,19 +60,20 @@
 #' # put both plots on one page
 #' plot(xx,breaks=c(0,.5,1,2,3,4),pages=1,which=1:2)
 #' }
-plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
+plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
                     jitter.v=rep(0,3), showpoints=TRUE, subset=NULL,
                     pl.col='black', bw.col=grey(0), black.white=FALSE,
-                    pl.den=rep(20,1), pl.ang=rep(-45,1), main=NULL,pages=0,...){
+                    #pl.den=0, pl.ang=rep(-45,1),
+                    main=NULL, covlevels=TRUE,
+                    pages=0, ...){
 
   #  Uses: setcov, detfct, histline, test.breaks
-  model<-x
+  model <- x
   show <- rep(FALSE, 2)
   show[which] <- TRUE
-  lower <- 0
+  #lower <- 0
   vname <- "distance"
   dpdata <- model$data
-  #dpdata$offsetvalue<-0
 
   xlab <- "Distance"
 
@@ -126,11 +120,6 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   }
 
   xmat <- ddfobj$xmat[selected,]
-  if(!is.null(ddfobj$scale)){
-    z <- ddfobj$scale$dm[selected,,drop=FALSE]
-  }else{
-    z <- matrix(1,nrow=1,ncol=1)
-  }
 
   if(length(model$fitted)==1){
     pdot <- rep(model$fitted,sum(as.numeric(selected)))
@@ -139,7 +128,6 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
     Nhat <- sum(1/pdot)
   }
 
-  zdim <- dim(z)[2]
   n <- length(xmat$distance)
 
   if(!is.null(breaks)){
@@ -147,31 +135,19 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   }
 
   if(is.null(nc)){
-    nc <- round( sqrt(n),0)
+    nc <- round(sqrt(n),0)
   }
 
   # Set logical hascov=TRUE when detection function has
   #  covariates other than distance and observer
-  hascov <- FALSE
-  if(!ddfobj$intercept.only){
-    hascov <- TRUE
-  }
+  hascov <- !ddfobj$intercept.only
 
-  # Compute a grid for distance (xgrid), and covariates zgrid for
-  # plotting of detection functions.  Also create intervals of distance (breaks)
-  # for the chosen number of classes (nc).
-  if(!hascov){
-    xgrid <- (width/100)*(seq(0:100)-1)
-    zgrid <- matrix(rep(z[1,],length(xgrid)), byrow=TRUE, ncol=sum(zdim))
-  }
+  # Compute a grid for distance (xgrid)
+  xgrid <- (width/100)*(seq(0:100)-1)
 
+  # create intervals of distance (breaks) for the chosen number of classes (nc).
   if(is.null(breaks)){
-    if(is.null(model$meta.data$binned)){
-      binned <- FALSE
-    }else{
-      binned <- model$meta.data$binned
-    }
-    if(binned){
+    if(!is.null(model$meta.data$binned) && model$meta.data$binned){
       breaks <- ltmodel$aux$breaks
       nc <- length(breaks)-1
     }else{
@@ -188,11 +164,8 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   breaks <- test.breaks(breaks,model$meta.data$left,width)
   nc <- length(breaks)-1
 
-  #breaks<-seq(lower,upper,length=(nclass+1))
-  lower <- min(breaks)
-  upper <- max(breaks)
   dat <- dpdata[selected,]
-  keep <- dat[,vname]>=lower & dat[,vname]<=upper
+  keep <- dat[,vname]>=min(breaks) & dat[,vname]<=max(breaks)
   h1 <- hist(dat[,vname][keep],breaks=breaks,plot=FALSE)
   ymax <- max(h1$counts)
 
@@ -208,13 +181,13 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
     byval1 <- pl.col[1]
   }
 
-  # Density of shaded lines - default is set all to 20
-  denval1 <- pl.den[1]
+  # Density of shaded lines - default is set all to 0
+  #denval1 <- pl.den[1]
   # Angle of shaded lines - default is set all to -45
-  angval1 <- pl.ang[1]
+  #angval1 <- pl.ang[1]
 
   # Scaling for grouped data:
-  if(normalize&!point){
+  if(normalize & !point){
     bindata <- function(x,r,breaks){
       return(hist(r[r>=x[1]&r<=x[2]],breaks=breaks,plot=FALSE)$counts)
     }
@@ -240,84 +213,151 @@ plot.ds <- function(x, which=2, byvar="", breaks=NULL, nc=NULL,
   hist.obj$equidist <- FALSE
 
 
-  ### Actual plotting is here
+  ### Actual plotting starts here
 
-  # do the paging, using devAskNewPage() means we can just call plots and
-  # R will make the prompt for us
-  if(pages!=1 & sum(show)!=1){
-    oask <- devAskNewPage(TRUE)
-    on.exit(devAskNewPage(oask))
-  }else if(sum(show)!=1){
-    opar <- par(mfrow=c(1,sum(show)))
-    on.exit(par(opar))
-  }
+  if(!hascov) covlevels <- FALSE
 
-  # Data summary plot for observer 1
-  if(show[1]){
-    histline(h1$counts,breaks=breaks,lineonly=FALSE,ylim=c(0,ymax),
-             xlab=xlab,ylab="Frequency",fill=TRUE,angle=angval1,
-             density=denval1,col=byval1,...)
-  }
-
-  # Detection function plot overlaid on histogram of observed
-  # distances - much of this code is taken from earlier plot.ds function.
-  if(show[2]){
-    # Primary detection function
-    gxvalues <- detfct(xmat$distance,ddfobj,select=selected,width=width)
-    ymax <- max(hist.obj$density,max(gxvalues))
-    histline(hist.obj$density,breaks=breaks,lineonly=FALSE,
-             xlab=xlab,ylab="Detection probability",ylim=c(0,ymax),
-             fill=TRUE,angle=angval1,density=denval1,col=byval1,
-             det.plot=TRUE,...)
-
-    # when we have covariates
-    if(hascov){
-      finebr <- (width/100)*(0:100)
-      xgrid <- NULL
-      linevalues <- NULL
-      newdat <- xmat
-      for(i in 1:(length(finebr)-1)){
-        x <- (finebr[i]+finebr[i+1])/2
-        xgrid <- c(xgrid,x)
-        newdat$distance <- rep(x,nrow(newdat))
-
-        detfct.values <- detfct(newdat$distance,ddfobj,select=selected,
-                               width=width)
-
-        if(!normalize&range.varies){
-          detfct.values[x<int.range[,1]|x>int.range[,2]] <- 0
-        }
-        linevalues <- c(linevalues,sum(detfct.values/pdot)/sum(1/pdot))
-      }
-    # without covariates
-    }else{
-      if(!is.null(ddfobj$scale)){
-        ddfobj$scale$dm <- ddfobj$scale$dm[rep(1,length(xgrid)),]
-      }
-      if(!is.null(ddfobj$shape)){
-         ddfobj$shape$dm <- ddfobj$shape$dm[rep(1,length(xgrid)),]
-      }
-
-      # goofy workaround -- gamma is 0 at x=0, so add a little to the grid
-      #  value so we don't have a weird drop
-      if(ddfobj$type=="gamma"){
-        xgrid[1] <- xgrid[1]+1e-6
-      }
-      linevalues <- detfct(xgrid,ddfobj,width=width)
+  if(!covlevels){
+    # do the paging, using devAskNewPage() means we can just call plots and
+    # R will make the prompt for us
+    if(pages!=1 & sum(show)!=1){
+      oask <- devAskNewPage(TRUE)
+      on.exit(devAskNewPage(oask))
+    }else if(sum(show)!=1){
+      opar <- par(mfrow=c(1,sum(show)))
+      on.exit(par(opar))
     }
 
-    # actually plot the lines
-    lines(xgrid,linevalues,col=byval1,...)
+    # plot histogram of distances
+    if(show[1]){
+      plot(h1, xlab=xlab, ylab="Frequency",# yaxp=c(0,1,5),
+           main="Histogram of distances",freq=TRUE,...)
+      box()
+    }
 
-    if(showpoints){
-      jitter.p <- rnorm(length(gxvalues),1,jitter.v[1])
-      points(xmat$distance,gxvalues*jitter.p,col=byval1,...)
+    # Detection function plot overlaid on histogram of observed
+    # distances - much of this code is taken from earlier plot.ds function.
+    if(show[2]){
+      # Primary detection function
+      gxvalues <- detfct(xmat$distance,ddfobj,select=selected,width=width)
+      ymax <- max(hist.obj$density,max(gxvalues))
+      plot(hist.obj, ylim=c(0,ymax), xlab=xlab, yaxp=c(0,1,5),
+           main="Detection function",freq=FALSE,ylab="Detection probability",...)
+      box()
+
+      # when we have covariates
+      if(hascov){
+
+        linevalues <- plot_avg_df(xgrid, width, xmat, ddfobj, selected,
+                                  int.range, pdot, normalize, range.varies)
+
+      # without covariates
+      }else{
+        if(!is.null(ddfobj$scale)){
+          ddfobj$scale$dm <- ddfobj$scale$dm[rep(1,length(xgrid)),]
+        }
+        if(!is.null(ddfobj$shape)){
+           ddfobj$shape$dm <- ddfobj$shape$dm[rep(1,length(xgrid)),]
+        }
+
+        # goofy workaround -- gamma is 0 at x=0, so add a little to the grid
+        #  value so we don't have a weird drop
+        if(ddfobj$type=="gamma"){
+          xgrid[1] <- xgrid[1]+1e-6
+        }
+        linevalues <- detfct(xgrid,ddfobj,width=width)
+      }
+
+      # actually plot the lines
+      lines(xgrid,linevalues,col=byval1,...)
+
+      if(showpoints){
+        jitter.p <- rnorm(length(gxvalues),1,jitter.v[1])
+        points(xmat$distance,gxvalues*jitter.p,col=byval1,...)
+      }
     }
 
     # use the user-supplied main= ...
     if(!is.null(main)){
        title(main,cex.main=0.8)
     }
+
+  }else{
+
+    # plot the covariate levels
+    cov_levels <- ds_cov_levels(model, xgrid)
+    #lapply(cov_levels, lines, x=xgrid)
+    df_line <- cov_levels$df_line
+
+    plot_all <- cov_levels$plot_all
+
+    # set graphics pars
+    opar <- par(mfrow=c(1,length(plot_all)+1))
+    on.exit(par(opar))
+
+    if(!is.null(main)){
+      # this seems stupid but it does mean that folks can write
+      # main="" and it blanks all titles
+      main <- rep_len(main, length(plot_all)+1)
+    }else{
+      main <- paste0("Average detection function")
+    }
+
+    # first make the average detection function plot
+    plot(hist.obj, freq=FALSE, xlab=xlab, ylab="Detection probability", main=main[1], ...)
+    lines(x=xgrid, y=plot_avg_df(xgrid, width, xmat, ddfobj, selected,
+                                 int.range, pdot, normalize,range.varies))
+    box()
+
+
+    ## actually do some plotting
+    for(cov_i in seq_along(plot_all)){
+      if(is.null(main) || length(main)==1){
+        plot_title <- paste(ifelse(is.factor(plot_all[[cov_i]][[1]]),
+                                   "Levels of", "Quantiles of"),
+                            names(plot_all)[cov_i])
+      }else{
+        plot_title <- main[cov_i+1]
+      }
+      # make the plot
+      plot(hist.obj, freq=FALSE, xlab=xlab, ylab="Frequency", main=plot_title, ...)
+
+      # colours/styles for the lines
+      # as long as there are <=6 levels to plot, use different styles
+      # when > then use grey scales
+      if(length(plot_all[[cov_i]])>6){
+        cols <- grey(seq(0.1,0.9,len=length(plot_all[[cov_i]])))
+        ltys <- rep(1,length(plot_all[[cov_i]]))
+      }else{
+        cols <- rep("black",length(plot_all[[cov_i]]))
+        ltys <- 1:length(plot_all[[cov_i]])
+      }
+
+      ii <- 1
+      # now iterate over their values
+      for(val_j in seq_along(plot_all[[cov_i]])){
+        lines(x=xgrid, y=df_line[[ii]], col=cols[val_j], lty=ltys[val_j])
+        ii <- ii+1
+      }
+
+      # get the legend levels labels
+      if(is.factor(plot_all[[cov_i]])){
+        legend.levels <- plot_all[[cov_i]]
+      }else{
+        legend.levels <- as.character(round(plot_all[[cov_i]],3))
+      }
+
+      # plot legend
+      legend("topright", legend=legend.levels,
+             title=names(plot_all)[cov_i],
+             col=cols, lty=ltys, inset=c(0.01,0.01))
+
+      # put a box around it
+      box()
+
+    }
   }
+
+
   invisible()
 }
