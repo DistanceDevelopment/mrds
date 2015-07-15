@@ -14,20 +14,24 @@
 #' @return vector of probabilities
 #' @author Jeff Laake
 logisticdupbyx <- function(distance, x1, x2, models, beta, point){
+
+  # avoid using g0 which calls exp and matrix multiplication twice
+  ologit <- function(p) p/(1+p)
+
   #  Functions used: g0, setcov
   xlist <- as.list(x1)
   xlist$distance <- distance
   xmat <- expand.grid(xlist)
 
-  gx1 <- g0(beta, setcov(xmat, models$g0model))
+  gx1 <- ologit(exp(setcov(xmat, models$g0model) %*% beta))
 
   xlist <- as.list(x2)
   xlist$distance <- distance
   xmat <- expand.grid(xlist)
 
   if(!point){
-    return(gx1 * g0(beta, setcov(xmat, models$g0model)))
+    return(gx1 * ologit(exp(setcov(xmat, models$g0model) %*% beta)))
   }else{
-    return(gx1 * g0(beta, setcov(xmat, models$g0model))*2*distance)
+    return(gx1 * ologit(exp(setcov(xmat, models$g0model) %*% beta))*2*distance)
   }
 }

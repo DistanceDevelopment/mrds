@@ -58,19 +58,19 @@ predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
 
     # now int.range is a vector with lower and upper bounds
     if(is.null(int.range)){
-      pdot.list <- pdot.dsr.integrate.logistic(width,width, model$mr$coef,
-                     newdata,integral.numeric, FALSE, models,GAM, point=point)
+      pdot.list <- pdot.dsr.integrate.logistic(width, width, model$mr$coef,
+                     newdata, integral.numeric, FALSE, models,GAM, point=point)
     }else{
       pdot.list <- pdot.dsr.integrate.logistic(int.range,width, model$mr$coef,
-                       newdata,integral.numeric, FALSE, models,GAM, point=point)
+                      newdata, integral.numeric, FALSE, models,GAM, point=point)
     }
 
     # if there is left truncation, take that off the integral
     if(left !=0){
       pdot.list$pdot <- pdot.list$pdot -
                     pdot.dsr.integrate.logistic(left, width, model$mr$coef,
-                                   newdata,integral.numeric, FALSE, models,GAM,
-                                   point=point)$pdot
+                                   newdata, integral.numeric, FALSE, models,
+                                   GAM, point=point)$pdot
     }
 
     fitted <- pdot.list$pdot

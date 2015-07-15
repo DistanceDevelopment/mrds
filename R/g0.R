@@ -6,5 +6,5 @@
 #' @return vector of p(0) values
 #' @author Jeff Laake
 g0 <- function(beta, z){
-  exp(as.matrix(z) %*% beta)/(1 + exp(as.matrix(z) %*% beta))
+  exp(z %*% beta)/(1 + exp(z %*% beta))
 }
