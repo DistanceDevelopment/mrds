@@ -1,3 +1,8 @@
+mrds 2.1.15
+-----------
+
+* rescaling parameters were not correct, now fixed. Thanks to Laura Marshall for spotting this.
+
 mrds 2.1.14
 -----------
 

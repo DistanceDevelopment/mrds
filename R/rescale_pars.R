@@ -25,7 +25,7 @@ rescale_pars <- function(initialvalues, ddfobj){
     #ind <- match(colnames(ddfobj$scale$dm),
     #             names(initialvalues))
     ind <- getpar(ddfobj, index=TRUE)
-    ind <- ind[1]:(ind[2]-1)
+    ind <- (ind[1]+1):ind[2]
 
     # find the scalings
     par_scaling[ind] <- apply(ddfobj$scale$dm, 2, sd)/sd(ddfobj$xmat$distance)
