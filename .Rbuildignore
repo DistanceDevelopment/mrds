@@ -2,3 +2,4 @@
 ^appveyor\.yml$
 tests
 inst/testData
+inst/docs
