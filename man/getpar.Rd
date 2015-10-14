@@ -18,7 +18,7 @@ parameters}
 }
 \value{
 index==FALSE, vector of parameters that were requested or
-  index==TRUE, vector of 3 indices for scale, shape, adjustment
+  index==TRUE, vector of 3 indices for shape, scale, adjustment
 }
 \description{
 Extracts parameters of a particular type (scale,

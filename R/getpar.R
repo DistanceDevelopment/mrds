@@ -16,7 +16,7 @@
 #'   or starting indices in parameter vector for scale, shape, adjustment
 #'   parameters
 #' @return index==FALSE, vector of parameters that were requested or
-#'   index==TRUE, vector of 3 indices for scale, shape, adjustment
+#'   index==TRUE, vector of 3 indices for shape, scale, adjustment
 #' @note Internal functions not intended to be called by user.
 #' @author Jeff Laake
 #' @seealso assign.par
@@ -51,6 +51,12 @@ getpar <- function(ddfobj,fitting="all",index=FALSE){
     return(pars)
 
   }else{
+
+    # WHAT IS GOING ON HERE?!
+    # idea here is: index parameter vector
+    # 1:indices[1]  : all shape pars (unless indices[1] is zero)
+    # indices[1:2]  : all scale pars
+    # indices[2:3]  : all adjustment pars
     indices <- rep(0,3)
     if(!is.null(ddfobj$shape)){
       indices[1] <- length(ddfobj$shape$parameters)
