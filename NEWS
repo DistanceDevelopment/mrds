@@ -2,6 +2,7 @@ mrds 2.1.15
 -----------
 
 * rescaling parameters were not correct, now fixed. Thanks to Laura Marshall for spotting this.
+* coefficients are called coefficients (not a mixture of coefficients and parameters) in summary() results
 
 mrds 2.1.14
 -----------

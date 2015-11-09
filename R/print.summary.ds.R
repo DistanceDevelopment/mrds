@@ -20,16 +20,16 @@ print.summary.ds <- function (x,...){
   cat("AIC                    : ", x$aic, "\n")
   cat("\nDetection function:\n",model.description(x),"\n")
   cat("\nDetection function parameters", "\n")
-  cat("Scale Coefficients: ", "\n")
+  cat("Scale coefficient(s): ", "\n")
   print(x$coeff$key.scale)
 
   if(x$key %in% c("gamma","hr","th1","th2")) {
-    cat("\nShape parameters: ", "\n")
+    cat("\nShape coefficient(s): ", "\n")
     print(x$coeff$key.shape)
   }
 
   if (!is.null(x$coeff$adj.parm)) {
-     cat("\nAdjustment term parameter(s): ", "\n")
+     cat("\nAdjustment term coefficient(s): ", "\n")
      print(x$coeff$adj.parm)
   }
 
