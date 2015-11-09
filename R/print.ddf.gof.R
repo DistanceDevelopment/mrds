@@ -32,7 +32,7 @@ print.ddf.gof <- function(x,...){
   print(chitable(gof$chisquare$chi1$observed,gof$chisquare$chi1$expected))
 
   if(!is.na(gof$chisquare$chi1$p)){
-    cat(paste("\nP =",format(gof$chisquare$chi1$p,digits=5),
+    cat(paste("\nP = ",format(gof$chisquare$chi1$p,digits=5),
               " with ",gof$chisquare$chi1$df," degrees of freedom\n",sep=""))
   }else{
     cat("\nNo degrees of freedom for test\n")
@@ -72,15 +72,15 @@ print.ddf.gof <- function(x,...){
     }
 
     if(!is.na(gof$chisquare$chi2$p)){
-      cat(paste("\nMR total chi-square =",
+      cat(paste("\nMR total chi-square = ",
                 format(gof$chisquare$chi2$chisq,digits=5),
-                "  P= ",format(gof$chisquare$chi2$p,digits=5),
+                "  P = ",format(gof$chisquare$chi2$p,digits=5),
                 " with ",gof$chisquare$chi2$df," degrees of freedom\n",sep=""))
     }
 
-    cat(paste("\n\nTotal chi-square =",
+    cat(paste("\n\nTotal chi-square = ",
               format(gof$chisquare$pooled.chi$chisq,digits=5),
-              "  P= ",format(gof$chisquare$pooled.chi$p,digits=5),
+              "  P = ",format(gof$chisquare$pooled.chi$p,digits=5),
               " with ",gof$chisquare$pooled.chi$df," degrees of freedom\n",
               sep=""))
   }
@@ -89,7 +89,7 @@ print.ddf.gof <- function(x,...){
       cat("\nDistance sampling Kolmogorov-Smirnov test\n")
       cat("Test statistic = ",format(gof$dsgof$ks$Dn,digits=5),
           " P = ",format(gof$dsgof$ks$p,digits=5),"\n")
-      cat("\nDistance sampling Cramer-von Mises test(unweighted)\n")
+      cat("\nDistance sampling Cramer-von Mises test (unweighted)\n")
       cat("Test statistic = ",format(gof$dsgof$CvM$W,digits=5),
           " P = ",format(gof$dsgof$CvM$p,digits=5),"\n")
   }
