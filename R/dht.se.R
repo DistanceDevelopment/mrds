@@ -2,16 +2,16 @@
 #'
 #' Computes standard error, cv, and log-normal confidence intervals for
 #' abundance and density within each region (if any) and for the total of all
-#' the regions.  It also produces the correlation matrix for regional and total
+#' the regions. It also produces the correlation matrix for regional and total
 #' estimates.
 #'
 #' The variance has two components: 1) variation due to uncertanity from
 #' estimation of the detection function and 2) variation in abundance due to
-#' random sample selection.  The first component is computed using a delta
+#' random sample selection. The first component is computed using a delta
 #' method estimate of variance (\code{\link{DeltaMethod}} (Huggins 1989, 1991,
 #' Borchers et al. 1998) in which the first derivatives of the abundance
 #' estimator with respect to the parameters in the detection function are
-#' computed numerically.  The second component can be computed in one of three
+#' computed numerically. The second component can be computed in one of three
 #' ways as set by the option \code{varflag} with values 0,1,2.
 #'
 #' A value of 0 is to use a binomial variance for the number of observations
@@ -29,10 +29,10 @@
 #' \code{size} is used in the any of the detection function models.
 #'
 #' In general if any covariates are used in the models, the default option 2 is
-#' preferable.  It uses a variance estimator based on that suggested by Innes
+#' preferable. It uses a variance estimator based on that suggested by Innes
 #' et al. (2002) which used the formula for the variance ecounter rate but
 #' replaces the number of observations per sample with the estimated abundance
-#' per sample.  The difference between the version used here and that in Innes
+#' per sample. The difference between the version used here and that in Innes
 #' et al. (2002) is that Innes et al. use an estimator with form similar to
 #' that of Buckland et al. (2001), while the estimator here uses a form based
 #' on Fewster et al. (2009, estimator R2).
@@ -44,16 +44,16 @@
 #' variance so z=1.96 is used for critical value. In all other cases the
 #' degrees of freedom for the t-distribution assumed for the log(abundance) or
 #' log(density) is based on the Satterthwaite approximation (Buckland et al.
-#' 2001 pg 90) for the degrees of freedom (df).  The df are weighted by the
+#' 2001 pg 90) for the degrees of freedom (df). The df are weighted by the
 #' squared cv in combining the two sources of variation because of the assumed
-#' log-normal distribution because the components are multiplicative.  For
+#' log-normal distribution because the components are multiplicative. For
 #' combining df for the sampling variance across regions they are weighted by
 #' the variance because it is a sum across regions.
 #'
 #' A non-zero correlation between regional estimates can occur from using a
-#' common detection function across regions.  This is reflected in the
+#' common detection function across regions. This is reflected in the
 #' correlation matrix of the regional and total estimates which is given in the
-#' value list.  It is only needed if subtotals of regional estimates are
+#' value list. It is only needed if subtotals of regional estimates are
 #' needed.
 #'
 #' @param model ddf model object
