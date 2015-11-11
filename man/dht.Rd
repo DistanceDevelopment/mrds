@@ -30,7 +30,7 @@ based on log-normal}
 \item{bootstrap}{if \code{TRUE} uses bootstrap approach (currently not
 implemented)}
 
-\item{options}{a list of options that can be set, see "\code{dht} options", beow.}
+\item{options}{a list of options that can be set, see "\code{dht} options", below.}
 }
 \value{
 list object of class \code{dht} with elements:
@@ -128,30 +128,30 @@ distance and .1 to convert km to 100m units).
 If the argument \code{se} is set to \code{TRUE}, a standard error for
 density and abundance is computed and the coefficient of variation and
 log-normal confidence intervals are constructed using a Satterthwaite
-approximation for degrees of freedom (Buckland et al. 2001 pg 90).  The
+approximation for degrees of freedom (Buckland et al. 2001 pg 90). The
 function \code{\link{dht.se}} computes the variance and interval estimates.
 The variance has two components: 1) variation due to uncertanity from
 estimation of the detection function and 2) variation in abundance due to
-random sample selection.  The first component is computed using a delta
-method estimate of variance (\code{\link{DeltaMethod}} (Huggins 1989, 1991,
-Borchers et al. 1998) in which the first derivatives of the abundance
-estimator with respect to the parameters in the detection function are
-computed numerically.  The second component can be computed in one of three
-ways as set by the option \code{varflag} with values 0,1,2. A value of 0 is
-to use a binomial variance for the number of observations and it is only
-useful if the sampled region is the survey region and the objects are not
-clustered which will not occur very often.  A value of 1 uses the standard
-variance for the encounter rate (Buckland et al. 2001 pg 78-79, although the
-actual encounter rate formula used by default is now estimator R2 from
-Fewster et al. (2009) - see \link{varn} for details).  If the population is
-clustered the mean group size and standard error is also included.  This
-variance estimator is not appropriate if \code{size} or a derivative of
-\code{size} is used in the any of the detection function models. In general
-if any covariates are used in the models, the default option 2 is
-preferable.  It uses the variance estimator suggested by Innes et al (2002)
-which used the formula for the variance ecounter rate but replaces the
-number of observations per sample with the estimated abundance per sample.
-This latter variance is also given in Marques and Buckland (2004).
+random sample selection. The first component is computed using a delta
+method estimate of variance (Huggins 1989, 1991, Borchers et al. 1998) in
+which the first derivatives of the abundance estimator with respect to the
+parameters in the detection function are computed numerically
+(see \code{\link{DeltaMethod}}). The second component can be computed in
+one of three ways as set by the option \code{varflag} with values 0,1,2. A
+value of 0 is to use a binomial variance for the number of observations and
+it is only useful if the sampled region is the survey region and the objects
+are not clustered which will not occur very often. A value of 1 uses the
+standard variance for the encounter rate (Buckland et al. 2001 pg 78-79,
+although the actual encounter rate formula used by default is now estimator
+R2 from Fewster et al. (2009); see \link{varn} for details). If the
+population is clustered the mean group size and standard error is also
+included. This variance estimator is not appropriate if \code{size} or a
+derivative of \code{size} is used in the any of the detection function
+models. In general if any covariates are used in the models, the default
+option 2 is preferable. It uses the variance estimator suggested by Innes
+et al (2002) which used the formula for the variance ecounter rate but
+replaces the number of observations per sample with the estimated abundance
+per sample. This latter variance is also given in Marques and Buckland (2004).
 
 The argument \code{options} is a list of variable=value pairs that set
 options for the analysis. All but one of these has been described so far.

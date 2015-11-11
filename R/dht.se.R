@@ -21,9 +21,9 @@
 #' will be a poor estimator and the confidence interval will likely not achieve
 #' the nominal level.
 #'
-#' A value of 1 uses the variance for the encounter rate of (Fewster et al.
+#' A value of 1 uses the variance for the encounter rate of Fewster et al.
 #' (2009), estimator R2 (which has been shown to have better properties than
-#' the previous default of Buckland et al. 2001 pg 78-79)).  If
+#' the previous default of Buckland et al. (2001) pg 78-79). If
 #' \code{group=FALSE} the variance of the mean group size is also included.
 #' This variance estimator is not appropriate if \code{size} or a derivative of
 #' \code{size} is used in the any of the detection function models.
