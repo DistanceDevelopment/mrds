@@ -111,8 +111,6 @@
 #' @param subset subset statement to create \code{obs.table}
 #' @param se if \code{TRUE} computes std errors, cv and confidence interval
 #'  based on log-normal
-#' @param bootstrap if \code{TRUE} uses bootstrap approach (currently not
-#'  implemented)
 #' @param options a list of options that can be set, see "\code{dht} options", below.
 #' @export
 #' @return list object of class \code{dht} with elements:
@@ -190,7 +188,7 @@
 #'   Oxford University Press.
 #' @keywords utility
 dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
-                se=TRUE, bootstrap=FALSE, options=list()){
+                se=TRUE, options=list()){
   # Functions Used:  assign.default.values, create.varstructure,
   #                  covered.region.dht, survey.region.dht, dht.se, varn,
   #                  covn(in varn.R), solvecov (in coef.ds.R).
