@@ -38,7 +38,7 @@ estimates.
 The variance has two components: 1) variation due to uncertanity from
 estimation of the detection function and 2) variation in abundance due to
 random sample selection. The first component is computed using a delta
-method estimate of variance (\code{\link{DeltaMethod}} (Huggins 1989, 1991,
+method estimate of variance (\code{\link{DeltaMethod}}; Huggins 1989, 1991,
 Borchers et al. 1998) in which the first derivatives of the abundance
 estimator with respect to the parameters in the detection function are
 computed numerically. The second component can be computed in one of three
@@ -46,10 +46,9 @@ ways as set by the option \code{varflag} with values 0,1,2.
 
 A value of 0 is to use a binomial variance for the number of observations
 and it is only useful if the sampled region is the survey region and the
-objects are not clustered which will not occur very often. If covered region
-is less than the survey region the variance estimator is scaled up but it
-will be a poor estimator and the confidence interval will likely not achieve
-the nominal level.
+objects do not occur in clusters or groups (which doesn't happen very often).#' If the covered region is smaller than the survey region the variance
+estimator is scaled up but it will be a poor estimator and the confidence
+interval will likely not achieve the nominal level.
 
 A value of 1 uses the variance for the encounter rate of Fewster et al.
 (2009), estimator R2 (which has been shown to have better properties than
@@ -90,7 +89,7 @@ needed.
 This function is called by \code{dht} and it is not expected that the
   user will call this function directly but it is documented here for
   completeness and for anyone expanding the code or using this function in
-  their own code
+  their own code.
 }
 \author{
 Jeff Laake

@@ -11,7 +11,7 @@
 #' and its standard error are also output.
 #'
 #' Abundance is estimated with a Horvitz-Thompson-like estimator (Huggins
-#' 1989,1991; Borchers et al 1998; Borchers and Burnham 2004). The abundance
+#' 1989, 1991; Borchers et al 1998; Borchers and Burnham 2004). The abundance
 #' in the sampled region is simply 1/p_1 + 1/p_2 + ... + 1/p_n where p_i is the
 #' estimated detection probability for the ith detection of n total
 #' observations. It is not strictly a Horvitz-Thompson estimator because the
@@ -19,7 +19,7 @@
 #' that estimator gives the abundance of groups (\code{group=TRUE} in
 #' \code{options}) and the abundance of individuals is estimated as s_1/p_1 +
 #' s_2/p_2 + ... + s_n/p_n, where s_i is the size (e.g., number of animals in
-#' the group) of each observation(\code{group=FALSE} in \code{options}).
+#' the group) of each observation (\code{group=FALSE} in \code{options}).
 #'
 #' Extrapolation and estimation of abundance to the entire survey region is
 #' based on either a random sampling design or a stratified random sampling
