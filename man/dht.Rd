@@ -5,7 +5,7 @@
 \title{Density and abundance estimates and variances}
 \usage{
 dht(model, region.table, sample.table, obs.table = NULL, subset = NULL,
-  se = TRUE, bootstrap = FALSE, options = list())
+  se = TRUE, options = list())
 }
 \arguments{
 \item{model}{ddf model object}
@@ -26,9 +26,6 @@ the model contains \code{Region.Label}, \code{Sample.Label} columns.}
 
 \item{se}{if \code{TRUE} computes std errors, cv and confidence interval
 based on log-normal}
-
-\item{bootstrap}{if \code{TRUE} uses bootstrap approach (currently not
-implemented)}
 
 \item{options}{a list of options that can be set, see "\code{dht} options", below.}
 }
