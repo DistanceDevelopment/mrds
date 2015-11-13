@@ -33,7 +33,7 @@ create.model.frame <- function(xmat,scale.formula,meta.data,shape.formula=NULL){
 
   if(any(! varlist %in% names(xmat))){
      stop("The following variables used in the formula are not in the data: ",
-          varlist[!varlist%in%names(xmat)])
+          paste(varlist[!varlist%in%names(xmat)], collapse=", "))
   }
 
   data <- cbind(object = xmat$object,
