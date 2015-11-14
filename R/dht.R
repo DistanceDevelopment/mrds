@@ -1,116 +1,44 @@
-#' Density and abundance estimates and variances 
+#' Density and abundance estimates and variances
 #'
-#' Computes density and abundance estimates and variances based on
-#' Horvitz-Thompson-like estimator
+#' Compute density and abundance estimates and variances based on Horvitz-Thompson-like estimator.
 #'
-#' Density and abundance within the sampled region is computed based on a
-#' Horvitz-Thomspon-like estimator for groups and individuals (if a clustered
-#' population) and this is extrapolated to the entire survey region based on
-#' any defined regional stratification. The variance is based on replicate
-#' samples within any regional stratification. For clustered populations, E(s)
-#' and its standard error are also output.
+#' Density and abundance within the sampled region is computed based on a Horvitz-Thompson-like estimator for groups and individuals (if a clustered population) and this is extrapolated to the entire survey region based on any defined regional stratification. The variance is based on replicate samples within any regional stratification. For clustered populations, \eqn{E(s)} and its standard error are also output.
 #'
-#' Abundance is estimated with a Horvitz-Thompson-like estimator (Huggins
-#' 1989, 1991; Borchers et al 1998; Borchers and Burnham 2004). The abundance
-#' in the sampled region is simply 1/p_1 + 1/p_2 + ... + 1/p_n where p_i is the
-#' estimated detection probability for the ith detection of n total
-#' observations. It is not strictly a Horvitz-Thompson estimator because the
-#' p_i are estimated and not known. For animals observed in tight clusters,
-#' that estimator gives the abundance of groups (\code{group=TRUE} in
-#' \code{options}) and the abundance of individuals is estimated as s_1/p_1 +
-#' s_2/p_2 + ... + s_n/p_n, where s_i is the size (e.g., number of animals in
-#' the group) of each observation (\code{group=FALSE} in \code{options}).
+#' Abundance is estimated with a Horvitz-Thompson-like estimator (Huggins 1989, 1991; Borchers et al 1998; Borchers and Burnham 2004). The abundance in the sampled region is simply \eqn{1/p_1 + 1/p_2 + ... + 1/p_n} where \eqn{p_i} is the estimated detection probability for the \eqn{i}th detection of \eqn{n} total observations. It is not strictly a Horvitz-Thompson estimator because the \eqn{p_i} are estimated and not known. For animals observed in tight clusters, that estimator gives the abundance of groups (\code{group=TRUE} in \code{options}) and the abundance of individuals is estimated as \eqn{s_1/p_1 + s_2/p_2 + ... + s_n/p_n}, where \eqn{s_i} is the size (e.g., number of animals in the group) of each observation (\code{group=FALSE} in \code{options}).
 #'
-#' Extrapolation and estimation of abundance to the entire survey region is
-#' based on either a random sampling design or a stratified random sampling
-#' design. Replicate samples(lines)(\code{sample.table} are specified within
-#' regional strata \code{region.table}, if any. If there is no stratification,
-#' \code{region.table} should contain only a single record with the \code{Area}
-#' for the entire survey region. The \code{sample.table} is linked to the
-#' \code{region.table} with the \code{Region.Label}. The \code{obs.table} is
-#' linked to the \code{sample.table} with the \code{Sample.Label} and
-#' \code{Region.Label}. Abundance can be restricted to a subset (e.g., for a
-#' particular species) of the population by limiting the list the observations
-#' in \code{obs.table} to those in the desired subset. Alternatively, if
-#' \code{Sample.Label} and \code{Region.Label} are in the dataframe used to fit
-#' the model, then a \code{subset} argument can be given in place of the
-#' \code{obs.table}. To use the \code{subset} argument but include all of the
-#' observations, use \code{subset=1==1} to avoid creating an \code{obs.table}.
+#' Extrapolation and estimation of abundance to the entire survey region is based on either a random sampling design or a stratified random sampling design. Replicate samples (lines) are specified within regional strata \code{region.table}, if any. If there is no stratification, \code{region.table} should contain only a single record with the \code{Area} for the entire survey region. The \code{sample.table} is linked to the \code{region.table} with the \code{Region.Label}. The \code{obs.table} is linked to the \code{sample.table} with the \code{Sample.Label} and \code{Region.Label}. Abundance can be restricted to a subset (e.g., for a particular species) of the population by limiting the list the observations in \code{obs.table} to those in the desired subset. Alternatively, if \code{Sample.Label} and \code{Region.Label} are in the \code{data.frame} used to fit the model, then a \code{subset} argument can be given in place of the \code{obs.table}. To use the \code{subset} argument but include all of the observations, use \code{subset=1==1} to avoid creating an \code{obs.table}.
 #'
-#' In extrapolating to the entire survey region it is important that the unit
-#' measurements be consistent or converted for consistency. A conversion
-#' factor can be specified with the \code{convert.units} variable in the
-#' \code{options} list. The values of \code{Area} in \code{region.table}, must
-#' be made consistent with the units for \code{Effort} in \code{sample.table}
-#' and the units of \code{distance} in the dataframe that was analyzed. It is
-#' easiest to do if the units of \code{Area} is the square of the units of
-#' \code{Effort} and then it is only necessary to convert the units of
-#' \code{distance} to the units of \code{Effort}. For example, if \code{Effort}
-#' was entered in kilometers and \code{Area} in square kilometers and
-#' \code{distance} in meters then using
-#' \code{options=list(convert.units=0.001)} would convert meters to kilometers,
-#' density would be expressed in square kilometers which would then be
-#' consistent with units for \code{Area}. However, they can all be in
-#' different units as long as the appropriate composite value for
-#' \code{convert.units} is chosen. Abundance for a survey region can be
-#' expressed as: \code{A*N/a} where \code{A} is \code{Area} for the survey
-#' region, \code{N} is the abundance in the covered (sampled) region, and
-#' \code{a} is the area of the sampled region and is in units of \code{Effort *
-#' distance}. The sampled region \code{a} is multiplied by
-#' \code{convert.units}, so it should be chosen such that the result is in the
-#' same units of \code{Area}. For example, if \code{Effort} was entered in
-#' kilometers, \code{Area} in hectares (100m x 100m) and \code{distance} in
-#' meters, then using \code{options=list(convert.units=10)} will convert
-#' \code{a} to units of hectares (100 to convert meters to 100 meters for
-#' distance and .1 to convert km to 100m units).
+#' In extrapolating to the entire survey region it is important that the unit measurements be consistent or converted for consistency. A conversion factor can be specified with the \code{convert.units} variable in the \code{options} list. The values of \code{Area} in \code{region.table}, must be made consistent with the units for \code{Effort} in \code{sample.table} and the units of \code{distance} in the \code{data.frame} that was analyzed. It is easiest to do if the units of \code{Area} is the square of the units of \code{Effort} and then it is only necessary to convert the units of \code{distance} to the units of \code{Effort}. For example, if \code{Effort} was entered in kilometers and \code{Area} in square kilometers and \code{distance} in meters then using \code{options=list(convert.units=0.001)} would convert meters to kilometers, density would be expressed in square kilometers which would then be consistent with units for \code{Area}. However, they can all be in different units as long as the appropriate composite value for \code{convert.units} is chosen. Abundance for a survey region can be expressed as: \code{A*N/a} where \code{A} is \code{Area} for the survey region, \code{N} is the abundance in the covered (sampled) region, and \code{a} is the area of the sampled region and is in units of \code{Effort * distance}. The sampled region \code{a} is multiplied by \code{convert.units}, so it should be chosen such that the result is in the same units of \code{Area}. For example, if \code{Effort} was entered in kilometers, \code{Area} in hectares (100m x 100m) and \code{distance} in meters, then using \code{options=list(convert.units=10)} will convert \code{a} to units of hectares (100 to convert meters to 100 meters for distance and .1 to convert km to 100m units).
 #'
-#' If the argument \code{se} is set to \code{TRUE}, a standard error for
-#' density and abundance is computed and the coefficient of variation and
-#' log-normal confidence intervals are constructed using a Satterthwaite
-#' approximation for degrees of freedom (Buckland et al. 2001 pg 90). The
-#' function \code{\link{dht.se}} computes the variance and interval estimates.
-#' The variance has two components: 1) variation due to uncertanity from
-#' estimation of the detection function and 2) variation in abundance due to
-#' random sample selection. The first component is computed using a delta
-#' method estimate of variance (Huggins 1989, 1991, Borchers et al. 1998) in
-#' which the first derivatives of the abundance estimator with respect to the
-#' parameters in the detection function are computed numerically
-#' (see \code{\link{DeltaMethod}}). The second component can be computed in
-#' one of three ways as set by the option \code{varflag} with values 0,1,2. A
-#' value of 0 is to use a binomial variance for the number of observations and
-#' it is only useful if the sampled region is the survey region and the objects
-#' are not clustered which will not occur very often. A value of 1 uses the
-#' standard variance for the encounter rate (Buckland et al. 2001 pg 78-79,
-#' although the actual encounter rate formula used by default is now estimator
-#' R2 from Fewster et al. (2009); see \link{varn} for details). If the
-#' population is clustered the mean group size and standard error is also
-#' included. This variance estimator is not appropriate if \code{size} or a
-#' derivative of \code{size} is used in the any of the detection function
-#' models. In general if any covariates are used in the models, the default
-#' option 2 is preferable. It uses the variance estimator suggested by Innes
-#' et al (2002) which used the formula for the variance encounter rate but
-#' replaces the number of observations per sample with the estimated abundance
-#' per sample. This latter variance is also given in Marques and Buckland (2004).
+#' The argument \code{options} is a list of \code{variable=value} pairs that set options for the analysis. All but one of these has been described so far. The remaining variable \code{pdelta} should not need to be changed but was included for completeness. It controls the precision of the first derivative calculation for the delta method variance.
 #'
-#' The argument \code{options} is a list of variable=value pairs that set
-#' options for the analysis. All but one of these has been described so far.
-#' The remaining variable \code{pdelta} should not need to be changed but was
-#' included for completeness. It controls the precision of the first
-#' derivative calculation for the delta method variance.
+#' @section Uncertainty:
+#' If the argument \code{se=TRUE}, standard errors for density and abundance is computed. Coefficient of variation and log-normal confidence intervals are constructed using a Satterthwaite approximation for degrees of freedom (Buckland et al. 2001 p. 90). The function \code{\link{dht.se}} computes the variance and interval estimates.
+#'
+#' The variance has two components:
+#' \itemize{
+#'   \item variation due to uncertainty from estimation of the detection function parameters;
+#'   \item variation in abundance due to random sample selection;
+#' }
+#' The first component (model parameter uncertainty) is computed using a delta method estimate of variance (Huggins 1989, 1991, Borchers et al. 1998) in which the first derivatives of the abundance estimator with respect to the parameters in the detection function are computed numerically (see \code{\link{DeltaMethod}}).
+#'
+#' The second component (encounter rate variance) can be computed in one of several ways depending on the form taken for the encounter rate and the estimator used. To begin with there three possible values for \code{varflag} to calculate encounter rate:
+#' \itemize{
+#'  \item \code{0} uses a binomial variance for the number of observations (equation 13 of Borchers et al. 1998). This estimator is only useful if the sampled region is the survey region and the objects are not clustered; this situation will not occur very often;
+#'  \item \code{1} uses the encounter rate \eqn{n/L} (objects observed per unit transect) from Buckland et al. (2001) pg 78-79 (equation 3.78) for line transects (see also Fewster et al, 2009 estimator R2). This variance estimator is not appropriate if \code{size} or a derivative of \code{size} is used in the detection function;
+#'  \item \code{2} is the default and uses the encounter rate estimator \eqn{\hat{N}/L} (estimated abundance per unit transect) suggested by Innes et al (2002) and Marques & Buckland (2004).
+#' }
+#'
+#' In general if any covariates are used in the models, the default \code{varflag=2} is preferable as the estimated abundance will take into account variability due to covariate effects. If the population is clustered the mean group size and standard error is also reported.
+#'
+#' For options \code{1} and \code{2}, it is then possible to choose one of the estimator forms given in Fewster et al (2009) : \code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"}, \code{"O1"}, \code{"O2"} or \code{"O3"} by specifying the \code{ervar=} option. By default \code{"R2"} is used. See \code{\link{varn}} and Fewster et al (2009) for further details on these estimators.
 #'
 #' @param model ddf model object
-#' @param region.table \code{data.frame} of region records. Two columns:
-#'  \code{Region.Label} and \code{Area}.
-#' @param sample.table \code{data.frame} of sample records. Three columns:
-#'   \code{Region.Label}, \code{Sample.Label}, \code{Effort}.
-#' @param obs.table \code{data.frame} of observation records with fields:
-#'  \code{object}, \code{Region.Label}, and \code{Sample.Label} which give
-#'  links to \code{sample.table}, \code{region.table} and the data records used
-#'  in \code{model}. Not necessary if the \code{data.frame} used to create
-#'  the model contains \code{Region.Label}, \code{Sample.Label} columns.
+#' @param region.table \code{data.frame} of region records. Two columns: \code{Region.Label} and \code{Area}.
+#' @param sample.table \code{data.frame} of sample records. Three columns: \code{Region.Label}, \code{Sample.Label}, \code{Effort}.
+#' @param obs.table \code{data.frame} of observation records with fields: \code{object}, \code{Region.Label}, and \code{Sample.Label} which give links to \code{sample.table}, \code{region.table} and the data records used in \code{model}. Not necessary if the \code{data.frame} used to create the model contains \code{Region.Label}, \code{Sample.Label} columns.
 #' @param subset subset statement to create \code{obs.table}
-#' @param se if \code{TRUE} computes std errors, cv and confidence interval
-#'  based on log-normal
+#' @param se if \code{TRUE} computes standard errors, coefficient of variation and confidence intervals (based on log-normal approximation). See "Uncertainty" below.
 #' @param options a list of options that can be set, see "\code{dht} options", below.
 #' @export
 #' @return list object of class \code{dht} with elements:
@@ -122,36 +50,28 @@
 #'  and not clusters and \code{Expected.S}.}
 #'
 #' The list structure of clusters and individuals are the same:
-#' \item{bysample}{\code{data.frame} giving results for each sample; Nchat is the
-#'  estimated abundance within the sample and Nhat is scaled by surveyed area/
-#'  covered area within that region}
-#' \item{summary}{\code{data.frame} of summary statistics for each region and
-#'  total}
-#' \item{N}{\code{data.frame} of estimates of abundance for each region and
-#'  total}
+#' \item{bysample}{\code{data.frame} giving results for each sample; \code{Nchat} is the estimated abundance within the sample and \code{Nhat} is scaled by surveyed area/covered area within that region}
+#' \item{summary}{\code{data.frame} of summary statistics for each region and total}
+#' \item{N}{\code{data.frame} of estimates of abundance for each region and total}
 #' \item{D}{\code{data.frame} of estimates of density for each region and total}
 #' \item{average.p}{average detection probability estimate}
-#' \item{cormat}{correlation matrix of regional abundance/density estimates and
-#'  total (if more than one region)}
-#' \item{vc}{list of 3: total v-c matrix and detection and er (encounter rate)
-#'  components of variance; for detection the v-c matrix and partial vector
-#'  are returned}
-#' \item{Nhat.by.sample}{another summary of \code{Nhat} by sample used by
-#'  \code{dht.se}}
+#' \item{cormat}{correlation matrix of regional abundance/density estimates and total (if more than one region)}
+#' \item{vc}{list of 3: total variance-covariance matrix, detection function component of variance and encounter rate component of variance. For detection the v-c matrix and partial vector are returned}
+#' \item{Nhat.by.sample}{another summary of \code{Nhat} by sample used by \code{\link{dht.se}}}
 #'
 #'
 #' @section \code{dht} options:
 #'  Several options are available to control calculations and output:
 #'
 #' \describe{
-#'  \item{\code{ci.width}}{Confidence iterval width, expressed as a decimal between 0 and 1 (default 0.95, giving a 95\% CI)}
-#'  \item{\code{pdelta}}{ delta value for computing numerical first derivatives (Default: 0.001)}
-#'  \item{\code{varflag}}{ 0,1,2 (see Details) (Default: 2)}
-#'  \item{\code{convert.units}}{ multiplier for width to convert to units of length (Default: 1)}
-#'  \item{\code{ervar}}{ encounter rate variance type - see type argument to \code{\link{varn}} (Default: "R2")}
+#'  \item{\code{ci.width}}{Confidence iterval width, expressed as a decimal between 0 and 1 (default \code{0.95}, giving a 95\% CI)}
+#'  \item{\code{pdelta}}{delta value for computing numerical first derivatives (Default: 0.001)}
+#'  \item{\code{varflag}}{0,1,2 (see "Uncertainty") (Default: \code{2})}
+#'  \item{\code{convert.units}}{ multiplier for width to convert to units of length (Default: \code{1})}
+#'  \item{\code{ervar}}{encounter rate variance type (see "Uncertainty" and \code{type} argument of \code{\link{varn}}). (Default: \code{"R2"})}
 #'}
 #'
-#' @author Jeff Laake
+#' @author Jeff Laake, David L Miller
 #' @seealso print.dht dht.se
 #' @references
 #'
@@ -242,7 +162,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
                           ucl = rep(NA, numRegions + 1))
     }else{
       estimate.table = data.frame(Label    = c("Total"),
-                                  Estimate = rep(0,1),
+                                  Estimate = rep(0, 1),
                                   se       = rep(NA, 1),
                                   cv       = rep(NA, 1),
                                   lcl      = rep(NA, 1),
@@ -256,15 +176,16 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     }
 
     # Create summary table
-    summary.table <- Nhat.by.sample[, c("Region.Label","Area",
-                                        "CoveredArea","Effort.y")]
+    summary.table <- Nhat.by.sample[, c("Region.Label", "Area",
+                                        "CoveredArea", "Effort.y")]
     summary.table <- unique(summary.table)
-    var.er <- sapply(split(Nhat.by.sample,Nhat.by.sample$Region.Label),
-                     function(x)varn(x$Effort.x,x$n,type=options$ervar))
+    var.er <- sapply(split(Nhat.by.sample, Nhat.by.sample$Region.Label),
+                     function(x) varn(x$Effort.x, x$n, type=options$ervar))
 
     if(numRegions > 1){
-       var.er <- c(var.er,varn(Nhat.by.sample$Effort.x,
-                               Nhat.by.sample$n,type=options$ervar))
+       var.er <- c(var.er, varn(Nhat.by.sample$Effort.x,
+                                Nhat.by.sample$n,
+                                type=options$ervar))
     }
 
     #  jll 11_11_04; change to set missing values for nobs to 0
@@ -282,9 +203,10 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     }
 
     if(numRegions > 1){
-      summary.table <- data.frame(Region=c(levels(summary.table$Region),"Total"),
+      summary.table <- data.frame(Region=c(levels(summary.table$Region),
+                                           "Total"),
                                   rbind(summary.table[, -1],
-                                        apply(summary.table[,-1], 2, sum)))
+                                        apply(summary.table[, -1], 2, sum)))
     }
 
     summary.table$ER <- summary.table$n/summary.table$Effort
@@ -300,18 +222,20 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     # If summary of individuals for a clustered popn, add mean
     # group size and its std error
     if(!group){
-      mean.clustersize <- tapply(obs$size,obs$Region.Label,mean)
-      se.clustersize <- sqrt(tapply(obs$size,obs$Region.Label,var)/
-                             tapply(obs$size,obs$Region.Label,length))
-      cs <- data.frame(Region=names(mean.clustersize),
-                       mean.size=as.vector(mean.clustersize),
-                       se.mean=as.vector(se.clustersize))
+      mean.clustersize <- tapply(obs$size, obs$Region.Label, mean)
+      se.clustersize <- sqrt(tapply(obs$size, obs$Region.Label, var)/
+                             tapply(obs$size, obs$Region.Label, length))
+      cs <- data.frame(Region    = names(mean.clustersize),
+                       mean.size = as.vector(mean.clustersize),
+                       se.mean   = as.vector(se.clustersize))
 
       summary.table <- merge(summary.table, cs, by.x = "Region",
-                             all=TRUE,sort=FALSE)
+                             all=TRUE, sort=FALSE)
+
       if(numRegions > 1){
         summary.table$mean.size[numRegions+1] <- mean(obs$size)
-        summary.table$se.mean[numRegions+1] <- sqrt(var(obs$size)/length(obs$size))
+        summary.table$se.mean[numRegions+1] <- sqrt(var(obs$size)/
+                                                length(obs$size))
       }
       # 29/05/12 lhm - moved to set missing values to 0
       summary.table$mean.size[is.na(summary.table$mean.size)] <- 0
@@ -330,14 +254,14 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     # Create estimate table for D from same table for N
     D.estimate.table <- estimate.table
     if(numRegions > 1){
-      D.estimate.table$Estimate <-D.estimate.table$Estimate/c(region.table$Area,
-          sum(region.table$Area))
-      D.estimate.table$se <- D.estimate.table$se/c(region.table$Area,
-          sum(region.table$Area))
-      D.estimate.table$lcl <- D.estimate.table$lcl/c(region.table$Area,
-          sum(region.table$Area))
-      D.estimate.table$ucl <- D.estimate.table$ucl/c(region.table$Area,
-          sum(region.table$Area))
+      D.estimate.table$Estimate <- D.estimate.table$Estimate/
+                                    c(region.table$Area, sum(region.table$Area))
+      D.estimate.table$se <- D.estimate.table$se/
+                               c(region.table$Area, sum(region.table$Area))
+      D.estimate.table$lcl <- D.estimate.table$lcl/
+                               c(region.table$Area, sum(region.table$Area))
+      D.estimate.table$ucl <- D.estimate.table$ucl/
+                               c(region.table$Area, sum(region.table$Area))
     }else{
       D.estimate.table$Estimate <- D.estimate.table$Estimate/region.table$Area
       D.estimate.table$se <- D.estimate.table$se/region.table$Area
@@ -356,17 +280,20 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     # change to set missing values to 0
     # jll 6/30/06; dropped restriction that numregions > 1 on sending vc back
     if(se){
-      cormat <- result$vc/(result$estimate.table$se %o% result$estimate.table$se)
+      cormat <- result$vc/(result$estimate.table$se %o%
+                           result$estimate.table$se)
       cormat[is.nan(cormat)] <- 0
       result <- list(bysample=bysample.table, summary = summary.table,
-                     N=result$estimate.table, D=D.estimate.table, 
+                     N=result$estimate.table, D=D.estimate.table,
                      average.p=average.p, cormat = cormat,
-                     vc=list(total=result$vc,detection=result$vc1,er=result$vc2),
+                     vc=list(total     = result$vc,
+                             detection = result$vc1,
+                             er        = result$vc2),
                      Nhat.by.sample=Nhat.by.sample)
     }else{
-      result <- list(bysample=bysample.table,summary = summary.table,
-                    N = estimate.table,D = D.estimate.table, average.p=average.p,
-                    Nhat.by.sample=Nhat.by.sample)
+      result <- list(bysample=bysample.table, summary=summary.table,
+                     N=estimate.table, D=D.estimate.table, average.p=average.p,
+                     Nhat.by.sample=Nhat.by.sample)
     }
     return(result)
   }
@@ -384,24 +311,24 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     if("observer"%in%names(data)){
       # jll 3 Sept 2014 if dual observer I added code to use observer 1 only
       # or it was doubling sample size
-      data <- data[data$observer==1,]
+      data <- data[data$observer==1, ]
     }
     if("Sample.Label" %in% names(data) & "Region.Label" %in% names(data)){
       if(is.null(substitute(subset))){
-         obs.table <- data[,c("object","Sample.Label","Region.Label")]
+         obs.table <- data[ ,c("object", "Sample.Label", "Region.Label")]
       }else{
-         select <- data[eval(substitute(subset),envir=data),]
-         obs.table <- select[,c("object","Sample.Label","Region.Label")]
+         select <- data[eval(substitute(subset),envir=data), ]
+         obs.table <- select[ ,c("object", "Sample.Label", "Region.Label")]
       }
-      obs.table <- obs.table[obs.table$object %in% objects,]
+      obs.table <- obs.table[obs.table$object %in% objects, ]
     }else{
       stop("Must specify obs.table because Sample.Label and/or Region.Label fields not contained in data")
     }
   }
 
   # Extract relevant fields from Region and Sample tables; jll 4 May 07;
-  region.table <- region.table[,c("Region.Label","Area")]
-  sample.table <- sample.table[,c("Region.Label","Sample.Label","Effort")]
+  region.table <- region.table[ ,c("Region.Label", "Area")]
+  sample.table <- sample.table[ ,c("Region.Label", "Sample.Label", "Effort")]
 
   # Make sure input data labels are factors
   region.table$Region.Label <- factor(region.table$Region.Label)
@@ -450,7 +377,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
 
   # Merge with fitted values
   pdot <- model$fitted
-  obs <- merge(obs,data.frame(object=objects,pdot=pdot))
+  obs <- merge(obs, data.frame(object=objects, pdot=pdot))
 
   # If clustered population create tables for clusters and individuals and
   # an expected S table otherwise just tables for individuals in an
@@ -494,20 +421,23 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
 
       cov.Nc.Ncs[is.nan(cov.Nc.Ncs)] <- 0
       cov.Nc.Ncs <- c(cov.Nc.Ncs,sum(cov.Nc.Ncs))
-      cov.Nc.Ncs <- cov.Nc.Ncs+diag(t(clusters$vc$detection$partial)%*%
-                      solvecov(model$hessian)$inv%*%
-                      individuals$vc$detection$partial)
+      cov.Nc.Ncs <- cov.Nc.Ncs +
+                     diag(t(clusters$vc$detection$partial)%*%
+                          solvecov(model$hessian)$inv%*%
+                          individuals$vc$detection$partial)
       se.Expected.S <- clusters$N$cv^2 + individuals$N$cv^2 -
-                  2*cov.Nc.Ncs/(individuals$N$Estimate*clusters$N$Estimate)
+                        2*cov.Nc.Ncs/
+                         (individuals$N$Estimate*clusters$N$Estimate)
       Expected.S[is.nan(Expected.S)] <- 0
       se.Expected.S[se.Expected.S<=0 | is.nan(se.Expected.S)] <- 0
       se.Expected.S <- Expected.S*sqrt(se.Expected.S)
-      Expected.S <- data.frame(Region=clusters$N$Label,
-                               Expected.S=as.vector(Expected.S),
-                               se.Expected.S=as.vector(se.Expected.S))
+
+      Expected.S <- data.frame(Region        = clusters$N$Label,
+                               Expected.S    = as.vector(Expected.S),
+                               se.Expected.S = as.vector(se.Expected.S))
     }else{
-      Expected.S <- data.frame(Region=clusters$N$Label,
-                               Expected.S=as.vector(Expected.S))
+      Expected.S <- data.frame(Region     = clusters$N$Label,
+                               Expected.S = as.vector(Expected.S))
     }
 
     if(DensityOnly){
@@ -515,9 +445,9 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
       individuals$N <- NULL
     }
 
-    result <- list(clusters=clusters,
-                   individuals=individuals,
-                   Expected.S=as.vector(Expected.S))
+    result <- list(clusters    = clusters,
+                   individuals = individuals,
+                   Expected.S  = as.vector(Expected.S))
   }else{
     individuals <- tables.dht(TRUE)
     if(DensityOnly){

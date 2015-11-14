@@ -1,4 +1,4 @@
-#' Prints density and abundance estimates based on Horvitz-Thompson-like estimator
+#' Prints density and abundance estimates
 #'
 #' Outputs summary statistics, abundance and density by region (if any) and optionally a correlation matrix if more than one region.
 #'
@@ -13,9 +13,9 @@
 #' @author Jeff Laake
 #' @seealso \code{\link{dht}}
 #' @keywords utility
-print.dht <- function(x,cor=FALSE,bysample=FALSE,vcmatrices=FALSE,...){
+print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE, ...){
 
-  print.tables <- function(x,cor,bysample,vcmatrices){
+  print.tables <- function(x, cor, bysample, vcmatrices){
     cat("\nSummary statistics:\n")
     print(x$summary)
     if("N" %in% names(x)){
@@ -41,12 +41,12 @@ print.dht <- function(x,cor=FALSE,bysample=FALSE,vcmatrices=FALSE,...){
   }
 
   if(is.null(x$clusters)){
-    print.tables(x$individuals,cor,bysample,vcmatrices)
+    print.tables(x$individuals, cor, bysample, vcmatrices)
   }else{
     cat("\nSummary for clusters\n")
-    print.tables(x$clusters,cor,bysample,vcmatrices)
+    print.tables(x$clusters, cor, bysample, vcmatrices)
     cat("\nSummary for individuals\n")
-    print.tables(x$individuals,cor,bysample,vcmatrices)
+    print.tables(x$individuals, cor, bysample, vcmatrices)
     cat("\nExpected cluster size\n")
     #Added CV as an output LJT 14/10/09
     S <- x$Expected.S

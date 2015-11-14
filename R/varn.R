@@ -1,11 +1,8 @@
 #' Compute empirical variance of encounter rate
 #'
-#' Computes one of a series of possible variance estimates for the observed
-#' encounter rate for a set of sample measurements (e.g., line lengths) and
-#' number of observations per sample.
+#' Computes one of a series of possible variance estimates for the observed encounter rate for a set of sample measurements (e.g., line lengths) and number of observations per sample.
 #'
-#' The choice of type follows the notation of Fewster et al. (2009) in that
-#' there are 8 choices of encounter rate variance that can be computed:
+#' The choice of type follows the notation of Fewster et al. (2009) in that there are 8 choices of encounter rate variance that can be computed:
 #'
 #' \describe{
 #' \item{\code{R2}}{random line placement with unequal line lengths (design-assisted estimator)}
@@ -17,12 +14,9 @@
 #' \item{\code{O2}}{systematic line placement, post-stratification with overlapping strata (weighted by line length per stratum, akin to S2)}
 #' \item{\code{O3}}{systematic line placement, post-stratification with overlapping strata, model-assisted estimator with trend in encounter rate with line length}}
 #'
-#' Default value is R2, shown in Fewster et al. (2009) to have good performance
-#' for completely random designs.  For systematic parallel line transect
-#' designs, Fewster et al. recommend O2.
+#' Default value is \code{"R2"}, shown in Fewster et al. (2009) to have good performance for completely random designs. For systematic parallel line transect designs, Fewster et al. recommend \code{"O2"}.
 #'
-#' For the systematic estimators, pairs are assigned in the order they are
-#' given in the \code{lengths} and \code{groups} vectors.
+#' For the systematic estimators, pairs are assigned in the order they are given in the \code{lengths} and \code{groups} vectors.
 #'
 #' @usage   varn(lvec,nvec,type)
 #'
@@ -34,10 +28,7 @@
 #' @param groups2 vector of number of individuals observed
 #' @param type choice of variance estimator to use for encounter rate
 #' @return Variance of encounter rate as defined by arguments
-#' @note This function is also used with different calling arguments to compute
-#'   Innes et al variance of the estimated abundances/length rather than
-#'   observation encounter rate. The function covn is probably only valid for
-#'   R3 and R2.  Currently, the R2 form is used for all types other than R3.
+#' @note This function is also used with different calling arguments to compute Innes et al variance of the estimated abundances/length rather than observation encounter rate. The function covn is probably only valid for R3 and R2.  Currently, the R2 form is used for all types other than R3.
 #' @author Jeff Laake
 #' @references Fewster, R.M., S.T. Buckland, K.P. Burnham, D.L. Borchers, P.E.
 #'   Jupp, J.L. Laake and L. Thomas. 2009. Estimating the encounter rate
