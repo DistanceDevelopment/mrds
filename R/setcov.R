@@ -26,11 +26,10 @@ setcov <- function(dmat, model){
   # Intercept Model
   }else if(model == "~1"){
     n <- 1
-    x <- as.matrix(rep(1, dim(dmat)[1]))
+    x <- matrix(rep(1, nrow(dmat)), ncol=1)
     colnames(x) <- "(Intercept)"
   # Covariate Model
   }else{
-    #x <- model.matrix(eval(parse(text=model)), data = dmat)
     x <- model.matrix(as.formula(model), data = dmat)
   }
   return(x)

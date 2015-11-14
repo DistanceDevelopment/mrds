@@ -20,56 +20,60 @@
 #'   or p(0)}
 #' @seealso prob.deriv
 #' @author Jeff Laake
-prob.se <- function(model,fct,vcov,observer=NULL,fittedmodel=NULL){
+prob.se <- function(model, fct, vcov, observer=NULL, fittedmodel=NULL){
   # Functions Used:  DeltaMethod, prob.deriv (in DeltaMethod)
 
   # First compute variance component due to estimation of detection function
   # parameters. This uses the delta method and produces a v-c matrix if more
   # than one strata
   if(is.null(fittedmodel)){
-    vc1.list <- DeltaMethod(model$par,prob.deriv,vcov,.0001,model=model,
-                            parfct=fct,observer=observer,fittedmodel=NULL)
+    vc1.list <- DeltaMethod(model$par, prob.deriv, vcov, .0001, model=model,
+                            parfct=fct, observer=observer, fittedmodel=NULL)
   }else{
-    vc1.list <- DeltaMethod(fittedmodel$par,prob.deriv,vcov,.0001,model=model,
-                           parfct=fct,observer=observer,fittedmodel=fittedmodel)
+    vc1.list <- DeltaMethod(fittedmodel$par, prob.deriv, vcov, .0001,
+                            model=model, parfct=fct, observer=observer,
+                            fittedmodel=fittedmodel)
   }
 
   vc1 <- vc1.list$variance
   if(!is.null(observer)){
      newdat <- model$mr$data
-     newdat$distance <- rep(0,length(newdat$distance))
+     newdat$distance <- rep(0, length(newdat$distance))
      newdat$offsetvalue <- 0
-     pred.at0 <- predict(model,newdat)
+     pred.at0 <- predict(model, newdat)
   }else if(!is.null(fittedmodel)){
     if(class(fittedmodel)[1]!="rem"){
-      newdat <- model$data[model$data$observer==1&model$data$detected==1,]
+      newdat <- model$data[model$data$observer==1&model$data$detected==1, ]
     }else{
       newdat <- model$data
     }
     newdat <- newdat[newdat$distance <= model$meta.data$width &
-                     newdat$distance >= model$meta.data$left,]
+                     newdat$distance >= model$meta.data$left, ]
     newdat$distance <- rep(0,length(newdat$distance))
     newdat$offsetvalue <- 0
-    pred.at0 <- predict(model,newdat)$fitted
+    pred.at0 <- predict(model, newdat)$fitted
   }
 
   if(is.null(fittedmodel)){
     pdot <- model$fitted
     if(is.null(observer)){
-      vc2 <- sum(fct(model,pdot)^2*(1 - pdot)/pdot^2)
-      covar <- sum(fct(model,pdot)*(1 - pdot)/pdot^2)
+      fct_pdot <- fct(model, pdot)
+      vc2 <- sum(fct_pdot^2*(1 - pdot)/pdot^2)
+      covar <- sum(fct_pdot*(1 - pdot)/pdot^2)
     }else{
-      vc2 <- sum(fct(model,pred.at0,observer)^2*(1 - pdot)/pdot^2)
-      covar <- sum(fct(model,pred.at0,observer)*(1 - pdot)/pdot^2)
+      fct_pred.at0 <- fct(model,pred.at0,observer)
+      vc2 <- sum(fct_pred.at0^2*(1 - pdot)/pdot^2)
+      covar <- sum(fct_pred.at0*(1 - pdot)/pdot^2)
     }
   }else{
     pdot <- fittedmodel$fitted
-    vc2 <- sum(fct(model,pred.at0,observer)^2*(1 - pdot)/pdot^2)
-    covar <- sum(fct(model,pred.at0,observer)*(1 - pdot)/pdot^2)
+    fct_pred.at0 <- fct(model,pred.at0,observer)
+    vc2 <- sum(fct_pred.at0^2*(1 - pdot)/pdot^2)
+    covar <- sum(fct_pred.at0*(1 - pdot)/pdot^2)
   }
 
-  return(list(var=vc1+vc2,
-              partial=vc1.list$partial,
-              covar=covar))
+  return(list(var     = vc1+vc2,
+              partial = vc1.list$partial,
+              covar   = covar))
 }
 

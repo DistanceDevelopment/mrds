@@ -8,27 +8,24 @@
 #' @author David L. Miller
 calc.se.Np <- function(model, avgp, n, average.p){
 
-  #average.p <- n/model$Nhat
-
-  se.obj <- list()
-
   # calculate the variance-covariate matrix
   vcov <- solvecov(model$hessian)$inv
 
   # calculate Nhat uncertainty
-  Nhatvar.list <- DeltaMethod(model$par,NCovered,vcov,0.001,
-                              model=model,group=TRUE)
+  Nhatvar.list <- DeltaMethod(model$par, NCovered, vcov, 0.001,
+                              model=model, group=TRUE)
   Nhatvar <- Nhatvar.list$variance + sum((1-model$fitted)/model$fitted^2)
   cvN <- sqrt(Nhatvar)/model$Nhat
 
   # calculate the average p uncertainty
-  var.pbar.list <- prob.se(model,avgp,vcov)
-  covar <- t(Nhatvar.list$partial)%*%vcov%*%var.pbar.list$partial+
+  var.pbar.list <- prob.se(model, avgp, vcov)
+  covar <- t(Nhatvar.list$partial) %*% vcov %*% var.pbar.list$partial+
                var.pbar.list$covar
   var.pbar <- average.p^2*(cvN^2 + var.pbar.list$var/n^2-
                                 2*covar/(n*model$Nhat))
 
   # what should we return?
+  se.obj <- list()
   se.obj$Nhat.se <- sqrt(Nhatvar)
   se.obj$average.p.se <- sqrt(var.pbar)
   se.obj$Nhatvar.list <- Nhatvar.list

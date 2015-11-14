@@ -53,7 +53,7 @@ DeltaMethod <- function(par, fct, vcov, delta, ...){
 
     partial[i,] <- (value1-value2)/(2*deltap)
   }
-  variance <- t(partial)%*%vcov%*%partial
+  variance <- t(partial) %*% vcov %*% partial
 
   # return the v-c matrix and the first partial vector(matrix)
   return(list(variance = variance,

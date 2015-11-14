@@ -142,36 +142,39 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
   p.formula <- as.formula(model.formula)
   xmat2 <- xmat[xmat$observer==2,]
   xmat1 <- xmat[xmat$observer==1,]
-  npar <- ncol(model.matrix(p.formula,xmat))
 
-#   fit=optim(par=rep(0,npar),lnl.io,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula),
-#     hessian=TRUE,control=list(maxit=5000))
-#   fit$hessian=hessian(lnl.removal,x=fit$par,method="Richardson",x1=xmat1,x2=xmat2,models=list(p.formula=p.formula))
   GAM <- FALSE
-  #if(modelvalues$fct=="gam") 
-  #{
-  #   GAM <- TRUE
-  #} else
   xmat <- create.model.frame(xmat,as.formula(model.formula),meta.data)
   model.formula <- as.formula(paste(model.formula,"+offset(offsetvalue)"))
 
-  # Fit the conditional detection functions using io.glm 
-  suppressWarnings(result$mr <- io.glm (xmat,model.formula,GAM=GAM))
+  # Fit the conditional detection functions using io.glm
+  suppressWarnings(result$mr <- io.glm(xmat, model.formula, GAM=GAM))
 
   # if(GAM)result$mr$data=xmat
 
   if(result$mr$converged){
-    # if the glm did converge, then do one quick round of BFGS to 
+    # if the glm did converge, then do one quick round of BFGS to
     #  compute the hessian
-    result$hessian<- optimHess(result$mr$coefficients, lnl.io, 
-                               x1=xmat1, x2=xmat2, 
+
+xx <- rbind(xmat1,xmat2)
+dmrows <- nrow(xmat1)
+xmatH <- model.matrix(p.formula,xx)
+xmat1H <- xmatH[1:dmrows,,drop=FALSE]
+xmat2H <- xmatH[(dmrows+1):(2*dmrows),,drop=FALSE]
+
+    result$hessian<- optimHess(result$mr$coefficients, lnl.io,
+                               x1=xmat1H, x2=xmat2H,
+                               x1_detected=xmat1$detected,
+                               x2_detected=xmat2$detected,
                                models=list(p.formula=p.formula))
   }else{
     # only resort to optim if there was not convergence in the glm!
 
     # Now use optimx with starting values perturbed by 5%
     fit <-try(optimx(result$mr$coefficients*1.05,
-                      lnl.io, method="L-BFGS-B", hessian=TRUE,x1=xmat1,x2=xmat2,
+                      lnl.io, method="L-BFGS-B", hessian=TRUE,
+                      x1=xmat1H, x2=xmat2H,
+                      x1o=xmat1, x2o=xmat2,
                       models=list(p.formula=p.formula)))
     # did this model converge?
     topfit.par <- coef(fit, order="value")[1, ]
@@ -188,7 +191,10 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
       # result$mr$coefficients but without having the convergence issues
       # NEED TO THINK ABOUT THIS MORE...
       fit <- try(optimx(result$mr$coefficients*0,lnl.io, method="L-BFGS-B", 
-              hessian=TRUE,x1=xmat1,x2=xmat2,models=list(p.formula=p.formula)))
+              hessian=TRUE,
+              x1=xmat1H,x2=xmat2H,
+              x1o=xmat1,x2o=xmat2,
+              models=list(p.formula=p.formula)))
       topfit.par <- coef(fit, order="value")[1, ]
       details <- attr(fit,"details")[1,]
       fit <- as.list(summary(fit, order="value")[1, ])
@@ -285,23 +291,25 @@ io.pdot<-function(xmat1,xmat2,beta){
 }
 
 p.io <- function(par,x1,x2,models){
-  # create design matrix for p1,p2 and delta
-  x <- rbind(x1,x2)
-  dmrows <- nrow(x1)
-  xmat <- model.matrix(models$p.formula,x)
-  xmat1 <- xmat[1:dmrows,,drop=FALSE]
-  xmat2 <- xmat[(dmrows+1):(2*dmrows),,drop=FALSE]
+#  # create design matrix for p1,p2 and delta
+#  x <- rbind(x1,x2)
+#  dmrows <- nrow(x1)
+#  xmat <- model.matrix(models$p.formula,x)
+#  xmat1 <- xmat[1:dmrows,,drop=FALSE]
+#  xmat2 <- xmat[(dmrows+1):(2*dmrows),,drop=FALSE]
+xmat1 <- x1
+xmat2 <- x2
   p01 <- io.p01(xmat1,xmat2,beta=par)
   p10 <- io.p10(xmat1,xmat2,beta=par)
   p11 <- io.p11(xmat1,xmat2,beta=par)
   pdot <- io.pdot(xmat1,xmat2,beta=par)
-  return(list(p11=as.vector(p11),
-              p01=as.vector(p01),
-              p10=as.vector(p10),
-              pdot=as.vector(pdot)))
+  return(list(p11=p11,
+              p01=p01,
+              p10=p10,
+              pdot=pdot))
 }
 
-lnl.io <- function(par,x1,x2,models){
+lnl.io <- function(par, x1, x2, models, x1_detected, x2_detected){
   # Compute probabilities
   p.list <- p.io(par,x1,x2,models)
   p11 <- p.list$p11
@@ -310,9 +318,9 @@ lnl.io <- function(par,x1,x2,models){
   p01[p01==0] <- 1e-6
   p10[p10==0] <- 1e-6
   # Compute log-likelihood value
-  lnl <- sum((1-x1$detected)*x2$detected*log(p01)) +
-          sum((1-x2$detected)*x1$detected*log(p10))+
-          sum(x1$detected*x2$detected*log(p11)) -
+  lnl <- sum((1-x1_detected)*x2_detected*log(p01)) +
+          sum((1-x2_detected)*x1_detected*log(p10))+
+          sum(x1_detected*x2_detected*log(p11)) -
           sum(log(p.list$pdot))
   return(-lnl)
 }
