@@ -4,7 +4,7 @@
 \alias{histline}
 \title{Plot histogram line}
 \usage{
-histline(height, breaks, lineonly = FALSE, outline = FALSE, fill = FALSE,
+histline(height, breaks, lineonly = FALSE, outline = FALSE,
   ylim = range(height), xlab = "x", ylab = "y", det.plot = FALSE,
   add = FALSE, ...)
 }
@@ -18,8 +18,6 @@ addition of current plot}
 
 \item{outline}{if TRUE, only outline of histogram is plotted}
 
-\item{fill}{If fill==TRUE, uses polygon() to fill bars}
-
 \item{ylim}{limits for y axis}
 
 \item{xlab}{label for x axis}
@@ -31,7 +29,7 @@ interval}
 
 \item{add}{should this plot add to a previous window}
 
-\item{\dots}{Additional unspecified arguments for plot (fill==TRUE}
+\item{\dots}{Additional unspecified arguments for plot}
 }
 \value{
 None
@@ -42,6 +40,6 @@ line-only histogram from them using the function plot() (if lineonly==FALSE)
 or lines() (if lineonly==TRUE).
 }
 \author{
-???
+Jeff Laake and David L Miller
 }
 

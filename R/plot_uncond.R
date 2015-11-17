@@ -76,9 +76,9 @@ plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
   xgrid <- line$xgrid
   ylim <- c(0,max(ylim,hist.obj$density))
 
-  histline(hist.obj$density,breaks=breaks,lineonly=FALSE,xlab=xlab,ylab=ylab,
-           ylim=ylim,fill=TRUE, angle=angle,density=density,col=col,
-           det.plot=TRUE,...)
+  histline(hist.obj$density, breaks=breaks, lineonly=FALSE, xlab=xlab,
+           ylab=ylab, ylim=ylim, angle=angle, density=density, col=col,
+           det.plot=TRUE, ...)
 
   if(showlines) lines(xgrid,linevalues,...)
 

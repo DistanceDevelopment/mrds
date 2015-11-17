@@ -63,12 +63,14 @@ plot.det.tables <- function(x,which=1:6,angle=-45,density=20,col1="black",
   }
 
   if(is.element(3,which)&!is.null(x$Duplicates)){
-    histline(x$Duplicates,breaks=breaks,lineonly=FALSE,xlab="Distance",ylab="Frequency",fill=TRUE,angle=angle,density=density,col=col1,...)
+    histline(x$Duplicates, breaks=breaks, lineonly=FALSE, xlab="Distance",
+             ylab="Frequency", angle=angle, density=density, col=col1, ...)
     legend("topright",legend=c("Seen by both observers"),lty=1,lwd=3,col=c(col1))
   }
 
   if(is.element(4,which)&!is.null(x$Pooled)){
-    histline(x$Pooled,breaks=breaks,lineonly=FALSE,xlab="Distance",ylab="Frequency",fill=TRUE,angle=angle,density=density,col=col1,...)
+    histline(x$Pooled, breaks=breaks, lineonly=FALSE, xlab="Distance",
+             ylab="Frequency", angle=angle, density=density, col=col1, ...)
     legend("topright",legend=c("Seen by either observer"),lty=1,lwd=3,col=c(col1))
   }
 

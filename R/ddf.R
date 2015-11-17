@@ -224,8 +224,7 @@
 #'
 #' summary(model)
 #'
-#' par(mfrow=c(2,3))
-#' plot(model,main="Dual observer binned point data",new=FALSE)
+#' plot(model, main="Dual observer binned point data", new=FALSE, pages=1)
 #'
 #' model <- ddf(method="io", data=ptdata.dual,
 #'              dsmodel=~cds(key="unif", adj.series="cos", adj.order=1),

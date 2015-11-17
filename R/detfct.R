@@ -66,54 +66,50 @@
 #' @param adj.order vector of adjustment orders
 #' @param adj.parm vector of adjustment parameters
 #' @param width truncation width
-#' @param standardize logical used to decide whether to divide through by the
-#'  function evaluated at 0
+#' @param standardize logical used to decide whether to divide through by the function evaluated at 0
 #' @param scaling the scaling for the adjustment terms
 #' @param stdint logical used to decide whether integral is standardized
 #' @param point if TRUE, point counts; otherwise line transects
 #' @param adj.exp if TRUE uses exp(adj) for adjustment to keep f(x)>0
 #' @return
-#' For \code{detfct}, the value is a vector of detection probabilities for the
-#'   input set of x and z.
-#' For \code{keyfct.*}, vector of detection probability for that
-#'   key function at x.
-#' For \code{adjfct.*}, vector of the value of the
-#'   adjustment term at x.
-#' For \code{scalevalue}, the value is a vector of the computed scales for the
-#'   design matrix z.
-#' @author Jeff Laake, David Miller
+#' For \code{detfct}, the value is a vector of detection probabilities
+#' For \code{keyfct.*}, vector of key function evaluations
+#' For \code{adjfct.*}, vector of adjustment series evaluations
+#' For \code{scalevalue}, vector of the scale parameters.
+#' @author Jeff Laake, David L Miller
 #' @seealso  \code{\link{mcds}},  \code{\link{cds}}
 #' @references  Marques and Buckland 2004
 #' Laake and Borchers 2004. in Buckland et al 2004.
 #' Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection function for
 #' line transect surveys with mark-recapture and covariate data. Journal of
 #' Agricultural Biological and Environmental Statistics 14:207-223.
-distpdf <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
-                    standardize=TRUE,stdint=FALSE,point=FALSE){
+distpdf <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
+                    standardize=TRUE, stdint=FALSE, point=FALSE){
 
  if(!point){
-   return(fx(distance=distance,ddfobj=ddfobj,select=select,index=index,
-             width=width,standardize=standardize,stdint=stdint))
+   return(fx(distance=distance, ddfobj=ddfobj, select=select, index=index,
+             width=width, standardize=standardize, stdint=stdint))
  }else
-   return(fr(distance=distance,ddfobj=ddfobj,select=select,index=index,
-             width=width,standardize=standardize,stdint=stdint))
+   return(fr(distance=distance, ddfobj=ddfobj, select=select, index=index,
+             width=width, standardize=standardize, stdint=stdint))
 }
 
 
-fx <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
-               standardize=TRUE,stdint=FALSE){
-  return(detfct(distance,ddfobj,select,index,width,standardize,stdint)/width)
+fx <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
+               standardize=TRUE, stdint=FALSE){
+  return(detfct(distance, ddfobj, select, index, width, standardize, stdint)/
+         width)
 }
 
-fr <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
-               standardize=TRUE,stdint=FALSE){
-  return(detfct(distance,ddfobj,select,index,width,standardize,stdint)*
+fr <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
+               standardize=TRUE, stdint=FALSE){
+  return(detfct(distance, ddfobj, select, index, width, standardize, stdint)*
          2*distance/width^2)
 }
 
 
-detfct <- function(distance,ddfobj,select=NULL,index=NULL,width=NULL,
-    standardize=TRUE,stdint=FALSE){
+detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
+                   standardize=TRUE, stdint=FALSE){
 
   # Set of observations for computation of detection function can
   # be specified with logical (select) and numeric (index) values.

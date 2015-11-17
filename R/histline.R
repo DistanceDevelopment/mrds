@@ -9,18 +9,17 @@
 #' @param lineonly if TRUE, drawn with plot; otherwise with lines to allow
 #'   addition of current plot
 #' @param outline if TRUE, only outline of histogram is plotted
-#' @param fill If fill==TRUE, uses polygon() to fill bars
 #' @param ylim limits for y axis
 #' @param xlab label for x axis
 #' @param ylab label for y axis
 #' @param det.plot if TRUE, plot is of detection so yaxis limited to unit
 #'   interval
 #' @param add should this plot add to a previous window
-#' @param \dots Additional unspecified arguments for plot (fill==TRUE
+#' @param \dots Additional unspecified arguments for plot
 #' @return None
-#' @author ???
+#' @author Jeff Laake and David L Miller
 #' @importFrom graphics plot box
-histline <- function(height, breaks, lineonly=FALSE, outline=FALSE, fill=FALSE,
+histline <- function(height, breaks, lineonly=FALSE, outline=FALSE,
                      ylim=range(height), xlab="x", ylab="y", det.plot=FALSE,
                      add=FALSE,...){
 
@@ -36,9 +35,10 @@ histline <- function(height, breaks, lineonly=FALSE, outline=FALSE, fill=FALSE,
 
   # make the plot
   if(det.plot){
-    plot(hh,ylim=ylim,xlab=xlab,ylab=ylab,yaxp=c(0,1,5),main="",add=add,freq=FALSE,...)
+    plot(hh, ylim=ylim, xlab=xlab, ylab=ylab, yaxp=c(0, 1, 5), main="",
+         add=add, freq=FALSE, ...)
   }else{
-    plot(hh,ylim=ylim,xlab=xlab,ylab=ylab,main="",add=add,freq=FALSE,...)
+    plot(hh, ylim=ylim, xlab=xlab, ylab=ylab, main="", add=add, freq=FALSE, ...)
   }
   # put a box around
   box()

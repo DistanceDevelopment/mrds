@@ -8,7 +8,7 @@ gstdint(x, ddfobj, index = NULL, select = NULL, width, standardize = TRUE,
   point = FALSE, stdint = TRUE, doeachint = FALSE)
 }
 \arguments{
-\item{x}{lower,upper value for integration}
+\item{x}{lower, upper value for integration}
 
 \item{ddfobj}{distance detection function specification}
 
@@ -18,13 +18,11 @@ gstdint(x, ddfobj, index = NULL, select = NULL, width, standardize = TRUE,
 
 \item{width}{truncation width}
 
-\item{standardize}{logical used to decide whether to divide through by the
-function evaluated at 0}
+\item{standardize}{if \code{TRUE}, divide through by the function evaluated at 0}
 
-\item{point}{logical to determine if point count(TRUE) or line
-transect(FALSE)}
+\item{point}{logical to determine if point (\code{TRUE}) or line transect(\code{FALSE})}
 
-\item{stdint}{if TRUE, scale=1 otherwise specified scale used}
+\item{stdint}{if \code{TRUE}, scale=1 otherwise specified scale used}
 
 \item{doeachint}{if TRUE perform integration using \code{\link{integrate}}}
 }
@@ -32,12 +30,10 @@ transect(FALSE)}
 vector of integral values of detection function
 }
 \description{
-Computes the integral of distpdf with scale=1 (stdint=TRUE) or specified
-scale (stdint=FALSE)
+Computes the integral of distpdf with scale=1 (stdint=TRUE) or specified scale (stdint=FALSE).
 }
 \note{
-This is an internal function that is not intended to be invoked
-  directly.
+This is an internal function that is not intended to be invoked directly.
 }
 \author{
 Jeff Laake and David L Miller

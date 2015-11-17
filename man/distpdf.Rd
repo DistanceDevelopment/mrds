@@ -52,8 +52,7 @@ distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
 
 \item{width}{truncation width}
 
-\item{standardize}{logical used to decide whether to divide through by the
-function evaluated at 0}
+\item{standardize}{logical used to decide whether to divide through by the function evaluated at 0}
 
 \item{stdint}{logical used to decide whether integral is standardized}
 
@@ -74,14 +73,10 @@ function evaluated at 0}
 \item{adj.exp}{if TRUE uses exp(adj) for adjustment to keep f(x)>0}
 }
 \value{
-For \code{detfct}, the value is a vector of detection probabilities for the
-  input set of x and z.
-For \code{keyfct.*}, vector of detection probability for that
-  key function at x.
-For \code{adjfct.*}, vector of the value of the
-  adjustment term at x.
-For \code{scalevalue}, the value is a vector of the computed scales for the
-  design matrix z.
+For \code{detfct}, the value is a vector of detection probabilities
+For \code{keyfct.*}, vector of key function evaluations
+For \code{adjfct.*}, vector of adjustment series evaluations
+For \code{scalevalue}, vector of the scale parameters.
 }
 \description{
 Various functions used to specify key and adjustment functions for
@@ -114,7 +109,7 @@ the log link using the parameters and the covariate design matrix
 counts respectively
 }
 \author{
-Jeff Laake, David Miller
+Jeff Laake, David L Miller
 }
 \references{
 Marques and Buckland 2004

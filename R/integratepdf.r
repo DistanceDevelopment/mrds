@@ -25,7 +25,7 @@ integratepdf <- function(ddfobj, select, width, int.range,
 
   if(!is.matrix(int.range)){
     if(is.vector(int.range) && length(int.range)==2){
-      int.range <- matrix(int.range,ncol=2,nrow=1)
+      int.range <- matrix(int.range, ncol=2, nrow=1)
     }else{
       stop("int.range is not a matrix and cannot be given the required matrix structure")
     }
@@ -53,7 +53,8 @@ integratepdf <- function(ddfobj, select, width, int.range,
   # & only one set of integration ranges), that's easy
   if(nobs==1){
     return(gstdint(int.range[1,], ddfobj=ddfobj, index=1, select=NULL,
-           width=width, standardize=standardize, point=point, stdint=FALSE))
+                   width=width, standardize=standardize, point=point,
+                   stdint=FALSE))
   }else{
   # if there are multiple covariates or multiple ranges
 
@@ -61,7 +62,7 @@ integratepdf <- function(ddfobj, select, width, int.range,
     # already checked above that this is okay
     # this allows us to simplify the code below
     if(nrow(int.range)==1){
-      int.range <- t(replicate(nobs,int.range,simplify=TRUE))
+      int.range <- t(replicate(nobs, int.range, simplify=TRUE))
     }
 
     ### find unique observations
@@ -70,20 +71,20 @@ integratepdf <- function(ddfobj, select, width, int.range,
     #   we know from above that int.range has either nrow(data) rows or
     #   length(index) rows.
     if(is.null(ddfobj$shape)){
-      newdat <- cbind(ddfobj$scale$dm[select, , drop=FALSE], int.range)
+      newdat <- cbind(ddfobj$scale$dm[index, , drop=FALSE], int.range)
     }else{
       if(ncol(ddfobj$shape$dm)>1){
-        scale_dm <- ddfobj$shape$dm[select, , drop=FALSE]
+        scale_dm <- ddfobj$shape$dm[index, , drop=FALSE]
         scale_dm[,"(Intercept)"] <- NULL
       }else{
         scale_dm <- NULL
       }
-      newdat <- cbind(ddfobj$scale$dm[select, , drop=FALSE],
+      newdat <- cbind(ddfobj$scale$dm[index, , drop=FALSE],
                       scale_dm, int.range)
     }
     u.rows <- mgcv::uniquecombs(newdat)
-    uu.index <- sort(unique(attr(u.rows,"index")))
-    u.index <- attr(u.rows,"index")
+    uu.index <- sort(unique(attr(u.rows, "index")))
+    u.index <- attr(u.rows, "index")
 
     # generate the indices that we want to calculate integrals for
     ind <- match(uu.index, u.index)
@@ -95,7 +96,7 @@ integratepdf <- function(ddfobj, select, width, int.range,
                     stdint=FALSE)
 
     ## now rebuild the integrals and populate the return vector
-    integrals <- ints[attr(u.rows,"index")]
+    integrals <- ints[attr(u.rows, "index")]
   }
   return(integrals)
 }

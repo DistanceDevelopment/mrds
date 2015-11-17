@@ -5,7 +5,7 @@
 \title{Plot fit of detection functions and histograms of data from distance
 sampling model}
 \usage{
-\method{plot}{ds}(x, which = 2, byvar = "", breaks = NULL, nc = NULL,
+\method{plot}{ds}(x, which = 2, breaks = NULL, nc = NULL,
   jitter.v = rep(0, 3), showpoints = TRUE, subset = NULL,
   pl.col = "black", bw.col = grey(0), black.white = FALSE,
   pl.den = rep(20, 1), pl.ang = rep(-45, 1), main = NULL, pages = 0,
@@ -17,9 +17,6 @@ sampling model}
 \item{which}{index to specify which plots should be produced:
 \tabular{ll}{1 \tab histogram of observed distances\cr
              2 \tab histogram of observed distanes with fitted line and points (default)\cr}}
-
-\item{byvar}{name of variable to be used to color points - not currently
-implemented.}
 
 \item{breaks}{user define breakpoints}
 
@@ -77,23 +74,23 @@ and it will call the appropriate function based on the class of the
 \donttest{
 data(book.tee.data)
 egdata <- book.tee.data$book.tee.dataframe
-xx <- ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
-          data = egdata[egdata$observer==1, ],
-          method = "ds", meta.data = list(width = 4))
+xx <- ddf(dsmodel=~mcds(key="hn", formula=~sex),
+          data=egdata[egdata$observer==1, ],
+          method="ds", meta.data=list(width=4))
 
 # not showing predicted probabilities
-plot(xx,breaks=c(0,.5,1,2,3,4),showpoints=FALSE)
+plot(xx, breaks=c(0, 0.5, 1, 2, 3, 4), showpoints=FALSE)
 
 # two subsets
-plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==0)
-plot(xx,breaks=c(0,.5,1,2,3,4),subset=sex==1)
+plot(xx, breaks=c(0, 0.5, 1, 2, 3, 4), subset=sex==0)
+plot(xx, breaks=c(0, 0.5, 1, 2, 3, 4), subset=sex==1)
 
 # put both plots on one page
-plot(xx,breaks=c(0,.5,1,2,3,4),pages=1,which=1:2)
+plot(xx, breaks=c(0, 0.5, 1, 2, 3, 4), pages=1, which=1:2)
 }
 }
 \author{
-Jeff Laake, Jon Bishop, David Borchers
+Jeff Laake, Jon Bishop, David Borchers, David L Miller
 }
 \keyword{plot}
 

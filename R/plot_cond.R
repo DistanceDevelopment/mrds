@@ -54,9 +54,9 @@ plot_cond <- function(obs,xmat,gxvalues,model,nc,breaks,finebr,showpoints,
   mhist$density <- prop
   mhist$equidist <- FALSE
   mhist$intensities <- mhist$density
-  histline(mhist$density,breaks=breaks,lineonly=FALSE,xlab=xlab,ylab=ylab,
-           ylim=ylim,fill=TRUE, angle=angle,density=density,col=col,
-           det.plot=TRUE,...)
+  histline(mhist$density, breaks=breaks, lineonly=FALSE, xlab=xlab, ylab=ylab,
+           ylim=ylim, angle=angle, density=density, col=col,
+           det.plot=TRUE, ...)
 
   # plot the detection function
   if(showlines){

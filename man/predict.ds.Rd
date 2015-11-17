@@ -25,27 +25,22 @@
 
 \item{newdata}{new \code{data.frame} for prediction.}
 
-\item{compute}{if \code{TRUE} compute values and don't use the fitted
-values stored in the model object.}
+\item{compute}{if \code{TRUE} compute values and don't use the fitted values stored in the model object.}
 
-\item{int.range}{integration range for variable range analysis; either
-vector or matrix.}
+\item{int.range}{integration range for variable range analysis; either vector or 2 column matrix.}
 
-\item{esw}{if \code{TRUE}, returns effective strip half-width (or effective area of detection for point transect models) integral from 0 to the truncation distance (\code{width}) of p(y)dy; otherwise it returns the integral from 0 to truncation width of p(y)*pi(y) where pi(y)=1/W for lines and pi(y)=2r/W^2 for points.}
+\item{esw}{if \code{TRUE}, returns effective strip half-width (or effective area of detection for point transect models) integral from 0 to the truncation distance (\code{width}) of \eqn{p(y)dy}; otherwise it returns the integral from 0 to truncation width of \eqn{p(y)\pi(y)} where \eqn{\pi(y)=1/w} for lines and \eqn{\pi(y)=2r/w^2} for points.}
 
 \item{integrate}{for \code{*.fi} methods, see Details below.}
 
 \item{\dots}{for S3 consistency}
 }
 \value{
-For all but the exceptions below, the value is a list with a single
-  element: \code{fitted}, a vector of average detection probabilities or esw values for each observation in the original data or\code{newdata}
+For all but the exceptions below, the value is a list with a single element: \code{fitted}, a vector of average detection probabilities or esw values for each observation in the original data or\code{newdata}
 
 For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with \code{integrate=TRUE}, the value is a list with one element: \code{fitted}, which is a vector of integrated (average) detection probabilities for each observation in the original data or \code{newdata}.
 
-For \code{predict.io.fi}, \code{predict.trial.fi}, or \code{predict.rem.fi}
-  with \code{integrate=FALSE}, the value is a list with the following
-  elements:
+For \code{predict.io.fi}, \code{predict.trial.fi}, or \code{predict.rem.fi} with \code{integrate=FALSE}, the value is a list with the following elements:
  \describe{
    \item{\code{fitted}}{\eqn{p(y)} values}
    \item{\code{p1}}{\eqn{p_{1|2}(y)}, conditional detection probability for observer 1}
@@ -60,24 +55,16 @@ The first 4 arguments are the same in each predict function.  The latter 2 are s
 
 Fitted detection probabilities are stored in the \code{model} object and these are returned unless \code{compute=TRUE} or \code{newdata} is specified. \code{compute=TRUE} is used to estimate numerical derivatives for use in delta method approximations to the variance.
 
-For \code{method="io.fi"} or \code{method="trial.fi"} if
-\code{integrate=FALSE}, \code{predict} returns the value of the conditional
- detection probability and if \code{integrate=TRUE}, it returns the average
-conditional detection probability by integrating over x (distance) with
-respect to a uniform distribution.
+For \code{method="io.fi"} or \code{method="trial.fi"} if \code{integrate=FALSE}, \code{predict} returns the value of the conditional detection probability and if \code{integrate=TRUE}, it returns the average conditional detection probability by integrating over x (distance) with respect to a uniform distribution.
 }
 \note{
-Each function is called by the generic function \code{predict} for the
-  appropriate \code{ddf} model object.  They can be called directly by the
-  user, but it is typically safest to use \code{predict} which calls the
-  appropriate function based on the type of model.
+Each function is called by the generic function \code{predict} for the appropriate \code{ddf} model object.  They can be called directly by the user, but it is typically safest to use \code{predict} which calls the appropriate function based on the type of model.
 }
 \author{
 Jeff Laake
 }
 \seealso{
-\code{\link{ddf}}, \code{\link{summary.ds}},
-  \code{\link{plot.ds}}
+\code{\link{ddf}}, \code{\link{summary.ds}}, \code{\link{plot.ds}}
 }
 \keyword{utility}
 
