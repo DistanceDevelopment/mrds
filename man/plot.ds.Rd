@@ -2,14 +2,13 @@
 % Please edit documentation in R/plot.ds.R
 \name{plot.ds}
 \alias{plot.ds}
-\title{Plot fit of detection functions and histograms of data from distance
-sampling model}
+\title{Plot fit of detection functions and histograms of data from distance sampling model}
 \usage{
 \method{plot}{ds}(x, which = 2, breaks = NULL, nc = NULL,
   jitter.v = rep(0, 3), showpoints = TRUE, subset = NULL,
   pl.col = "black", bw.col = grey(0), black.white = FALSE,
   pl.den = rep(20, 1), pl.ang = rep(-45, 1), main = NULL, pages = 0,
-  ...)
+  pdf = FALSE, ...)
 }
 \arguments{
 \item{x}{fitted model from \code{ddf}.}
@@ -22,14 +21,9 @@ sampling model}
 
 \item{nc}{number of equal-width bins for histogram}
 
-\item{jitter.v}{scaling option for plotting points.  Jitter is applied to
-points by multiplying the fitted value by a random draw from a normal
-distribution with mean 1 and sd \code{jitter.v[j]}.  Where \code{j=1,2}
-corresponds to observer \code{j} and \code{j=3} corresponds to
-pooled/duplicate detections.}
+\item{jitter.v}{scaling option for plotting points.  Jitter is applied to points by multiplying the fitted value by a random draw from a normal distribution with mean 1 and sd \code{jitter.v[j]}.  Where \code{j=1,2} corresponds to observer \code{j} and \code{j=3} corresponds to pooled/duplicate detections.}
 
-\item{showpoints}{logical variable; if \code{TRUE} plots predicted value
-for each observation.}
+\item{showpoints}{logical variable; if \code{TRUE} plots predicted value for each observation.}
 
 \item{subset}{subset of data to plot.}
 
@@ -45,13 +39,11 @@ for each observation.}
 
 \item{main}{user-specfied plot title.}
 
-\item{pages}{the number of pages over which to spread the plots. For
-example, if \code{pages=1} then all plots will be displayed on one page.
-Default is 0, which prompts the user for the next plot to be displayed.}
+\item{pages}{the number of pages over which to spread the plots. For example, if \code{pages=1} then all plots will be displayed on one page. Default is 0, which prompts the user for the next plot to be displayed.}
 
-\item{\dots}{other graphical parameters, passed to the plotting functions
-(\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}},
-\code{\link{points}}, etc).}
+\item{pdf}{plot the histogram of distances with the PDF of the probability of detection overlaid. Ignored (with warning) for line transect models.}
+
+\item{\dots}{other graphical parameters, passed to the plotting functions (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}}, \code{\link{points}}, etc).}
 }
 \value{
 Just plots.
@@ -60,18 +52,13 @@ Just plots.
 Plots the fitted detection function(s) with a histogram of the observed distances to compare visually the fitted model and data.
 }
 \details{
-The structure of the histogram can be controlled by the user-defined
-arguments \code{nc} or \code{breaks}. The observation specific detection
-probabilities along with the line representing the fitted average detection
-probability.
+The structure of the histogram can be controlled by the user-defined arguments \code{nc} or \code{breaks}. The observation specific detection probabilities along with the line representing the fitted average detection probability.
 
-It is not intended for the user to call \code{plot.ds} but its arguments
-are documented here. Instead the generic \code{plot} command should be used
-and it will call the appropriate function based on the class of the
-\code{ddf} object.
+It is not intended for the user to call \code{plot.ds} but its arguments are documented here. Instead the generic \code{plot} command should be used and it will call the appropriate function based on the class of the \code{ddf} object.
 }
 \examples{
 \donttest{
+# fit a model to the tee data
 data(book.tee.data)
 egdata <- book.tee.data$book.tee.dataframe
 xx <- ddf(dsmodel=~mcds(key="hn", formula=~sex),
