@@ -251,10 +251,8 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
   ## Detection function plot overlaid on histogram of observed distances
   if(show[2]){
 
-    # area under the histogram - need to remove elements where density
-    # is ~zero
-    hist_area <- sum(hist.obj$density[hist.obj$density>1e-8]*
-                     diff(breaks)[hist.obj$density>1e-8])
+    # area under the histogram
+    hist_area <- sum(hist.obj$density*diff(breaks))
     # Detection function/pdf values for points to be plotted
     if(point & pdf){
       point_vals <- distpdf(xmat$distance, ddfobj, width=width, point=TRUE,
