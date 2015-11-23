@@ -229,7 +229,6 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
   hist.obj$density[expected.counts==0] <- 0
   hist.obj$equidist <- FALSE
 
-
   ### Actual plotting starts here
 
   # do the paging, using devAskNewPage() means we can just call plots and
@@ -251,6 +250,11 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
 
   ## Detection function plot overlaid on histogram of observed distances
   if(show[2]){
+
+    # area under the histogram - need to remove elements where density
+    # is ~zero
+    hist_area <- sum(hist.obj$density[hist.obj$density>1e-8]*
+                     diff(breaks)[hist.obj$density>1e-8])
     # Detection function/pdf values for points to be plotted
     if(point & pdf){
       point_vals <- distpdf(xmat$distance, ddfobj, width=width, point=TRUE,
@@ -258,7 +262,8 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
                     integratepdf(ddfobj, select=selected, width=width,
                                  int.range=int.range, standardize=FALSE,
                                  point=TRUE)
-      point_vals <- point_vals*sum(hist.obj$density*diff(breaks))
+      # rescale points
+      point_vals <- point_vals*hist_area
     }else{
       point_vals <- detfct(xmat$distance, ddfobj, select=selected, width=width)
     }
@@ -308,20 +313,19 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
                           standardize=TRUE)
           # this is the value of int [2 r g(r) /w^2] dr
           int_r_gr <- integratepdf(ddfobj, select=selected, width=width,
-                                   int.range=int.range, standardize=FALSE,
+                                   int.range=int.range, standardize=TRUE,
                                    point=TRUE)
           # so the pdf values are:
           pdf_vals <- r_gr/int_r_gr
 
           # now rescale such that area under pdf == area under histogram
-          rescale_f <- sum(hist.obj$density*diff(breaks))
-          vals <- pdf_vals * rescale_f
+          vals <- pdf_vals * hist_area
           linevalues <- c(linevalues, sum(vals/pdot)/sum(1/pdot))
         }else{
           linevalues <- c(linevalues, sum(detfct.values/pdot)/sum(1/pdot))
         }
       }
-    # without covariates
+    ## without covariates
     }else{
       if(!is.null(ddfobj$scale)){
         ddfobj$scale$dm <- ddfobj$scale$dm[rep(1, length(xgrid)), ,drop=FALSE]
@@ -345,14 +349,13 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
                         standardize=TRUE)
         # this is the value of int [2 r g(r) /w^2] dr
         int_r_gr <- integratepdf(ddfobj, select=TRUE, width=width,
-                                 int.range=int.range, standardize=FALSE,
+                                 int.range=int.range, standardize=TRUE,
                                  point=TRUE)[1]
         # so the pdf values are:
         pdf_vals <- r_gr/int_r_gr
 
         # now rescale such that area under pdf == area under histogram
-        rescale_f <- sum(hist.obj$density*diff(breaks))
-        linevalues <- pdf_vals * rescale_f
+        linevalues <- pdf_vals * hist_area
       }else{
         linevalues <- detfct(xgrid, ddfobj, width=width)
       }
