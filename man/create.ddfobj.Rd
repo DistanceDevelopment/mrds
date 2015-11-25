@@ -44,4 +44,5 @@ Jeff Laake
 \seealso{
 \code{\link{detfct}}, \code{\link{ddf}}
 }
+\keyword{internal}
 

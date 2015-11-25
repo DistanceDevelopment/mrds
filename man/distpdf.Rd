@@ -112,13 +112,14 @@ counts respectively
 Jeff Laake, David L Miller
 }
 \references{
-Marques and Buckland 2004
-Laake and Borchers 2004. in Buckland et al 2004.
-Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection function for
-line transect surveys with mark-recapture and covariate data. Journal of
-Agricultural Biological and Environmental Statistics 14:207-223.
+Marques, F. F. C., & Buckland, S. T. (2003). Incorporating covariates into standard line transect analyses. Biometrics, 59(4), 924-935.
+
+Buckland, S. T., Anderson, D. R., Burnham, K. P., Laake, J. L., Borchers, D. L., & Thomas, L. (2004). Advanced Distance Sampling. Oxford University Press, Oxford, UK.
+
+Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection function for line transect surveys with mark-recapture and covariate data. Journal of Agricultural Biological and Environmental Statistics 14:207-223.
 }
 \seealso{
 \code{\link{mcds}},  \code{\link{cds}}
 }
+\keyword{internal}
 

@@ -5,7 +5,7 @@ mrds 2.1.15
 * coefficients are called coefficients (not a mixture of coefficients and parameters) in summary() results
 * speed-up in io.fi models (thanks to Winston Chang's profvis, showing many unecessary calls to model.matrix)
 * plot.ds now has a pdf= option to plot the probability density function (for point transect models only)
-* assign.par is now exported, so it can be used by dsm
+* assign.par, create.ddfobj and detfct are now exported, so it can be used by dsm (though shouldn't be used by anything else!)
 
 mrds 2.1.14
 -----------
