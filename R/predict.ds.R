@@ -16,13 +16,13 @@
 #' @param esw if \code{TRUE}, returns effective strip half-width (or effective area of detection for point transect models) integral from 0 to the truncation distance (\code{width}) of \eqn{p(y)dy}; otherwise it returns the integral from 0 to truncation width of \eqn{p(y)\pi(y)} where \eqn{\pi(y)=1/w} for lines and \eqn{\pi(y)=2r/w^2} for points.
 #' @param integrate for \code{*.fi} methods, see Details below.
 #' @param \dots for S3 consistency
-#' @usage \method{predict}{ds}(object,newdata,compute=FALSE,int.range=NULL,esw=FALSE,...)
-#'        \method{predict}{io.fi}(object,newdata,compute=FALSE, int.range=NULL,integrate=FALSE,...)
-#'        \method{predict}{io}(object,newdata,compute=FALSE,int.range=NULL,...)
-#'        \method{predict}{trial}(object,newdata,compute=FALSE,int.range=NULL,...)
-#'        \method{predict}{trial.fi}(object,newdata,compute=FALSE, int.range=NULL,integrate=FALSE,...)
-#'        \method{predict}{rem}(object,newdata,compute=FALSE,int.range=NULL,...)
-#'        \method{predict}{rem.fi}(object,newdata,compute=FALSE, int.range=NULL,integrate=FALSE,...)
+#' @usage \method{predict}{ds}(object, newdata, compute=FALSE, int.range=NULL, esw=FALSE, ...)
+#'        \method{predict}{io.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
+#'        \method{predict}{io}(object, newdata, compute=FALSE, int.range=NULL, ...)
+#'        \method{predict}{trial}(object, newdata, compute=FALSE, int.range=NULL, ...)
+#'        \method{predict}{trial.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
+#'        \method{predict}{rem}(object, newdata, compute=FALSE, int.range=NULL, ...)
+#'        \method{predict}{rem.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
 #' @return For all but the exceptions below, the value is a list with a single element: \code{fitted}, a vector of average detection probabilities or esw values for each observation in the original data or\code{newdata}
 #'
 #' For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with \code{integrate=TRUE}, the value is a list with one element: \code{fitted}, which is a vector of integrated (average) detection probabilities for each observation in the original data or \code{newdata}.
