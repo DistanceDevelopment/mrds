@@ -153,7 +153,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
     }
 
     if(is.null(ddfobj$adjustment)){
-      message("Key only models do not require monotonicity contraints. Not constraining model for monotonicity.")
+      message("Key only model: not constraining for monotonicity.")
       meta.data$mono <- FALSE
     }
   }
