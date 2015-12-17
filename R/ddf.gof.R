@@ -1,6 +1,6 @@
 #' Goodness of fit tests for distance sampling models
 #'
-#' Generic function that computes chi-square goodness of fit test for detection function models with binned data and Cramer-von Mises and Kolmogorov-Smirnov tests for exact distance data. By default a Q-Q plot is generated for exact data (and can be surpressed using the \code{qq=FALSE} argument.
+#' Generic function that computes chi-square goodness of fit test for detection function models with binned data and Cramer-von Mises and Kolmogorov-Smirnov tests for exact distance data. By default a Q-Q plot is generated for exact data (and can be suppressed using the \code{qq=FALSE} argument).
 #'
 #' @aliases ddf.gof gof.io gof.io.fi gof.trial gof.trial.fi gof.rem
 #'   gof.rem.fi
