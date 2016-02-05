@@ -3,16 +3,13 @@ model.description <- function(model){
 # only used internally.
 
   key <- switch(model$key,
-                hn="Half-normal",
-                hr="Hazard-rate",
-                th1="Threshold 1",
-                th2="Threshold 2")
+                hn   = "Half-normal",
+                hr   = "Hazard-rate",
+                unif = "Uniform",
+                th1  = "Threshold 1",
+                th2  = "Threshold 2")
 
-  if(is.null(key)){
-    key <- "Uniform"
-  }
-
-  mod.str <- paste(key,"key function")
+  mod.str <- paste(key, "key function")
   if(!is.null(model$adjustment)){
     adj.series <- switch(model$adjustment$series,
                          cos="cosine",
