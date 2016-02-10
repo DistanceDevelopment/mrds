@@ -48,13 +48,13 @@
 #' keyfct.gamma(distance, key.scale, key.shape)
 #'
 #' fx(distance,ddfobj,select=NULL,index=NULL,width=NULL,
-#'    standardize=TRUE,stdint=FALSE)
+#'    standardize=TRUE,stdint=FALSE, left=0)
 #'
 #' fr(distance,ddfobj,select=NULL,index=NULL,width=NULL,
 #'    standardize=TRUE,stdint=FALSE)
 #'
 #' distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
-#'            stdint=FALSE,point=FALSE)
+#'            stdint=FALSE,point=FALSE, left=0)
 #'
 #' @param distance  vector of distances
 #' @param ddfobj distance sampling object (see \code{\link{create.ddfobj}})
@@ -65,7 +65,8 @@
 #' @param key.shape vector of shape values
 #' @param adj.order vector of adjustment orders
 #' @param adj.parm vector of adjustment parameters
-#' @param width truncation width
+#' @param width (right) truncation width
+#' @param left (left) truncation distance
 #' @param standardize logical used to decide whether to divide through by the function evaluated at 0
 #' @param scaling the scaling for the adjustment terms
 #' @param stdint logical used to decide whether integral is standardized
@@ -87,11 +88,11 @@
 #' @export detfct
 #' @keywords internal
 distpdf <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
-                    standardize=TRUE, stdint=FALSE, point=FALSE){
+                    standardize=TRUE, stdint=FALSE, point=FALSE, left=0){
 
  if(!point){
    return(fx(distance=distance, ddfobj=ddfobj, select=select, index=index,
-             width=width, standardize=standardize, stdint=stdint))
+             width=width, standardize=standardize, stdint=stdint, left=left))
  }else
    return(fr(distance=distance, ddfobj=ddfobj, select=select, index=index,
              width=width, standardize=standardize, stdint=stdint))
@@ -99,9 +100,9 @@ distpdf <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
 
 
 fx <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
-               standardize=TRUE, stdint=FALSE){
+               standardize=TRUE, stdint=FALSE, left=0){
   return(detfct(distance, ddfobj, select, index, width, standardize, stdint)/
-         width)
+          (width-left))
 }
 
 fr <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,

@@ -10,7 +10,7 @@ Title: Mark-Recapture Distance Sampling
 LazyLoad: yes
 Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers
     <dlb@st-and.ac.uk>, Len Thomas <len.thomas@st-and.ac.uk>, David
-    Miller <dave@ninepointeightone.net> and Jon Bishop 
+    Miller <dave@ninepointeightone.net> and Jon Bishop
 Description: Animal abundance estimation via conventional, multiple covariate
     and mark-recapture distance sampling (CDS/MCDS/MRDS). Detection function
     fitting is performed via maximum likelihood. Also included are diagnostics
@@ -21,3 +21,4 @@ Depends:
     R (>= 3.0)
 Suggests:
     testthat
+RoxygenNote: 5.0.1

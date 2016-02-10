@@ -35,7 +35,7 @@
 #'    \item{\code{fitted}}{\eqn{p_.(y)=p_{1|2}(y)+p_{2|1}(y)-p_{1|2}(y)*p_{2|1}(y)}, conditional detection probability of being seen by either observer}}
 #'
 #' @note Each function is called by the generic function \code{predict} for the appropriate \code{ddf} model object.  They can be called directly by the user, but it is typically safest to use \code{predict} which calls the appropriate function based on the type of model.
-#' @author Jeff Laake
+#' @author Jeff Laake, David L Miller
 #' @seealso \code{\link{ddf}}, \code{\link{summary.ds}}, \code{\link{plot.ds}}
 #' @keywords utility
 #' @export
@@ -48,6 +48,27 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
   x <- ltmodel$aux$ddfobj$xmat
   point <- ltmodel$aux$point
   width <- ltmodel$aux$width
+  ddfobj <- ltmodel$aux$ddfobj
+
+  # Get integration ranges either from specified argument or from
+  # values stored in the model.
+  if(is.null(int.range)){
+    if(is.null(newdata)){
+      nr <- nrow(ddfobj$xmat)
+    }else{
+      nr <- nrow(newdata)
+    }
+
+    if(is.null(ltmodel$aux$int.range)){
+      int.range <- cbind(rep(0, nr), rep(width, nr))
+    }else{
+      int.range <- ltmodel$aux$int.range
+      if(is.vector(int.range)){
+        int.range <- cbind(rep(int.range[1], nr),
+                           rep(int.range[2], nr))
+      }
+    }
+  }
 
   # If there are no fitted values present or compute is set TRUE or
   # a newdata frame has been used, then the predicted values must be computed.
@@ -57,28 +78,9 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
     # for variances, the model parameters are perturbed and may not be at
     # mle values after fitting.
     fpar <- model$par
-    ddfobj <- ltmodel$aux$ddfobj
     ddfobj <- assign.par(ddfobj, fpar)
 
-    # Get integration ranges either from specified argument or from
-    # values stored in the model.
-    if(is.null(int.range)){
-      if(is.null(newdata)){
-        nr <- nrow(ddfobj$xmat)
-      }else{
-        nr <- nrow(newdata)
-      }
 
-      if(is.null(ltmodel$aux$int.range)){
-        int.range <- cbind(rep(0, nr), rep(width, nr))
-      }else{
-        int.range <- ltmodel$aux$int.range
-        if(is.vector(int.range)){
-          int.range <- cbind(rep(int.range[1], nr),
-                             rep(int.range[2], nr))
-        }
-      }
-    }
 
     # Extract other values from model object
     if(!is.null(newdata)){
@@ -127,7 +129,7 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
   # Compute either esw (int1) or p and store in fitted.
   if(esw){
     if(!point){
-      fitted <- int1*width
+      fitted <- int1*(int.range[,2]-int.range[,1])
     }else{
       fitted <- int1*pi*width^2
     }

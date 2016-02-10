@@ -1,6 +1,6 @@
 #' Integral of pdf of distances
 #'
-#' Computes the integral of distpdf with scale=1 (stdint=TRUE) or specified scale (stdint=FALSE).
+#' Computes the integral of \code{distpdf} with scale=1 (\code{stdint=TRUE}) or specified scale (\code{stdint=FALSE}).
 #'
 #' @param x lower, upper value for integration
 #' @param ddfobj distance detection function specification
@@ -10,7 +10,7 @@
 #' @param standardize if \code{TRUE}, divide through by the function evaluated at 0
 #' @param point logical to determine if point (\code{TRUE}) or line transect(\code{FALSE})
 #' @param stdint if \code{TRUE}, scale=1 otherwise specified scale used
-#' @param doeachint if TRUE perform integration using \code{\link{integrate}}
+#' @param doeachint if \code{TRUE} perform integration using \code{\link{integrate}}
 #' @return vector of integral values of detection function
 #' @note This is an internal function that is not intended to be invoked directly.
 #' @author Jeff Laake and David L Miller
@@ -53,7 +53,7 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
   if(ddfobj$type=="hn" & is.null(ddfobj$adjustment) & !doeachint){
 
 
-    key.scale <- scalevalue(ddfobj$scale$parameters,scale.dm)
+    key.scale <- scalevalue(ddfobj$scale$parameters, scale.dm)
     if(point){
       # analytic expression for integral of 2*r*g(r)/width^2 when
       #  g(r) is half-normal
@@ -72,16 +72,19 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
                  (key.scale*sqrt(2)))))
 
       }else{
-        int <- (1/width)*sqrt(pi/2)*key.scale*(-erf(x[, 1]/(key.scale*sqrt(2)))+
-                                      erf(x[, 2]/(key.scale*sqrt(2))))
+        int <- (1/(x[, 2]-x[, 1]))*sqrt(pi/2)*key.scale*
+                  (-erf(x[, 1]/(key.scale*sqrt(2)))+
+                    erf(x[, 2]/(key.scale*sqrt(2))))
       }
     }
     return(int)
   }else if(ddfobj$type=="hr" & is.null(ddfobj$adjustment) &
-           !doeachint & !point){
+           !doeachint & !point & all(x[,1]==0)){
 
     # do the spline shortcut
     # note that this will only work for a given shape parameter
+    # don't do this if you have left truncation, point transects or
+    # adjustments
 
     # Documentation by Jeff Laake from a previous incarnation of this code:
     # uses the cgftab which is a spline fitted to a table of standardized
@@ -131,7 +134,7 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
       res[i] <- integrate(distpdf, lower=x[i,1], upper=x[i,2], width=width,
                           ddfobj=ddfobj, select=select[i], index=index[i],
                           rel.tol=1e-7, standardize=standardize,
-                          stdint=stdint, point=point)$value
+                          stdint=stdint, point=point, left=x[i,1])$value
     }
     return(res)
   }

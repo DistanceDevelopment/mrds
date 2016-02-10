@@ -6,6 +6,7 @@ mrds 2.1.15
 * speed-up in io.fi models (thanks to Winston Chang's profvis, showing many unecessary calls to model.matrix)
 * plot.ds now has a pdf= option to plot the probability density function (for point transect models only)
 * assign.par, create.ddfobj and detfct are now exported, so it can be used by dsm (though shouldn't be used by anything else!)
+* fixed bug in left truncation where probability of detection was not calculated correctly. Thanks to Jason Roberts for pointing this out!
 
 mrds 2.1.14
 -----------
