@@ -8,6 +8,8 @@
 #'
 #' For \code{method="io.fi"} or \code{method="trial.fi"} if \code{integrate=FALSE}, \code{predict} returns the value of the conditional detection probability and if \code{integrate=TRUE}, it returns the average conditional detection probability by integrating over x (distance) with respect to a uniform distribution.
 #'
+#' Note that the ordering of the returned results when no new data is supplied (the "fitted" values) will not necessarily be the same as the data supplied to \code{\link{ddf}}, the data (and hence results from \code{predict}) will be sorted by object ID (\code{object}) then observer ID (\code{observer}).
+#'
 #' @aliases predict predict.ds predict.ddf predict.io predict.io.fi predict.trial predict.trial.fi predict.rem predict.rem.fi
 #' @param object \code{ddf} model object.
 #' @param newdata new \code{data.frame} for prediction.

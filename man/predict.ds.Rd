@@ -56,12 +56,14 @@ The first 4 arguments are the same in each predict function.  The latter 2 are s
 Fitted detection probabilities are stored in the \code{model} object and these are returned unless \code{compute=TRUE} or \code{newdata} is specified. \code{compute=TRUE} is used to estimate numerical derivatives for use in delta method approximations to the variance.
 
 For \code{method="io.fi"} or \code{method="trial.fi"} if \code{integrate=FALSE}, \code{predict} returns the value of the conditional detection probability and if \code{integrate=TRUE}, it returns the average conditional detection probability by integrating over x (distance) with respect to a uniform distribution.
+
+Note that the ordering of the returned results when no new data is supplied (the "fitted" values) will not necessarily be the same as the data supplied to \code{\link{ddf}}, the data (and hence results from \code{predict}) will be sorted by object ID (\code{object}) then observer ID (\code{observer}).
 }
 \note{
 Each function is called by the generic function \code{predict} for the appropriate \code{ddf} model object.  They can be called directly by the user, but it is typically safest to use \code{predict} which calls the appropriate function based on the type of model.
 }
 \author{
-Jeff Laake
+Jeff Laake, David L Miller
 }
 \seealso{
 \code{\link{ddf}}, \code{\link{summary.ds}}, \code{\link{plot.ds}}
