@@ -181,7 +181,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                      mono.points=control$mono.points,
                      mono.tol=control$mono.tol,
                      mono.delta=control$mono.delta,
-                     debug=control$debug,nofit=control$nofit
+                     debug=control$debug, nofit=control$nofit,
+                     left=meta.data$left
                     )
 
   # debug - print the initial values

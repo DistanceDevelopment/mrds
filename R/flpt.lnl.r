@@ -54,12 +54,14 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
     which.obs[!uniquevals] <- FALSE
     int.bin <- integratepdf(ddfobj,select=which.obs,width=width,
                             int.range=uniquebins,
-                            standardize=FALSE,point=misc.options$point)
+                            standardize=FALSE,point=misc.options$point,
+                            left=misc.options$left)
 
     if(any(int.bin<0)){
       int.bin <- integratepdf(ddfobj,select=which.obs,width=width,
                               int.range=uniquebins,
-                              standardize=FALSE,point=misc.options$point)
+                              standardize=FALSE,point=misc.options$point,
+                              left=misc.options$left)
     }
 
     if(any(int.bin<=0)){
@@ -74,7 +76,7 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
       int.all <- integratepdf(ddfobj,select=c(TRUE,rep(FALSE,nrow(x)-1)),
                               width=width,int.range=int.range,
                               standardize=FALSE,
-                              point=misc.options$point)
+                              point=misc.options$point, left=misc.options$left)
     }else{
       if(nrow(int.range)==1){
         int.range <- int.range[rep(1,nrow(x)),]
@@ -94,9 +96,10 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
       which.obs=x$binned
       which.obs[!uniquevals]=FALSE
 
-      int.all <- integratepdf(ddfobj,select=which.obs,width=width,
+      int.all <- integratepdf(ddfobj, select=which.obs, width=width,
                               int.range=uniquebins,
-                              standardize=FALSE,point=misc.options$point)
+                              standardize=FALSE, point=misc.options$point,
+                              left=misc.options$left)
       int.all <- int.all[int.index]
     }
 
@@ -115,7 +118,8 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
   # Compute log-likelihood for any unbinned data
   if(!all(x$binned)){
     p1 <- distpdf(x$distance[!x$binned],ddfobj=ddfobj,select=!x$binned,
-                  width=width,standardize=FALSE,point=misc.options$point)
+                  width=width,standardize=FALSE,point=misc.options$point,
+                  left=left)
     p1[p1<1.0e-15] <- 1.0e-15
     p1[is.nan(p1)] <- 1.0e-15
     # Compute integrals - repeat with doeachint if not set and any 
@@ -126,7 +130,7 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
       if(ddfobj$intercept.only & samelimits){
         int1 <- integratepdf(ddfobj,select=c(TRUE,rep(FALSE,nrow(ddfobj$xmat))),
                            width=width,int.range=int.range,
-                           point=misc.options$point,standardize=FALSE)
+                           point=misc.options$point,standardize=FALSE, left=left)
       }else{
         if(nrow(int.range)>1){
           intrange <- int.range
@@ -136,7 +140,7 @@ flpt.lnl <- function(fpar,ddfobj,misc.options){
 
         int1 <- integratepdf(ddfobj,select=!x$binned,width=width,
                              int.range=intrange[!x$binned,],
-                             point=misc.options$point,standardize=FALSE)
+                             point=misc.options$point,standardize=FALSE, left=left)
       }
       doeachint <- TRUE
       i <- i + 1

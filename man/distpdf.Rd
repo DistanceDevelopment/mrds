@@ -16,7 +16,7 @@
 \title{Detection functions}
 \usage{
 detfct(distance, ddfobj, select=NULL, index=NULL, width=NULL,
-              standardize = TRUE, stdint=FALSE)
+              standardize = TRUE, stdint=FALSE, left=0)
 
 adjfct.cos(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
 

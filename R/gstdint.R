@@ -7,6 +7,7 @@
 #' @param index specific data row index
 #' @param select logical vector for selection of data values
 #' @param width truncation width
+#' @param left left truncation width
 #' @param standardize if \code{TRUE}, divide through by the function evaluated at 0
 #' @param point logical to determine if point (\code{TRUE}) or line transect(\code{FALSE})
 #' @param stdint if \code{TRUE}, scale=1 otherwise specified scale used
@@ -18,7 +19,7 @@
 #' @importFrom stats pnorm smooth.spline
 gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
                     standardize=TRUE, point=FALSE, stdint=TRUE,
-                    doeachint=FALSE){
+                    doeachint=FALSE, left=left){
 
   if(!is.matrix(x)){
     x <- matrix(x, ncol=2)
@@ -72,7 +73,7 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
                  (key.scale*sqrt(2)))))
 
       }else{
-        int <- (1/(x[, 2]-x[, 1]))*sqrt(pi/2)*key.scale*
+        int <- (1/(x[,2]-x[,1]))*sqrt(pi/2)*key.scale*
                   (-erf(x[, 1]/(key.scale*sqrt(2)))+
                     erf(x[, 2]/(key.scale*sqrt(2))))
       }
@@ -108,7 +109,8 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
 
     # Create cumulative sums of values of g(x) integrals from grid (xx)
     y <- cumsum(gstdint(xx, ddfobj=ddfobj, index=1:nrow(xx), width=width,
-                        standardize=standardize, point=point, doeachint=TRUE))
+                        standardize=standardize, point=point, doeachint=TRUE,
+                        left=left))
     # Return smoothed spline of cumulative integral values
     spp <- smooth.spline(c(0, xx[ ,2]), c(0, y))
 
@@ -134,7 +136,7 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
       res[i] <- integrate(distpdf, lower=x[i,1], upper=x[i,2], width=width,
                           ddfobj=ddfobj, select=select[i], index=index[i],
                           rel.tol=1e-7, standardize=standardize,
-                          stdint=stdint, point=point, left=x[i,1])$value
+                          stdint=stdint, point=point, left=left)$value
     }
     return(res)
   }

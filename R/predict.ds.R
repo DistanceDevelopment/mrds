@@ -50,6 +50,7 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
   x <- ltmodel$aux$ddfobj$xmat
   point <- ltmodel$aux$point
   width <- ltmodel$aux$width
+  left <- model$meta.data$left
   ddfobj <- ltmodel$aux$ddfobj
 
   # Get integration ranges either from specified argument or from
@@ -81,8 +82,6 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
     # mle values after fitting.
     fpar <- model$par
     ddfobj <- assign.par(ddfobj, fpar)
-
-
 
     # Extract other values from model object
     if(!is.null(newdata)){
@@ -120,7 +119,7 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
     # else
     int1 <- integratepdf(ddfobj, select=rep(TRUE, nrow(ddfobj$xmat)),
                          width=width, int.range=int.range, standardize=TRUE,
-                         point=point)
+                         point=point, left=left)
   }else{
     # If the predicted values don't need to be computed, then use the values
     # in the model object (model$fitted) and change to integral (esw) values.

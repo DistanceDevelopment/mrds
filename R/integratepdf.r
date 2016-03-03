@@ -7,6 +7,7 @@
 #' @param ddfobj distance detection function specification
 #' @param select logical vector for selection of data values
 #' @param width truncation width
+#' @param left left truncation width
 #' @param int.range integration range matrix; vector is converted to matrix
 #' @param standardize logical used to decide whether to divide through by the
 #'   function evaluated at 0
@@ -18,7 +19,7 @@
 # @importFrom mgcv uniquecombs
 #' @importFrom stats integrate
 integratepdf <- function(ddfobj, select, width, int.range,
-                         standardize=TRUE, point=FALSE){
+                         standardize=TRUE, point=FALSE, left=0){
   # Make sure there is consistency between integration ranges and data
   # It is ok to have a single observation with multiple ranges or a single range
   # with multiple observations but otherwise the numbers must agree if both >1
@@ -54,7 +55,7 @@ integratepdf <- function(ddfobj, select, width, int.range,
   if(nobs==1){
     return(gstdint(int.range[1,], ddfobj=ddfobj, index=1, select=NULL,
                    width=width, standardize=standardize, point=point,
-                   stdint=FALSE))
+                   stdint=FALSE, left=left))
   }else{
   # if there are multiple covariates or multiple ranges
 
@@ -93,7 +94,7 @@ integratepdf <- function(ddfobj, select, width, int.range,
     ints <- gstdint(int.range[ind,,drop=FALSE], ddfobj=ddfobj,
                     index=index[ind], select=NULL, width=width,
                     standardize=standardize, point=point,
-                    stdint=FALSE)
+                    stdint=FALSE, left=left)
 
     ## now rebuild the integrals and populate the return vector
     integrals <- ints[attr(u.rows, "index")]

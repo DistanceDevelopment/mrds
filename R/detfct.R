@@ -31,7 +31,7 @@
 #' @aliases detfct adjfct.cos adjfct.herm hermite.poly adjfct.poly keyfct.hn
 #'  keyfct.hz keyfct.gamma scalevalue fx fr distpdf
 #' @usage detfct(distance, ddfobj, select=NULL, index=NULL, width=NULL,
-#'               standardize = TRUE, stdint=FALSE)
+#'               standardize = TRUE, stdint=FALSE, left=0)
 #'
 #' adjfct.cos(distance, scaling = 1, adj.order, adj.parm = NULL, adj.exp=FALSE)
 #'
@@ -113,7 +113,7 @@ fr <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
 
 
 detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
-                   standardize=TRUE, stdint=FALSE){
+                   standardize=TRUE, stdint=FALSE, left=0){
 
   # Set of observations for computation of detection function can
   # be specified with logical (select) and numeric (index) values.
@@ -196,7 +196,7 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
 
     # Find out if we are scaling by width or by key scale
     if(adj.scale == "width"){
-      scaling <- width
+      scaling <- width-left
     }else{
       scaling <- key.scale
     }
@@ -231,7 +231,7 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
         g.apex <- as.vector(apex.gamma(ddfobj))[1]
         key.val.0 <- keyfct.gamma(g.apex,key.scale, key.shape)
       }else if(key == "unif"){
-        key.val.0 <- rep(1/width,length(distance))
+        key.val.0 <- rep(1/(width-left),length(distance))
       }else if(key == "th1"){
         key.val.0 <- keyfct.th1(rep(0,length(distance)), key.scale, key.shape)
       }else if(key == "th2"){
