@@ -30,16 +30,13 @@
 #'   function and scale formula if any
 #' @param mrmodel mark-recapture model specfication; model list with formula
 #'   and link
-#' @param data analysis dataframe
+#' @param data analysis \code{data.frame}
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
-#' @return result: a trial model object which is composed of trial.fi and ds
-#'   model objects
+#' @return result: a trial model object which is composed of \code{trial.fi} and \code{ds} model objects
 #' @author Jeff Laake
-#' @seealso \code{\link{ddf.trial.fi}},
-#'   \code{\link{ddf.ds}},\code{\link{summary.trial}},\code{\link{coef.trial}},\code{\link{plot.trial}},
-#'   \code{\link{gof.trial}}
+#' @seealso \code{\link{ddf.trial.fi}}, \code{\link{ddf.ds}}, \code{\link{summary.trial}}, \code{\link{coef.trial}}, \code{\link{plot.trial}}, \code{\link{gof.trial}}
 #' @references Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
 #'   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.

@@ -14,7 +14,7 @@ function and scale formula if any}
 \item{mrmodel}{mark-recapture model specfication; model list with formula
 and link}
 
-\item{data}{analysis dataframe}
+\item{data}{analysis \code{data.frame}}
 
 \item{meta.data}{list containing settings controlling data structure}
 
@@ -23,8 +23,7 @@ and link}
 \item{call}{original function call used to call \code{ddf}}
 }
 \value{
-result: a trial model object which is composed of trial.fi and ds
-  model objects
+result: a trial model object which is composed of \code{trial.fi} and \code{ds} model objects
 }
 \description{
 Mark-Recapture Distance Sampling (MRDS) Analysis of Trial Observer
@@ -62,9 +61,7 @@ Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
   Thomas. Oxford University Press.
 }
 \seealso{
-\code{\link{ddf.trial.fi}},
-  \code{\link{ddf.ds}},\code{\link{summary.trial}},\code{\link{coef.trial}},\code{\link{plot.trial}},
-  \code{\link{gof.trial}}
+\code{\link{ddf.trial.fi}}, \code{\link{ddf.ds}}, \code{\link{summary.trial}}, \code{\link{coef.trial}}, \code{\link{plot.trial}}, \code{\link{gof.trial}}
 }
 \keyword{Models}
 \keyword{Statistical}
