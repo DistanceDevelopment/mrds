@@ -12,7 +12,7 @@
 #'
 #' @aliases predict predict.ds predict.ddf predict.io predict.io.fi predict.trial predict.trial.fi predict.rem predict.rem.fi
 #' @param object \code{ddf} model object.
-#' @param newdata new \code{data.frame} for prediction.
+#' @param newdata new \code{data.frame} for prediction, this must include a column called "\code{distance}".
 #' @param compute if \code{TRUE} compute values and don't use the fitted values stored in the model object.
 #' @param int.range integration range for variable range analysis; either vector or 2 column matrix.
 #' @param esw if \code{TRUE}, returns effective strip half-width (or effective area of detection for point transect models) integral from 0 to the truncation distance (\code{width}) of \eqn{p(y)dy}; otherwise it returns the integral from 0 to truncation width of \eqn{p(y)\pi(y)} where \eqn{\pi(y)=1/w} for lines and \eqn{\pi(y)=2r/w^2} for points.
@@ -85,28 +85,50 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
 
     # Extract other values from model object
     if(!is.null(newdata)){
-      if(!is.null(ddfobj$scale)){
-        zdim <- ncol(ddfobj$scale$dm)
-        znames <- colnames(ddfobj$scale$dm)
-        ddfobj$scale$dm <- setcov(newdata, as.formula(ddfobj$scale$formula))
-        if(zdim != ncol(ddfobj$scale$dm) |
-           !all(znames==colnames(ddfobj$scale$dm)) ){
-          stop("fields or factor levels in newdata do not match data used in estimation model for scale model\n")
+
+      # do this for both scale and shape parameters
+      for(df_par in c("scale", "shape")){
+        # if that parameter exists...
+        if(!is.null(ddfobj[[df_par]])){
+          # save the column names from the design matrix
+          znames <- colnames(ddfobj[[df_par]]$dm)
+
+          # get the data in the model
+          model_dat <- model$data
+          # pull out the columns in the formula and the distances column
+          fvars <- all.vars(as.formula(model$ds$aux$ddfobj[[df_par]]$formula))
+
+          if(!all(fvars %in% colnames(newdata))){
+            stop("columns in `newdata` do not match those in fitted model\n")
+          }
+
+          model_dat <- model_dat[,c("distance", fvars), drop=FALSE]
+
+          # setup the covariate matrix, using the model data to ensure that
+          # the levels are right
+          newdata <- rbind(model_dat,
+                           newdata[,c("distance", fvars), drop=FALSE])
+          dm <- setcov(newdata, as.formula(ddfobj[[df_par]]$formula))
+
+          # now check that the column names are the same for the model
+          # and prediction data matrices
+          if(!identical(colnames(dm), znames) || any(is.na(newdata))){
+            stop("fields or factor levels in `newdata` do not match data used in fitted model\n")
+          }
+
+          # get only the new rows for prediction
+          dm <- dm[(nrow(model_dat)+1):nrow(dm),,drop=FALSE]
+          # assign that!
+          ddfobj[[df_par]]$dm <- dm
+
         }
       }
 
-      if(!is.null(ddfobj$shape)){
-        zdim <- ncol(ddfobj$shape$dm)
-        znames <- colnames(ddfobj$shape$dm)
-        ddfobj$shape$dm <- setcov(newdata, as.formula(ddfobj$shape$formula))
-        if(zdim != ncol(ddfobj$shape$dm) |
-           !all(znames==colnames(ddfobj$shape$dm))){
-          stop("fields or factor levels in newdata do not match data used in estimation model for shape model\n")
-        }
-      }
       # update xmat too
       datalist <- process.data(newdata, object$meta.data, check=FALSE)
-      ddfobj$xmat <- datalist$xmat
+      ddfobj$xmat <- datalist$xmat[(nrow(model_dat)+1):nrow(datalist$xmat),,drop=FALSE]
+      # reset newdata to be the right thing
+      newdata <- newdata[(nrow(model_dat)+1):nrow(newdata),,drop=FALSE]
     }
 
     # Compute integral of fitted detection function using either logistic or

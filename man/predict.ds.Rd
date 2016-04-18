@@ -23,7 +23,7 @@
 \arguments{
 \item{object}{\code{ddf} model object.}
 
-\item{newdata}{new \code{data.frame} for prediction.}
+\item{newdata}{new \code{data.frame} for prediction, this must include a column called "\code{distance}".}
 
 \item{compute}{if \code{TRUE} compute values and don't use the fitted values stored in the model object.}
 
