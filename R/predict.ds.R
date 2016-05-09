@@ -86,6 +86,8 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
     # Extract other values from model object
     if(!is.null(newdata)){
 
+      newdata_save <- newdata
+
       # do this for both scale and shape parameters
       for(df_par in c("scale", "shape")){
         # if that parameter exists...
@@ -107,7 +109,7 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
           # setup the covariate matrix, using the model data to ensure that
           # the levels are right
           newdata <- rbind(model_dat,
-                           newdata[,c("distance", fvars), drop=FALSE])
+                           newdata_save[,c("distance", fvars), drop=FALSE])
           dm <- setcov(newdata, as.formula(ddfobj[[df_par]]$formula))
 
           # now check that the column names are the same for the model
