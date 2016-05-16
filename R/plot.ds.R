@@ -23,6 +23,7 @@
 #' @param pl.den shading density for plots of obs 1, obs 2 detections.
 #' @param pl.ang shading angle for plots of obs 1, obs 2 detections.
 #' @param main user-specfied plot title.
+#' @param ylim user-specified y axis limits.
 #' @param pdf plot the histogram of distances with the PDF of the probability of detection overlaid. Ignored (with warning) for line transect models.
 #' @param pages the number of pages over which to spread the plots. For example, if \code{pages=1} then all plots will be displayed on one page. Default is 0, which prompts the user for the next plot to be displayed.
 #' @param \dots other graphical parameters, passed to the plotting functions (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}}, \code{\link{points}}, etc).
@@ -55,7 +56,7 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
                     jitter.v=rep(0,3), showpoints=TRUE, subset=NULL,
                     pl.col='black', bw.col=grey(0), black.white=FALSE,
                     pl.den=rep(20,1), pl.ang=rep(-45,1), main=NULL, pages=0,
-                    pdf=FALSE, ...){
+                    pdf=FALSE, ylim=NULL, ...){
 
   model<-x
   lower <- 0
@@ -246,7 +247,8 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
 
   # Data summary plot
   if(show[1]){
-    histline(hist.obj$counts, breaks=breaks, lineonly=FALSE, ylim=c(0, ymax),
+    if(is.null(ylim)) ylim <- c(0, ymax)
+    histline(hist.obj$counts, breaks=breaks, lineonly=FALSE, ylim=ylim,
              xlab=xlab, ylab="Frequency", angle=angval1,
              density=denval1, col=byval1, ...)
   }
@@ -269,12 +271,11 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
 
     # set y labels, limits and tick marks (det.plot) depending on if we
     # are plotting PDF or df
+    if(is.null(ylim)) ylim<-c(0, max(hist.obj$density, max(point_vals)))
     if(pdf){
-      ylim <- c(0, max(hist.obj$density))
       ylab <- "Probability density"
       det.plot <- FALSE
     }else{
-      ylim<-c(0, max(hist.obj$density, max(point_vals)))
       ylab <- "Detection probability"
       det.plot <- TRUE
     }

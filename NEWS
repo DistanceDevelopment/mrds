@@ -3,6 +3,7 @@ mrds 2.1.16
 
 * improved predict() method now does the Right Thing with factors
 * Fixed bug in scaling of histograms for point transect pdf plots and points on those plots. Thanks to Erics Howe and Rexstad for reporting these issues.
+* You can now set y axis limits when using plot.ds, defaults should be more sensible for pt+point models. Thanks to Eric Howe for the suggestion.
 
 mrds 2.1.15
 -----------
