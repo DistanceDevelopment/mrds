@@ -225,8 +225,11 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
   }
 
   # rescale the histogram object by the expected counts
-  hist.obj$density <- hist.obj$counts/expected.counts
-  hist.obj$density[expected.counts==0] <- 0
+  # but only if we don't have point/pdf plots
+  if(!(pdf & point)){
+    hist.obj$density <- hist.obj$counts/expected.counts
+    hist.obj$density[expected.counts==0] <- 0
+  }
   hist.obj$equidist <- FALSE
 
   ### Actual plotting starts here
@@ -258,10 +261,8 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
       point_vals <- distpdf(xmat$distance, ddfobj, width=width, point=TRUE,
                                 standardize=TRUE)/
                     integratepdf(ddfobj, select=selected, width=width,
-                                 int.range=int.range, standardize=FALSE,
+                                 int.range=int.range, standardize=TRUE,
                                  point=TRUE)
-      # rescale points
-      point_vals <- point_vals*hist_area
     }else{
       point_vals <- detfct(xmat$distance, ddfobj, select=selected, width=width)
     }

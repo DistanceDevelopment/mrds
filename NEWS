@@ -2,6 +2,7 @@ mrds 2.1.16
 -----------
 
 * improved predict() method now does the Right Thing with factors
+* Fixed bug in scaling of histograms for point transect pdf plots and points on those plots. Thanks to Erics Howe and Rexstad for reporting these issues.
 
 mrds 2.1.15
 -----------
