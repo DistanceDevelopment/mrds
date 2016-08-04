@@ -11,8 +11,10 @@ test_that("standardisation is done correctly",{
   set.seed(123)
   gdata<-data.frame(object=1:1000,distance=rgamma(1000,scale=1,shape=1))
 
-  mm <- ddf(dsmodel=~cds(key="gamma"), data=gdata, method="ds",
-            meta.data=list(width=max(gdata$distance)))
+  # this will complain about first partial hessian being singular
+  # suppress that
+  mm <- suppressWarnings(ddf(dsmodel=~cds(key="gamma"), data=gdata, method="ds",
+                             meta.data=list(width=max(gdata$distance))))
 
   # check fitted parameters
   parcomp <- mm$par
@@ -21,9 +23,12 @@ test_that("standardisation is done correctly",{
 
 
   # now with adjustments
-  mm <- ddf(dsmodel=~cds(key="gamma",adj.series="cos",adj.order=2),
-            data=gdata, method="ds",
-            meta.data=list(width=max(gdata$distance)))
+  # again this will complain about first partial hessian being singular
+  # suppress that
+  mm <- suppressWarnings(ddf(dsmodel=~cds(key="gamma",adj.series="cos",
+                                          adj.order=2),
+                             data=gdata, method="ds",
+                             meta.data=list(width=max(gdata$distance))))
 
   # check fitted parameters
   parcomp <- mm$par
