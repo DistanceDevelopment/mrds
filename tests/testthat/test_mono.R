@@ -21,7 +21,7 @@ test_that("bookexamples par. ests. and likelihood are correct", {
 
   mono.par <- c(0.66068519,  -0.01592319)
   names(result.mono$par) <- NULL
-  expect_equal(result.mono$par, mono.par, tolerance=par.tol, scale=mono.par)
+  expect_equal(result.mono$par, mono.par, tolerance=par.tol)
   expect_equal(result.mono$lnl, -154.56193, tol=tol)
 
   # run with Rsolnp, mono=TRUE, mono.strict=TRUE
