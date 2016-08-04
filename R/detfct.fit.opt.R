@@ -262,6 +262,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
           # remove scaling, as otherwise there's weird conflicts
           optim.options$parscale <- NULL
+          # remove this again, because of conflicts
+          optim.options$optimx.method <- NULL
 
           lt <- try(optimx(initialvalues, flnl, method=opt.method,
                        control=optim.options,
