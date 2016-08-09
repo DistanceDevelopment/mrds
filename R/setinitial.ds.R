@@ -18,7 +18,7 @@
 #'   \item{shape}{vector of initial shape parameter values}
 #'   \item{adjustment}{vector of initial adjustment function parameter values}
 #' @author Jeff Laake, Dave Miller
-#' @importFrom stats lm
+#' @importFrom stats lm setNames
 setinitial.ds <- function(ddfobj, width, initial, point){
 
   ftype <- ddfobj$type
