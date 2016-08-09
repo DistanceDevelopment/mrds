@@ -26,7 +26,7 @@
 #' @seealso \code{\link{detfct}}, \code{\link{ddf}}
 #' @export
 #' @keywords internal
-create.ddfobj <- function(model,xmat,meta.data,initial){
+create.ddfobj <- function(model, xmat, meta.data, initial){
 
   # Create empty object and get values from cds or mcds function
   ddfobj <- vector("list")
