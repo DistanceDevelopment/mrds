@@ -4,7 +4,7 @@ Imports:
     mgcv,
     numDeriv,
     Rsolnp
-Maintainer: David Miller <dave@ninepointeightone.net>
+Maintainer: Laura Marshall <lhm@st-andrews.ac.uk>
 License: GPL (>=2)
 Title: Mark-Recapture Distance Sampling
 LazyLoad: yes
