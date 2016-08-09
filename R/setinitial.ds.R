@@ -34,7 +34,7 @@ setinitial.ds <- function(ddfobj, width, initial, point){
 
   # Set shape parameters for special case of cds hazard function
   if(ftype == "hr"){
-    initialvalues <- sethazard(ddfobj,dmat,width)
+    initialvalues <- sethazard(ddfobj, dmat, width)
     if(ncol(ddfobj$shape$dm)>1){
       initialvalues$shape <- c(initialvalues$shape,
                                rep(0, ncol(ddfobj$shape$dm)-1))
@@ -70,14 +70,16 @@ setinitial.ds <- function(ddfobj, width, initial, point){
     }
     if(!is.null(initial$shape)){
       if(length(initialvalues$shape) == length(initial$shape)){
-        initialvalues$shape <- initial$shape
+        initialvalues$shape <- setNames(initial$shape,
+                                        names(initialvalues$shape))
       }else{
         stop("Length of initial values for shape incorrect")
       }
     }
     if(!is.null(initial$scale)){
       if(length(initialvalues$scale) == length(initial$scale)){
-        initialvalues$scale <- initial$scale
+        initialvalues$scale <- setNames(initial$scale,
+                                        names(initialvalues$scale))
       }else{
         stop("Length of initial values for scale incorrect")
       }
@@ -85,7 +87,8 @@ setinitial.ds <- function(ddfobj, width, initial, point){
 
     if(!is.null(initial$adjustment)){
       if(length(initialvalues$adjustment) == length(initial$adjustment)){
-        initialvalues$adjustment <- initial$adjustment
+        initialvalues$adjustment <- setNames(initial$adjustment,
+                                             names(initialvalues$adjustment))
       }else{
         stop("Length of initial values for adjustments incorrect")
       }
