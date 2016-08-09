@@ -227,7 +227,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         # rescale_pars
         if(!is.null(ddfobj$scale$formula) && (ddfobj$scale$formula != ~1) &&
            !is.null(optim.options$parscale) &&
-           all(optim.options$parscale)&&
+           all(optim.options$parscale) &&
             (opt.method=="nlminb") && (fitting=="all")){
 
           # get the rescaling
@@ -255,6 +255,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           # put the results in a nice format
           lt <- parse.optimx(lt, lnl.last, initialvalues)
           initialvalues <- lt$par
+          # reset parscale to be logical, it will be recalculated each time
+          optim.options$parscale <- TRUE
         } # end rescaled nlminb
 
         ## use optimx if there are methods left
