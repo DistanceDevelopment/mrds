@@ -37,11 +37,11 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   # Specify key function type
   ddfobj$type <- modelvalues$key
 
-  if(ddfobj$type=="logistic"){
+  if(ddfobj$type == "logistic"){
     stop("Logistic detection function has been temporarily disabled")
   }
 
-  if(!ddfobj$type%in%c("gamma","hn","hr","unif","th1","th2")){
+  if(!ddfobj$type %in% c("gamma", "hn", "hr", "unif", "th1", "th2")){
     stop("Invalid value for detection key function =",ddfobj$type,
          "  Only hn, hr, gamma, unif, th1, th2 allowed")
   }
@@ -64,7 +64,7 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   }
 
   # Assign scale and shape (if any) formulae
-  if(ddfobj$type!="unif"){
+  if(ddfobj$type != "unif"){
     if(is.null(modelvalues$formula)){
       ddfobj$scale <- list(formula="~1")
     }else{
@@ -76,18 +76,18 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   if(!is.null(modelvalues$shape.formula)){
     ddfobj$shape <- list(formula=paste(as.character(modelvalues$shape.formula),
                                        collapse=""))
-  }else if(ddfobj$type%in%c("hr","gamma","th1","th2")){
+  }else if(ddfobj$type %in% c("hr", "gamma", "th1", "th2")){
     ddfobj$shape <- list(formula=~1)
   }else{
     ddfobj$shape <- NULL
   }
 
   # Create model data frame and design matrices
-  ddfobj$xmat <- create.model.frame(xmat,as.formula(ddfobj$scale$formula),
-                                    meta.data,as.formula(ddfobj$shape$formula))
-  if(ddfobj$type !="unif"){
-    ddfobj$scale$dm <- setcov(ddfobj$xmat,ddfobj$scale$formula)
-    ddfobj$scale$parameters <- rep(0,ncol(ddfobj$scale$dm))
+  ddfobj$xmat <- create.model.frame(xmat, as.formula(ddfobj$scale$formula),
+                                    meta.data, as.formula(ddfobj$shape$formula))
+  if(ddfobj$type != "unif"){
+    ddfobj$scale$dm <- setcov(ddfobj$xmat, ddfobj$scale$formula)
+    ddfobj$scale$parameters <- rep(0, ncol(ddfobj$scale$dm))
     # Next determine if scale covariate model is intercept only.
     ddfobj$intercept.only <- FALSE
     if(ddfobj$scale$formula == "~1" &
@@ -99,12 +99,12 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   }
 
   if(!is.null(ddfobj$shape)){
-    ddfobj$shape$dm <- setcov(ddfobj$xmat,ddfobj$shape$formula)
-    ddfobj$shape$parameters <- rep(0,ncol(ddfobj$shape$dm))
+    ddfobj$shape$dm <- setcov(ddfobj$xmat, ddfobj$shape$formula)
+    ddfobj$shape$parameters <- rep(0, ncol(ddfobj$shape$dm))
   }
 
   # Compute initialvalues unless uniform
-  initialvalues <- setinitial.ds(ddfobj,width=meta.data$width,initial,point)
+  initialvalues <- setinitial.ds(ddfobj, width=meta.data$width, initial, point)
 
   # Delete columns of dm that end up as NA from initialvalues
   if(!is.null(ddfobj$scale)){
@@ -146,8 +146,8 @@ create.ddfobj <- function(model,xmat,meta.data,initial){
   # can't constrain monotonicity with covariates
   # don't use monotonicity unless we have adjustment terms
   if(meta.data$mono){
-    if(ddfobj$type !="unif"){
-      if(ddfobj$scale$formula!="~1"){
+    if(ddfobj$type != "unif"){
+      if(ddfobj$scale$formula != "~1"){
         stop("Covariate models cannot be constrained for monotonicity.")
       }
     }
