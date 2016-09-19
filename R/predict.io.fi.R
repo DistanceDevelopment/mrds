@@ -1,7 +1,7 @@
 #' @export
 # see predict.ds for documentation
-predict.io.fi <- function(object,newdata=NULL,compute=FALSE, int.range=NULL,
-                          integrate=FALSE,...){
+predict.io.fi <- function(object ,newdata=NULL, compute=FALSE, int.range=NULL,
+                          integrate=FALSE, ...){
   # Functions Used: pdot.dsr.integrate.logistic, is.linear.logistic,
   #                 predict.glm (could also use predict.gam eventually)
   model <- object
