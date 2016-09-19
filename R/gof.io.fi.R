@@ -7,10 +7,10 @@
 # return list with chi-square value, df and p-value
 # documented in ?ddf.gof
 gof.io.fi <- function(model,breaks=NULL,nc=NULL){
-  width <- model$meta.data$width 
+  width <- model$meta.data$width
   left <- model$meta.data$left
-  xmat=model$mr$data
-  n=dim(xmat)[1]/2
+  xmat <- model$mr$data
+  n <- dim(xmat)[1]/2
 
   # Set up omega index
   #   1 - detected by primary only
@@ -24,10 +24,10 @@ gof.io.fi <- function(model,breaks=NULL,nc=NULL){
   # If number of classes for histogram intervals was not set
   #  compute a reasonable default
   if(is.null(nc)){
-    nc<-round(sqrt(min(length(xmat$distance[xmat$observer==1&
-                                            xmat$detected==1]),
-                 length(xmat$distance[xmat$observer==1&
-                                      xmat$timesdetected==2]) )),0)
+    nc <- round(sqrt(min(length(xmat$distance[xmat$observer==1 &
+                                              xmat$detected==1]),
+                         length(xmat$distance[xmat$observer==1 &
+                                              xmat$timesdetected==2]))), 0)
   }
 
   # Set up default break points - need to allow user-defined values
