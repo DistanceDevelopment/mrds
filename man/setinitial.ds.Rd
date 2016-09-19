@@ -18,6 +18,8 @@ scale,shape,adjustment}
 
 \item{point}{if TRUE, point count data; otherwise, line transect data}
 
+\item{left}{left truncation}
+
 \item{dmat}{xmat from ddfobj}
 }
 \value{

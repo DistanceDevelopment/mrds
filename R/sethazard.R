@@ -1,24 +1,34 @@
-sethazard <- function(ddfobj,dmat,width){
+sethazard <- function(ddfobj, dmat, width, left=0){
+
+  if("distend" %in% names(ddfobj$xmat)){
+    binned <- TRUE
+  }else{
+    binned <- FALSE
+  }
+
   # temporary function to evaluate the likelihood for hazard rate
-  evallike<-function(fpar){
+  evallike <- function(fpar, ddfobj, binned, left){
     ddfobj$intercept.only <- TRUE
     ddfobj$shape$parameters[1] <- fpar[1]
     ddfobj$scale$parameters[1] <- fpar[2]
     # set adjustment parameters to zero for now...
-    if(!is.null(ddfobj$adjustment))
-      ddfobj$adjustment$parameters <- rep(0,length(ddfobj$adjustment$order))
+    if(!is.null(ddfobj$adjustment)){
+      ddfobj$adjustment$parameters <- rep(0, length(ddfobj$adjustment$order))
+    }
 
     fpar <- getpar(ddfobj)
     ddfobj$shape$parameters[1] <- NA
     ddfobj$scale$parameters[1] <- NA
     if(!is.null(ddfobj$adjustment)){
-      ddfobj$adjustment$parameters <- rep(NA,length(ddfobj$adjustment$order))
+      ddfobj$adjustment$parameters <- rep(NA, length(ddfobj$adjustment$order))
     }
 
-    flnl(fpar, ddfobj, FALSE, misc.options=list(width=width,
-                                                int.range=c(0,width),
-                                                showit=0,
-         integral.numeric=FALSE,standardize=FALSE,fitting="none",point=FALSE))
+
+    flnl(fpar, ddfobj, FALSE,
+         misc.options=list(width=width, int.range=c(0, width), showit=0,
+                           integral.numeric=FALSE, standardize=FALSE,
+                           binned=binned, left=left,
+                           fitting="none", point=FALSE))
   }
 
   # Using code from CDS in Distance.
@@ -29,10 +39,10 @@ sethazard <- function(ddfobj,dmat,width){
   # Then find the shape parameter by using the following algorithm:
   for(j in 1:10){
     scale <- log(ss/2+j*0.2*ss)
-    for(i in seq(1,30,2)){
+    for(i in seq(1, 30, 2)){
       shape <- log(i)
       # evaluate likelihood at this value
-      newlnl <- evallike(c(shape,scale))
+      newlnl <- evallike(c(shape, scale), ddfobj, binned, left)
       if(is.nan(newlnl)){
         break
       }
@@ -41,7 +51,7 @@ sethazard <- function(ddfobj,dmat,width){
         ival <- 2
         jval <- 1
       }else{
-        if(newlnl<lnl){
+        if(newlnl < lnl){
           lnl <- newlnl
           ival <- i
           jval <- j
@@ -55,6 +65,6 @@ sethazard <- function(ddfobj,dmat,width){
     scale <- log(ss/2+jval*0.2*ss)
     shape <- log(ival)
   }
-  return(list(shape=shape,
-              scale=scale))
+  return(list(shape = shape,
+              scale = scale))
 }

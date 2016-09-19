@@ -104,7 +104,8 @@ create.ddfobj <- function(model, xmat, meta.data, initial){
   }
 
   # Compute initialvalues unless uniform
-  initialvalues <- setinitial.ds(ddfobj, width=meta.data$width, initial, point)
+  initialvalues <- setinitial.ds(ddfobj, width=meta.data$width, initial, point,
+                                 left=meta.data$left)
 
   # Delete columns of dm that end up as NA from initialvalues
   if(!is.null(ddfobj$scale)){
