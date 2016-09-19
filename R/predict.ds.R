@@ -143,7 +143,7 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
     # else
     int1 <- integratepdf(ddfobj, select=rep(TRUE, nrow(ddfobj$xmat)),
                          width=width, int.range=int.range, standardize=TRUE,
-                         point=point, left=left)
+                         point=point, left=left, doeachint=TRUE)
   }else{
     # If the predicted values don't need to be computed, then use the values
     # in the model object (model$fitted) and change to integral (esw) values.

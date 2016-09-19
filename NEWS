@@ -2,6 +2,7 @@ mrds 2.1.17
 -----------
 
 * fixed starting value bug for hazard-rate models when distances are binned. Thanks to Natalia Schroeder and Eric Rexstad for discovering this.
+* predict.ds now uses numerical integration to calculate integrals (rather than an approximation). Thanks to Eric Rexstad for spotting an issue with goodness of fit testing that highlighted this.
 
 mrds 2.1.16
 -----------

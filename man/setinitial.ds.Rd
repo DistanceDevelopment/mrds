@@ -5,8 +5,8 @@
 \alias{setinitial.ds}
 \title{Set initial values for detection function based on distance sampling}
 \usage{
-setinitial.ds(ddfobj,width,initial,point)
-       sethazard(ddfobj,dmat,width)
+setinitial.ds(ddfobj, width, initial, point, left)
+       sethazard(ddfobj, dmat, width, left)
 }
 \arguments{
 \item{ddfobj}{distance detection function object}
@@ -34,6 +34,6 @@ parameters if any.  If there are user-defined initial values only the
 parameters not specified by the user are computed.
 }
 \author{
-Jeff Laake, Dave Miller
+Jeff Laake, David L Miller
 }
 

@@ -9,17 +9,16 @@
 #' @param width truncation width
 #' @param left left truncation width
 #' @param int.range integration range matrix; vector is converted to matrix
-#' @param standardize logical used to decide whether to divide through by the
-#'   function evaluated at 0
-#' @param point logical to determine if point count (\code{TRUE}) or line
-#'   transect (\code{FALSE})
+#' @param standardize logical used to decide whether to divide through by the function evaluated at 0
+#' @param point logical to determine if point count (\code{TRUE}) or line transect (\code{FALSE})
+#' @param doeachint calculate each integral numerically
 #' @return vector of integral values - one for each observation
 #' @author Jeff Laake & Dave Miller
 #' @keywords utility
 # @importFrom mgcv uniquecombs
 #' @importFrom stats integrate
 integratepdf <- function(ddfobj, select, width, int.range,
-                         standardize=TRUE, point=FALSE, left=0){
+                         standardize=TRUE, point=FALSE, left=0, doeachint=FALSE){
   # Make sure there is consistency between integration ranges and data
   # It is ok to have a single observation with multiple ranges or a single range
   # with multiple observations but otherwise the numbers must agree if both >1
@@ -94,7 +93,7 @@ integratepdf <- function(ddfobj, select, width, int.range,
     ints <- gstdint(int.range[ind,,drop=FALSE], ddfobj=ddfobj,
                     index=index[ind], select=NULL, width=width,
                     standardize=standardize, point=point,
-                    stdint=FALSE, left=left)
+                    stdint=FALSE, left=left, doeachint=doeachint)
 
     ## now rebuild the integrals and populate the return vector
     integrals <- ints[attr(u.rows, "index")]

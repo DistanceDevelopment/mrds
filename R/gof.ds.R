@@ -8,7 +8,7 @@
 #' @seealso ddf.gof
 #' @author Jeff Laake
 #' @importFrom stats pchisq
-gof.ds <- function(model,breaks=NULL,nc=NULL){
+gof.ds <- function(model, breaks=NULL, nc=NULL){
   # Functions used: predict.ds
 
   width <- model$meta.data$width
@@ -32,8 +32,8 @@ gof.ds <- function(model,breaks=NULL,nc=NULL){
   # Get predicted values for ds component
   expected.1 <- rep(0,nc)
   for(j in 1:nc){
-    expected.1[j] <- sum(predict(model,compute=TRUE,integrate=TRUE,
-                                 int.range=matrix(c(breaks[j],breaks[j+1]),
+    expected.1[j] <- sum(predict(model, compute=TRUE, integrate=TRUE,
+                                 int.range=matrix(c(breaks[j], breaks[j+1]),
                                  nrow=1))$fitted/model$fitted,
                          na.rm=TRUE)
   }
@@ -51,8 +51,8 @@ gof.ds <- function(model,breaks=NULL,nc=NULL){
 
   # build and return list
   return(list(chi1=list(observed=observed.count.1,
-              expected=expected.1,
-              chisq=chisq.1,
-              p=p.1,
-              df=df.1)))
+                        expected=expected.1,
+                        chisq=chisq.1,
+                        p=p.1,
+                        df=df.1)))
 }

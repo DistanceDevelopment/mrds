@@ -5,8 +5,8 @@
 #' parameters if any.  If there are user-defined initial values only the
 #' parameters not specified by the user are computed.
 #'
-#' @usage setinitial.ds(ddfobj,width,initial,point)
-#'        sethazard(ddfobj,dmat,width)
+#' @usage setinitial.ds(ddfobj, width, initial, point, left)
+#'        sethazard(ddfobj, dmat, width, left)
 #' @aliases setinitial.ds sethazard
 #' @param ddfobj distance detection function object
 #' @param width half-width of transect or radius of point count
@@ -18,7 +18,7 @@
 #' @return \item{scale}{vector of initial scale parameter values}
 #'   \item{shape}{vector of initial shape parameter values}
 #'   \item{adjustment}{vector of initial adjustment function parameter values}
-#' @author Jeff Laake, Dave Miller
+#' @author Jeff Laake, David L Miller
 #' @importFrom stats lm setNames
 setinitial.ds <- function(ddfobj, width, initial, point, left){
 
