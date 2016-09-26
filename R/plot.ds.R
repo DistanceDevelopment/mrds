@@ -26,6 +26,7 @@
 #' @param ylim user-specified y axis limits.
 #' @param pdf plot the histogram of distances with the PDF of the probability of detection overlaid. Ignored (with warning) for line transect models.
 #' @param pages the number of pages over which to spread the plots. For example, if \code{pages=1} then all plots will be displayed on one page. Default is 0, which prompts the user for the next plot to be displayed.
+#' @param xlab label for the x axis.
 #' @param \dots other graphical parameters, passed to the plotting functions (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}}, \code{\link{points}}, etc).
 #' @return Just plots.
 #' @author Jeff Laake, Jon Bishop, David Borchers, David L Miller
@@ -56,12 +57,11 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
                     jitter.v=rep(0,3), showpoints=TRUE, subset=NULL,
                     pl.col='black', bw.col=grey(0), black.white=FALSE,
                     pl.den=rep(20,1), pl.ang=rep(-45,1), main=NULL, pages=0,
-                    pdf=FALSE, ylim=NULL, ...){
+                    pdf=FALSE, ylim=NULL, xlab="Distance", ...){
 
   model<-x
   lower <- 0
   vname <- "distance"
-  xlab <- "Distance"
   dat <- model$data
 
   # ignore pdf=TRUE with line transect data

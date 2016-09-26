@@ -8,7 +8,7 @@
   jitter.v = rep(0, 3), showpoints = TRUE, subset = NULL,
   pl.col = "black", bw.col = grey(0), black.white = FALSE,
   pl.den = rep(20, 1), pl.ang = rep(-45, 1), main = NULL, pages = 0,
-  pdf = FALSE, ylim = NULL, ...)
+  pdf = FALSE, ylim = NULL, xlab = "Distance", ...)
 }
 \arguments{
 \item{x}{fitted model from \code{ddf}.}
@@ -44,6 +44,8 @@
 \item{pdf}{plot the histogram of distances with the PDF of the probability of detection overlaid. Ignored (with warning) for line transect models.}
 
 \item{ylim}{user-specified y axis limits.}
+
+\item{xlab}{label for the x axis.}
 
 \item{\dots}{other graphical parameters, passed to the plotting functions (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}}, \code{\link{points}}, etc).}
 }
