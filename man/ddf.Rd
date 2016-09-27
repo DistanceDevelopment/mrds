@@ -151,9 +151,7 @@ analyses are truncated (i.e., the last interval does not go to infinity),
 the transect width (and the left truncation point if there is a blindspot
 below the aircraft) can potentially change for each observation. The
 argument \code{int.range} can also be entered as a matrix with 2 columns
-(left and width) and a row for each observation. Currently, a binned
-analysis can only be done for \code{method="ds"} and eventually
-\code{int.range} will be incorporated into the dataframe.
+(left and width) and a row for each observation.
 
 The argument \code{control} is a list that enables various analysis options
 to be set.  It is not necessary to set any of these for most analyses.  They
