@@ -23,8 +23,8 @@ nlminb_wrapper <- function(par, ll, ugr=NULL, lower=NULL, upper=NULL,
                            mcontrol, hess=NULL, ddfobj, data, ...){
 
   # need to do this from optimx.R
-  optcfg <- optimx.setup(par, ll, ugr, hess, lower, upper,
-                "nlminb", itnmax=NULL, hessian=FALSE, mcontrol, ...)
+  optcfg <- optimx.setup(par, ll, ugr, hess, lower, upper, "nlminb",
+                         itnmax=NULL, hessian=FALSE, mcontrol, ...)
   mcontrol <- optcfg$ctrl
 
   ## most comments here are from optimx.run, optimx version 2014.5.4
@@ -105,7 +105,7 @@ nlminb_wrapper <- function(par, ll, ugr=NULL, lower=NULL, upper=NULL,
 
   # from optimx.R again
   ans.details <- data.frame(method="nlminb", ngatend=NA, nhatend=NA,
-                      hev=NA, message=ans$message)
+                            hev=NA, message=ans$message)
 
   ansout <- data.frame(ans.ret)
   attr(ansout, "details") <- ans.details

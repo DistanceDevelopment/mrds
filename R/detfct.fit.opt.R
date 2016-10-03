@@ -268,10 +268,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           optim.options$optimx.method <- NULL
 
           lt <- try(optimx(initialvalues, flnl, method=opt.method,
-                       control=optim.options,
-                       hessian=TRUE, lower=lowerbounds,
-                       upper=upperbounds, ddfobj=ddfobj, fitting=fitting,
-                       misc.options=misc.options), silent=TRUE)
+                           control=optim.options,
+                           hessian=TRUE, lower=lowerbounds,
+                           upper=upperbounds, ddfobj=ddfobj, fitting=fitting,
+                           misc.options=misc.options), silent=TRUE)
 
           if(any(class(lt)=="try-error") || any(is.na(lt[,1:attr(lt,"npar")]))){
             if(showit >= 2){
@@ -290,7 +290,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       if(showit>=2){
         cat("DEBUG: Converge   =",lt$conv,"\n",
             "      lnl        =",lt$value,"\n",
-            "      parameters =",paste(round(lt$par,7),collapse=", "),"\n")
+            "      parameters =", paste(round(lt$par, 7), collapse=", "), "\n")
       }
 
       optim.history <- rbind(optim.history, c(lt$conv, -lt$value, lt$par))
@@ -349,8 +349,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     }
 
     # check whether parameters hit their bounds
-    bounded <- check.bounds(lt,lowerbounds,upperbounds,ddfobj,
-                            showit,setlower,setupper)
+    bounded <- check.bounds(lt, lowerbounds, upperbounds, ddfobj,
+                            showit, setlower, setupper)
 
     if(!refit){
         bounded <- FALSE

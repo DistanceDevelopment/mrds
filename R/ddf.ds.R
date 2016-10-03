@@ -187,7 +187,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   # debug - print the initial values
   if(misc.options$showit>=1 && !is.null(initialvalues)){
-    cat("DEBUG: initial values =",round(initialvalues, 7),"\n")
+    cat("DEBUG: initial values =", round(initialvalues, 7), "\n")
   }
 
   # Note there is a difference between maxit (the maximum numbr of iterations
@@ -199,10 +199,10 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   # Actually do the optimisation if not just a uniform key!
   if(is.null(initialvalues)) misc.options$nofit <- TRUE
 
-  lt <- detfct.fit(ddfobj,optim.options,bounds,misc.options)
+  lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
 
   # add call and others to return values
-  stored_data <- data[row.names(data)%in%row.names(xmat),]
+  stored_data <- data[row.names(data)%in%row.names(xmat), ]
   stored_data$detected <- 1
   result <- list(call=call, data=stored_data, model=substitute(model),
                  meta.data=meta.data, control=control, method=method,
@@ -233,7 +233,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
         result$hessian <- lt$hessian
       }
     }else if(length(lt$par)>1){
-      if(class(try(solve(result$hessian),silent=TRUE))=="try-error"){
+      if(class(try(solve(result$hessian), silent=TRUE))=="try-error"){
         warning("First partial hessian is singular; using second-partial hessian\n")
         result$hessian <- lt$hessian
       }
@@ -242,7 +242,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   modpaste <- paste(model)
   modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
-  class(result$ds) <- c(modelvalues$fct,"ds")
+  class(result$ds) <- c(modelvalues$fct, "ds")
 
   result$dsmodel <- modpaste
 
@@ -255,7 +255,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   class(result) <- c("ds","ddf")
 
   # if we have adjustments then check the monotonicity constraints
-  if(!is.null(ddfobj$adjustment) & (ddfobj$type %in% c("hn","hr","unif"))){
+  if(!is.null(ddfobj$adjustment) & (ddfobj$type %in% c("hn", "hr", "unif"))){
     result$monotonicity.check <- check.mono(result, n.pts=control$mono.points)
   }
 

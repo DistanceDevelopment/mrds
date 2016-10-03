@@ -39,7 +39,7 @@
 #'   list of formulas for detection function model (probably can remove this)
 #'   }}
 #' @author Dave Miller; Jeff Laake
-detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
+detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
   # Functions Used: assign.par, detfct.fit.opt, get.par
 
   # show debug information
@@ -128,9 +128,9 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
                paste(round(initialvalues, 7), collapse=", "),"\n")
         }
 
-        lt <- try(detfct.fit.opt(ddfobj,optim.options,bounds,misc.options,
-                             fitting=fitting))
-        metaiter <- metaiter+1
+        lt <- try(detfct.fit.opt(ddfobj, optim.options, bounds, misc.options,
+                                 fitting=fitting))
+        metaiter <- metaiter + 1
 
         # report failure
         if(all(class(lt)=="try-error")){
@@ -142,19 +142,20 @@ detfct.fit <- function(ddfobj,optim.options,bounds,misc.options){
           }
         }else{
           # update bounds
-          bounds<-lt$bounds
+          bounds <- lt$bounds
 
           if(showit >= 2){
-            cat("DEBUG: iteration", paste(iter,metaiter,sep="."),
-                ":\n       Converge   =",lt$converge,
-                "\n       lnl        =",lt$value,
-                "\n       parameters =",paste(round(lt$par,7),collapse=", "),"\n")
+            cat("DEBUG: iteration", paste(iter, metaiter, sep="."),
+                ":\n       Converge   =", lt$converge,
+                "\n       lnl        =", lt$value,
+                "\n       parameters =", paste(round(lt$par, 7), collapse=", "),
+                "\n")
           }
 
           # were any of the pars NA?
           # if so, reset to initialvalues
           if(any(is.na(lt$par))){
-            lt$par[is.na(lt$par)]<-initialvalues[is.na(lt$par)]
+            lt$par[is.na(lt$par)] <- initialvalues[is.na(lt$par)]
           }
           # Rebuild initialvalues again
           ddfobj <- assign.par(ddfobj,lt$par)
