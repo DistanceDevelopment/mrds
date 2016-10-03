@@ -25,7 +25,7 @@ Otherwise:
 
   * One can download a Windows package binary using the ["Releases" tab in github](https://github.com/DistanceDevelopment/mrds/releases). To install in R, from the R menu, use "Packages\Install from Local Zip file" and browse to location of downloaded zip.
   * Or, download [package source files](https://github.com/DistanceDevelopment/mrds/archive/master.zip).
-  * Finally the current stable version of `mrds` is [available on CRAN](http://cran.r-project.org/package=mrds), though this may be up to a month out of date due to CRAN policy.
+  * Finally the current stable version of `mrds` is [available on CRAN](https://cran.r-project.org/package=mrds), though this may be up to a month out of date due to CRAN policy.
 
 
 # References
