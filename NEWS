@@ -1,3 +1,9 @@
+mrds 2.1.18
+-----------
+
+* fixed bug in parameter rescaling where scales were incorrectly entered as 1 due to an indexing bug
+
+
 mrds 2.1.17
 -----------
 

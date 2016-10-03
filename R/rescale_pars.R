@@ -14,7 +14,7 @@ rescale_pars <- function(initialvalues, ddfobj){
 
   # from optimx:::optimx.setup, scaletol = 3 (so setting 3 here for consistency)
   # here we use a local copy in scalecheck.R
-  if(scalecheck(initialvalues, NA, NA, dowarn=FALSE)$lpratio>3){
+  if(scalecheck(initialvalues, NA, NA, dowarn=FALSE)$lpratio > 3){
     # do the rescaling to the scale parameters only
     # this is (still) a bit hackish
     # divide by the standard deviation of the distances
@@ -22,8 +22,6 @@ rescale_pars <- function(initialvalues, ddfobj){
     #  may not be appropriate in all settings?
 
     # match parameter vector indices to indices of model matrix
-    #ind <- match(colnames(ddfobj$scale$dm),
-    #             names(initialvalues))
     ind <- getpar(ddfobj, index=TRUE)
     ind <- (ind[1]+1):ind[2]
 
@@ -31,13 +29,13 @@ rescale_pars <- function(initialvalues, ddfobj){
     par_scaling[ind] <- apply(ddfobj$scale$dm, 2, sd)/sd(ddfobj$xmat$distance)
 
     # ensure that the intercept has scaling 1 & any zero is set back to 1
-    par_scaling[abs(par_scaling)<sqrt(.Machine$double.eps)] <- 1
+    par_scaling[abs(par_scaling) < sqrt(.Machine$double.eps)] <- 1
 
     # set the factor scalings to be 1
     non_factors <- !(colnames(ddfobj$scale$dm) %in%
                      rownames(attr(terms(as.formula(ddfobj$scale$formula)),
                                    "factors")))
-    par_scaling[non_factors] <- 1
+    par_scaling[ind][non_factors] <- 1
   }
 
   # return the parameter rescaling vector
