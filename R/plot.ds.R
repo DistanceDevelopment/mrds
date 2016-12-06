@@ -12,8 +12,8 @@
 #' @param which index to specify which plots should be produced:
 #'  \tabular{ll}{1 \tab histogram of observed distances\cr
 #'               2 \tab histogram of observed distanes with fitted line and points (default)\cr}
-#' @param breaks user define breakpoints
-#' @param nc number of equal-width bins for histogram
+#' @param breaks user defined breakpoints
+#' @param nc number of equal width bins for histogram
 #' @param jitter.v scaling option for plotting points.  Jitter is applied to points by multiplying the fitted value by a random draw from a normal distribution with mean 1 and sd \code{jitter.v[j]}.  Where \code{j=1,2} corresponds to observer \code{j} and \code{j=3} corresponds to pooled/duplicate detections.
 #' @param showpoints logical variable; if \code{TRUE} plots predicted value for each observation.
 #' @param subset subset of data to plot.
