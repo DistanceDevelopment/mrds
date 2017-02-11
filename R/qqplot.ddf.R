@@ -125,9 +125,9 @@ qqplot.ddf <- function(model,plot=TRUE,...){
   upper.edf <- (unlist(sapply(cdfvalues,fun,z=cdfvalues,lt=FALSE)))/n
 
   if(plot){
-    plot(upper.edf,cdfvalues,xlab="Empirical cdf",ylab="Fitted cdf",
-         xlim=c(0,1),ylim=c(0,1),...)
-    abline(0,1,...)
+    plot(upper.edf, cdfvalues, xlab="Empirical cdf", ylab="Fitted cdf",
+         xlim=c(0,1), ylim=c(0,1), asp=1, ...)
+    abline(0, 1, ...)
   }
 
   Dn <- max(max(abs(lower.edf-cdfvalues)),max(abs(upper.edf-cdfvalues)))
