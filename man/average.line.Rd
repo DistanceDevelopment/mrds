@@ -36,4 +36,3 @@ Internal function called from plot functions for ddf objects
 Jeff Laake
 }
 \keyword{utility}
-

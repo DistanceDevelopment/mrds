@@ -31,11 +31,10 @@ dht.se
 \note{
 Internal function; not intended to be called by user
 }
-\author{
-Jeff Laake
-}
 \seealso{
 \code{\link{dht}}, \code{\link{dht.se}}, \code{\link{DeltaMethod}}
 }
+\author{
+Jeff Laake
+}
 \keyword{utility}
-

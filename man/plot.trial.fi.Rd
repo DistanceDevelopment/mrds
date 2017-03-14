@@ -79,4 +79,3 @@ and it will call the appropriate function based on the class of the
 Jeff Laake, Jon Bishop, David Borchers
 }
 \keyword{plot}
-

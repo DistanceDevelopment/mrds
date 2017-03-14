@@ -30,4 +30,3 @@ print(dht(xx,sample.table=Samples,region.table=Regions))
 }
 }
 \keyword{datasets}
-

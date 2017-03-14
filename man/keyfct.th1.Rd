@@ -19,4 +19,3 @@ vector of probabilities
 \description{
 Threshold key function
 }
-

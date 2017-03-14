@@ -240,9 +240,6 @@ plot(model,main="Dual observer binned point data",new=FALSE)
 
 }
 }
-\author{
-Jeff Laake
-}
 \references{
 Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
@@ -258,6 +255,8 @@ Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
 \code{\link{ddf.ds}},
   \code{\link{ddf.io}},\code{\link{ddf.io.fi}},\code{\link{ddf.trial}},\code{\link{ddf.trial.fi}},\code{\link{ddf.rem}},\code{\link{ddf.rem.fi}}, \code{\link{mrds-opt}}
 }
+\author{
+Jeff Laake
+}
 \keyword{Models}
 \keyword{~Statistical}
-

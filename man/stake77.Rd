@@ -90,4 +90,3 @@ Burnham, K. P., D. R. Anderson, and J. L. Laake. 1980.
   Populations. Wildlife Monographs:7-202.
 }
 \keyword{datasets}
-

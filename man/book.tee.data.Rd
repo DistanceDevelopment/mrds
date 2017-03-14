@@ -27,4 +27,3 @@ height of tee above the ground. size was the number of tees in an observed
 cluster.
 }
 \keyword{datasets}
-

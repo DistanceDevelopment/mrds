@@ -2,8 +2,8 @@
 % Please edit documentation in R/mrds-package.R
 \docType{package}
 \name{mrds-package}
-\alias{mrds}
 \alias{mrds-package}
+\alias{mrds}
 \title{Mark-Recapture Distance Sampling (mrds)}
 \description{
 This package implements mark-recapture distance sampling
@@ -32,4 +32,3 @@ Jeff Laake <jeff.laake@noaa.gov>,
         Jon Bishop <jonb@mcs.st-and.ac.uk>
 }
 \keyword{package}
-

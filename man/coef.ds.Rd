@@ -2,13 +2,13 @@
 % Please edit documentation in R/coef.ds.R
 \name{coef.ds}
 \alias{coef.ds}
+\alias{coefficients}
 \alias{coef.io}
 \alias{coef.io.fi}
-\alias{coef.rem}
-\alias{coef.rem.fi}
 \alias{coef.trial}
 \alias{coef.trial.fi}
-\alias{coefficients}
+\alias{coef.rem}
+\alias{coef.rem.fi}
 \title{Extract coefficients}
 \usage{
 \method{coef}{ds}(object,...)
@@ -46,4 +46,3 @@ These functions are called by the generic function \code{coef} for any
 \author{
 Jeff Laake
 }
-

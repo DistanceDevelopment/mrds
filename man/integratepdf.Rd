@@ -36,4 +36,3 @@ detection function.
 Jeff Laake & Dave Miller
 }
 \keyword{utility}
-

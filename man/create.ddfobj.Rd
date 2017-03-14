@@ -38,11 +38,10 @@ package as a calling argument to various functions.
 \note{
 Internal function not meant to be called by user
 }
-\author{
-Jeff Laake
-}
 \seealso{
 \code{\link{detfct}}, \code{\link{ddf}}
 }
+\author{
+Jeff Laake
+}
 \keyword{internal}
-

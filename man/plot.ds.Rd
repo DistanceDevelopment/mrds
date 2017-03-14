@@ -84,4 +84,3 @@ plot(xx, breaks=c(0, 0.5, 1, 2, 3, 4), pages=1, which=1:2)
 Jeff Laake, Jon Bishop, David Borchers, David L Miller
 }
 \keyword{plot}
-

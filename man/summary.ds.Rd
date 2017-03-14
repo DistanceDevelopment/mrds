@@ -42,4 +42,3 @@ This function is called by the generic function \code{summary} for any
 Jeff Laake
 }
 \keyword{utility}
-

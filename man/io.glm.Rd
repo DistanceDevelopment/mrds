@@ -42,9 +42,6 @@ internal function that is used as by \code{ddf.io.fi} to fit mark-recapture
 models with 2 occasions.  The argument \code{mrmodel} is used for
 \code{fitformula}.
 }
-\author{
-Jeff Laake, David Borchers, Charles Paxton
-}
 \references{
 Buckland, S.T., J.M. breiwick, K.L. Cattanach, and J.L. Laake.
   1993. Estimated population size of the California gray whale.  Marine
@@ -56,6 +53,8 @@ Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers, T.A. Marques,
   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
   Oxford University Press.
 }
+\author{
+Jeff Laake, David Borchers, Charles Paxton
+}
 \keyword{Models}
 \keyword{Statistical}
-

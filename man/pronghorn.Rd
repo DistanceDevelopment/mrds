@@ -39,4 +39,3 @@ Laake, J., R. J. Guenzel, J. L. Bengtson, P. Boveng, M. Cameron,
   for line-transect sampling. Wildlife Research 35:289-298.
 }
 \keyword{datasets}
-

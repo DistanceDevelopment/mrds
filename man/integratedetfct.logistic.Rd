@@ -31,4 +31,3 @@ with the logistic.
 \author{
 Jeff Laake
 }
-

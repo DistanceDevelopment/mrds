@@ -24,9 +24,6 @@ of the correct order.
 \details{
 Only even functions are allowed as adjustment terms. Also Hermite polynomials must be of degree at least 4 and Cosine of order at least 3. Finally, also checks that order of the terms >1 for half-normal/hazard-rate, as per p.47 of Buckland et al (2001). If incorrect terms are supplied then an error is throw via \code{stop}.
 }
-\author{
-David Miller
-}
 \references{
 S.T.Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake. 1993.
   Robust Models. In: Distance Sampling, eds. S.T.Buckland, D.R.Anderson,
@@ -37,5 +34,7 @@ S.T.Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake. 1993.
   \code{\link{adjfct.herm}}, \code{\link{detfct}}, \code{\link{mcds}},
   \code{\link{cds}}
 }
+\author{
+David Miller
+}
 \keyword{methods}
-

@@ -40,4 +40,3 @@ Internal function and not called by user
 Jeff Laake
 }
 \keyword{utility}
-

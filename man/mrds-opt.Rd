@@ -34,7 +34,7 @@ One can change the upper and lower bounds for the parameters. These specify the 
 
 Again, one uses the \code{control} list, the elements \code{upperbounds} and \code{lowerbounds}. In this case, each of \code{upperbounds} and \code{lowerbounds} are vectors, which one can think of as each of the vectors \code{scale}, \code{shape} and \code{adjustment} from the "Initial values" section above, concatenated in that order. If one does not occur (e.g. no shape parameter) then it is simple omitted from the vector.
 }
+
 \author{
 David L. Miller <dave@ninepointeightone.net>
 }
-

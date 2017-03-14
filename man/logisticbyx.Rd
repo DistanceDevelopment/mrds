@@ -28,4 +28,3 @@ range of distances
 \author{
 Jeff Laake
 }
-

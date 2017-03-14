@@ -29,11 +29,10 @@ This is an internal function that is not intended to be invoked
   directly.  It is called by \code{\link{qqplot.ddf}} to compute values for
   K-S and CvM tests and the Q-Q plot.
 }
-\author{
-Jeff Laake
-}
 \seealso{
 \code{\link{qqplot.ddf}}
 }
+\author{
+Jeff Laake
+}
 \keyword{utility}
-

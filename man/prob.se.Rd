@@ -34,10 +34,9 @@ weights based on empirical covariate distribution, if it contains covariates.
 Need to add equations here as I do not think they exist in any of the texts.
 These should probably be checked with simulation.
 }
-\author{
-Jeff Laake
-}
 \seealso{
 prob.deriv
 }
-
+\author{
+Jeff Laake
+}

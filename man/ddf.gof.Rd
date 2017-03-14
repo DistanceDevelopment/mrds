@@ -4,10 +4,10 @@
 \alias{ddf.gof}
 \alias{gof.io}
 \alias{gof.io.fi}
-\alias{gof.rem}
-\alias{gof.rem.fi}
 \alias{gof.trial}
 \alias{gof.trial.fi}
+\alias{gof.rem}
+\alias{gof.rem.fi}
 \title{Goodness of fit tests for distance sampling models}
 \usage{
 ddf.gof(model, breaks = NULL, nc = NULL, qq = TRUE, ...)
@@ -29,11 +29,10 @@ List of class \code{ddf.gof} containing \item{chi-square }{Goodness of fit test 
 \description{
 Generic function that computes chi-square goodness of fit test for detection function models with binned data and Cramer-von Mises and Kolmogorov-Smirnov tests for exact distance data. By default a Q-Q plot is generated for exact data (and can be suppressed using the \code{qq=FALSE} argument).
 }
-\author{
-Jeff Laake
-}
 \seealso{
 \code{\link{qqplot.ddf}}
 }
+\author{
+Jeff Laake
+}
 \keyword{utility}
-

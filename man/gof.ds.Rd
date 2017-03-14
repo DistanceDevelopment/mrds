@@ -19,10 +19,9 @@ list with chi-square value, df and p-value
 \description{
 Compute chi-square goodness-of-fit test for ds models
 }
-\author{
-Jeff Laake
-}
 \seealso{
 ddf.gof
 }
-
+\author{
+Jeff Laake
+}

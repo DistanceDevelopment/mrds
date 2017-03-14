@@ -36,4 +36,3 @@ distance.
 \author{
 Jeff Laake
 }
-

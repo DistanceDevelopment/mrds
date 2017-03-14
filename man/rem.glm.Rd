@@ -49,9 +49,6 @@ be merged.
 currently the code in this function for GAMs has been commented out
   until the remainder of the mrds package will work with GAMs.
 }
-\author{
-Jeff Laake
-}
 \references{
 Buckland, S.T., J.M. breiwick, K.L. Cattanach, and J.L. Laake.
   1993. Estimated population size of the California gray whale.  Marine
@@ -63,6 +60,8 @@ Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers, T.A. Marques,
   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
   Oxford University Press.
 }
+\author{
+Jeff Laake
+}
 \keyword{Models}
 \keyword{Statistical}
-

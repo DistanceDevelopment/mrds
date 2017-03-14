@@ -35,4 +35,3 @@ This is a generic function that can be used in any setting beyond the \code{mrds
 Jeff Laake
 }
 \keyword{utility}
-

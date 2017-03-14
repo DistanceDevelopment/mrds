@@ -28,4 +28,3 @@ Internal function called by \code{\link{covered.region.dht}}
 Jeff Laake
 }
 \keyword{utility}
-

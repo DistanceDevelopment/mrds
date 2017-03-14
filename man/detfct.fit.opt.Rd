@@ -56,4 +56,3 @@ calls \code{\link{optimx}} function.
 \author{
 Dave Miller; Jeff Laake; Lorenzo Milazzo
 }
-
