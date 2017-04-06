@@ -1,4 +1,4 @@
-flpt.lnl <- function(fpar,ddfobj,misc.options){
+flpt.lnl <- function(fpar, ddfobj, misc.options){
 
   # flpt.lnl - computes negative log-likelihood values of line or point
   # transect binned/unbinned distances

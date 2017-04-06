@@ -52,7 +52,7 @@ integratepdf <- function(ddfobj, select, width, int.range,
   # if there is only 1 integral to compute (no covariates/1 set of covariates
   # & only one set of integration ranges), that's easy
   if(nobs==1){
-    return(gstdint(int.range[1,], ddfobj=ddfobj, index=1, select=NULL,
+    return(gstdint(int.range[1, ], ddfobj=ddfobj, index=1, select=NULL,
                    width=width, standardize=standardize, point=point,
                    stdint=FALSE, left=left))
   }else{
@@ -75,7 +75,7 @@ integratepdf <- function(ddfobj, select, width, int.range,
     }else{
       if(ncol(ddfobj$shape$dm)>1){
         scale_dm <- ddfobj$shape$dm[index, , drop=FALSE]
-        scale_dm[,"(Intercept)"] <- NULL
+        scale_dm[, "(Intercept)"] <- NULL
       }else{
         scale_dm <- NULL
       }
@@ -90,7 +90,7 @@ integratepdf <- function(ddfobj, select, width, int.range,
     ind <- match(uu.index, u.index)
 
     # calculate the integrals
-    ints <- gstdint(int.range[ind,,drop=FALSE], ddfobj=ddfobj,
+    ints <- gstdint(int.range[ind, , drop=FALSE], ddfobj=ddfobj,
                     index=index[ind], select=NULL, width=width,
                     standardize=standardize, point=point,
                     stdint=FALSE, left=left, doeachint=doeachint)

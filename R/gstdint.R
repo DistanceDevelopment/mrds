@@ -73,14 +73,14 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
                  (key.scale*sqrt(2)))))
 
       }else{
-        int <- (1/(x[,2]-x[,1]))*sqrt(pi/2)*key.scale*
+        int <- (1/(width-left))*sqrt(pi/2)*key.scale*
                   (-erf(x[, 1]/(key.scale*sqrt(2)))+
                     erf(x[, 2]/(key.scale*sqrt(2))))
       }
     }
     return(int)
   }else if(ddfobj$type=="hr" & is.null(ddfobj$adjustment) &
-           !doeachint & !point & all(x[,1]==0)){
+           !doeachint & !point & all(x[, 1]==0)){
 
     # do the spline shortcut
     # note that this will only work for a given shape parameter
@@ -118,8 +118,8 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
     xscale <- scalevalue(ddfobj$scale$parameters, scale.dm)
 
     # do the integration via predict.smooth.spline
-    integrals <- predict(spp, as.vector(x[,2]/xscale))$y -
-                 predict(spp, as.vector(x[,1]/xscale))$y
+    integrals <- predict(spp, as.vector(x[, 2]/xscale))$y -
+                 predict(spp, as.vector(x[, 1]/xscale))$y
 
     # rescale for point or line
     if(!point){
@@ -133,7 +133,7 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
     # loop over the integration ranges, calculating integrals
     res <- rep(NA, nrow(x))
     for(i in 1:nrow(x)){
-      res[i] <- integrate(distpdf, lower=x[i,1], upper=x[i,2], width=width,
+      res[i] <- integrate(distpdf, lower=x[i, 1], upper=x[i, 2], width=width,
                           ddfobj=ddfobj, select=select[i], index=index[i],
                           rel.tol=1e-7, standardize=standardize,
                           stdint=stdint, point=point, left=left)$value
