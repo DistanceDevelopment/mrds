@@ -18,3 +18,4 @@ Get the apex for a gamma detection function
 \author{
 Jeff Laake
 }
+

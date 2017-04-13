@@ -17,10 +17,11 @@ parameters, model selection criterion, and optionally abundance in the
 covered (sampled) region and its standard error. What is printed depends
 on the corresponding call to summary.
 }
-\seealso{
-\code{\link{summary.trial}}
-}
 \author{
 Jeff Laake
 }
+\seealso{
+\code{\link{summary.trial}}
+}
 \keyword{utility}
+

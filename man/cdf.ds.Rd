@@ -20,10 +20,11 @@ Computes cdf values of observed distances from fitted distribution. For a set of
 \note{
 This is an internal function that is not intended to be invoked directly.  It is called by \code{\link{qqplot.ddf}} to compute values for Kolmogorov-Smirnov and Cramer-von Mises tests and the Q-Q plot.
 }
-\seealso{
-\code{\link{qqplot.ddf}}
-}
 \author{
 Jeff Laake
 }
+\seealso{
+\code{\link{qqplot.ddf}}
+}
 \keyword{utility}
+

@@ -31,9 +31,10 @@ Used in call to DeltaMethod from prob.se to get first derivatives
 Need to add equations here as I do not think they exist in any of the texts.
 These should probably be checked with simulation.
 }
-\seealso{
-prob.se
-}
 \author{
 Jeff Laake
 }
+\seealso{
+prob.se
+}
+

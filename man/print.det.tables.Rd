@@ -17,10 +17,11 @@ None
 \description{
 Provides formatted output for detection tables
 }
-\seealso{
-\code{\link{plot.det.tables}}
-}
 \author{
 Jeff Laake
 }
+\seealso{
+\code{\link{plot.det.tables}}
+}
 \keyword{utility}
+

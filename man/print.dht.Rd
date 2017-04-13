@@ -24,10 +24,11 @@ None
 \description{
 Outputs summary statistics, abundance and density by region (if any) and optionally a correlation matrix if more than one region.
 }
-\seealso{
-\code{\link{dht}}
-}
 \author{
 Jeff Laake
 }
+\seealso{
+\code{\link{dht}}
+}
 \keyword{utility}
+

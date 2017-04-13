@@ -21,3 +21,4 @@ Find se of average p and N
 \author{
 David L. Miller
 }
+

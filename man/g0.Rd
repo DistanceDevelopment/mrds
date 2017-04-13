@@ -20,3 +20,4 @@ Compute value of p(0) using a logit formulation
 \author{
 Jeff Laake
 }
+
