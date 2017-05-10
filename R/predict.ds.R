@@ -88,6 +88,9 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
 
       newdata_save <- newdata
 
+      # get the data in the model
+      model_dat <- model$data
+
       # do this for both scale and shape parameters
       for(df_par in c("scale", "shape")){
         # if that parameter exists...
@@ -95,8 +98,6 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
           # save the column names from the design matrix
           znames <- colnames(ddfobj[[df_par]]$dm)
 
-          # get the data in the model
-          model_dat <- model$data
           # pull out the columns in the formula and the distances column
           fvars <- all.vars(as.formula(model$ds$aux$ddfobj[[df_par]]$formula))
 
@@ -124,6 +125,15 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
           ddfobj[[df_par]]$dm <- dm
 
         }
+      }
+
+      # handle data setup for uniform key case
+      if(ddfobj$type == "unif"){
+        model_dat <- model_dat[, "distance", drop=FALSE]
+        newdata <- rbind(model_dat,
+                         newdata_save[, "distance", drop=FALSE])
+        dm <- setcov(newdata, ~1)
+        dm <- dm[(nrow(model_dat)+1):nrow(dm), , drop=FALSE]
       }
 
       # update xmat too
