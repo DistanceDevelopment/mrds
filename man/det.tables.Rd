@@ -42,3 +42,4 @@ plot(tabs,new=FALSE,which=c(1,2,5,6))
 \author{
 Jeff Laake
 }
+

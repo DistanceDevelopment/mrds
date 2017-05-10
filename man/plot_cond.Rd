@@ -62,3 +62,4 @@ data. Internal function called by \code{plot} methods.
 Jeff Laake, Jon Bishop, David Borchers
 }
 \keyword{plot}
+

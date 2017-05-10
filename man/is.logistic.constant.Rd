@@ -23,3 +23,4 @@ observations. If it is constant then only one integral needs to be computed.
 \author{
 Jeff Laake
 }
+

@@ -19,3 +19,4 @@ Computes logit transformation.
 Jeff Laake
 }
 \keyword{utility}
+

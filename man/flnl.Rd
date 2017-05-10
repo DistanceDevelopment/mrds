@@ -46,10 +46,11 @@ functions are in source code file for \code{link{detfct}} and are called from
 \note{
 These are internal functions used by \code{\link{ddf.ds}} to fit distance sampling detection functions.  It is not intended for the user to invoke these functions but they are documented here for completeness.
 }
-\seealso{
-\code{\link{flt.var}}, \code{\link{detfct}}
-}
 \author{
 Jeff Laake, David L Miller
 }
+\seealso{
+\code{\link{flt.var}}, \code{\link{detfct}}
+}
 \keyword{utility}
+

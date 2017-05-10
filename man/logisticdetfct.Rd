@@ -22,3 +22,4 @@ g(0)=1 (ie a standard line transect detection function).}
 \description{
 Logistic detection function
 }
+

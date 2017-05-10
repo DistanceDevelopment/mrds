@@ -51,3 +51,4 @@ plot(tabs,which=1:6,new=FALSE)
 \author{
 Jeff Laake
 }
+

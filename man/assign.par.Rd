@@ -23,11 +23,12 @@ Assigns parameters of a particular type (scale, shape, adjustments or g0 (p(0)))
 \note{
 Internal functions not intended to be called by user.
 }
-\seealso{
-getpar
-}
 \author{
 Jeff Laake
 }
+\seealso{
+getpar
+}
 \keyword{internal}
 \keyword{utility}
+

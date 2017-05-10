@@ -22,3 +22,4 @@ Code is stolen and modified from plot.R in mgcv by Simon Wood
 \author{
 David L. Miller, based on code by Simon N. Wood
 }
+
