@@ -69,6 +69,8 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
       if(is.vector(int.range)){
         int.range <- cbind(rep(int.range[1], nr),
                            rep(int.range[2], nr))
+      #}else if(nrow(int.range) == (nrow(x)+1)){
+      #int.range <- int.range[2:nrow(int.range), , drop=FALSE]
       }
     }
   }
@@ -110,7 +112,7 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
           # setup the covariate matrix, using the model data to ensure that
           # the levels are right
           newdata <- rbind(model_dat,
-                           newdata_save[,c("distance", fvars), drop=FALSE])
+                           newdata_save[, c("distance", fvars), drop=FALSE])
           dm <- setcov(newdata, as.formula(ddfobj[[df_par]]$formula))
 
           # now check that the column names are the same for the model
