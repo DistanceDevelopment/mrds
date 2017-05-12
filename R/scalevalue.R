@@ -7,5 +7,5 @@
 # returns Vector of scale values
 # documented in ?distpdf
 scalevalue <- function(key.scale, z){
-  exp(as.matrix(z) %*% key.scale)
+  exp(as.vector(as.matrix(z) %*% key.scale))
 }
