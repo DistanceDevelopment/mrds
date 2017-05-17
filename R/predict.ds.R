@@ -136,11 +136,18 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
         dm <- dm[(nrow(model_dat)+1):nrow(dm), , drop=FALSE]
       }
 
+      # get the bins when you have binned data
+      # use the breaks specified in the model!
+      if(model$meta.data$binned){
+        newdata <- create.bins(newdata, model$meta.data$breaks)
+      }
+
       # update xmat too
       datalist <- process.data(newdata, object$meta.data, check=FALSE)
       ddfobj$xmat <- datalist$xmat[(nrow(model_dat)+1):nrow(datalist$xmat),,drop=FALSE]
       # reset newdata to be the right thing
-      newdata <- newdata[(nrow(model_dat)+1):nrow(newdata),,drop=FALSE]
+      newdata <- newdata[(nrow(model_dat)+1):nrow(newdata), , drop=FALSE]
+
     }
 
     # Compute integral of fitted detection function using either logistic or

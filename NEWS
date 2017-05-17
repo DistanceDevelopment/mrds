@@ -5,6 +5,7 @@ mrds 2.1.18
 * Quantile-quantile plots now use an aspect ratio of 1
 * Bug in half-normal integration code when no adjustments are used lead to likelohood being evaluated incorrectly for models with binned (grouped) distances. This only effected AIC comparisons between models and parameter estimates should have been the same. Thanks to Olivier Devineau for spotting this!
 * Fix bug where predict.ds() didn't work with uniform keys. Thanks to Jason Roberts for reporting this bug.
+* Correctly specify distbegin/distend for predictions with binned data, thanks to Jason Roberts for spotting this bug.
 
 mrds 2.1.17
 -----------
