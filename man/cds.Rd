@@ -43,4 +43,3 @@ supplied in call to \code{\link{ddf}}
 Jeff Laake; Dave Miller
 }
 \keyword{utility}
-

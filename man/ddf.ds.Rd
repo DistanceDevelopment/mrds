@@ -70,9 +70,6 @@ print(dht(result,region,samples,obs,options=list(varflag=0,group=TRUE),
 print(ddf.gof(result))
 }
 }
-\author{
-Jeff Laake
-}
 \references{
 Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
@@ -88,6 +85,8 @@ Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
 \code{\link{flnl}}, \code{\link{summary.ds}}, \code{\link{coef.ds}},
   \code{\link{plot.ds}},\code{\link{gof.ds}}
 }
+\author{
+Jeff Laake
+}
 \keyword{Models}
 \keyword{Statistical}
-

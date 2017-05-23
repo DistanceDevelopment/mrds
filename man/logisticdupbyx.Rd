@@ -30,4 +30,3 @@ distances.
 \author{
 Jeff Laake
 }
-

@@ -32,11 +32,10 @@ from \code{ddfobj}.
 \note{
 Internal functions not intended to be called by user.
 }
-\author{
-Jeff Laake
-}
 \seealso{
 assign.par
 }
+\author{
+Jeff Laake
+}
 \keyword{utility}
-

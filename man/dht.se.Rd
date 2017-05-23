@@ -56,14 +56,13 @@ A non-zero correlation between regional estimates can occur from using a common 
 \note{
 This function is called by \code{dht} and it is not expected that the user will call this function directly but it is documented here for completeness and for anyone expanding the code or using this function in their own code.
 }
-\author{
-Jeff Laake
-}
 \references{
 see \code{\link{dht}}
 }
 \seealso{
 \code{\link{dht}}, \code{\link{print.dht}}
 }
+\author{
+Jeff Laake
+}
 \keyword{utility}
-

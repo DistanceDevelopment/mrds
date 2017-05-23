@@ -31,4 +31,3 @@ is no data for a particular factor.
 Jeff Laake
 }
 \keyword{utility}
-

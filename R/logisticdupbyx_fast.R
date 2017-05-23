@@ -12,6 +12,10 @@ logisticdupbyx_fast <- function(distance, x1, x2, models, beta, point, beta_dist
   # function to calculate p/(1+p)
   ologit <- function(p) p/(1+p)
 
+  # vectorise for R 3.4 silliness
+  x1 <- as.vector(x1)
+  x2 <- as.vector(x2)
+
   # first part of the function
   gx1 <- ologit(exp(x1 + distance*beta_distance))
 

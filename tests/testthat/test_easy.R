@@ -13,22 +13,22 @@ test_that("golf tee data gives the same results as Distance",{
 
 
   #CDS
-  result.cds<-ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance),
-                  data = egdata, method = "io", meta.data = list(width = 4))
-  expect_that(result.cds$Nhat, equals(232.0015,tolerance=1e-6))
+  result.cds <- ddf(dsmodel=~cds(key="hn"), mrmodel=~glm(~distance),
+                    data=egdata, method="io", meta.data=list(width=4))
+  expect_that(result.cds$Nhat, equals(232.0015, tolerance=1e-6))
 
   #GLM
-  result.glm<-ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi",
-                  meta.data = list(width = 4))
-  expect_that(result.glm$Nhat, equals(186.0947,tolerance=1e-6))
+  result.glm <- ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi",
+                  meta.data=list(width=4))
+  expect_that(result.glm$Nhat, equals(186.0947, tolerance=1e-6))
 
   #MCDS
   #checkException(ddf(dsmodel = ~mcds(key = "hn", formula = ~1), data = newdata, method = "ds", meta.data = list(width = 4)))
 
-  result.mcds<-ddf(dsmodel=~mcds(key = "hn", formula=~1),
-                   data=egdata[egdata$observer==1,], method="ds",
+  result.mcds <- ddf(dsmodel=~mcds(key="hn", formula=~1),
+                   data=egdata[egdata$observer==1, ], method="ds",
                    meta.data=list(width=4))
-  expect_that(result.mcds$Nhat, equals(212.229,tolerance=1e-3))
+  expect_that(result.mcds$Nhat, equals(212.229, tolerance=1e-3))
 
   #rr <- ddf(dsmodel = ~mcds(key = "hn", formula = ~sex),
   #          data=subset(egdata, detected==1 & observer==1), method="ds",
@@ -131,7 +131,6 @@ better<-rep(0,nrow(models))
 for(i in model.set){
 
   set.seed(1245)
-
   # uncomment for debug
   #cat("\nmodel",i,":\n")
 

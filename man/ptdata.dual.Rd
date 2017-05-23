@@ -26,4 +26,3 @@ plot(xx,main="Simulated point count data")
 }
 }
 \keyword{datasets}
-

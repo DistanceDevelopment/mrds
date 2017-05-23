@@ -18,11 +18,10 @@ None
 Provides formatted output for results of goodness of fit tests: chi-square,
 Kolmogorv-Smirnov and Cramer-von Mises test as approrpriate.
 }
-\author{
-Jeff Laake
-}
 \seealso{
 \code{\link{ddf.gof}}
 }
+\author{
+Jeff Laake
+}
 \keyword{utility}
-

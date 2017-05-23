@@ -90,9 +90,7 @@ For options \code{1} and \code{2}, it is then possible to choose one of the esti
  \item{\code{ervar}}{encounter rate variance type (see "Uncertainty" and \code{type} argument of \code{\link{varn}}). (Default: \code{"R2"})}
 }
 }
-\author{
-Jeff Laake, David L Miller
-}
+
 \references{
 Borchers, D.L., S.T. Buckland, P.W. Goedhart, E.D. Clarke, and S.L. Hedley.
   1998. Horvitz-Thompson estimators for double-platform line transect
@@ -129,5 +127,7 @@ Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
 \seealso{
 print.dht dht.se
 }
+\author{
+Jeff Laake, David L Miller
+}
 \keyword{utility}
-

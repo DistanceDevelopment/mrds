@@ -19,4 +19,3 @@ parse.optimx(lt, lnl.last, par.last)
 \description{
 Take the resulting object from a call to optimx and make it into an object that mrds wants to talk to.
 }
-

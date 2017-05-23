@@ -27,4 +27,3 @@ values
 \author{
 Jeff Laake
 }
-

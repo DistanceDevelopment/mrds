@@ -27,14 +27,13 @@ This is an internal function used by \code{\link{ddf.ds}} to fit
   distance sampling detection functions.  It is not intended for the user to
   invoke this function but it is documented here for completeness.
 }
-\author{
-Jeff Laake
-}
 \references{
 Buckland et al. 2002
 }
 \seealso{
 \code{\link{flnl}},\code{\link{flpt.lnl}},\code{\link{ddf.ds}}
 }
+\author{
+Jeff Laake
+}
 \keyword{utility}
-

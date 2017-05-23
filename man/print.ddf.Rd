@@ -18,4 +18,3 @@ detailed information see \code{\link{summary}}.
 \author{
 David L. Miller
 }
-

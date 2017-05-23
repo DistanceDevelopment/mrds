@@ -25,4 +25,3 @@ function at all covariate values in data.
 \author{
 Jeff Laake
 }
-

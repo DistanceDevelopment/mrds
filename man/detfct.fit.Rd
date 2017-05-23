@@ -54,4 +54,3 @@ allow the detection function to be non-monotone.
 \author{
 Dave Miller; Jeff Laake
 }
-

@@ -283,9 +283,6 @@ library(RMark)
 }
 
 }
-\author{
-Bret Collier and Jeff Laake
-}
 \references{
 Farrell, S.F., B.A. Collier, K.L. Skow, A.M. Long, A.J. Campomizzi, M.L. Morrison, B. Hays, and R.N. Wilkins. 2013. Using LiDAR-derived structural vegetation characteristics to develop high-resolution, small-scale, species distribution models for conservation planning. Ecosphere 43(3): 42. http://dx.doi.org/10.1890/ES12-000352.1
 
@@ -294,5 +291,7 @@ Laake, J.L., B.A. Collier, M.L. Morrison, and R.N. Wilkins. 2011. Point-based ma
 Collier, B.A., S.L. Farrell, K.L. Skow, A. M. Long, A.J. Campomizzi, K.B. Hays, J.L. Laake, M.L. Morrison, and R.N. Wilkins. 2013. Spatially explicit density of
 endangered avian species in a disturbed landscape.  Auk, In Review.
 }
+\author{
+Bret Collier and Jeff Laake
+}
 \keyword{datasets}
-

@@ -5,10 +5,10 @@
 \alias{NCovered.ds}
 \alias{NCovered.io}
 \alias{NCovered.io.fi}
-\alias{NCovered.rem}
-\alias{NCovered.rem.fi}
 \alias{NCovered.trial}
 \alias{NCovered.trial.fi}
+\alias{NCovered.rem}
+\alias{NCovered.rem.fi}
 \title{Compute estimated abundance in covered (sampled) region}
 \usage{
 NCovered(par, model = NULL, group = TRUE)
@@ -33,4 +33,3 @@ calls method (class) specific functions for the computation.
 Jeff Laake
 }
 \keyword{utility}
-

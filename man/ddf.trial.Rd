@@ -51,9 +51,6 @@ dataframe specified by the argument \code{data} in \code{ddf}. The arguments
 \code{dsmodel}, \code{mrmodel}, \code{control} and \code{meta.data} are
 defined the same as in \code{ddf}.
 }
-\author{
-Jeff Laake
-}
 \references{
 Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
@@ -63,6 +60,8 @@ Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
 \seealso{
 \code{\link{ddf.trial.fi}}, \code{\link{ddf.ds}}, \code{\link{summary.trial}}, \code{\link{coef.trial}}, \code{\link{plot.trial}}, \code{\link{gof.trial}}
 }
+\author{
+Jeff Laake
+}
 \keyword{Models}
 \keyword{Statistical}
-

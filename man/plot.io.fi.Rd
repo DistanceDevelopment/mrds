@@ -104,4 +104,3 @@ plot(result.io.fi,which=c(1,2,5,6),pages=2)
 Jeff Laake, Jon Bishop, David Borchers, David L Miller
 }
 \keyword{plot}
-

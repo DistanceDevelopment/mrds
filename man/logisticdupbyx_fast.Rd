@@ -27,4 +27,3 @@ As \code{\link{logisticdupbyx}}, but faster when distance is a covariate (but no
 \author{
 David L Miller
 }
-
