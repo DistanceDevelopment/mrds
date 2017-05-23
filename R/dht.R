@@ -425,12 +425,14 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
                      diag(t(clusters$vc$detection$partial)%*%
                           solvecov(model$hessian)$inv%*%
                           individuals$vc$detection$partial)
-      se.Expected.S <- clusters$N$cv^2 + individuals$N$cv^2 -
+      se.Expected.S <- as.vector(clusters$N$cv)^2 +
+                        as.vector(individuals$N$cv)^2 -
                         2*cov.Nc.Ncs/
-                         (individuals$N$Estimate*clusters$N$Estimate)
+                         (as.vector(individuals$N$Estimate)*
+                          as.vector(clusters$N$Estimate))
       Expected.S[is.nan(Expected.S)] <- 0
       se.Expected.S[se.Expected.S<=0 | is.nan(se.Expected.S)] <- 0
-      se.Expected.S <- Expected.S*sqrt(se.Expected.S)
+      se.Expected.S <- as.vector(Expected.S)*sqrt(se.Expected.S)
 
       Expected.S <- data.frame(Region        = clusters$N$Label,
                                Expected.S    = as.vector(Expected.S),
