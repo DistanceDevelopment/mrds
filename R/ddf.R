@@ -102,14 +102,14 @@
 #' the data to be set. These options include:
 #'
 #' \describe{
-#'  \item{\code{point}}{if TRUE the data are from point counts and FALSE (default) implies line transect data}
+#'  \item{\code{point}}{if \code{TRUE} the data are from point counts and \code{FALSE} (default) implies line transect data}
 #'  \item{\code{width}}{distance specifying half-width of the transect}
 #'  \item{\code{left}}{distance specifying inner truncation value}
-#'  \item{\code{binned}}{TRUE or FALSE to specify whether distances should be binned for analysis}
-#'  \item{\code{breaks}}{if binned=TRUE, this is a required sequence of break points that are used for plotting/gof. They should match \code{distbegin}, \code{distend} values if bins are fixed}
+#'  \item{\code{binned}}{\code{TRUE} or \code{FALSE} to specify whether distances should be binned for analysis}
+#'  \item{\code{breaks}}{if \code{binned=TRUE}, this is a required sequence of break points that are used for plotting/gof. They should match \code{distbegin}, \code{distend} values if bins are fixed}
 #'  \item{\code{int.range}}{an integration range for detection probability; either a vector of 2 or matrix with 2 columns}
-#'  \item{\code{mono}}{constrain the detection function to be (strictly) monotonically decreasing (when there are no covariates)}
-#'  \item{\code{mono.strict}}{when TRUE (default when mono=TRUE) strict monotonicity is enforced, else only weak monotonicity}
+#'  \item{\code{mono}}{constrain the detection function to be weakly monotonically decreasing (only applicable when there are no covariates in the detection function)}
+#'  \item{\code{mono.strict}}{when \code{TRUE} constrain the detection function to be strictly monotonically decreasing (again, only applicable when there are no covariates in the detection function)}
 #' }
 #'
 #' Using \code{meta.data=list(int.range=c(1,10))} is the same as
