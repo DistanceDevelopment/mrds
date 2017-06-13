@@ -158,14 +158,14 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   }
 
   # Setup detection model
-  ddfobj <- create.ddfobj(model,xmat,meta.data,control$initial)
+  ddfobj <- create.ddfobj(model, xmat, meta.data, control$initial)
 
   # pull out the initialvalues
-  initialvalues <- c(ddfobj$shape$parameters,ddfobj$scale$parameters,
+  initialvalues <- c(ddfobj$shape$parameters, ddfobj$scale$parameters,
                      ddfobj$adjustment$parameters)
   if(!is.null(initialvalues)){
-    bounds <- setbounds(control$lowerbounds,control$upperbounds,
-                      initialvalues,ddfobj)
+    bounds <- setbounds(control$lowerbounds, control$upperbounds,
+                        initialvalues, ddfobj)
   }else{
     bounds <- NULL
   }

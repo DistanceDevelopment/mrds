@@ -20,7 +20,7 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
     int.range <- matrix(int.range, nrow=1)
     samelimits <- TRUE
   }else{
-    int.range <- int.range[2:nrow(int.range), , drop=FALSE]
+    #int.range <- int.range[2:nrow(int.range), , drop=FALSE]
     samelimits <- FALSE
   }
   left <- int.range[, 1]
@@ -119,7 +119,8 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
   # Compute log-likelihood for any unbinned data
   if(!all(x$binned)){
     p1 <- distpdf(x$distance[!x$binned], ddfobj=ddfobj, select=!x$binned,
-                  width=width, standardize=FALSE, point=misc.options$point,
+#                  width=width, standardize=FALSE, point=misc.options$point,
+                  width=right, standardize=FALSE, point=misc.options$point,
                   left=left)
     p1[p1<1.0e-15] <- 1.0e-15
     p1[is.nan(p1)] <- 1.0e-15
@@ -141,7 +142,8 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
           intrange <- int.range[rep(1, nrow(x)), ]
         }
 
-        int1 <- integratepdf(ddfobj, select=!x$binned, width=width,
+#        int1 <- integratepdf(ddfobj, select=!x$binned, width=width,
+        int1 <- integratepdf(ddfobj, select=!x$binned, width=right,
                              int.range=intrange[!x$binned, ],
                              point=misc.options$point, standardize=FALSE,
                              left=left)

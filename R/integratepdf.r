@@ -66,10 +66,10 @@ integratepdf <- function(ddfobj, select, width, int.range,
     }
 
     ### find unique observations
-    # need unique model matrix-int.range combinations
-    # want them within those rows we selected to compute for
-    #   we know from above that int.range has either nrow(data) rows or
-    #   length(index) rows.
+    # need unique (model matrix)-(int.range) combinations
+    # want them within the rows we selected to compute for.
+    # Know from above that int.range has either nrow(data) rows or
+    #  length(index) rows.
     if(is.null(ddfobj$shape)){
       newdat <- cbind(ddfobj$scale$dm[index, , drop=FALSE], int.range)
     }else{
@@ -89,11 +89,19 @@ integratepdf <- function(ddfobj, select, width, int.range,
     # generate the indices that we want to calculate integrals for
     ind <- match(uu.index, u.index)
 
+    if(length(width)==1){
+      width <- rep(width, nrow(int.range))
+    }
+    if(length(left)==1){
+      left <- rep(left, nrow(int.range))
+    }
+
+
     # calculate the integrals
     ints <- gstdint(int.range[ind, , drop=FALSE], ddfobj=ddfobj,
-                    index=index[ind], select=NULL, width=width,
+                    index=index[ind], select=NULL, width=width[ind],
                     standardize=standardize, point=point,
-                    stdint=FALSE, left=left, doeachint=doeachint)
+                    stdint=FALSE, left=left[ind], doeachint=doeachint)
 
     ## now rebuild the integrals and populate the return vector
     integrals <- ints[attr(u.rows, "index")]

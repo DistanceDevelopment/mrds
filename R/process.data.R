@@ -46,16 +46,16 @@
 #'   \item{meta.data}{meta.data list}
 #' @author Jeff Laake
 #' @keywords utility
-process.data <- function(data,meta.data=list(),check=TRUE){
+process.data <- function(data, meta.data=list(), check=TRUE){
 
-  set.default.width=function(data,meta.data){
+  set.default.width=function(data, meta.data){
   # set.default.width - sets default transect width when none was specified
   #  Arguments:
   #  data      - dataframe
   #  meta.data - meta.data list
   # Values:  width of transect
     if(meta.data$binned){
-      width <- max(c(data$distend,data$distance),na.rm=TRUE)
+      width <- max(c(data$distend, data$distance),na.rm=TRUE)
     }else{
       width <- max(data$distance)
     }
@@ -160,13 +160,16 @@ process.data <- function(data,meta.data=list(),check=TRUE){
   }
 
   # Determine if integration range has been specified
-  if(is.null(xmat$int.begin)|is.null(xmat$int.end)){
+  if(is.null(xmat$int.begin) | is.null(xmat$int.end)){
     if(any(is.na(meta.data$int.range))){
       meta.data$int.range <- c(meta.data$left,meta.data$width)
+    }else{
+      meta.data$int.range <- #rbind(c(meta.data$left,meta.data$width),
+                                   meta.data$int.range#)
     }
   }else{
-      meta.data$int.range <- rbind(c(meta.data$left,meta.data$width),
-                                   cbind(xmat$int.begin,xmat$int.end))
+      meta.data$int.range <- #rbind(c(meta.data$left,meta.data$width),
+                                   cbind(xmat$int.begin,xmat$int.end)#)
   }
 
   # If left >0 perform left truncation by restricting values
