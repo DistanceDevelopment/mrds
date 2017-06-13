@@ -16,7 +16,11 @@
 print.summary.ds <- function (x,...){
   cat("\nSummary for ds object \n")
   cat("Number of observations : ", x$n,"\n")
-  cat("Distance range         : ", x$left, " - ",x$width,"\n")
+  if(x$int.range){
+    cat("Distance range         : ", x$left, " - ",x$width,"(int.range set)\n")
+  }else{
+    cat("Distance range         : ", x$left, " - ",x$width,"\n")
+  }
   cat("AIC                    : ", x$aic, "\n")
   cat("\nDetection function:\n",model.description(x),"\n")
   cat("\nDetection function parameters", "\n")

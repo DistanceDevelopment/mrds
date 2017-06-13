@@ -107,6 +107,13 @@ summary.ds <- function(object, se=TRUE, N=TRUE, ...){
     ans$average.p.se <- se.obj$average.p.se
   }
 
+  # flag if the integration ranges were set
+  ans$int.range <- FALSE
+  if(is.matrix(object$meta.data$int.range) &&
+     nrow(unique(object$meta.data$int.range)) > 1){
+    ans$int.range <- TRUE
+  }
+
   class(ans) <- "summary.ds"
   return(ans)
 }
