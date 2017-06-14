@@ -15,10 +15,10 @@ NCovered.io <- function(par,model,data,group=TRUE,...){
   # set pars if we are differentiating
   # then extract fitted values
   if(!is.null(par)){
-    model$mr$mr$coefficients <- par[1:length(model$mr$mr$coefficients)]
+    model$mr$mr$coefficients <- par[seq_along(model$mr$mr$coefficients)]
     model$ds$par <- par[(length(model$mr$mr$coefficients)+1):length(par)]
     model$ds$ds$aux$ddfobj <- assign.par(model$ds$ds$aux$ddfobj,model$ds$par)
-    fitted <- predict(model,compute=TRUE)$fitted
+    fitted <- predict(model, compute=TRUE)$fitted
   }else{
     fitted <- model$fitted
   }

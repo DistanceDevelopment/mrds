@@ -65,9 +65,8 @@ function(datavec, fitformula, eps = 0.00001, iterlimit = 500, GAM = FALSE,
 # $glmobj:  glm model
 # $offsetvalue: final offsetvalues from iterative fit
 # $plotobj: gam plot object (if GAM & gamplot==TRUE, else NULL)
-# ---------------------------------------------------------------- 
-# 
-  datavec2$offsetvalue=0
+# ----------------------------------------------------------------
+  datavec2$offsetvalue <- 0
   done <- FALSE
   i <- 1
   plotobj <- NULL
@@ -108,7 +107,7 @@ function(datavec, fitformula, eps = 0.00001, iterlimit = 500, GAM = FALSE,
     if(!done){
       oldoff <- datavec$offsetvalue
 #     if(GAM)
-        off <-  - log(plogis(predict(ioglm,newdata=datavec2)))
+        off <-  - log(plogis(predict(ioglm, newdata=datavec2)))
 #       off <-  - log(plogis(ioglm$
 #         additive.predictors - datavec$
 #         offsetvalue))
@@ -132,9 +131,9 @@ function(datavec, fitformula, eps = 0.00001, iterlimit = 500, GAM = FALSE,
 
 # list(glm = ioglm, offsetvalue = datavec$offsetvalue, plotobj = 
 #   plotobj)
-  if(GAM) ioglm$offset=off
+  if(GAM) ioglm$offset <- off
 
-  class(ioglm)=c("remglm",class(ioglm))
+  class(ioglm) <- c("remglm", class(ioglm))
 
   return(ioglm)
 }

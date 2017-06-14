@@ -146,9 +146,9 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
                            vars         = as.vector(vars),
                            sbar         = as.vector(sbar))
       }else{
-        sobs = data.frame(Region.Label=levels(obs$Region.Label),
-                          vars=rep(NA,length(levels(obs$Region.Label))),
-                          sbar=rep(NA,length(levels(obs$Region.Label))))
+        sobs <- data.frame(Region.Label = levels(obs$Region.Label),
+                           vars = rep(NA, length(levels(obs$Region.Label))),
+                           sbar = rep(NA, length(levels(obs$Region.Label))))
       }
       Nhat.by.sample <- merge(Nhat.by.sample, sobs, by.x = "Region.Label",
                               by.y = "Region.Label", all.x = TRUE)

@@ -6,7 +6,8 @@ coef.trial <- function(object,...){
   if(!is.null(coef(object$ds)$exponent)){
      rn <- row.names(par)
      par <- rbind(par,coef(object$ds)$exponent)
-     row.names(par) <- c(rn, paste("ds expon:",row.names(coef(object$ds)$exponent)))
+     row.names(par) <- c(rn, paste("ds expon:",
+                                   row.names(coef(object$ds)$exponent)))
   }
 
   rn <- row.names(par)

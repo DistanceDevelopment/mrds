@@ -71,8 +71,8 @@ ddf.trial <- function(dsmodel,mrmodel,data,meta.data=list(),control=list(),
   xmat <- data.list$xmat
 
   # Create result list
-  result=list(call=call, data=data, mrmodel=mrmodel, dsmodel=dsmodel,
-              meta.data=meta.data, control=control, method="trial")
+  result <- list(call=call, data=data, mrmodel=mrmodel, dsmodel=dsmodel,
+                 meta.data=meta.data, control=control, method="trial")
   class(result) <- c("trial","ddf")
 
   # Fit the conditional detection functions using ddf.trial.fi

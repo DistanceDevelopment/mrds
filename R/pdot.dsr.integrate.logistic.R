@@ -68,26 +68,26 @@ pdot.dsr.integrate.logistic <- function(right, width, beta, x,
     }
     if(is.constant){
       int1 <- rep(integratelogistic(x=x[x$observer==1,][1,], models, beta,
-                                    lower=lower,right, point),
+                                    lower=lower, right, point),
                   nrow(x[x$observer==1,]))
     }else{
       int1 <- rep(NA,nrow(x[x$observer==1,]))
       for(i in 1:nrow(x[x$observer==1,])){
         int1[i] <- integratelogistic(x=(x[x$observer==1,])[i,], models,
-                                     beta,lower=lower,right,point)
+                                     beta, lower=lower,right,point)
       }
     }
 
     if(!BT){
       if(is.logistic.constant(x[x$observer==2,],models$g0model,width)){
         int2 <- rep(integratelogistic(x=x[x$observer==2,][1,], models, beta,
-                                      lower=lower,right, point),
+                                      lower=lower, right, point),
                     nrow(x[x$observer==2,]))
       }else{
         int2 <- rep(NA,nrow(x[x$observer==2,]))
         for(i in 1:nrow(x[x$observer==2,])){
           int2[i] <- integratelogistic(x=x[x$observer==2,][i,], models,
-                                            beta,lower=lower,right, point)
+                                            beta, lower=lower, right, point)
         }
       }
     }else{

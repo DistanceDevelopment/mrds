@@ -32,8 +32,10 @@ covered.region.dht <- function(obs, samples, group){
     # Merge with samples
     num.obs <- data.frame(Label = names(sum.obs), n = as.vector(sum.obs))
     Nhats <- data.frame(Label = names(Nhats), Nhat = as.vector(Nhats))
-    Nhat.by.sample <- merge(samples, Nhats,by.x = "Label", by.y = "Label", all.x = TRUE)
-    Nhat.by.sample <- merge(Nhat.by.sample, num.obs, by.x = "Label", by.y = "Label", all.x = TRUE)
+    Nhat.by.sample <- merge(samples, Nhats,by.x = "Label", by.y = "Label",
+                            all.x = TRUE)
+    Nhat.by.sample <- merge(Nhat.by.sample, num.obs, by.x = "Label",
+                            by.y = "Label", all.x = TRUE)
     Nhat.by.sample$Nhat[is.na(Nhat.by.sample$Nhat)] <- 0
     Nhat.by.sample$n[is.na(Nhat.by.sample$n)] <- 0
 

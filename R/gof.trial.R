@@ -50,7 +50,7 @@ gof.trial <- function(model, breaks=NULL, nc=NULL){
                    sum, na.rm=TRUE)
 
   # Get predicted values for ds component
-  expected.1=rep(0,nc)
+  expected.1 <- rep(0,nc)
   for(j in 1:nc){
     expected.1[j] <- sum(predict(model, compute=TRUE,
                                  int.range=matrix(c(breaks[j],breaks[j+1]),

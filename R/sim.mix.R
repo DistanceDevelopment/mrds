@@ -15,11 +15,11 @@
 #' @note At the moment this is TOTALLY UNSUPPORTED!
 #'       Please don't use it for anything important!
 
-sim.mix<-function(n, sigma,mix.prop,width,means=0){
+sim.mix<-function(n, sigma, mix.prop, width, means=0){
 
    # TODO:
    #  * covariates
-   #  * From SNW: "All following could be made more efficient by not 
+   #  * From SNW: "All following could be made more efficient by not
    #               generating so many more than needed..."
 
 
@@ -32,13 +32,13 @@ sim.mix<-function(n, sigma,mix.prop,width,means=0){
    ## \alpha_i = p_i \sqrt{2 \pi sigma_i^2}
    ## the truncated version of the latter is easy to simulate from.
 
-   
-   
+
    ## mixture method
    alpha <- mix.prop*(sqrt(2*pi)*sigma) ## transform to mixture weights
    alpha <- alpha/(sum(alpha)) ## normalize
-   ii <- sample(1:length(mix.prop),size=2*n,replace=TRUE,prob=alpha) ## sample mixture index
-   d <- abs(rnorm(ii,means,sigma[ii])) ## sample from components
+   ## sample mixture index
+   ii <- sample(1:length(mix.prop), size=2*n, replace=TRUE, prob=alpha)
+   d <- abs(rnorm(ii, means, sigma[ii])) ## sample from components
    d <- d[d<=width]   ## reject beyond truncation
    d <- d[1:n] ## ditch the excess
 

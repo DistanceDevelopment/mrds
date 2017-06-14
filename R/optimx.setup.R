@@ -53,12 +53,12 @@ optimx.setup <- function(par, fn, gr=NULL, hess=NULL, lower=-Inf, upper=Inf,
       ctrl$kkt<-TRUE # default it to compute KKT tests
       if (is.null(gr)) { # no analytic gradient
          if (npar > 50) {
-           ctrl$kkt=FALSE # too much work when large number of parameters
+           ctrl$kkt <- FALSE # too much work when large number of parameters
            if (ctrl$trace>0) cat("gr NULL, npar > 50, kkt set FALSE\n")
          }
       } else {
          if (npar > 500) {
-            ctrl$kkt=FALSE # too much work when large number of parameters, even with analytic gradient
+            ctrl$kkt <- FALSE # too much work when large number of parameters, even with analytic gradient
             if (ctrl$trace>0) cat("gr NULL, npar > 50, kkt set FALSE\n")
          }
       }

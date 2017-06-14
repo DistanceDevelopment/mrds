@@ -28,7 +28,8 @@
 #' @importFrom graphics polygon rug
 #' @importFrom grDevices rgb
 #' @export
-check.mono <- function(df,strict=TRUE,n.pts=100,tolerance=1e-6,plot=FALSE,max.plots=6){
+check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
+                       max.plots=6){
 
   # extract the ddf object from the fitted model
   ddfobj <- df$ds$aux$ddfobj

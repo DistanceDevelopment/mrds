@@ -22,9 +22,11 @@
 #'   for shape function}
 #' @author Jeff Laake; Dave Miller
 #' @keywords utility
-cds <- function(key=NULL,adj.series=NULL,adj.order=NULL,adj.scale="width",
-                adj.exp=FALSE,formula=~1,shape.formula=~1){
-# Since we only have a special case of mcds here, lets just let it
-# do the work.
-  return(mcds(formula,shape.formula=shape.formula,key=key,adj.series=adj.series,adj.order=adj.order,adj.scale=adj.scale,adj.exp=adj.exp))
+cds <- function(key=NULL, adj.series=NULL, adj.order=NULL, adj.scale="width",
+                adj.exp=FALSE, formula=~1, shape.formula=~1){
+  # Since we only have a special case of mcds here, lets just let it
+  # do the work.
+  return(mcds(formula, shape.formula=shape.formula, key=key,
+              adj.series=adj.series, adj.order=adj.order, adj.scale=adj.scale,
+              adj.exp=adj.exp))
 }

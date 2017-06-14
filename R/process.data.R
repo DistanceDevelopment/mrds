@@ -48,7 +48,7 @@
 #' @keywords utility
 process.data <- function(data, meta.data=list(), check=TRUE){
 
-  set.default.width=function(data, meta.data){
+  set.default.width <- function(data, meta.data){
   # set.default.width - sets default transect width when none was specified
   #  Arguments:
   #  data      - dataframe
@@ -97,14 +97,14 @@ process.data <- function(data, meta.data=list(), check=TRUE){
   #    warning("If analysis fails it may be due to difference in data between observer 1 and 2;\n fields such as distance, size and covariates should be the same")
 
   # Determine if data are binned by presence of distbegin and distend fields
-  if(is.null(data$distend)|is.null(data$distbegin)){
+  if(is.null(data$distend) | is.null(data$distbegin)){
     binned <- FALSE
   }else{
-    if(all(is.null(data$distend))|all(is.null(data$distbegin))){
+    if(all(is.null(data$distend)) | all(is.null(data$distbegin))){
       binned <- FALSE
     }else{
       if(any(is.null(data$distend) & !is.null(data$distbegin)) |
-         any(is.null(data$distbegin)&!is.null(data$distend))){
+         any(is.null(data$distbegin) & !is.null(data$distend))){
         stop("mismatched distance intervals - one or more endpoints are missing")
       }else{
         binned <- TRUE
@@ -117,7 +117,7 @@ process.data <- function(data, meta.data=list(), check=TRUE){
   }
 
   if(!meta.data$binned & binned){
-    warning("data contain distbegin and distend fields but binned=FALSE. Analyzing as not binned",immediate.=TRUE)
+    warning("data contain distbegin and distend fields but binned=FALSE. Analyzing as not binned", immediate.=TRUE)
     binned <- FALSE
   }
 

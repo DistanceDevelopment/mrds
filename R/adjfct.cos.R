@@ -16,7 +16,7 @@ adjfct.cos <- function(distance,scaling=1,adj.order,adj.parm=NULL,
 
   cossum <- 0
 
-  for(i in 1:length(adj.order)){
+  for(i in seq_along(adj.order)){
     cossum <- cossum + (adj.parm[i]*cos((adj.order[i]*pi*distance)/scaling))
   }
 

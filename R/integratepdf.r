@@ -17,8 +17,8 @@
 #' @keywords utility
 # @importFrom mgcv uniquecombs
 #' @importFrom stats integrate
-integratepdf <- function(ddfobj, select, width, int.range,
-                         standardize=TRUE, point=FALSE, left=0, doeachint=FALSE){
+integratepdf <- function(ddfobj, select, width, int.range, standardize=TRUE,
+                         point=FALSE, left=0, doeachint=FALSE){
   # Make sure there is consistency between integration ranges and data
   # It is ok to have a single observation with multiple ranges or a single range
   # with multiple observations but otherwise the numbers must agree if both >1

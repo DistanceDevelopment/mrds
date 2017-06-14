@@ -19,8 +19,8 @@ gof.trial.fi <- function(model,breaks=NULL,nc=NULL){
   # If number of classes for histogram intervals was not set
   # compute a reasonable default
   if(is.null(nc)){
-    nc<-round( sqrt(min(length(xmat$distance[xmat$observer==1&xmat$detected==1]),
-                 length(xmat$distance[xmat$observer==1&xmat$timesdetected==2]) )),0)
+    nc<-round(sqrt(min(length(xmat$distance[xmat$observer==1&xmat$detected==1]),
+                 length(xmat$distance[xmat$observer==1&xmat$timesdetected==2]))),0)
   }
 
   # Set up default break points unless specified

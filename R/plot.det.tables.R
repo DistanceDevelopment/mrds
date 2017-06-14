@@ -53,35 +53,37 @@ plot.det.tables <- function(x,which=1:6,angle=-45,density=20,col1="black",
   breaks <- x$breaks
 
   if(is.element(1,which)&!is.null(x$Observer1)){
-    plot_seen(x$Observer1,col1,col2,c("Detected by either observer",
-                                      "Detected by observer 1"),...)
+    plot_seen(x$Observer1, col1, col2, c("Detected by either observer",
+                                         "Detected by observer 1"), ...)
   }
 
   if(is.element(2,which)&!is.null(x$Observer2)){
-    plot_seen(x$Observer2,col1,col2,c("Detected by either observer",
-                                      "Detected by observer 2"),...)
+    plot_seen(x$Observer2, col1, col2, c("Detected by either observer",
+                                         "Detected by observer 2"), ...)
   }
 
   if(is.element(3,which)&!is.null(x$Duplicates)){
     histline(x$Duplicates, breaks=breaks, lineonly=FALSE, xlab="Distance",
              ylab="Frequency", angle=angle, density=density, col=col1, ...)
-    legend("topright",legend=c("Seen by both observers"),lty=1,lwd=3,col=c(col1))
+    legend("topright", legend=c("Seen by both observers"), lty=1, lwd=3,
+           col=c(col1))
   }
 
   if(is.element(4,which)&!is.null(x$Pooled)){
     histline(x$Pooled, breaks=breaks, lineonly=FALSE, xlab="Distance",
              ylab="Frequency", angle=angle, density=density, col=col1, ...)
-    legend("topright",legend=c("Seen by either observer"),lty=1,lwd=3,col=c(col1))
+    legend("topright", legend=c("Seen by either observer"), lty=1, lwd=3,
+           col=c(col1))
   }
 
   if(is.element(5,which)&!is.null(x$Obs1_2)){
-    plot_seen(x$Obs1_2,col1,col2,c("Detected by observer 2",
-                                   "Detected by observer 1 | 2"),...)
+    plot_seen(x$Obs1_2, col1, col2, c("Detected by observer 2",
+                                      "Detected by observer 1 | 2"), ...)
   }
 
   if(is.element(6,which)&!is.null(x$Obs2_1)){
-    plot_seen(x$Obs2_1,col1,col2,c("Detected by observer 1",
-                                   "Detected by observer 2 | 1"),...)
+    plot_seen(x$Obs2_1, col1, col2, c("Detected by observer 1",
+                                      "Detected by observer 2 | 1"), ...)
   }
 
   invisible()

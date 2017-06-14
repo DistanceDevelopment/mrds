@@ -28,7 +28,7 @@
 #' par(mfrow=c(2,2))
 #' plot(tabs,new=FALSE,which=c(1,2,5,6))
 #' }
-det.tables=function(model,nc=NULL,breaks=NULL){
+det.tables <- function(model, nc=NULL, breaks=NULL){
 
   # do nothing if we have single observer data
   if(model$method=="ds"){

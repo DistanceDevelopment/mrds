@@ -26,7 +26,7 @@ prob.deriv <- function(par,model,parfct,observer=NULL,fittedmodel=NULL){
     model$par <- par
     if(model$method!="ds"){
       if(model$method=="io" | model$method=="trial" | model$method=="rem"){
-        model$mr$mr$coefficients <-model$par[1:length(model$mr$mr$coefficients)]
+        model$mr$mr$coefficients<-model$par[seq_along(model$mr$mr$coefficients)]
         model$ds$par <- model$par[(length(model$mr$mr$coefficients)+1):
                                    length(par)]
         model$ds$ds$aux$ddfobj <-assign.par(model$ds$ds$aux$ddfobj,model$ds$par)

@@ -5,12 +5,12 @@
 # group  - if TRUE computes group abundance and if FALSE individual abundance
 #
 # result - abundance estimate
-NCovered.rem <- function(par,model,group=TRUE,...){
+NCovered.rem <- function(par, model, group=TRUE, ...){
   if(!is.null(par)){
-    model$mr$mr$coefficients <- par[1:length(model$mr$mr$coefficients)]
+    model$mr$mr$coefficients <- par[seq_along(model$mr$mr$coefficients)]
     model$ds$par <- par[(length(model$mr$mr$coefficients)+1):length(par)]
     model$ds$ds$aux$ddfobj <- assign.par(model$ds$ds$aux$ddfobj, model$ds$par)
-    fitted <- predict(model,compute=TRUE,integrate=TRUE)$fitted
+    fitted <- predict(model, compute=TRUE, integrate=TRUE)$fitted
   }else{
     fitted <- model$fitted
   }

@@ -61,17 +61,16 @@ io.glm <- function(datavec, fitformula, eps = 0.00001, iterlimit = 500,
 # $glmobj:  glm model
 # $offsetvalue: final offsetvalues from iterative fit
 # $plotobj: gam plot object (if GAM & gamplot==TRUE, else NULL)
-# ---------------------------------------------------------------- 
-# 
+
   done <- FALSE
   i <- 1
   plotobj <- NULL
   while(i <= iterlimit & !done) {
-#  fit the glm or gam
+    # fit the glm or gam
     if(GAM) {
-      ioglm <- mgcv::gam(formula = fitformula, family = binomial, data = datavec)
+      ioglm <- mgcv::gam(formula=fitformula, family=binomial, data=datavec)
     }else{
-      ioglm <- glm(formula = fitformula, family = binomial, data = datavec)
+      ioglm <- glm(formula=fitformula, family=binomial, data=datavec)
     }
 
     coeff <- ioglm$coeff
@@ -82,16 +81,16 @@ io.glm <- function(datavec, fitformula, eps = 0.00001, iterlimit = 500,
       oldcoeff <- coeff
       oldp <- fittedp
     }else{
-#    calculate differences between previous and present set of model outputs
+      # calculate differences between previous and present set of model outputs
       reldiff <- max(abs(plogis(coeff) - plogis(oldcoeff))/plogis(oldcoeff))
-      
+
       if(is.na(reldiff)) {
         print("Can't calculate regression coefficients - model has not converged")
         print(" - last fit used for estimation" )
         ioglm <- oldmodel
         done <- TRUE
       }
-      
+
       if(reldiff < eps & !done) {
         done <- TRUE
       }else{
@@ -130,9 +129,9 @@ io.glm <- function(datavec, fitformula, eps = 0.00001, iterlimit = 500,
 
 # list(glm = ioglm, offsetvalue = datavec$offsetvalue, plotobj = 
 #   plotobj)
-  if(GAM) ioglm$offset=off
+  if(GAM) ioglm$offset <- off
 
-  class(ioglm)=c("ioglm",class(ioglm))
+  class(ioglm) <- c("ioglm", class(ioglm))
 
   return(ioglm)
 }

@@ -53,11 +53,11 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   options(contrasts=c("contr.treatment","contr.poly"))
 
   # Set up meta data values
-  meta.data=assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
+  meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
                                    int.range=NA,point=FALSE)
 
   # Set up control values
-  control=assign.default.values(control, showit=0,
+  control <- assign.default.values(control, showit=0,
                                 estimate=TRUE, refit=TRUE, nrefits=25,
                                 initial=NA, lowerbounds=NA, upperbounds=NA,
                                 mono.points=20)
@@ -69,7 +69,7 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   # Create result list
   result <- list(call=call, data=data, mrmodel=mrmodel, dsmodel=dsmodel,
                  meta.data=meta.data, control=control, method="io")
-  class(result)=c("io","ddf")
+  class(result) <- c("io","ddf")
 
   # Fit the conditional detection functions using ddf.io.fi  
   result$mr <- ddf.io.fi(model=mrmodel,data,meta.data,control,call,method="io")
@@ -112,8 +112,8 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   result$criterion <- -2*result$lnl + 2*npar
 
   # Get fitted values and predict abundance and its variance in covered region
-  result$fitted=predict(result)$fitted
-  result$Nhat=NCovered(result)
+  result$fitted <- predict(result)$fitted
+  result$Nhat <- NCovered(result)
 
   # Restore user options
   options(save.options)

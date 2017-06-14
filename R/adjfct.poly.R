@@ -19,7 +19,7 @@ adjfct.poly <- function(distance,scaling=1,adj.order,adj.parm=NULL,
   # Should have checked the order beforehand
   polysum <- 0
 
-  for(i in 1:length(adj.order)){
+  for(i in seq_along(adj.order)){
     polysum <- polysum + (adj.parm[i]*(distance/scaling)^adj.order[i])
   }
 

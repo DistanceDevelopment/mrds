@@ -25,7 +25,7 @@ flt.var <- function(ddfobj, misc.options){
 
   #   Compute first partial (numerically) of log(f(y)) for each observation
   #   for each parameter and store in parmat (n by length(fpar))
-  for (i in 1:length(fpar)){
+  for(i in seq_along(fpar)){
     deltap <- .0001*fpar1[i]
     if(deltap==0) deltap <- 0.0001
     fpar[i] <- fpar1[i]- deltap
@@ -38,8 +38,8 @@ flt.var <- function(ddfobj, misc.options){
   # Compute varmat using first partial approach (pg 62 of Buckland et al 2002)
   varmat <- matrix(0,ncol=length(fpar1),nrow=length(fpar1))
 
-  for(i in 1:length(fpar1)){
-    for(j in 1:length(fpar1)){
+  for(i in seq_along(fpar1)){
+    for(j in seq_along(fpar1)){
       varmat[i,j] <- sum(parmat[,i]*parmat[,j])
     }
   }

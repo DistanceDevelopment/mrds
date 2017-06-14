@@ -7,7 +7,8 @@
 #' @param x1 linear predictor for 1, without distance
 #' @param x2 linear predictor for 2, without distance
 #' @author David L Miller
-logisticdupbyx_fast <- function(distance, x1, x2, models, beta, point, beta_distance){
+logisticdupbyx_fast <- function(distance, x1, x2, models, beta, point,
+                                beta_distance){
 
   # function to calculate p/(1+p)
   ologit <- function(p) p/(1+p)

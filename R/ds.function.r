@@ -31,7 +31,7 @@ ds.function <- function(model,newdata=NULL,obs="All",conditional=FALSE,
     newdat <- model$mr$data
   }
 
-  newdat$offsetvalue=rep(0,dim(newdat)[1])
+  newdat$offsetvalue <- rep(0, dim(newdat)[1])
 
   # Also, depending on the type of model, get det fct predicted values
   # Note g0 = p(0) and prob.det are integrated values (mu)

@@ -25,10 +25,11 @@ print.summary.rem.fi <- function(x,...){
 
   cat("\n")
   if(!is.null(x$Nhat)){
-    parameters <- data.frame(Estimate=c(x$average.p,x$average.p0.1,x$Nhat))
-    row.names(parameters) <- c("Average p","Average primary p(0)","N in covered region")
+    parameters <- data.frame(Estimate=c(x$average.p, x$average.p0.1, x$Nhat))
+    row.names(parameters) <- c("Average p", "Average primary p(0)",
+                               "N in covered region")
     if(!is.null(x$average.p.se)){
-      parameters$SE <- c(x$average.p.se,x$average.p0.1.se,x$Nhat.se)
+      parameters$SE <- c(x$average.p.se, x$average.p0.1.se, x$Nhat.se)
       parameters$CV <- parameters$SE/parameters$Estimate
     }
   }else{

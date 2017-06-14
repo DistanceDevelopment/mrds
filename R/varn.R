@@ -34,7 +34,7 @@
 #'   Jupp, J.L. Laake and L. Thomas. 2009. Estimating the encounter rate
 #'   variance in distance sampling. Biometrics 65: 225-236.
 #' @keywords utility
-varn <- function(lvec,nvec,type){
+varn <- function(lvec, nvec, type){
   #  Function courtesy of Rachel Fewster with a few minor changes
 
   ntot <- sum(nvec)
@@ -43,8 +43,9 @@ varn <- function(lvec,nvec,type){
 
   ## Go through the estimators one by one.
   ## R2, R3, R4, S1, S2, O1, O2, O3
-  if(!(type %in% c("R2","R3","R4","S1","S2","O1","O2","O3")))
-    stop (paste("Encounter rate variance type '",type,"' is not recognized.",sep=""))
+  if(!(type %in% c("R2", "R3", "R4", "S1", "S2", "O1", "O2", "O3")))
+    stop (paste("Encounter rate variance type '", type,
+                "' is not recognized.", sep=""))
 
   ## First the estimators based on the assumption of a random sample
   ## of lines: R2, R3, R4:
@@ -168,7 +169,7 @@ covn <- function (lvec, groups1, groups2, type){
   n2 <- sum(groups2)
   er2 <- n2/L
 
-  k=length(lvec)
+  k <- length(lvec)
   if(type=="R3"){
     varer <- sum(lvec * (groups1/lvec - er1)*(groups2/lvec-er2))/(L*(k-1))
   }else{

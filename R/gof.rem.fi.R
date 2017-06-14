@@ -51,8 +51,8 @@ gof.rem.fi <- function(model,breaks=NULL,nc=NULL){
   # Get predicted values for ds component
   expected.1 <- rep(0,nc)
   for(j in 1:nc){
-     expected.1[j]=sum(predict(model,integrate=TRUE,compute=TRUE,
-                               int.range=breaks[j+1])$fitted/model$fitted)
+     expected.1[j] <- sum(predict(model, integrate=TRUE, compute=TRUE,
+                                  int.range=breaks[j+1])$fitted/model$fitted)
   }
 
   n <- expected.1[nc]

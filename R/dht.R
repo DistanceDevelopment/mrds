@@ -154,7 +154,8 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     numRegions <- length(unique(samples$Region.Label))
     if(numRegions > 1){
       estimate.table <- data.frame(
-                          Label = c(levels(unique(samples$Region.Label)),"Total"),
+                          Label = c(levels(unique(samples$Region.Label)),
+                                    "Total"),
                           Estimate = rep(0, numRegions + 1),
                           se = rep(NA,numRegions + 1),
                           cv = rep(NA, numRegions + 1),
@@ -199,7 +200,8 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
       colnames(summary.table) <- c("Region", "Area", "CoveredArea",
                                    "Effort", "n","k")
     }else{
-      colnames(summary.table) = c("Region", "Area", "CoveredArea", "Effort", "n")
+      colnames(summary.table) <- c("Region", "Area", "CoveredArea",
+                                   "Effort", "n")
     }
 
     if(numRegions > 1){

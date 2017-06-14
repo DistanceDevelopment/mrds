@@ -41,6 +41,6 @@ ddf.gof <- function(model,breaks=NULL,nc=NULL,qq=TRUE,...){
     result <- list(chisquare=result)
   }
 
-  class(result)=c("ddf.gof")
+  class(result) <- c("ddf.gof")
   return(result)
 }
