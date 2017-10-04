@@ -24,7 +24,7 @@
 #'   cumulative distribution function values} \item{ks}{list with K-S statistic
 #'   (\code{Dn}) and p-value (\code{p})} \item{CvM}{list with CvM statistic
 #'   (\code{W}) and p-value (\code{p})}
-#' @author Jeff Laake
+#' @author Jeff Laake, David L Miller
 #' @seealso \code{\link{ddf.gof}}, \code{\link{cdf.ds}}
 #' @references Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers, T.A.
 #'   Marques, J.R.B. Bishop, and L. Thomas. 2004.  Further topics in distance
@@ -123,8 +123,13 @@ qqplot.ddf <- function(model,plot=TRUE,...){
     abline(0, 1, ...)
   }
 
+  ## calculate test statistics
+  # Kolmogorov-Smirnov
   Dn <- max(max(abs(lower.edf-cdfvalues)), max(abs(upper.edf-cdfvalues)))
+  # Cramer-von Mises
   W <- 1/(12*n) + sum((cdfvalues - ((1:n)-.5)/n)^2)
+
+  # build return object
   return(list(edf=cbind(lower.edf, upper.edf),
               cdf=cdfvalues,
               ks=list(Dn=Dn, p=pks(Dn, n)),

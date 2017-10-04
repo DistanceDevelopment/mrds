@@ -51,6 +51,6 @@ Burnham, K.P., S.T. Buckland, J.L. Laake, D.L. Borchers, T.A.
 \code{\link{ddf.gof}}, \code{\link{cdf.ds}}
 }
 \author{
-Jeff Laake
+Jeff Laake, David L Miller
 }
 \keyword{utility}
