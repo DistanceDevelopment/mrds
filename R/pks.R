@@ -1,5 +1,5 @@
 # Distance sampling Kolmogorov-Smirnov test
-pks <- function(Dn,n){
+pks <- function(Dn, n){
 
   diff <- 1
   p <- exp(-2*n*Dn^2)
