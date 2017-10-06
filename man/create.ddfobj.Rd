@@ -14,8 +14,7 @@ scale formula, and shape formula}
 
 \item{meta.data}{list of options describing data like width, etc}
 
-\item{initial}{vector of initial values for parameters of the detection
-function}
+\item{initial}{named list of initial values for parameters of the detection function (should have at least \code{"scale"}, maybe also have \code{"shape"} and \code{"adjustments"})}
 }
 \value{
 Distance sampling function object list with elements that all can be
