@@ -1,0 +1,137 @@
+#' Generate data from a fitted detection function
+#'
+#' @param ds.object a fitted detection function object
+#'
+#' @note This function changes the random number generator seed. To avoid any potential side-effects, use something like: \code{seed <- get(".Random.seed",envir=.GlobalEnv)} before running code and \code{assign(".Random.seed",seed,envir=.GlobalEnv)} after.
+#' @author David L. Miller
+#' @importFrom stats runif rnorm fitted
+sample_ddf <- function(ds.object){
+
+  # this would make life a lot easier...
+  if(!inherits(ds.object, "ds")){
+    stop("Can only sample from ds models")
+  }
+
+  # how many samples do we need?
+  n.ds.samples <- nrow(ds.object$data)
+
+  # how many samples do we have so far?
+  n.samps <- 0
+  dists <- c()
+
+  # make sure that a model gets fitted
+  dud.df <- TRUE
+
+  covars <- FALSE
+  direct_sim <- FALSE
+  # can we directly simulate?
+  if(ds.object$ds$aux$ddfobj$type=="hn" &
+     is.null(ds.object$ds$aux$ddfobj$adjustment$parameters) &
+     ds.object$ds$aux$ddfobj$scale$formula=="~1"){
+    # do we have a covariate model?
+    if(ds.object$ds$aux$ddfobj$scale$formula != "~1"){
+      covars <- TRUE
+      formula <- as.formula(ds.object$ds$aux$ddfobj$scale$formula)
+      model_xmat <- ds.object$ds$aux$ddfobj$xmat
+    }
+  }
+
+  # create an object to hold the parameters
+  pars <- list()
+  pars$scale <- ds.object$ds$aux$ddfobj$scale$parameters
+  if(!is.null(ds.object$ds$aux$ddfobj$shape$parameters)){
+    pars$shape <- ds.object$ds$aux$ddfobj$shape$parameters
+  }
+  if(!is.null(ds.object$ds$aux$ddfobj$adjustment$parameters)){
+    pars$adjustment <- ds.object$ds$aux$ddfobj$adjustment$parameters
+  }
+
+
+  # okay now do the simulation
+  while(dud.df){
+    # if we just have a half-normal key function then we can
+    # directly simulate...
+    if(direct_sim){
+      dists <- abs(rnorm(n.ds.samples, mean=0, sd=exp(pars$scale)))
+
+    # otherwise we need to do some rejection sampling
+    }else{
+
+      # since rejection sampling is time consuming, generate lots of
+      # samples at once, we re-scale the number by the inverse of the 
+      # ratio accepted. The first time over, let's make that 10x
+      n.mult <- 10
+
+      width <- ds.object$meta.data$width
+
+      while(n.samps < n.ds.samples){
+
+        # how many samples should we take?
+        this.n.samps <- n.mult*(n.ds.samples-n.samps)
+
+        # generate some new distances
+        xmat <- data.frame(distance = runif(this.n.samps, 0, width),
+                           detected = rep(1, this.n.samps),
+                           object   = 1:this.n.samps,
+                           binned   = rep(FALSE, this.n.samps))
+
+        # condition on covariates
+        if(covars){
+          vars <- all.vars(formula)
+          xmat[, vars] <- model_xmat[, vars]
+        }
+
+        # create a ddf object
+        ddfobj <- mrds::create.ddfobj(as.formula(ds.object$dsmodel), xmat,
+                                      ds.object$meta.data, pars)
+
+        # generate acceptance probability
+        U <- runif(this.n.samps)
+
+        # was it accepted?
+        inout <- U <= mrds::detfct(xmat$distance, ddfobj,
+                                   standardize=FALSE, width=width)
+
+        dists <- c(dists, xmat$distance[inout])
+
+        n.samps <- length(dists)
+
+        # update the number of extra samples we make by inverting the ratio
+        # of accepted to generated this round
+        n.mult <- ceiling(1/(sum(inout)/this.n.samps))
+      }
+    }
+
+    # make sure that we got the right number
+    dists <- dists[1:n.ds.samples]
+    dists <- data.frame(distance = dists,
+                        detected = rep(1,length(dists)),
+                        object   = 1:length(dists))
+
+    # condition on covariates
+    if(covars){
+      vars <- all.vars(formula)
+      dists[, vars] <- model_xmat[, vars]
+    }
+
+
+    # fit the model to the new data
+    ddf.call <- ds.object$call
+    ddf.call$data <- dists
+    ddf.call$meta.data <- ds.object$meta.data
+    ddf.call$dsmodel <- as.formula(ds.object$dsmodel)
+    ddf.fitted <- try(with(ds.object, eval(ddf.call)))
+
+    # if it all went well, then set dud.df to FALSE and quit the loop
+    if(all(class(ddf.fitted)!="try-error")){
+      dud.df <- FALSE
+    }else{
+      # otherwise forget everything and start again
+      n.samps <- 0
+      dists <- c()
+    }
+  }
+
+  # return the offset
+  return(ddf.fitted)
+}
