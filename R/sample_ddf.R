@@ -28,12 +28,13 @@ sample_ddf <- function(ds.object){
   if(ds.object$ds$aux$ddfobj$type=="hn" &
      is.null(ds.object$ds$aux$ddfobj$adjustment$parameters) &
      ds.object$ds$aux$ddfobj$scale$formula=="~1"){
-    # do we have a covariate model?
-    if(ds.object$ds$aux$ddfobj$scale$formula != "~1"){
-      covars <- TRUE
-      formula <- as.formula(ds.object$ds$aux$ddfobj$scale$formula)
-      model_xmat <- ds.object$ds$aux$ddfobj$xmat
-    }
+    direct_sim <- TRUE
+  }
+  # do we have a covariate model?
+  if(ds.object$ds$aux$ddfobj$scale$formula != "~1"){
+    covars <- TRUE
+    formula <- as.formula(ds.object$ds$aux$ddfobj$scale$formula)
+    model_xmat <- ds.object$ds$aux$ddfobj$xmat
   }
 
   # create an object to hold the parameters
@@ -53,74 +54,87 @@ sample_ddf <- function(ds.object){
     # directly simulate...
     if(direct_sim){
       dists <- abs(rnorm(n.ds.samples, mean=0, sd=exp(pars$scale)))
+    dists <- data.frame(distance = dists,
+                        detected = rep(1,length(dists)),
+                        object   = 1:length(dists))
 
     # otherwise we need to do some rejection sampling
     }else{
 
+      if(ds.object$meta.data$point){
+      #  accept_p <- mrds::fr
+        sampler <- function(n) rtriangle(n, a=ds.object$meta.data$left,
+                                         b=ds.object$meta.data$width,
+                                         c=ds.object$meta.data$width)
+      }else{
+      #  accept_p <- mrds::fx
+        sampler <- function(n) runif(n, min=ds.object$meta.data$left,
+                                     max=ds.object$meta.data$width)
+      }
+      accept_p <- mrds::detfct
       # since rejection sampling is time consuming, generate lots of
       # samples at once, we re-scale the number by the inverse of the 
       # ratio accepted. The first time over, let's make that 10x
       n.mult <- 10
 
-      width <- ds.object$meta.data$width
+      # data
+      xdat <- ds.object$data
+      xdat$distance <- rep(NA, nrow(xdat))
+      xdat$binned <- rep(FALSE, nrow(xdat))
+      # condition on covariates
+      if(covars){
+        vars <- all.vars(formula)
+        xdat[, vars] <- model_xmat[, vars]
+      }
 
       while(n.samps < n.ds.samples){
 
-        # how many samples should we take?
-        this.n.samps <- n.mult*(n.ds.samples-n.samps)
+        # which samples should we take?
+        #if(is.null(dists$object)){
+          ind <- xdat$object
+        #}else{
+        #  ind <- xdat$object[!(xdat$object %in% dists$object)]
+        #}
+        this.n.samps <- n.mult*length(ind)
 
         # generate some new distances
-        xmat <- data.frame(distance = runif(this.n.samps, 0, width),
-                           detected = rep(1, this.n.samps),
-                           object   = 1:this.n.samps,
-                           binned   = rep(FALSE, this.n.samps))
+        this_xdat <- xdat[rep(which(ind %in% xdat$object), n.mult),]
+        this_xdat$distance <- sampler(this.n.samps)
 
-        # condition on covariates
-        if(covars){
-          vars <- all.vars(formula)
-          xmat[, vars] <- model_xmat[, vars]
-        }
 
         # create a ddf object
-        ddfobj <- mrds::create.ddfobj(as.formula(ds.object$dsmodel), xmat,
+        ddfobj <- mrds::create.ddfobj(as.formula(ds.object$dsmodel), this_xdat,
                                       ds.object$meta.data, pars)
 
         # generate acceptance probability
         U <- runif(this.n.samps)
 
         # was it accepted?
-        inout <- U <= mrds::detfct(xmat$distance, ddfobj,
-                                   standardize=FALSE, width=width)
+        inout <- U <= accept_p(this_xdat$distance, ddfobj,
+                               standardize=FALSE, width=ds.object$meta.data$width)
 
-        dists <- c(dists, xmat$distance[inout])
+        dists <- rbind(dists, this_xdat[inout, ])
+        dists <- dists[!duplicated(dists$object), ]
 
-        n.samps <- length(dists)
+        n.samps <- nrow(dists)
 
         # update the number of extra samples we make by inverting the ratio
         # of accepted to generated this round
-        n.mult <- ceiling(1/(sum(inout)/this.n.samps))
+        n.mult <- min(1, ceiling(1/(sum(inout)/this.n.samps)))
       }
     }
 
     # make sure that we got the right number
-    dists <- dists[1:n.ds.samples]
-    dists <- data.frame(distance = dists,
-                        detected = rep(1,length(dists)),
-                        object   = 1:length(dists))
-
-    # condition on covariates
-    if(covars){
-      vars <- all.vars(formula)
-      dists[, vars] <- model_xmat[, vars]
-    }
-
+    dists <- dists[!duplicated(dists$object), ]
 
     # fit the model to the new data
     ddf.call <- ds.object$call
     ddf.call$data <- dists
     ddf.call$meta.data <- ds.object$meta.data
+    ddf.call$control <- ds.object$control
+    ddf.call$control$initial <- pars
     ddf.call$dsmodel <- as.formula(ds.object$dsmodel)
-    ddf.fitted <- try(with(ds.object, eval(ddf.call)))
+    ddf.fitted <- suppressMessages(try(with(ds.object, eval(ddf.call))))
 
     # if it all went well, then set dud.df to FALSE and quit the loop
     if(all(class(ddf.fitted)!="try-error")){
