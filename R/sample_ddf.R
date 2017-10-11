@@ -61,17 +61,18 @@ sample_ddf <- function(ds.object){
     # otherwise we need to do some rejection sampling
     }else{
 
+      # what should the sampler be?
       if(ds.object$meta.data$point){
-      #  accept_p <- mrds::fr
         sampler <- function(n) rtriangle(n, a=ds.object$meta.data$left,
                                          b=ds.object$meta.data$width,
                                          c=ds.object$meta.data$width)
       }else{
-      #  accept_p <- mrds::fx
         sampler <- function(n) runif(n, min=ds.object$meta.data$left,
                                      max=ds.object$meta.data$width)
       }
+      # what function do we use to get the acceptance probability
       accept_p <- mrds::detfct
+
       # since rejection sampling is time consuming, generate lots of
       # samples at once, we re-scale the number by the inverse of the 
       # ratio accepted. The first time over, let's make that 10x
