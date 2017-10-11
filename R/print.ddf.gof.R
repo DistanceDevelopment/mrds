@@ -92,10 +92,10 @@ print.ddf.gof <- function(x,...){
   if(!is.null(gof$dsgof)){
       cat("\nDistance sampling Kolmogorov-Smirnov test\n")
       cat("Test statistic = ", format(gof$dsgof$ks$Dn, digits=5),
-          " P = ", format(gof$dsgof$ks$p, digits=5), "\n")
+          " p-value = ", format(gof$dsgof$ks$p, digits=5), "\n")
       cat("\nDistance sampling Cramer-von Mises test (unweighted)\n")
       cat("Test statistic = ", format(gof$dsgof$CvM$W, digits=5),
-          " P = ", format(gof$dsgof$CvM$p, digits=5), "\n")
+          " p-value = ", format(gof$dsgof$CvM$p, digits=5), "\n")
   }
 
   invisible()
