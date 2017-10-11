@@ -46,6 +46,7 @@ gof_tests <- function(model, nboot=100, progress=FALSE){
   }
 
   # now calculate for the model
+  edf_cdf <- get_edf_cdf(model)
   Dn <- max(c(abs(edf_cdf$lower.edf - edf_cdf$cdfvalues),
               abs(edf_cdf$upper.edf - edf_cdf$cdfvalues)))
   W <- 1/(12*edf_cdf$n) + sum((edf_cdf$cdfvalues - ((1:edf_cdf$n)-.5)/edf_cdf$n)^2)
