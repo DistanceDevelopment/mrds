@@ -16,11 +16,14 @@
 #' @return list of p-values for the two tests (\code{ks.p}, \code{cramer.p}) an dtest statistics (\code{Dn} for K-S and \code{W} for C-vM).
 #' @author David L Miller
 #'
-gof_tests <- function(model, nboot=100){
+gof_tests <- function(model, nboot=100, progress=FALSE){
 
   # storage
   ks.boot <- rep(0, nboot)
   cramer.boot <- rep(0, nboot)
+
+  if(progress) pb <- txtProgressBar(0, nboot)
+
 
   for (i in 1:nboot) {
     # simulate data from the model
@@ -30,7 +33,7 @@ gof_tests <- function(model, nboot=100){
     if(!inherits(refit, "try-error")){
 
       ## calculate test statistics and store them
-      edf_cdf <- get_edf_cdf(model)
+      edf_cdf <- get_edf_cdf(refit)
       # Kolmogorov-Smirnov
       ks.boot[i] <- max(c(abs(edf_cdf$lower.edf - edf_cdf$cdfvalues),
                           abs(edf_cdf$upper.edf - edf_cdf$cdfvalues)))
@@ -39,6 +42,7 @@ gof_tests <- function(model, nboot=100){
                                                 ((1:edf_cdf$n)-.5)/edf_cdf$n)^2)
 
     }
+    if(progress) setTxtProgressBar(pb, i)
   }
 
   # now calculate for the model
