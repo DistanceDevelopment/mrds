@@ -24,6 +24,7 @@ gof_tests <- function(model, nboot=100, progress=FALSE){
 
   if(progress) pb <- txtProgressBar(0, nboot)
 
+  boot_success <- 0
 
   for (i in 1:nboot) {
     # simulate data from the model
@@ -41,6 +42,7 @@ gof_tests <- function(model, nboot=100, progress=FALSE){
       cramer.boot[i] <- 1/(12*edf_cdf$n) + sum((edf_cdf$cdfvalues -
                                                 ((1:edf_cdf$n)-.5)/edf_cdf$n)^2)
 
+      boot_success <- boot_success + 1
     }
     if(progress) setTxtProgressBar(pb, i)
   }
@@ -55,6 +57,11 @@ gof_tests <- function(model, nboot=100, progress=FALSE){
   ks.p <- mean(Dn <= ks.boot, na.rm=TRUE)
   cramer.p <- mean(W <= cramer.boot, na.rm=TRUE)
 
-  return(list(ks=ks.p, cramer=cramer.p,
-              Dn=Dn, W=W))
+  res <- list(ks=ks.p, cramer=cramer.p,
+              Dn=Dn, W=W)
+
+  attr(res, "boot_success") <- boot_success
+  attr(res, "nboot") <- nboot
+
+  return(res)
 }

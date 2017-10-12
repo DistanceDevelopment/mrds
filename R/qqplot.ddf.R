@@ -49,7 +49,9 @@ qqplot.ddf <- function(model, plot=TRUE, nboot=100, ...){
   return(list(edf=cbind(edf_cdf$lower.edf, edf_cdf$upper.edf),
               cdf=edf_cdf$cdfvalues,
               ks=list(Dn=gof_p$Dn, p=gof_p$ks),
-              CvM=list(W=gof_p$W, p=gof_p$cramer)
+              CvM=list(W=gof_p$W, p=gof_p$cramer),
+              nboot =  attr(gof_p, "nboot"),
+              boot_success = attr(gof_p, "boot_success")
              )
         )
 }

@@ -50,16 +50,16 @@ sample_ddf <- function(ds.object){
 
   # okay now do the simulation
   while(dud.df){
-    # if we just have a half-normal key function then we can
-    # directly simulate...
     if(direct_sim){
+      # if we just have a half-normal key function then we can
+      # directly simulate...
       dists <- abs(rnorm(n.ds.samples, mean=0, sd=exp(pars$scale)))
-    dists <- data.frame(distance = dists,
-                        detected = rep(1,length(dists)),
-                        object   = 1:length(dists))
+      dists <- data.frame(distance = dists,
+                          detected = rep(1,length(dists)),
+                          object   = 1:length(dists))
 
-    # otherwise we need to do some rejection sampling
     }else{
+      # otherwise we need to do some rejection sampling
 
       # what should the sampler be?
       if(ds.object$meta.data$point){
@@ -135,10 +135,11 @@ sample_ddf <- function(ds.object){
     ddf.call$control <- ds.object$control
     ddf.call$control$initial <- pars
     ddf.call$dsmodel <- as.formula(ds.object$dsmodel)
-    ddf.fitted <- suppressMessages(try(with(ds.object, eval(ddf.call))))
+    ddf.fitted <- suppressWarnings(suppressMessages(try(
+                    with(ds.object, eval(ddf.call)))))
 
     # if it all went well, then set dud.df to FALSE and quit the loop
-    if(all(class(ddf.fitted)!="try-error")){
+    if(all(class(ddf.fitted) != "try-error")){
       dud.df <- FALSE
     }else{
       # otherwise forget everything and start again
