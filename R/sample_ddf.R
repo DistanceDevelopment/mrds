@@ -1,4 +1,4 @@
-#' Generate data from a fitted detection function
+#' Generate data from a fitted detection function and refit the model
 #'
 #' @param ds.object a fitted detection function object
 #'
@@ -27,7 +27,8 @@ sample_ddf <- function(ds.object){
   # can we directly simulate?
   if(ds.object$ds$aux$ddfobj$type=="hn" &
      is.null(ds.object$ds$aux$ddfobj$adjustment$parameters) &
-     ds.object$ds$aux$ddfobj$scale$formula=="~1"){
+     ds.object$ds$aux$ddfobj$scale$formula=="~1" &
+     !ds.object$meta.data$point){
     direct_sim <- TRUE
   }
   # do we have a covariate model?
@@ -53,7 +54,13 @@ sample_ddf <- function(ds.object){
     if(direct_sim){
       # if we just have a half-normal key function then we can
       # directly simulate...
-      dists <- abs(rnorm(n.ds.samples, mean=0, sd=exp(pars$scale)))
+      while(length(dists) < n.ds.samples){
+        dists <- c(dists, abs(rnorm(n.ds.samples,mean=0, sd=exp(pars$scale))))
+        dists <- dists[dists<= ds.object$meta.data$width &
+                       dists>= ds.object$meta.data$left]
+      }
+      dists <- dists[1:n.ds.samples]
+
       dists <- data.frame(distance = dists,
                           detected = rep(1,length(dists)),
                           object   = 1:length(dists))
@@ -62,21 +69,50 @@ sample_ddf <- function(ds.object){
       # otherwise we need to do some rejection sampling
 
       # what should the sampler be?
-      if(ds.object$meta.data$point){
-        sampler <- function(n) rtriangle(n, a=ds.object$meta.data$left,
-                                         b=ds.object$meta.data$width,
-                                         c=ds.object$meta.data$width)
-      }else{
+      #if(ds.object$meta.data$point){
+      #  sampler <- function(n) rtriangle(n, a=ds.object$meta.data$left,
+      #                                   b=ds.object$meta.data$width,
+      #                                   c=ds.object$meta.data$width)
+      #}else{
         sampler <- function(n) runif(n, min=ds.object$meta.data$left,
                                      max=ds.object$meta.data$width)
-      }
+      #}
       # what function do we use to get the acceptance probability
-      accept_p <- mrds::detfct
+      if(ds.object$meta.data$point){
+        #pa <- summary(ds.object)$n/summary(ds.object)$Nhat
+        nu <- integrate(function(x) x*mrds::detfct(distance=x,
+                                  ddfobj=ds.object$ds$aux$ddfobj,
+                                  index=1,
+                                  width=ds.object$meta.data$width,
+                                  left=ds.object$meta.data$left),
+                                  upper=ds.object$meta.data$width,
+                                  lower=ds.object$meta.data$left)$value
+        #M <- optimize(function(x) x*mrds::detfct(distance=x,
+        #                          ddfobj=ds.object$ds$aux$ddfobj,
+        #                          index=1,
+        #                          width=ds.object$meta.data$width,
+        #                          left=ds.object$meta.data$left),
+        #              interval=c(ds.object$meta.data$left,
+        #                         ds.object$meta.data$width),
+        #              maximum=TRUE)
+        #M <- M$objective
+
+        accept_p_clo <- function(M=M){
+          function(distance, ...){
+            mult <- (2*pi*distance/nu)#/M
+            #mult <- (distance/nu)/M
+            return(mult*mrds::detfct(distance=distance, ...))
+          }
+        }
+        accept_p <- accept_p_clo(M)
+      }else{
+        accept_p <- mrds::detfct
+      }
 
       # since rejection sampling is time consuming, generate lots of
       # samples at once, we re-scale the number by the inverse of the 
-      # ratio accepted. The first time over, let's make that 10x
-      n.mult <- 10
+      # ratio accepted. The first time over, let's make that 5x
+      n.mult <- 5
 
       # data
       xdat <- ds.object$data
@@ -115,18 +151,25 @@ sample_ddf <- function(ds.object){
                                standardize=FALSE, width=ds.object$meta.data$width)
 
         dists <- rbind(dists, this_xdat[inout, ])
-        dists <- dists[!duplicated(dists$object), ]
+        if(covars){
+          dists <- dists[!duplicated(dists$object), ]
+        }
 
         n.samps <- nrow(dists)
 
-        # update the number of extra samples we make by inverting the ratio
+        # update the number of extra samples by inverting the ratio
         # of accepted to generated this round
         n.mult <- min(1, ceiling(1/(sum(inout)/this.n.samps)))
       }
     }
 
     # make sure that we got the right number
-    dists <- dists[!duplicated(dists$object), ]
+    if(covars){
+      dists <- dists[!duplicated(dists$object), ]
+    }else{
+      dists <- dists[1:n.ds.samples, ]
+      dists$object <- 1:n.ds.samples
+    }
 
     # fit the model to the new data
     ddf.call <- ds.object$call
@@ -138,13 +181,15 @@ sample_ddf <- function(ds.object){
     ddf.fitted <- suppressWarnings(suppressMessages(try(
                     with(ds.object, eval(ddf.call)))))
 
-    # if it all went well, then set dud.df to FALSE and quit the loop
-    if(all(class(ddf.fitted) != "try-error")){
-      dud.df <- FALSE
-    }else{
-      # otherwise forget everything and start again
+    # did that model work?
+    if(all(class(ddf.fitted) == "try-error") ||
+       any(is.na(ddf.fitted$hessian))){
+      # forget everything and start again
       n.samps <- 0
       dists <- c()
+    }else{
+      # if it all went well, then set dud.df to FALSE and quit the loop
+      dud.df <- FALSE
     }
   }
 
