@@ -90,9 +90,11 @@ print.ddf.gof <- function(x,...){
   }
 
   if(!is.null(gof$dsgof)){
+    if(!is.na(gof$dsgof$ks$Dn)){
       cat("\nDistance sampling Kolmogorov-Smirnov test\n")
       cat("Test statistic = ", format(gof$dsgof$ks$Dn, digits=6),
           " p-value = ", format(gof$dsgof$ks$p, digits=6), "\n", sep="")
+    }
       cat("\nDistance sampling Cramer-von Mises test (unweighted)\n", sep="")
       cat("Test statistic = ", format(gof$dsgof$CvM$W, digits=6),
           " p-value = ", format(gof$dsgof$CvM$p, digits=6), "\n", sep="")

@@ -14,6 +14,7 @@
 #' @param model fitted distance detection function model object
 #' @param plot the Q-Q plot be plotted or just report statistics?
 #' @param nboot number of replicates to use to calculate p-values for the goodness of fit test statistics
+#' @param ks perform the Kolmogorov-Smirnov test (this involves many bootstraps so can take a while)
 #' @param \dots additional arguments passed to \code{\link{plot}}
 #' @export
 #' @return A list of goodness of fit related values: \item{edf}{matrix of lower
@@ -30,7 +31,7 @@
 #'   Oxford University Press.
 #' @keywords utility
 #' @importFrom graphics abline
-qqplot.ddf <- function(model, plot=TRUE, nboot=100, ...){
+qqplot.ddf <- function(model, plot=TRUE, nboot=100, ks=FALSE, ...){
 
   # get the edf/cdf values
   edf_cdf <- get_edf_cdf(model)
@@ -42,8 +43,14 @@ qqplot.ddf <- function(model, plot=TRUE, nboot=100, ...){
     abline(0, 1, ...)
   }
 
+  # don't do KS if the model is not "ds"
+  if(!("ds" %in% class(model)) & ks){
+    warning("Can't calculate Kolmogorov-Smirnov p-value for non-\"ds\" models, only calculating Cramer-von Mises")
+    ks <- FALSE
+  }
+
   # do the tests
-  gof_p <- gof_tests(model, nboot=nboot)
+  gof_p <- gof_tests(model, ks=ks, nboot=nboot)
 
   # build return object
   return(list(edf=cbind(edf_cdf$lower.edf, edf_cdf$upper.edf),

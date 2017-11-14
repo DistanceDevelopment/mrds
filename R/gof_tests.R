@@ -8,7 +8,7 @@
 # @return list with p-values for the two tests (\code{ks.p}, \code{cramer.p}) an dtest statistics (\code{Dn} for K-S and \code{W} for C-vM).
 # @author David L Miller
 #
-gof_tests <- function(model, nboot=500, progress=FALSE){
+gof_tests <- function(model, nboot=500, ks=FALSE, progress=FALSE){
 
   # storage
   ks.boot <- rep(0, nboot)
@@ -25,7 +25,7 @@ gof_tests <- function(model, nboot=500, progress=FALSE){
   model_W <- 1/(12*model_edf_cdf$n) + sum((model_edf_cdf$cdfvalues - ((1:model_edf_cdf$n)-.5)/model_edf_cdf$n)^2)
 
   # can skip the bootstraps if we want
-  if(nboot>0){
+  if(ks && nboot>0){
     for (i in 1:nboot) {
       # simulate data from the model
       # fit a model
