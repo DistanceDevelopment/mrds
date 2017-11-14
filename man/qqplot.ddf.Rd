@@ -4,7 +4,7 @@
 \alias{qqplot.ddf}
 \title{Quantile-quantile plot and goodness of fit tests for detection functions}
 \usage{
-qqplot.ddf(model, plot = TRUE, nboot = 100, ...)
+qqplot.ddf(model, plot = TRUE, nboot = 100, ks = FALSE, ...)
 }
 \arguments{
 \item{model}{fitted distance detection function model object}
@@ -12,6 +12,8 @@ qqplot.ddf(model, plot = TRUE, nboot = 100, ...)
 \item{plot}{the Q-Q plot be plotted or just report statistics?}
 
 \item{nboot}{number of replicates to use to calculate p-values for the goodness of fit test statistics}
+
+\item{ks}{perform the Kolmogorov-Smirnov test (this involves many bootstraps so can take a while)}
 
 \item{\dots}{additional arguments passed to \code{\link{plot}}}
 }
