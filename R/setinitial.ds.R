@@ -28,9 +28,10 @@ setinitial.ds <- function(ddfobj, width, initial, point, left){
   }
 
   dmat <- ddfobj$xmat
-  if(point){
-    dmat$distance <- sqrt(dmat$distance)
-  }
+  # unclear of the origin of this code but somehow it messes everything up
+  #if(point){
+  #  dmat$distance <- sqrt(dmat$distance)
+  #}
   point <- FALSE
 
   # Set shape parameters for special case of cds hazard function
