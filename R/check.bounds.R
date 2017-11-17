@@ -12,8 +12,8 @@
 #' @return \code{TRUE} if bounded (ie parameters close to bound), else \code{FALSE}
 #'
 #' @author Dave Miller; Jeff Laake
-check.bounds <- function(lt,lowerbounds,upperbounds,ddfobj,showit,
-                         setlower,setupper){
+check.bounds <- function(lt, lowerbounds, upperbounds, ddfobj, showit,
+                         setlower, setupper){
 
   tol <- 1e-6
 
@@ -24,16 +24,17 @@ check.bounds <- function(lt,lowerbounds,upperbounds,ddfobj,showit,
 
     if(bound.label=="lower" && (any(par<bounds) | any(abs((bounds-par))<tol))){
       bounded <- TRUE
-    }else if(bound.label=="upper" && (any(par>bounds) | any((bounds-par)<tol))){
+    }else if(bound.label=="upper" && (any(par>bounds) | any(abs(((bounds-par)<tol))))){
       bounded <- TRUE
     }else{
       bounded <-FALSE
     }
-    if(showit>=1){
-      # Issue warning if any of the parameters are at their bounds
-      message(paste("One or more parameters was at a",bound.label,"bound\n",
-                    "Parameters:",paste(par,collapse=", "),"\n",
-                    bound.label,"bounds:",paste(bounds,collapse=", ")))
+
+    # Issue message if any of the parameters are at their bounds
+    if(bounded & showit>=1){
+      message(paste("One or more parameters was at a", bound.label, "bound\n",
+                    "Parameters:", paste(par, collapse=", "), "\n",
+                    bound.label, "bounds:", paste(bounds, collapse=", ")))
     }
     return(bounded)
   }
@@ -42,13 +43,13 @@ check.bounds <- function(lt,lowerbounds,upperbounds,ddfobj,showit,
   # handle hazard rate power par
   if(ddfobj$type=="hr"){
     bounded <- chk.bnds(lt$par[2:length(lt$par)],
-                        lowerbounds[2:length(lt$par)],"lower",setlower, tol)
+                        lowerbounds[2:length(lt$par)], "lower", setlower, tol)
   }else{
-    bounded <- chk.bnds(lt$par,lowerbounds,"lower",setlower,tol)
+    bounded <- chk.bnds(lt$par, lowerbounds, "lower", setlower, tol)
   }
 
   ## check upper bounds
-  bounded <- bounded | chk.bnds(lt$par,upperbounds,"upper",setupper,tol)
+  bounded <- bounded | chk.bnds(lt$par, upperbounds, "upper", setupper, tol)
 
   return(bounded)
 }
