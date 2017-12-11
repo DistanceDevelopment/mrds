@@ -97,14 +97,14 @@ sample_ddf <- function(ds.object){
         #              maximum=TRUE)
         #M <- M$objective
 
-        accept_p_clo <- function(M=M){
+        accept_p_clo <- function(){
           function(distance, ...){
             mult <- (2*pi*distance/nu)#/M
             #mult <- (distance/nu)/M
             return(mult*mrds::detfct(distance=distance, ...))
           }
         }
-        accept_p <- accept_p_clo(M)
+        accept_p <- accept_p_clo()
       }else{
         accept_p <- mrds::detfct
       }
