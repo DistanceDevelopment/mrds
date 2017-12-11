@@ -50,7 +50,7 @@ qqplot.ddf <- function(model, plot=TRUE, nboot=100, ks=FALSE, ...){
   }
 
   # do the tests
-  gof_p <- gof_tests(model, ks=ks, nboot=nboot)
+  gof_p <- gof.pvalues(model, ks=ks, nboot=nboot)
 
   # build return object
   return(list(edf=cbind(edf_cdf$lower.edf, edf_cdf$upper.edf),
