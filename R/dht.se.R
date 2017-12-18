@@ -62,6 +62,11 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
     }
     return(df)
   }
+  
+  # Check if the survey is a point transect and issue a warning if there is unequal effort
+  if(model$meta.data$point & length(unique(samples$Effort)) > 1){
+    warning("Current methods in mrds may give biased estimates of encounter rate variance as your effort varies across transects. See ?dht for further information.", immediate. = TRUE, call. = FALSE)
+  }
 
   # First compute variance component due to estimation of detection function
   # parameters. This uses the delta method and produces a v-c matrix if more
