@@ -2,6 +2,7 @@ mrds 2.2.0
 -----------
 
 * fixed bug in calculation of Kolmogorov-Smirnov p-values. Previous methods did not take into account that parameters of the detection function were estimated, so a new bootstrap-based approach has been implemented. As this is time-consuming, the Kolmogorov-Smirnov test is no longer performed by default (use ks=TRUE to get the test).
+* Encounter rate variance for point transects when points were not all sampled an equal number of times was incorrect. mrds now uses the P3 estimator from Fewster et al (2009) for point transect encounter rate variance.
 
 mrds 2.1.18
 -----------

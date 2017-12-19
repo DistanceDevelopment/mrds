@@ -75,9 +75,7 @@ The second component (encounter rate variance) can be computed in one of several
 
 In general if any covariates are used in the models, the default \code{varflag=2} is preferable as the estimated abundance will take into account variability due to covariate effects. If the population is clustered the mean group size and standard error is also reported.
 
-For options \code{1} and \code{2}, it is then possible to choose one of the estimator forms given in Fewster et al (2009) : \code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"}, \code{"O1"}, \code{"O2"} or \code{"O3"} by specifying the \code{ervar=} option. By default \code{"R2"} is used. See \code{\link{varn}} and Fewster et al (2009) for further details on these estimators.
-
-Please note that the specific point transect estimators suggested in Fewster et al (2009) Web Appendix B have yet to be implemented in mrds. In the case where each point has been visited the same number of times, the R2 and R3 estimators should give the same variance estimate as the point transect variance estimator P1. However, when point transects have been visited a different number of times mrds may give biased estimates of encounter rate variance and users should refer to Fewster et al (2009) Web Appendix B.
+For options \code{1} and \code{2}, it is then possible to choose one of the estimator forms given in Fewster et al (2009) for line transects: \code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"}, \code{"O1"}, \code{"O2"} or \code{"O3"} by specifying the \code{ervar=} option (default \code{"R2"}). For points estimator \code{"P3"} is the only option. See \code{\link{varn}} and Fewster et al (2009) for further details on these estimators.
 }
 
 \section{\code{dht} options}{
