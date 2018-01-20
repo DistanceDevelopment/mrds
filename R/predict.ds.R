@@ -88,6 +88,13 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
     # Extract other values from model object
     if(!is.null(newdata)){
 
+
+      # set the distance column to be the left truncation distance
+      # this gets around an issue that Nat Kelly found where later process.data
+      # will remove entires with distance < left truncation
+      newdata$distance <- left
+
+
       newdata_save <- newdata
 
       # get the data in the model
