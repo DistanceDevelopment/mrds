@@ -12,8 +12,6 @@ test_that("golf tees",{
   ds.model <- ddf(dsmodel=~cds(key="hn", formula=~1), data=tee.data, method="ds",
                   meta.data=list(width=4))
 
-  ## Not run:
-
   # same model, but calculating abundance
   # need to supply the region, sample and observation tables
   region <- book.tee.data$book.tee.region
@@ -72,6 +70,27 @@ Expected cluster size
 3  Total   3.072581     0.1391365    0.04528327"
 
   expect_output(print(ds.dht.model), res)
+
+
+  # check that errors are thrown when the wrong ER variance is asked for
+  expect_error(dht(ds.model, region.table=region,
+                   sample.table=samples, obs.table=obs,
+                   options=list(ervar="P3")),
+               "Encounter rate variance estimator P3 may only be used with point transects, set with options=list(ervar=...)", fixed=TRUE)
+
+  # fake up some pt data
+  pt.sample <- data.frame(Sample.Label=1, Region.Label=1, Effort=1)
+  pt.obs <- data.frame(object=ptdata.single$object, Region.Label=1, Sample.Label=1)
+  pt.region <- data.frame(Region.Label=1, Area=1)
+  data(ptdata.single)
+  ptdata.single$distbegin <- (as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
+  ptdata.single$distend <- (as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
+  model <- ddf(data=ptdata.single, dsmodel=~cds(key="hn"),
+               meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10), width=100))
+
+  expect_warning(dht(model, region.table=pt.region, sample.table=pt.sample,
+                     obs.table=pt.obs, options=list(ervar="O1")),
+                 "Point transect encounter rate variance can only use estimator P3, switching to this estimator.", fixed=TRUE)
 
 })
 

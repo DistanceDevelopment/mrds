@@ -346,8 +346,16 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   options <- assign.default.values(options, pdelta = 0.001, varflag = 2,
                                    convert.units = 1, ervar="R2")
 
+  ## break if we use anything other than P3 with points or P3 with lines
+  if(options$ervar=="P3" & !model$meta.data$point){
+    stop("Encounter rate variance estimator P3 may only be used with point transects, set with options=list(ervar=...)")
+  }
+
   # switch to the P3 estimator if using points
   if(model$meta.data$point){
+    if(options$ervar != "P3"){
+      warning("Point transect encounter rate variance can only use estimator P3, switching to this estimator.")
+    }
     options$ervar <- "P3"
   }
 

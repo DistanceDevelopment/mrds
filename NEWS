@@ -4,6 +4,7 @@ mrds 2.2.0
 * fixed bug in calculation of Kolmogorov-Smirnov p-values. Previous methods did not take into account that parameters of the detection function were estimated, so a new bootstrap-based approach has been implemented. As this is time-consuming, the Kolmogorov-Smirnov test is no longer performed by default (use ks=TRUE to get the test).
 * Encounter rate variance for point transects when points were not all sampled an equal number of times was incorrect. mrds now uses the P3 estimator from Fewster et al (2009) for point transect encounter rate variance.
 * Bug in predicting when left truncation is used. Previously if the distance column in the new data was set to zero and left truncation was > 0 predictions were discarded, this was particularly problematic for io, etc MRDS models. Thanks to Natalie Kelly for spotting this and suggesting a fix.
+* Add errors when "P3" is used as an encounter rate variance estimator with non-point transect data, throws a warning and switches to P3 for points when it's not specified.
 
 mrds 2.1.18
 -----------
