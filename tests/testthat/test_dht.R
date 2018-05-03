@@ -80,9 +80,9 @@ Expected cluster size
 
   # fake up some pt data
   pt.sample <- data.frame(Sample.Label=1, Region.Label=1, Effort=1)
+  data(ptdata.single)
   pt.obs <- data.frame(object=ptdata.single$object, Region.Label=1, Sample.Label=1)
   pt.region <- data.frame(Region.Label=1, Area=1)
-  data(ptdata.single)
   ptdata.single$distbegin <- (as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
   ptdata.single$distend <- (as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
   model <- ddf(data=ptdata.single, dsmodel=~cds(key="hn"),
