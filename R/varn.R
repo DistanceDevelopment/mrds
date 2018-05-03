@@ -36,7 +36,7 @@
 #'   Jupp, J.L. Laake and L. Thomas. 2009. Estimating the encounter rate
 #'   variance in distance sampling. Biometrics 65: 225-236.
 #' @keywords utility
-varn <- function(lvec, nvec, type, point){
+varn <- function(lvec, nvec, type){
   #  Function courtesy of Rachel Fewster with a few minor changes
 
   ntot <- sum(nvec)
