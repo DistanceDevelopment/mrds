@@ -91,10 +91,10 @@ context("easy tests: line transect example")
 # code here is a bit cryptic...
 # only want this data visible from the tests, so need to load it this way...
 # load the data
-ex.filename<-system.file("testData/ltexample.rda", package="mrds")
+ex.filename <- system.file("testData/ltexample.rda", package="mrds")
 load(ex.filename)
 # and the model definitions and results from distance
-res.filename<-system.file("testData/ltresults.rda", package="mrds")
+res.filename <- system.file("testData/ltresults.rda", package="mrds")
 load(res.filename)
 
 width<-25
@@ -102,20 +102,17 @@ width<-25
 # load the results from Distance
 # same order as here, so just iterate over the list
 
-test.df<-function(mcds.bit,dat,width,mono=FALSE,strict=FALSE,mono.tol=1e-7,showit=0){
-  suppressMessages(ddf(dsmodel=mcds.bit,data=dat,method="ds",
-      meta.data=list(width=width,mono=mono,mono.strict=strict),
-#      control=list(mono.tol=mono.tol,showit=showit))
-      control=list(mono.tol=1e-5,mono.delta=1e-5,showit=showit)))
+test.df <- function(mcds.bit, dat, width, mono=FALSE, strict=FALSE,
+                    mono.tol=1e-7, showit=0){
+  suppressMessages(ddf(dsmodel=mcds.bit, data=dat, method="ds",
+                       meta.data=list(width=width, mono=mono,
+                                      mono.strict=strict),
+                       control=list(mono.tol=1e-5, mono.delta=1e-5,
+                                    showit=showit)))
 }
 
-models<-ltmodels
-model.set<-1:nrow(models)
-
-### weird bugs
-#wb<-c(11,12,27,28,30)
-### really weird bugs
-#rwb<-c(21)
+models <- ltmodels
+model.set <- 1:nrow(models)
 
 # remove some models
 # 12 has a paramter ~=0, so don't try to fit that
@@ -124,25 +121,25 @@ model.set<-1:nrow(models)
 #  plot(seq(0,25,len=1000),ack(seq(0,25,len=1000)))
 #  integrate(ack,upper=25,lower=0)
 
-model.set<-model.set[-c(1,10,11,12,14,16,21,22,27:30)]
+model.set <- model.set[-c(1, 10, 11, 12, 14, 16, 21, 22, 27:30)]
 
-better<-rep(0,nrow(models))
+better <- rep(0, nrow(models))
 
 for(i in model.set){
 
   set.seed(1245)
   # uncomment for debug
-  #cat("\nmodel",i,":\n")
+  #cat("\nmodel", i, ":\n")
 
   # construct the model
-  mcds.call<-paste("~mcds(key=\"")
-  key<-switch(models$key[i],HN="hn",HA="hr")
-  mcds.call<-paste(mcds.call,key,"\"",sep="")
-  adjust<-switch(models$adj[i],
-                 CO="cos",
-                 PO="poly",
-                 HE="herm")
-  scaling<-models$scaling[i]
+  mcds.call <- paste("~mcds(key=\"")
+  key <- switch(models$key[i], HN="hn", HA="hr")
+  mcds.call <- paste(mcds.call, key, "\"", sep="")
+  adjust <- switch(models$adj[i],
+                   CO="cos",
+                   PO="poly",
+                   HE="herm")
+  scaling <- models$scaling[i]
   if(scaling=="sigma") scaling<-"scale"
   # build the bits relating to adjustments
   if(models$noAdj[i]!=0){
@@ -155,41 +152,41 @@ for(i in model.set){
                                  adj.scale=\"",scaling,"\"",sep="")
   }
   # monotonicity bits
-  mono<-switch(models$monotone[i],
-               None=FALSE,
-               Weak=TRUE,
-               strict=TRUE)
-  mono.strict<-switch(models$monotone[i],
-                None=FALSE,
-                Weak=FALSE,
-                strict=TRUE)
+  mono <- switch(models$monotone[i],
+                 None=FALSE,
+                 Weak=TRUE,
+                 strict=TRUE)
+  mono.strict <- switch(models$monotone[i],
+                        None=FALSE,
+                        Weak=FALSE,
+                        strict=TRUE)
 
-  mcds.call<-paste(mcds.call,",formula=~1)",sep="")
+  mcds.call <- paste(mcds.call, ",formula=~1)", sep="")
 
-  this.model<-ltresults[[i]]
+  this.model <- ltresults[[i]]
 
   # actually fit some models
   if(this.model$status==1 | this.model$status==2){
-    result<-try(test.df(eval(parse(text=mcds.call)),ltexample,width,
-                    mono=mono,strict=mono.strict,showit=0))
+    result <- try(test.df(eval(parse(text=mcds.call)), ltexample, width,
+                          mono=mono, strict=mono.strict, showit=0))
 
-    expect_that(all(class(result)=="try-error"),is_false(), label=i)
+    expect_that(all(class(result)=="try-error"), is_false(), info=i)
 
-    if(all(class(result)!="try-error")){
+    if(all(class(result) != "try-error")){
 
-      this.test<-paste(mcds.call,"\nmono=",mono,
-                                 "\nmono.strict=",mono.strict,"\n")
+      this.test <- paste(mcds.call, "\nmono=", mono,
+                                    "\nmono.strict=", mono.strict, "\n")
 
-      if(result$lnl<=this.model$LnL){
-        test_that(this.test,{
-          expect_that(result$lnl<=this.model$LnL,is_true(),
-                      label=paste("Likelihood for model",i,
+      if(result$lnl <= this.model$LnL){
+        test_that(this.test, {
+          expect_that(result$lnl <= this.model$LnL, is_true(),
+                      info=paste("Likelihood for model", i,
                                   "better than MCDS"))
         })
       }else{
-        test_that(this.test,{
-          expect_that(result$lnl,equals(this.model$LnL,tol=lnl.tol),
-                      label=paste("Likelihood for model",i,
+        test_that(this.test, {
+          expect_that(result$lnl, equals(this.model$LnL,tol=lnl.tol),
+                      info=paste("Likelihood for model", i,
                                   "the same as MCDS"))
         })
       }
@@ -214,7 +211,7 @@ for(i in model.set){
   #cat("\n")
 
   }else{
-    cat(paste("\n",i," -- MCDS error!\n"))
+    cat(paste("\n", i, " -- MCDS error!\n"))
   }
 }
 
