@@ -3,3 +3,6 @@ tests
 inst/testData
 inst/docs
 LICENSE
+^\.travis\.yml$
+^appveyor\.yml$
+^tic\.R$
