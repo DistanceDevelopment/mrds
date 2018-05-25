@@ -118,8 +118,8 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
 
         # don't do refitting when we are just fitting key or adjustments
         if(fitting == "adjust" | fitting=="key"){
-          refit.save<-misc.options$refit
-          misc.options$refit<-FALSE
+          refit.save <- misc.options$refit
+          misc.options$refit <- FALSE
         }
 
         if(showit >= 2) {
@@ -158,7 +158,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
             lt$par[is.na(lt$par)] <- initialvalues[is.na(lt$par)]
           }
           # Rebuild initialvalues again
-          ddfobj <- assign.par(ddfobj,lt$par)
+          ddfobj <- assign.par(ddfobj, lt$par)
           initialvalues <- getpar(ddfobj)
 
           # save the optimisation history
@@ -167,30 +167,28 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
         }
 
         # restore the refit status
-        misc.options$refit<-refit.save
-
+        misc.options$refit <- refit.save
       }
-
-      iter<-iter+1
+      iter <- iter + 1
     }
 
-    if(iter>misc.options$maxiter){
+    if(iter > misc.options$maxiter){
       warning("Maximum iterations exceeded!",
           iter,">",misc.options$maxiter,"\n")
     }
 
   }
 
-  if(showit>=1){
+  if(showit >= 1){
     cat("\nDEBUG: Convergence!",
-        "\n       Iteration ",paste(iter,metaiter,sep="."),
-        "\n       Converge   =",lt$converge,
-        "\n       lnl        =",lt$value,
-        "\n       parameters =",paste(round(lt$par,7),collapse=", "),"\n")
+        "\n       Iteration ", paste(iter, metaiter, sep="."),
+        "\n       Converge   =", lt$converge,
+        "\n       lnl        =", lt$value,
+        "\n       parameters =", paste(round(lt$par, 7), collapse=", "), "\n")
   }
 
   # get rid of the first (dummy) line of the optimisation history
-  lt$optim.history<-lt$optim.history[-1,]
+  lt$optim.history <- lt$optim.history[-1, ]
 
   # Return some (hopefully correct) results
   return(lt)
