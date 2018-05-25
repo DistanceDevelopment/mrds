@@ -143,28 +143,27 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           ## since there is a bug that leaves the optimisation with a vector
           ## when it is expecting a matrix. To avoid this bug, don't do the
           ## multiple start points in that case (should only be unif+cos(1))
-          ## models for us.
-          lt<-try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
-                        ineqfun=flnl.constr,
-                        ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
-                        LB=lowerbounds, UB=upperbounds,
-                        ddfobj=ddfobj, misc.options=misc.options,
-                        control=list(trace=as.integer(showit),
-                                     tol=misc.options$mono.tol,
-                                     delta=misc.options$mono.delta)))
-        }else{
-          # this code randomly generates starting values see ?gosolnp
-          lt<-try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+          lt <- try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
                           ineqfun=flnl.constr,
                           ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
                           LB=lowerbounds, UB=upperbounds,
                           ddfobj=ddfobj, misc.options=misc.options,
                           control=list(trace=as.integer(showit),
                                        tol=misc.options$mono.tol,
-                                       delta=misc.options$mono.delta),
-                          distr = rep(1, length(lowerbounds)),
-                          n.restarts = 2, n.sim = 200,
-                          rseed=as.integer(runif(1)*1e9)))
+                                       delta=misc.options$mono.delta)))
+        }else{
+          # this code randomly generates starting values see ?gosolnp
+          lt <- try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+                            ineqfun=flnl.constr,
+                            ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                            LB=lowerbounds, UB=upperbounds,
+                            ddfobj=ddfobj, misc.options=misc.options,
+                            control=list(trace=as.integer(showit),
+                                         tol=misc.options$mono.tol,
+                                         delta=misc.options$mono.delta),
+                            distr = rep(1, length(lowerbounds)),
+                            n.restarts = 2, n.sim = 200,
+                            rseed=as.integer(runif(1)*1e9)))
         }
 
 
@@ -298,8 +297,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       ## Convergence?!
       # OR... don't wiggle the pars or do refits if we're doing adjustment
       # or key fitting alone only do it in "all" mode
-      if(lt$conv==0|!refit | fitting!="all"){
-        itconverged<-TRUE
+      if(lt$conv==0 | !refit | fitting!="all"){
+        itconverged <- TRUE
 
         lt$aux <- c(optim.options, bounds, misc.options)
         ddfobj <- assign.par(ddfobj, lt$par)
