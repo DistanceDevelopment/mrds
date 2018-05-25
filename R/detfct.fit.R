@@ -101,31 +101,24 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
     if(showit>=2)
       cat("DEBUG: starting to cycle the optimisation...\n")
 
-    # Fudge to make this work the first time.
-    firstrun<-TRUE
+    while(iter < misc.options$maxiter){
 
-    while((iter < misc.options$maxiter) &&
-           (all((abs(initialvalues-lastvalues)/(epsilon+abs(lastvalues))) <
-               (epsilon/sqrt(nrow(ddfobj$xmat)))) |
-              firstrun)){
-
-      # Variable to count sub iterations... :)
-      metaiter<-0
-      firstrun<-FALSE
+      # Variable to count sub iterations
+      metaiter <- 0
 
       # loop through fitting the adjustment, key and full detection function
-      for(fitting in c("adjust","key","all")){
+      for(fitting in c("adjust", "key", "all")){
 
         # don't do refitting when we are just fitting key or adjustments
-        if(fitting == "adjust" | fitting=="key"){
+        if(fitting == "adjust" | fitting == "key"){
           refit.save <- misc.options$refit
           misc.options$refit <- FALSE
         }
 
         if(showit >= 2) {
-          cat("DEBUG:",fitting,"iteration ",iter,".",metaiter,"\n")
+          cat("DEBUG:", fitting, "iteration ", iter, ".", metaiter, "\n")
           cat("DEBUG: initial values =",
-               paste(round(initialvalues, 7), collapse=", "),"\n")
+               paste(round(initialvalues, 7), collapse=", "), "\n")
         }
 
         lt <- try(detfct.fit.opt(ddfobj, optim.options, bounds, misc.options,
@@ -135,7 +128,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
         # report failure
         if(all(class(lt)=="try-error")){
           if(showit>=2){
-            cat("DEBUG: iteration",iter,", fitting", fitting,"failed.\n")
+            cat("DEBUG: iteration", iter, ", fitting", fitting, "failed.\n")
           }
           if(fitting=="all"){
             stop("Fitting failed! Try again with better initial values.\n")
@@ -169,8 +162,15 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
         # restore the refit status
         misc.options$refit <- refit.save
       }
+
+      # did we converge? If so, let's get out of here!
+      if(!(all((abs(initialvalues-lastvalues)/(epsilon+abs(lastvalues))) <
+          (epsilon/sqrt(nrow(ddfobj$xmat)))))){
+        break()
+      }
+
       iter <- iter + 1
-    }
+    } # end while loop
 
     if(iter > misc.options$maxiter){
       warning("Maximum iterations exceeded!",
