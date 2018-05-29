@@ -24,7 +24,8 @@
 #'   TRUE if they are user set bounds \item setupper: TRUE if they are user set
 #'   bounds \item point: TRUE if point counts and FALSE if line transect \item
 #'   int.range: integration range values \item showit: integer value that
-#'   determines information printed during iteration \item integral.numeric
+#'   determines information printed during iteration \item silent: option 
+#'   to silence errors from detfct.fit.opt \item integral.numeric
 #'   if TRUE compute logistic integrals numerically \item
 #'   breaks: breaks in distance for defined fixed bins for analysis \item
 #'   maxiter: maximum iterations used \item refit: if TRUE, detection function
@@ -44,6 +45,8 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
 
   # show debug information
   showit <- misc.options$showit
+  # whether to silence errors from detfct.fit.optim
+  silent <- misc.options$silent
 
   # How small is small?
   epsilon <- sqrt(.Machine$double.eps)
@@ -122,7 +125,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
         }
 
         lt <- try(detfct.fit.opt(ddfobj, optim.options, bounds, misc.options,
-                                 fitting=fitting))
+                                 fitting=fitting), silent = silent)
         metaiter <- metaiter + 1
 
         # report failure
