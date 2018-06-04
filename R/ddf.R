@@ -146,7 +146,7 @@
 #'   \item{\code{debug}}{ if TRUE, if fitting fails, return an object with fitting information}
 #'   \item{\code{nofit}}{if TRUE don't fit a model, but use the starting values and generate an object based on those values}
 #'   \item{\code{optimx.method}}{one (or a vector of) string(s) giving the optimisation method to use. If more than one is supplied, the results from one are used as the starting values for the next. See \code{\link{optimx}}}
-#'   \item{\code{optimx.maxit}}{maximum number of iterations to use in the optimisation.}}
+#'   \item{\code{optimx.maxit}}{maximum number of iterations to use in the optimisation.}
 #'   \item{\code{silent}}{silences warnings within ds fitting method (helpful for running many times without generating many warning/error messages).}}
 #'
 #' @param dsmodel distance sampling model specification
