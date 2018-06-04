@@ -54,13 +54,20 @@ flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
     ddfobj <- setna$ddfobj
     fpar <- setna$fpar
   }else if(fitting=="adjust"){
-    setna <- set.na.pars("shape",ddfobj,fpar)
-    ddfobj <- setna$ddfobj
-    fpar <- setna$fpar
 
     setna <- set.na.pars("scale",ddfobj,fpar)
     ddfobj <- setna$ddfobj
     fpar <- setna$fpar
+
+    # if we have a hazard model
+    if(!is.null(ddfobj$shape)){
+      save.pars <- ddfobj[["shape"]]$parameters
+      ddfobj[["shape"]]$parameters <- rep(NA,
+                                          length(ddfobj[["shape"]]$parameters))
+      pars <- getpar(ddfobj)
+      index <- (1+ncol(ddfobj$shape$dm))
+      fpar[index:(index+ncol(ddfobj$scale$dm)-1)] <- save.pars
+    }
   }
 
   #  compute total negative log-likelihood
