@@ -87,7 +87,7 @@ For options \code{1} and \code{2}, it is then possible to choose one of the esti
  \item{\code{pdelta}}{delta value for computing numerical first derivatives (Default: 0.001)}
  \item{\code{varflag}}{0,1,2 (see "Uncertainty") (Default: \code{2})}
  \item{\code{convert.units}}{ multiplier for width to convert to units of length (Default: \code{1})}
- \item{\code{ervar}}{encounter rate variance type (see "Uncertainty" and \code{type} argument of \code{\link{varn}}). (Default: \code{"R2"})}
+ \item{\code{ervar}}{encounter rate variance type (see "Uncertainty" and \code{type} argument of \code{\link{varn}}). (Default: \code{"R2"} for lines and \code{"P3"} for points)}
 }
 }
 
