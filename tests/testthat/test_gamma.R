@@ -33,11 +33,11 @@ test_that("standardisation is done correctly",{
   # check fitted parameters
   parcomp <- mm$par
   names(parcomp) <- NULL
-  expect_equal(c(-21.6765623,0.1103963, 0.2100172),parcomp,tol=par.tol)
+  expect_equal(c(-10.4721653, 0.1106817, 0.2100327), parcomp, tol=par.tol)
 
   # generate some gamma data where the mode is away from 0
   set.seed(123)
-  gdata<-data.frame(object=1:1000,distance=rgamma(1000,scale=2,shape=3))
+  gdata<-data.frame(object=1:1000,distance=rgamma(1000, scale=2, shape=3))
 
   mm <- ddf(dsmodel=~cds(key="gamma"), data=gdata, method="ds",
             meta.data=list(width=max(gdata$distance)))
