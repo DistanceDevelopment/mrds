@@ -19,7 +19,7 @@
 #' @return
 #'
 #' For \code{coef.ds} List of data frames for coefficients (scale and exponent
-#'   (if hazard)) \item{scale}{dataframe of scale coefficent estimates and
+#'   (if hazard)) \item{scale}{dataframe of scale coefficient estimates and
 #'   standard errors} \item{exponent}{dataframe with exponent estimate and
 #'   standard error if hazard detection function}
 #'

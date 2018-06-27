@@ -12,7 +12,7 @@ nlminb_wrapper(par, ll, ugr = NULL, lower = NULL, upper = NULL, mcontrol,
 
 \item{ll}{log likelihood function}
 
-\item{ugr}{gradent function}
+\item{ugr}{gradient function}
 
 \item{lower}{lower bounds on parameters}
 

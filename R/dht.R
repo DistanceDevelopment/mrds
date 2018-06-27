@@ -64,7 +64,7 @@
 #'  Several options are available to control calculations and output:
 #'
 #' \describe{
-#'  \item{\code{ci.width}}{Confidence iterval width, expressed as a decimal between 0 and 1 (default \code{0.95}, giving a 95\% CI)}
+#'  \item{\code{ci.width}}{Confidence interval width, expressed as a decimal between 0 and 1 (default \code{0.95}, giving a 95\% CI)}
 #'  \item{\code{pdelta}}{delta value for computing numerical first derivatives (Default: 0.001)}
 #'  \item{\code{varflag}}{0,1,2 (see "Uncertainty") (Default: \code{2})}
 #'  \item{\code{convert.units}}{ multiplier for width to convert to units of length (Default: \code{1})}

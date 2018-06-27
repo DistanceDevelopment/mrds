@@ -11,7 +11,7 @@
 \item{dsmodel}{distance sampling model specification; model list with key
 function and scale formula if any}
 
-\item{mrmodel}{mark-recapture model specfication; model list with formula
+\item{mrmodel}{mark-recapture model specification; model list with formula
 and link}
 
 \item{data}{analysis dataframe}

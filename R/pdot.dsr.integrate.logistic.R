@@ -11,8 +11,8 @@
 #' @param integral.numeric set to TRUE unless data are binned (done in this fct) or the model is such that distance is not linear (eg distance^2), If integral.numeric is FALSE it will compute the integral analytically. It should only be FALSE if is.linear.logistic function is TRUE.
 #' @param BT FALSE except for the trial configuration; BT stands for Buckland-Turnock who initially proposed a trial configuration for dual observers
 #' @param models list of models including \code{g0model}
-#' @param GAM Not used at present. The idea was to be able to use a GAM for g(0) portion of detection function; shoudl always be F
-#' @param rem only TRUE for the removal configuration but not used and could be removed if pulled from the function calls. Originally thought the pdot integral would differ but it is the same as the io formula. The only thing that differes with removal is that p(2|1)=1. Observer 2 sees everything seen by observer 1,
+#' @param GAM Not used at present. The idea was to be able to use a GAM for g(0) portion of detection function; should always be F
+#' @param rem only TRUE for the removal configuration but not used and could be removed if pulled from the function calls. Originally thought the pdot integral would differ but it is the same as the io formula. The only thing that differs with removal is that p(2|1)=1. Observer 2 sees everything seen by observer 1,
 #' @param point \code{TRUE} for point transects
 #'
 #' @author Jeff Laake

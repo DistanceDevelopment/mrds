@@ -29,7 +29,7 @@
 #' @method ddf io
 #' @param dsmodel distance sampling model specification; model list with key
 #'   function and scale formula if any
-#' @param mrmodel mark-recapture model specfication; model list with formula
+#' @param mrmodel mark-recapture model specification; model list with formula
 #'   and link
 #' @param data analysis dataframe
 #' @param meta.data list containing settings controlling data structure

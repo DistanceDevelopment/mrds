@@ -1046,7 +1046,7 @@ NULL
 #'
 #' One way of obtaining starting values is to fit a simpler model first (say with fewer covariates or adjustments) and then use the starting values from this simpler model for the corresponding parameters.
 #'
-#' Another alternative to obtain starting values is to fit the model (or some submodel) using Distance for Windows. Note that Distance reports the scale parameter (or intercept in a covariate model) on the exponential sclale, so one must \code{log} this before supplying it to \code{ddf}.
+#' Another alternative to obtain starting values is to fit the model (or some submodel) using Distance for Windows. Note that Distance reports the scale parameter (or intercept in a covariate model) on the exponential scale, so one must \code{log} this before supplying it to \code{ddf}.
 #'
 #'
 #' @section Bounds:

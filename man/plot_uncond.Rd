@@ -60,7 +60,7 @@ if \code{return.lines==TRUE} returns dataframe \code{average.line}
 }
 \description{
 Plots unconditional detection function for observer=obs observations
-overlays histrogram, average detection function and values for individual
+overlays histogram, average detection function and values for individual
 observations data. Internal function called by \code{plot} methods.
 }
 \author{

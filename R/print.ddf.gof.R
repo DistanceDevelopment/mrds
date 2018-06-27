@@ -1,7 +1,7 @@
 #' Prints results of goodness of fit tests for detection functions
 #'
 #' Provides formatted output for results of goodness of fit tests: chi-square,
-#' Kolmogorv-Smirnov and Cramer-von Mises test as approrpriate.
+#' Kolmogorv-Smirnov and Cramer-von Mises test as appropriate.
 #'
 #' @method print ddf.gof
 #' @param x result of call to \code{\link{ddf.gof}}

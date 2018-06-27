@@ -1,7 +1,7 @@
 #' Plot unconditional detection function from distance sampling model
 #'
 #' Plots unconditional detection function for observer=obs observations
-#' overlays histrogram, average detection function and values for individual
+#' overlays histogram, average detection function and values for individual
 #' observations data. Internal function called by \code{plot} methods.
 #'
 #' @aliases plot_uncond

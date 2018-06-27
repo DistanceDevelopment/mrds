@@ -2,7 +2,7 @@
 #'
 #' Computes delta method variance-covariance matrix of results of any generic function \code{fct} that computes a vector of estimates as a function of a set of estimated parameters \code{par}.
 #'
-#' The delta method (aka propogation of errors is based on Taylor series approximation - see Seber's book on Estimation of Animal Abundance). It uses the first derivative of \code{fct} with respect to \code{par} which is computed in this function numerically using the central-difference formula. It also uses the variance-covariance matrix of the estimated parameters which is derived in estimating the parameters and is an input argument.
+#' The delta method (aka propagation of errors is based on Taylor series approximation - see Seber's book on Estimation of Animal Abundance). It uses the first derivative of \code{fct} with respect to \code{par} which is computed in this function numerically using the central-difference formula. It also uses the variance-covariance matrix of the estimated parameters which is derived in estimating the parameters and is an input argument.
 #'
 #' The first argument of \code{fct} should be \code{par} which is a vector of parameter estimates. It should return a single value (or vector) of estimate(s).  The remaining arguments of \code{fct} if any can be passed to \code{fct} by including them at the end of the call to \code{DeltaMethod} as \code{name=value} pairs.
 #'

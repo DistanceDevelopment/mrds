@@ -11,7 +11,7 @@
 #' @param x fitted model from \code{ddf}.
 #' @param which index to specify which plots should be produced:
 #'  \tabular{ll}{1 \tab histogram of observed distances\cr
-#'               2 \tab histogram of observed distanes with fitted line and points (default)\cr}
+#'               2 \tab histogram of observed distances with fitted line and points (default)\cr}
 #' @param breaks user defined breakpoints
 #' @param nc number of equal width bins for histogram
 #' @param jitter.v scaling option for plotting points.  Jitter is applied to points by multiplying the fitted value by a random draw from a normal distribution with mean 1 and sd \code{jitter.v[j]}.  Where \code{j=1,2} corresponds to observer \code{j} and \code{j=3} corresponds to pooled/duplicate detections.
@@ -22,7 +22,7 @@
 #' @param black.white logical variable; if \code{TRUE} plots are grayscale.
 #' @param pl.den shading density for plots of obs 1, obs 2 detections.
 #' @param pl.ang shading angle for plots of obs 1, obs 2 detections.
-#' @param main user-specfied plot title.
+#' @param main user-specified plot title.
 #' @param ylim user-specified y axis limits.
 #' @param pdf plot the histogram of distances with the PDF of the probability of detection overlaid. Ignored (with warning) for line transect models.
 #' @param pages the number of pages over which to spread the plots. For example, if \code{pages=1} then all plots will be displayed on one page. Default is 0, which prompts the user for the next plot to be displayed.
