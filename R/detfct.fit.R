@@ -40,6 +40,7 @@
 #'   list of formulas for detection function model (probably can remove this)
 #'   }}
 #' @author Dave Miller; Jeff Laake
+#' @importFrom numDeriv hessian
 detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
   # Functions Used: assign.par, detfct.fit.opt, get.par
 
@@ -88,6 +89,12 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
 
     lt <- detfct.fit.opt(ddfobj, optim.options, bounds, misc.options)
 
+    # get the Hessian for the monotonicity model
+    if(misc.options$mono){
+      hess <- numDeriv::hessian(flnl, lt$par,
+                                ddfobj=ddfobj, misc.options=misc.options)
+      attr(lt, "details") <- list(nhatend=hess)
+    }
   }else{
   # Otherwise we need to play around...
 

@@ -1,3 +1,8 @@
+mrds 2.2.1
+----------
+
+* hessian now returned when solnp (constrained optimisation) is used to fit the detection function
+
 mrds 2.2.0
 -----------
 
