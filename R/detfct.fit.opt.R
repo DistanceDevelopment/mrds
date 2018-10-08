@@ -191,6 +191,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         lt$par <- lt$pars
         lt$value <- lt$values[length(lt$values)]
         lt$message <- ""
+        # note that this gives the *augmented* hessian! Not what we want
+        #attr(lt, "details") <- list(nhatend=lt$hessian)
 
       ## end monotonically constrained estimation
       }else{
