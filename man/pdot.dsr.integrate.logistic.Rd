@@ -22,9 +22,9 @@ pdot.dsr.integrate.logistic(right, width, beta, x, integral.numeric, BT, models,
 
 \item{models}{list of models including \code{g0model}}
 
-\item{GAM}{Not used at present. The idea was to be able to use a GAM for g(0) portion of detection function; shoudl always be F}
+\item{GAM}{Not used at present. The idea was to be able to use a GAM for g(0) portion of detection function; should always be F}
 
-\item{rem}{only TRUE for the removal configuration but not used and could be removed if pulled from the function calls. Originally thought the pdot integral would differ but it is the same as the io formula. The only thing that differes with removal is that p(2|1)=1. Observer 2 sees everything seen by observer 1,}
+\item{rem}{only TRUE for the removal configuration but not used and could be removed if pulled from the function calls. Originally thought the pdot integral would differ but it is the same as the io formula. The only thing that differs with removal is that p(2|1)=1. Observer 2 sees everything seen by observer 1,}
 
 \item{point}{\code{TRUE} for point transects}
 }

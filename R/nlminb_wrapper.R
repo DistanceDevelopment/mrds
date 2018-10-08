@@ -7,7 +7,7 @@
 #'
 #' @param par starting parameters
 #' @param ll log likelihood function
-#' @param ugr gradent function
+#' @param ugr gradient function
 #' @param lower lower bounds on parameters
 #' @param upper upper bounds on parameters
 #' @param mcontrol control options

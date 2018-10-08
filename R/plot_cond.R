@@ -5,7 +5,7 @@
 #' data. Internal function called by \code{plot} methods.
 #'
 #' @aliases plot_cond
-#' @param obs obsever code
+#' @param obs observer code
 #' @param xmat processed data
 #' @param gxvalues detection function values for each observation
 #' @param model   fitted model from \code{ddf}

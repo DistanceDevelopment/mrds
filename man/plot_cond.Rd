@@ -10,7 +10,7 @@ plot_cond(obs, xmat, gxvalues, model, nc, breaks, finebr, showpoints, showlines,
   subtitle = TRUE, ...)
 }
 \arguments{
-\item{obs}{obsever code}
+\item{obs}{observer code}
 
 \item{xmat}{processed data}
 

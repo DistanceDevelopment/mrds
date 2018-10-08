@@ -15,7 +15,7 @@
 
 \item{which}{index to specify which plots should be produced:
 \tabular{ll}{1 \tab histogram of observed distances\cr
-             2 \tab histogram of observed distanes with fitted line and points (default)\cr}}
+             2 \tab histogram of observed distances with fitted line and points (default)\cr}}
 
 \item{breaks}{user defined breakpoints}
 
@@ -37,7 +37,7 @@
 
 \item{pl.ang}{shading angle for plots of obs 1, obs 2 detections.}
 
-\item{main}{user-specfied plot title.}
+\item{main}{user-specified plot title.}
 
 \item{pages}{the number of pages over which to spread the plots. For example, if \code{pages=1} then all plots will be displayed on one page. Default is 0, which prompts the user for the next plot to be displayed.}
 

@@ -6,3 +6,5 @@ LICENSE
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^tic\.R$
+^.*\.Rproj$
+^\.Rproj\.user$

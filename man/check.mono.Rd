@@ -34,7 +34,7 @@ Evaluates a series of points over the range of the detection function (left to r
 3. The detection function is never less than 0 (\code{g(x)>=0}).
 4. The detection function is never greater than 1 (\code{g(x)<=1}).
 
-For models with covarates in the scale parameter of the detection function is evaluated at all observed covariate combinations.
+For models with covariates in the scale parameter of the detection function is evaluated at all observed covariate combinations.
 
 Currently covariates in the shape parameter are not supported.
 }
