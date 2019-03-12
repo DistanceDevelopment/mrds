@@ -189,13 +189,8 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
                                      stratum.data$n, type=options$ervar)/
                                 sum(stratum.data$n)^2 + Ni^2 * vars/sbar^2
       }else{
-        if(options$varflag==2){
           vc2[i] <- varn(stratum.data$Effort.x/(scale[i] * Li),
                          stratum.data$Nhat/scale[i], type=options$ervar)
-        }else{
-          vc2[i] <- varn(stratum.data$Effort.x/(scale[i] * Li),
-                        stratum.data$Nhat/scale[i], type=options$ervar)
-        }
       }
     }
   }
