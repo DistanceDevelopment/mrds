@@ -48,34 +48,34 @@
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
 #' @importFrom stats optimHess
-ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
-                      call="",method){
+ddf.io.fi <- function(model, data, meta.data=list(), control=list(),
+                      call="", method){
   # Functions used: assign.default.values, process.data, create.model.frame
   #                 ioglm, predict(predict.io.fi), NCovered (NCovered.io.fi)
 
   # NOTE: gams are only partially implemented
 
-  # The following are dummy glm and gam functions that are defined here to 
-  # provide the list of arguments for use in the real glm/gam functions. 
-  # These dummy functions are removed after they are used so the real ones can 
+  # The following are dummy glm and gam functions that are defined here to
+  # provide the list of arguments for use in the real glm/gam functions.
+  # These dummy functions are removed after they are used so the real ones can
   # be used in the model fitting.
-  glm <- function(formula,link="logit"){
+  glm <- function(formula, link="logit"){
     if(class(formula)!="formula"){
       if(class(try(as.formula(formula)))!="formula"){
         stop("Invalid formula")
       }
     }else{
-      formula <- paste(as.character(formula),collapse="") 
+      formula <- paste(as.character(formula), collapse="")
     }
     if(class(link)=="function"){
       link <- substitute(link)
     }
 
-    link <- match.arg(link,c("logit"))
-    return(list(fct="glm",formula=formula,link=substitute(link)))
+    link <- match.arg(link, c("logit"))
+    return(list(fct="glm", formula=formula, link=substitute(link)))
   }
 
-  gam <- function(formula,link="logit"){
+  gam <- function(formula, link="logit"){
     if(class(formula)!="formula"){
       if(class(try(as.formula(formula)))!="formula"){
         stop("Invalid formula")
@@ -88,23 +88,23 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
       link <- substitute(link)
     }
 
-    link <- match.arg(link,c("logit"))
-    return(list(fct="gam",formula=formula,link=substitute(link)))
+    link <- match.arg(link, c("logit"))
+    return(list(fct="gam", formula=formula, link=substitute(link)))
   }
 
   # Save current user options and then set design contrasts to treatment style
   save.options<-options()
-  options(contrasts=c("contr.treatment","contr.poly"))
+  options(contrasts=c("contr.treatment", "contr.poly"))
 
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
-                                  int.range=NA, point=FALSE)
+                                     int.range=NA, point=FALSE)
 
   # Set up control values
-  control <- assign.default.values(control,showit = 0,
-                                   estimate=TRUE,refit=TRUE,nrefits=25,
-                                   initial = NA, lowerbounds = NA,
-                                   upperbounds = NA, mono.points=20)
+  control <- assign.default.values(control, showit=0,
+                                   estimate=TRUE, refit=TRUE, nrefits=25,
+                                   initial=NA, lowerbounds=NA,
+                                   upperbounds=NA, mono.points=20)
 
   # Assign model values; this uses temporarily defined functions glm and gam
   modpaste <- paste(model)
@@ -116,7 +116,7 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
 
   # Process data if needed
   if(is.data.frame(data)){
-    data.list <- process.data(data,meta.data)
+    data.list <- process.data(data, meta.data)
     meta.data <- data.list$meta.data
     xmat <- data.list$xmat
   }else{
@@ -128,24 +128,24 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
     meta.data$breaks <- c(max(0,
                               min(as.numeric(levels(as.factor(xmat$distbegin))))
                              ),
-                       as.numeric(levels(as.factor(xmat$distend))))
+                          as.numeric(levels(as.factor(xmat$distend))))
   }
 
   # Create result list with some arguments
-  result <- list(call=call,data=data,model=model,meta.data=meta.data,
-                 control=control,method="io.fi")
-  class(result) <- c("io.fi","ddf")
+  result <- list(call=call, data=data, model=model, meta.data=meta.data,
+                 control=control, method="io.fi")
+  class(result) <- c("io.fi", "ddf")
 
   # Create formula and model frame (if not GAM)
-  xmat$offsetvalue <- rep(0,dim(xmat)[1])
-  model.formula <- paste("detected",modelvalues$formula)
+  xmat$offsetvalue <- rep(0, dim(xmat)[1])
+  model.formula <- paste("detected", modelvalues$formula)
   p.formula <- as.formula(model.formula)
   xmat2 <- xmat[xmat$observer==2,]
   xmat1 <- xmat[xmat$observer==1,]
 
   GAM <- FALSE
-  xmat <- create.model.frame(xmat,as.formula(model.formula),meta.data)
-  model.formula <- as.formula(paste(model.formula,"+offset(offsetvalue)"))
+  xmat <- create.model.frame(xmat, as.formula(model.formula), meta.data)
+  model.formula <- as.formula(paste(model.formula, "+offset(offsetvalue)"))
 
   # Fit the conditional detection functions using io.glm
   suppressWarnings(result$mr <- io.glm(xmat, model.formula, GAM=GAM))
@@ -156,11 +156,11 @@ ddf.io.fi <- function(model,data,meta.data=list(),control=list(),
     # if the glm did converge, then do one quick round of BFGS to
     #  compute the hessian
 
-xx <- rbind(xmat1,xmat2)
-dmrows <- nrow(xmat1)
-xmatH <- model.matrix(p.formula,xx)
-xmat1H <- xmatH[1:dmrows,,drop=FALSE]
-xmat2H <- xmatH[(dmrows+1):(2*dmrows),,drop=FALSE]
+    xx <- rbind(xmat1,xmat2)
+    dmrows <- nrow(xmat1)
+    xmatH <- model.matrix(p.formula, xx)
+    xmat1H <- xmatH[1:dmrows, , drop=FALSE]
+    xmat2H <- xmatH[(dmrows+1):(2*dmrows), , drop=FALSE]
 
     result$hessian<- optimHess(result$mr$coefficients, lnl.io,
                                x1=xmat1H, x2=xmat2H,
@@ -178,7 +178,7 @@ xmat2H <- xmatH[(dmrows+1):(2*dmrows),,drop=FALSE]
                       models=list(p.formula=p.formula)))
     # did this model converge?
     topfit.par <- coef(fit, order="value")[1, ]
-    details <- attr(fit,"details")[1,]
+    details <- attr(fit, "details")[1,]
     fit <- as.list(summary(fit, order="value")[1, ])
     fit$par <- topfit.par
     fit$message <- ""
@@ -190,10 +190,10 @@ xmat2H <- xmatH[(dmrows+1):(2*dmrows),,drop=FALSE]
       # this seems (with the crabbie data) to converge back to the values in
       # result$mr$coefficients but without having the convergence issues
       # NEED TO THINK ABOUT THIS MORE...
-      fit <- try(optimx(result$mr$coefficients*0,lnl.io, method="L-BFGS-B", 
+      fit <- try(optimx(result$mr$coefficients*0, lnl.io, method="L-BFGS-B",
               hessian=TRUE,
-              x1=xmat1H,x2=xmat2H,
-              x1o=xmat1,x2o=xmat2,
+              x1=xmat1H, x2=xmat2H,
+              x1o=xmat1, x2o=xmat2,
               models=list(p.formula=p.formula)))
       topfit.par <- coef(fit, order="value")[1, ]
       details <- attr(fit,"details")[1,]
@@ -201,7 +201,7 @@ xmat2H <- xmatH[(dmrows+1):(2*dmrows),,drop=FALSE]
       fit$par <- topfit.par
       fit$message <- ""
       names(fit)[names(fit)=="convcode"] <- "conv"
-      fit$hessian<-details$nhatend
+      fit$hessian <- details$nhatend
     }
     # if nothing worked...
     if(fit$conv!=0 | class(fit)=="try-error"){
@@ -213,7 +213,7 @@ xmat2H <- xmatH[(dmrows+1):(2*dmrows),,drop=FALSE]
   }
   # Compute the L_omega portion of the likelihood value, AIC and hessian
   cond.det <- predict(result)
-  result$par <- coef(result$mr)  
+  result$par <- coef(result$mr)
   npar <- length(result$par)
   p1 <- cond.det$p1
   p2 <- cond.det$p2
@@ -248,9 +248,9 @@ xmat2H <- xmatH[(dmrows+1):(2*dmrows),,drop=FALSE]
       }
     }else{
       for(i in 1:(nrow(xmat)/2)){
-        int.val <- predict(result,newdata=xmat[(2*(i-1)+1):(2*i),],
+        int.val <- predict(result, newdata=xmat[(2*(i-1)+1):(2*i),],
                            int.range=as.vector(as.matrix(xmat[(2*(i-1)+1),
-                                               c("distbegin","distend")])),
+                                               c("distbegin", "distend")])),
                            integrate=TRUE)$fitted
         result$lnl <- result$lnl + log(int.val)
       }
@@ -267,30 +267,31 @@ xmat2H <- xmatH[(dmrows+1):(2*dmrows),,drop=FALSE]
   return(result)
 }
 
-io.p01 <- function(xmat1,xmat2,beta){
+io.p01 <- function(xmat1, xmat2, beta){
   p1 <- plogis(xmat1%*%beta)
   p2 <- plogis(xmat2%*%beta)
   return(p2*(1-p1))
 }
-io.p10 <- function(xmat1,xmat2,beta){
+
+io.p10 <- function(xmat1, xmat2, beta){
   p1 <- plogis(xmat1%*%beta)
   p2 <- plogis(xmat2%*%beta)
   return(p1*(1-p2))
 }
 
-io.p11 <- function(xmat1,xmat2,beta){
+io.p11 <- function(xmat1, xmat2, beta){
   p1 <- plogis(xmat1%*%beta)
   p2 <- plogis(xmat2%*%beta)
   return(p1*p2)
 }
 
-io.pdot<-function(xmat1,xmat2,beta){
+io.pdot<-function(xmat1, xmat2, beta){
   p1 <- plogis(xmat1%*%beta)
   p2 <- plogis(xmat2%*%beta)
   return(p1+p2-p1*p2)
 }
 
-p.io <- function(par,x1,x2,models){
+p.io <- function(par, x1, x2, models){
 #  # create design matrix for p1,p2 and delta
 #  x <- rbind(x1,x2)
 #  dmrows <- nrow(x1)
@@ -299,10 +300,10 @@ p.io <- function(par,x1,x2,models){
 #  xmat2 <- xmat[(dmrows+1):(2*dmrows),,drop=FALSE]
 xmat1 <- x1
 xmat2 <- x2
-  p01 <- io.p01(xmat1,xmat2,beta=par)
-  p10 <- io.p10(xmat1,xmat2,beta=par)
-  p11 <- io.p11(xmat1,xmat2,beta=par)
-  pdot <- io.pdot(xmat1,xmat2,beta=par)
+  p01 <- io.p01(xmat1, xmat2, beta=par)
+  p10 <- io.p10(xmat1, xmat2, beta=par)
+  p11 <- io.p11(xmat1, xmat2, beta=par)
+  pdot <- io.pdot(xmat1, xmat2, beta=par)
   return(list(p11=p11,
               p01=p01,
               p10=p10,

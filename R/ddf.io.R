@@ -54,13 +54,13 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
 
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
-                                   int.range=NA,point=FALSE)
+                                     int.range=NA,point=FALSE)
 
   # Set up control values
   control <- assign.default.values(control, showit=0,
-                                estimate=TRUE, refit=TRUE, nrefits=25,
-                                initial=NA, lowerbounds=NA, upperbounds=NA,
-                                mono.points=20)
+                                   estimate=TRUE, refit=TRUE, nrefits=25,
+                                   initial=NA, lowerbounds=NA, upperbounds=NA,
+                                   mono.points=20)
 
   # Process data
   data.list <- process.data(data,meta.data)
@@ -69,15 +69,15 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   # Create result list
   result <- list(call=call, data=data, mrmodel=mrmodel, dsmodel=dsmodel,
                  meta.data=meta.data, control=control, method="io")
-  class(result) <- c("io","ddf")
+  class(result) <- c("io", "ddf")
 
-  # Fit the conditional detection functions using ddf.io.fi  
+  # Fit the conditional detection functions using ddf.io.fi
   result$mr <- ddf.io.fi(model=mrmodel,data,meta.data,control,call,method="io")
 
   # Fit the unconditional detection functions using ddf.ds
   unique.data <- data[data$observer==1,]
   unique.data$detected <- 1
-  result$ds <- ddf.ds(model=dsmodel,unique.data,meta.data,control,call)
+  result$ds <- ddf.ds(model=dsmodel, unique.data, meta.data, control, call)
   # use the ds meta data (as this has correct mono values)
   result$meta.data <- result$ds$meta.data
   if(is.null(result$ds$Nhat)){
@@ -88,7 +88,7 @@ ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
     stop("ds model did not converge; no further results possible")
   }
 
-  # Combine parameter vectors and hessian matrices 
+  # Combine parameter vectors and hessian matrices
   npar.uncond <- length(result$ds$par)
   npar <- npar.uncond+length(result$mr$par)
   hessian1 <- result$mr$hessian

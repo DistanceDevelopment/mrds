@@ -21,12 +21,13 @@
 #' @note Internal function and not called by user
 #' @author Jeff Laake
 #' @keywords utility
-create.model.frame <- function(xmat,scale.formula,meta.data,shape.formula=NULL){
+create.model.frame <- function(xmat, scale.formula, meta.data,
+                               shape.formula=NULL){
   # Create data frame with variables used in the formula and object #
   # (Object id); this code fix: jll 18-Nov-04; a different approach was used
   # to allow for use of as.factor(x) etc in formula
   if(!is.null(shape.formula)){
-    varlist <- unique(c(all.vars(scale.formula),all.vars(shape.formula)))
+    varlist <- unique(c(all.vars(scale.formula), all.vars(shape.formula)))
   }else{
     varlist <- all.vars(scale.formula)
   }
@@ -37,9 +38,17 @@ create.model.frame <- function(xmat,scale.formula,meta.data,shape.formula=NULL){
   }
 
   data <- cbind(object = xmat$object,
-                xmat[,varlist,drop=FALSE])
-  colnames(data) <- c("object",varlist)
+                xmat[, varlist, drop=FALSE])
+  colnames(data) <- c("object", varlist)
   data <- as.data.frame(data)
+
+
+  # check for NA covariate values
+  if(any(is.na(data))){
+    stop("NA covariate values in the data, check your data.")
+  }
+
+
 
   # fix: ljt 21-Sep-05; row.names of xmat need to be copied over to data,
   #     otherwise some later stuff in e.g., ddf.ds doesn't work

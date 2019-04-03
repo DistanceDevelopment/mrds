@@ -11,7 +11,7 @@
 #' @param initial named list of initial values for parameters of the detection function (should have at least \code{"scale"}, maybe also have \code{"shape"} and \code{"adjustments"})
 #' @return Distance sampling function object list with elements that all can be
 #'   null except type: \item{type}{type of detection function
-#'   hn,hr,gamma,unif,logistic} \item{xmat}{model data frame}
+#'   hn, hr, gamma, unif, logistic} \item{xmat}{model data frame}
 #'   \item{intercept.only}{TRUE if scale = ~1 and any shape formula =~1}
 #'   \item{scale}{sublist with elements (can be NULL i.e., unif key):formula,
 #'   parameters, design matrix (dm)} \item{shape}{sublist with elements (power
@@ -84,6 +84,7 @@ create.ddfobj <- function(model, xmat, meta.data, initial){
   # Create model data frame and design matrices
   ddfobj$xmat <- create.model.frame(xmat, as.formula(ddfobj$scale$formula),
                                     meta.data, as.formula(ddfobj$shape$formula))
+
   if(ddfobj$type != "unif"){
     ddfobj$scale$dm <- setcov(ddfobj$xmat, ddfobj$scale$formula)
     ddfobj$scale$parameters <- rep(0, ncol(ddfobj$scale$dm))

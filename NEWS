@@ -2,6 +2,7 @@ mrds 2.2.1
 ----------
 
 * hessian now returned when solnp (constrained optimisation) is used to fit the detection function
+* Check for NA covariate values, thanks to Ana Cañadas for highlighting this issue.
 
 mrds 2.2.0
 -----------
