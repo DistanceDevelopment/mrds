@@ -2,7 +2,7 @@
 # test that using Rsolnp gives the same results
 # as optimx() when it should!
 
-par.tol <- 1e-6
+par.tol <- 1e-5
 tol <- 1e-4
 
 # boring bookexamples-based testing...
@@ -69,20 +69,20 @@ dat<-data.frame(distance=dat,
 trunc<-5
 
 # fit without constraint
-expect_warning(result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,
+expect_warning(result.n<-ddf(dsmodel = ~mcds(key="hn", formula=~1,
                              adj.series="cos", adj.order=c(2,3)),
                              data=dat, method = "ds",
-                             meta.data=list(width=trunc,mono=FALSE)),
+                             meta.data=list(width=trunc, mono=FALSE)),
                "Detection function is not strictly monotonic!")
 # with weak monotonicity
-expect_warning(result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,
-                             adj.series="cos", adj.order=c(2,3)),
-                             data=dat, method = "ds",
-                             meta.data=list(width=trunc,mono=TRUE,
+expect_warning(result.w<-ddf(dsmodel=~mcds(key="hn", formula=~1,
+                             adj.series="cos", adj.order=c(2, 3)),
+                             data=dat, method="ds",
+                             meta.data=list(width=trunc, mono=TRUE,
                                             mono.strict=FALSE)),
                "Detection function is not strictly monotonic!")
 # with strong monotonicity
-result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
+result.s<-ddf(dsmodel=~mcds(key="hn", formula=~1, adj.series="cos",
               adj.order=c(2,3)), data=dat, method = "ds",
               meta.data=list(width=trunc,mono=TRUE,mono.strict=TRUE))
 
@@ -98,23 +98,23 @@ result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
 test_that("non-monotonic for non-monotone data",{
   # expect a non-monotonic fit
   expect_warning(mono.chk <- check.mono(result.n,n.pts=20),"Detection function is not strictly monotonic!")
-  expect_that(mono.chk,is_false())
+  expect_false(mono.chk)
 })
 
 
 test_that("weakly monotone for weakly monotone constraints",{
   # check the weak fit is weak
-  expect_that(check.mono(result.w,strict=FALSE,n.pts=20),is_true())
+  expect_true(check.mono(result.w, strict=FALSE, n.pts=20))
 
   expect_warning(mono.chk <- check.mono(result.w,n.pts=20),"Detection function is not strictly monotonic!")
-  expect_that(mono.chk,is_false())
+  expect_false(mono.chk)
 })
 
 
 test_that("strictly monotonic for strictly monotone constaints",{
   # expect that the strict fit is strict
-  expect_that(check.mono(result.s,strict=FALSE,n.pts=20),is_true())
-  expect_that(check.mono(result.s,strict=TRUE,n.pts=20),is_true())
+  expect_true(check.mono(result.s,strict=FALSE,n.pts=20))
+  expect_true(check.mono(result.s,strict=TRUE,n.pts=20))
 })
 
 

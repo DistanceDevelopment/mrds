@@ -25,7 +25,7 @@ test_that("standardisation is done correctly",{
   # now with adjustments
   # again this will complain about first partial hessian being singular
   # suppress that
-  mm <- suppressWarnings(ddf(dsmodel=~cds(key="gamma",adj.series="cos",
+  mm <- suppressWarnings(ddf(dsmodel=~cds(key="gamma", adj.series="cos",
                                           adj.order=2),
                              data=gdata, method="ds",
                              meta.data=list(width=max(gdata$distance))))

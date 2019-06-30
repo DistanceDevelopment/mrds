@@ -12,12 +12,12 @@ test_that("golf tee data gives the same results as Distance",{
   egdata<-book.tee.data$book.tee.dataframe
 
 
-  #CDS
+  # io
   result.cds <- ddf(dsmodel=~cds(key="hn"), mrmodel=~glm(~distance),
                     data=egdata, method="io", meta.data=list(width=4))
   expect_that(result.cds$Nhat, equals(232.0015, tolerance=1e-6))
 
-  #GLM
+  # io.fi
   result.glm <- ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi",
                   meta.data=list(width=4))
   expect_that(result.glm$Nhat, equals(186.0947, tolerance=1e-6))
@@ -121,7 +121,7 @@ model.set <- 1:nrow(models)
 #  plot(seq(0,25,len=1000),ack(seq(0,25,len=1000)))
 #  integrate(ack,upper=25,lower=0)
 
-model.set <- model.set[-c(1, 10, 11, 12, 14, 16, 21, 22, 27:30)]
+model.set <- model.set[-c(1, 10, 11, 12, 14, 16, 21, 22:30)]
 
 better <- rep(0, nrow(models))
 
@@ -170,23 +170,23 @@ for(i in model.set){
     result <- try(test.df(eval(parse(text=mcds.call)), ltexample, width,
                           mono=mono, strict=mono.strict, showit=0))
 
-    expect_that(all(class(result)=="try-error"), is_false(), info=i)
+    expect_false(all(class(result)=="try-error"), info=i)
 
     if(all(class(result) != "try-error")){
 
-      this.test <- paste(mcds.call, "\nmono=", mono,
-                                    "\nmono.strict=", mono.strict, "\n")
+      this.test <- paste0(mcds.call, "\nmono=", mono,
+                                    ",\nmono.strict=", mono.strict, "\n")
 
       if(result$lnl <= this.model$LnL){
         test_that(this.test, {
-          expect_that(result$lnl <= this.model$LnL, is_true(),
+          expect_true(result$lnl <= this.model$LnL,
                       info=paste("Likelihood for model", i,
                                   "better than MCDS"))
         })
       }else{
         test_that(this.test, {
-          expect_that(result$lnl, equals(this.model$LnL,tol=lnl.tol),
-                      info=paste("Likelihood for model", i,
+          expect_equal(result$lnl, this.model$LnL, tol=lnl.tol,
+                       info=paste("Likelihood for model", i,
                                   "the same as MCDS"))
         })
       }

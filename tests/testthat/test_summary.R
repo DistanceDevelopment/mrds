@@ -34,23 +34,23 @@ test_that("summary results are correct",{
   tee.result <- ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance),
                 data = egdata, method = "io", meta.data = list(width = 4))
 
-  expect_that(summary(tee.result)$mr.summary,equals(tee.result.summ$mr.summary))
-  expect_that(summary(tee.result)$ds.summary,equals(tee.result.summ$ds.summary))
-  expect_that(summary(tee.result),equals(tee.result.summ))
+  expect_equal(summary(tee.result)$mr.summary, tee.result.summ$mr.summary)
+  expect_equal(summary(tee.result)$ds.summary, tee.result.summ$ds.summary)
+  expect_equal(summary(tee.result), tee.result.summ)
 
   ### trial.fi method -- line transect
   tee.result.trial.fi <- ddf(mrmodel=~glm(formula=~distance),
                              dsmodel = ~mcds(key = "hn", formula = ~sex),
                              data=egdata, method="trial.fi",
                              meta.data=list(width=4))
-  expect_that(summary(tee.result.trial.fi),equals(tee.result.trial.fi.summ))
+  expect_equal(summary(tee.result.trial.fi), tee.result.trial.fi.summ)
 
   #### trial method -- line transect
   tee.result.trial <- ddf(mrmodel=~glm(formula=~distance),
                           dsmodel = ~mcds(key = "hn", formula = ~sex),
                           data=egdata, method="trial",
                           meta.data=list(width=4))
-  expect_that(summary(tee.result.trial),equals(tee.result.trial.summ))
+  expect_equal(summary(tee.result.trial), tee.result.trial.summ)
 
 
   ### rem method -- line transect
@@ -58,9 +58,7 @@ test_that("summary results are correct",{
                           dsmodel = ~mcds(key = "hn", formula = ~sex),
                           data=egdata, method="rem",
                           meta.data=list(width=4))
-  expect_that(summary(tee.result.rem),equals(tee.result.rem.summ))
-
-
+  expect_equal(summary(tee.result.rem), tee.result.rem.summ)
 
   ## io method -- point data
   data(ptdata.dual)
@@ -74,12 +72,11 @@ test_that("summary results are correct",{
                                   breaks=10*(0:10),width=100))
 
 
-  expect_that(summary(pt.result)$mr.summary,equals(pt.result.summ$mr.summary,
-              tol=tol))
-  expect_that(summary(pt.result)$ds.summary,equals(pt.result.summ$ds.summary,
-              tol=tol))
-  expect_that(summary(pt.result),equals(pt.result.summ,
-              tol=tol))
+  expect_equal(summary(pt.result)$mr.summary, pt.result.summ$mr.summary,
+              tol=tol)
+  expect_equal(summary(pt.result)$ds.summary, pt.result.summ$ds.summary,
+              tol=tol)
+  expect_equal(summary(pt.result), pt.result.summ, tol=tol)
 
 
 })

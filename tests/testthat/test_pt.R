@@ -17,9 +17,9 @@ test_that("Point transect example from distance gives same results",{
             #control=list(upperbounds=Inf,lowerbounds=-Inf,showit=3))
             #control=list(optimx.maxit=10000,showit=3))
 
-  expect_that(xx$par,equals(2.283007,tol=par.tol))
-  expect_that(xx$lnl,equals(-458.5701,tol=lnl.tol))
-  expect_that(summary(xx)$average.p,equals(0.1644288,tol=par.tol))
+  expect_equal(xx$par, 2.283007, tol=par.tol)
+  expect_equal(xx$lnl, -458.5701, tol=lnl.tol)
+  expect_equal(summary(xx)$average.p, 0.1644288, tol=par.tol)
 
 
 })
@@ -51,9 +51,9 @@ test_that("Nothing has changed?", {
             method="ds",
             meta.data=list(point=TRUE, width=8000))
 
-  expect_that(xx$par, equals(7.6438325, tol=par.tol))
-  expect_that(xx$lnl, equals(-1066.120945, tol=lnl.tol))
-  expect_that(summary(xx)$average.p, equals(0.1361185, tol=par.tol))
+  expect_equal(xx$par, 7.6438325, tol=par.tol)
+  expect_equal(xx$lnl, -1066.120945, tol=lnl.tol)
+  expect_equal(summary(xx)$average.p, 0.1361185, tol=par.tol)
 
 
   # hazard-rate
@@ -61,11 +61,9 @@ test_that("Nothing has changed?", {
             method="ds",
             meta.data=list(point=TRUE, width=8000))
 
-  expect_that(unname(xx$par), equals(c(1.554381, 7.943638), tol=par.tol))
-  expect_that(xx$lnl, equals(-1069.143006, tol=lnl.tol))
-  expect_that(summary(xx)$average.p, equals(0.1862252, tol=par.tol))
-
-
+  expect_equal(unname(xx$par), c(1.554381, 7.943638), tol=par.tol)
+  expect_equal(xx$lnl, -1069.143006, tol=lnl.tol)
+  expect_equal(summary(xx)$average.p, 0.1862252, tol=par.tol)
 
 })
 

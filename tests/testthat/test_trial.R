@@ -25,9 +25,9 @@ test_that("detected and missed are the same in summary and det.tables", {
    summ<-summary(xx)
 
    # the sums of the columns in tabs should match the summary numbers
-   expect_that(sum(tabs$Observer1[,2]), equals(summ$n1))
-   expect_that(sum(tabs$Observer2[,2]), equals(summ$n2))
-   expect_that(sum(tabs$Duplicates), equals(summ$n3))
+   expect_equal(sum(tabs$Observer1[,2]), summ$n1)
+   expect_equal(sum(tabs$Observer2[,2]), summ$n2)
+   expect_equal(sum(tabs$Duplicates), summ$n3)
 
 
    # there are no zeros, so fix that and re-run the model
@@ -38,9 +38,9 @@ test_that("detected and missed are the same in summary and det.tables", {
    tabs<-det.tables(xx,breaks=c(0,.5,1,2,3,4))
    summ<-summary(xx)
    # test the bug
-   expect_that(sum(tabs$Observer1[,2]), equals(summ$n1))
-   expect_that(sum(tabs$Observer2[,2]), equals(summ$n2))
-   expect_that(sum(tabs$Duplicates), equals(summ$n3))
+   expect_equal(sum(tabs$Observer1[,2]), summ$n1)
+   expect_equal(sum(tabs$Observer2[,2]), summ$n2)
+   expect_equal(sum(tabs$Duplicates), summ$n3)
 
 
 })
@@ -68,13 +68,13 @@ test_that("results from golf tee data (trial.fi mode) work (distance covar)", {
   names(par.ests) <- c("(Intercept)","distance")
 
   # test parameters
-  expect_that(fi.mr.dist$par,equals(par.ests,tolerance=1e-6))
+  expect_equal(fi.mr.dist$par, par.ests, tolerance=1e-6)
 
   # test likelihood
-  expect_that(fi.mr.dist$lnl,equals(-224.4047,tolerance=1e-6))
+  expect_equal(fi.mr.dist$lnl, -224.4047, tolerance=1e-6)
 
   # test average p
-  expect_that(summary(fi.mr.dist)$average.p,equals(0.6423252,tolerance=1e-6))
+  expect_equal(summary(fi.mr.dist)$average.p, 0.6423252,tolerance=1e-6)
 
 })
 
@@ -99,14 +99,14 @@ test_that("results from golf tee data (trial.fi mode) work (distance+sex*exposur
                        "sex1:exposure1")
 
   # test parameters
-  expect_that(fi.mr.dist.sex.exposure$par,equals(par.ests,tolerance=1e-6))
+  expect_equal(fi.mr.dist.sex.exposure$par, par.ests,tolerance=1e-6)
 
   # test likelihood
-  expect_that(fi.mr.dist.sex.exposure$lnl,equals(-196.9022,tolerance=1e-6))
+  expect_equal(fi.mr.dist.sex.exposure$lnl, -196.9022,tolerance=1e-6)
 
   # test average p
-  expect_that(summary(fi.mr.dist.sex.exposure)$average.p,
-              equals(0.5245967,tolerance=1e-6))
+  expect_equal(summary(fi.mr.dist.sex.exposure)$average.p,
+               0.5245967, tolerance=1e-6)
 
 
 })
