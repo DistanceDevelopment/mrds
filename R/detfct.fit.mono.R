@@ -36,13 +36,13 @@ getRefPoints<- function(no_d, int.range){
 #  pars           - parameters
 #  ddfobj         - ddf object with almost everything we need in it
 #  misc.options   - everything else...
-flnl.constr<- function(pars, ddfobj, misc.options,...){
+flnl.constr <- function(pars, ddfobj, misc.options,...){
 
   if(is.null(ddfobj$adjustment)){
     # this never gets called from ddf()
-    ineq_constr <- rep(10,2*misc.options$mono.points)
+    ineq_constr <- rep(10, 2*misc.options$mono.points)
   }else{
-    ddfobj <- assign.par(ddfobj,pars)
+    ddfobj <- assign.par(ddfobj, pars)
 
     # apply the constraints?
     constr <- misc.options$mono
@@ -57,16 +57,16 @@ flnl.constr<- function(pars, ddfobj, misc.options,...){
     ref_p <- getRefPoints(no_d, misc.options$int.range)
     # to get detfct to play nice need to mudge ddfobj a bit...
     if(!is.null(ddfobj$scale)){
-      ddfobj$scale$dm <- rep(1,no_d)
+      ddfobj$scale$dm <- rep(1, no_d)
     }
     if(!is.null(ddfobj$shape)){
-      ddfobj$shape$dm <- rep(1,no_d)
+      ddfobj$shape$dm <- rep(1, no_d)
     }
 
     # evaluate the detection function at the reference points
     # note that we must standardize so 0<=g(x)<=1
-    df_v_rp <- as.vector(detfct(ref_p,ddfobj,width=misc.options$width,
-                               standardize=TRUE))
+    df_v_rp <- as.vector(detfct(ref_p, ddfobj, width=misc.options$width,
+                                standardize=TRUE))
 
     # reference point associated with distance=0
     ref_p0 <- 0
@@ -79,7 +79,7 @@ flnl.constr<- function(pars, ddfobj, misc.options,...){
     }
 
     # evaluate the detection function at 0
-    df_v_rp0 <- as.vector(detfct(ref_p0,ddfobj,width=misc.options$width,
+    df_v_rp0 <- as.vector(detfct(ref_p0, ddfobj, width=misc.options$width,
                                 standardize=TRUE))
 
     # inequality constraints ensuring the

@@ -2,7 +2,7 @@
 #'
 #' Simple internal function to check that the optimisation didn't hit bounds. Based on code that used to live in \code{detfct.fit.opt}.
 #'
-#' @param lt optimisation object
+#' @param pars estimated parameters
 #' @param lowerbounds current lower bounds
 #' @param upperbounds current upper bounds
 #' @param ddfobj ddf object
@@ -12,7 +12,7 @@
 #' @return \code{TRUE} if bounded (ie parameters close to bound), else \code{FALSE}
 #'
 #' @author Dave Miller; Jeff Laake
-check.bounds <- function(lt, lowerbounds, upperbounds, ddfobj, showit,
+check.bounds <- function(pars, lowerbounds, upperbounds, ddfobj, showit,
                          setlower, setupper){
 
   tol <- 1e-6
@@ -42,14 +42,14 @@ check.bounds <- function(lt, lowerbounds, upperbounds, ddfobj, showit,
   ## check lower bounds
   # handle hazard rate power par
   if(ddfobj$type=="hr"){
-    bounded <- chk.bnds(lt$par[2:length(lt$par)],
-                        lowerbounds[2:length(lt$par)], "lower", setlower, tol)
+    bounded <- chk.bnds(pars[2:length(pars)],
+                        lowerbounds[2:length(pars)], "lower", setlower, tol)
   }else{
-    bounded <- chk.bnds(lt$par, lowerbounds, "lower", setlower, tol)
+    bounded <- chk.bnds(pars, lowerbounds, "lower", setlower, tol)
   }
 
   ## check upper bounds
-  bounded <- bounded | chk.bnds(lt$par, upperbounds, "upper", setupper, tol)
+  bounded <- bounded | chk.bnds(pars, upperbounds, "upper", setupper, tol)
 
   return(bounded)
 }
