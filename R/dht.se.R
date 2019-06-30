@@ -119,7 +119,7 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
     # when there are no sighings
     if(nrow(nobs) > 0){
       Nhat.by.sample <- merge(Nhat.by.sample, nobs, by.x = "Label",
-          by.y = "Label", all.x = TRUE)
+                              by.y = "Label", all.x = TRUE)
       Nhat.by.sample$n[is.na(Nhat.by.sample$n)] <- 0
     }else{
       Nhat.by.sample <- cbind(Nhat.by.sample, n = rep(0,nrow(Nhat.by.sample)))
