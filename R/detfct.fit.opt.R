@@ -49,20 +49,52 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
   # grab the initial values
   initialvalues <- getpar(ddfobj)
   initialvalues.set <- initialvalues # store for later
-
-  bounded <- TRUE
-  refit.count <- 0
   # Set some shortcuts
   lowerbounds <- bounds$lower
   upperbounds <- bounds$upper
+  lowerbounds.full <- bounds$lower
+  upperbounds.full <- bounds$upper
   showit <- misc.options$showit
   refit <- misc.options$refit
   nrefits <- misc.options$nrefits
-
   # jll 18-sept-2006; added this code to get the logicals that indicate whether
   # lower/upper bound settings were specified by the user
   setlower <- bounds$setlower
   setupper <- bounds$setupper
+
+  # if we are just optimising the key or adjustments, then we need to make
+  # those be the only pars to optimize over
+  # this is a bit fiddly
+  if(fitting == "key"){
+    if(!is.null(ddfobj[["shape"]])){
+      initialvalues[1] <- ddfobj[["shape"]]$parameters
+      initialvalues <- c(initialvalues, ddfobj[["scale"]]$parameters)
+
+      lowerbounds <- lowerbounds[1:2]
+      upperbounds <- upperbounds[1:2]
+    }else{
+      initialvalues <- NA
+
+      lowerbounds <- lowerbounds[1]
+      upperbounds <- upperbounds[1]
+    }
+    initialvalues <- ddfobj[["scale"]]$parameters
+
+  }else if(fitting == "adjust"){
+    initialvalues <- ddfobj[["adjustment"]]$parameters
+
+    if(!is.null(ddfobj[["shape"]])){
+      lowerbounds <- lowerbounds[-c(1:2)]
+      upperbounds <- upperbounds[-c(1:2)]
+    }else{
+      lowerbounds <- lowerbounds[-1]
+      upperbounds <- upperbounds[-1]
+    }
+  }
+
+  bounded <- TRUE
+  refit.count <- 0
+
 
   # grab the method(s) if we're using optimx()
   if(!misc.options$mono){
@@ -100,8 +132,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     ddfobj <- assign.par(ddfobj,lt$par)
     lt$aux$ddfobj <- ddfobj
 
-    lt$optim.history<-rbind(misc.options$optim.history,
-                            c(lt$conv,-lt$value,lt$par))
+    lt$optim.history <- rbind(misc.options$optim.history,
+                              c(lt$conv, -lt$value, lt$par))
 
     lt$conv<-NULL
     return(lt)
@@ -229,7 +261,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         if(!is.null(ddfobj$scale$formula) && (ddfobj$scale$formula != ~1) &&
            !is.null(optim.options$parscale) &&
            all(optim.options$parscale) &&
-            (opt.method=="nlminb") && (fitting=="all")){
+           (opt.method=="nlminb") && (fitting=="all")){
 
           # get the rescaling
           if(is.logical(optim.options$parscale)){
@@ -238,8 +270,6 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
           # run the optimiser
           lt <- try(nlminb_wrapper(par=initialvalues, ll=flnl,
-                                   #lower=rep(-Inf, length(initialvalues)),
-                                   #upper=rep(Inf, length(initialvalues)),
                                    lower=lowerbounds,
                                    upper=upperbounds,
                                    mcontrol=optim.options, ddfobj=ddfobj,
@@ -271,7 +301,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           lt <- try(optimx(initialvalues, flnl, method=opt.method,
                            control=optim.options,
                            hessian=TRUE, lower=lowerbounds,
-                           upper=upperbounds, ddfobj=ddfobj, fitting=fitting,
+                           upper=upperbounds, 
+ddfobj=ddfobj, fitting=fitting,
                            misc.options=misc.options), silent=TRUE)
 
           if(any(class(lt)=="try-error") || any(is.na(lt[,1:attr(lt,"npar")]))){
@@ -294,8 +325,27 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
             "      parameters =", paste(round(lt$par, 7), collapse=", "), "\n")
       }
 
-      optim.history <- rbind(optim.history, c(lt$conv, -lt$value, lt$par))
 
+        # get the ddfobj back in shape
+        if(fitting == "key"){
+lastpar <- lt$par
+          if(!is.null(ddfobj[["shape"]])){
+            ddfobj[["shape"]]$parameters <- lt$par[1]
+            ddfobj[["scale"]]$parameters <- lt$par[-1]
+          }else{
+            ddfobj[["scale"]]$parameters <- lt$par
+          }
+        # re-extract pars
+        lt$par <- getpar(ddfobj)
+        }else if(fitting == "adjust"){
+lastpar <- lt$par
+          ddfobj[["adjustment"]]$parameters <- lt$par
+        # re-extract pars
+        lt$par <- getpar(ddfobj)
+        }else{
+lastpar <- lt$par
+          ddfobj <- assign.par(ddfobj, lt$par)
+        }
       ## Convergence?!
       # OR... don't wiggle the pars or do refits if we're doing adjustment
       # or key fitting alone only do it in "all" mode
@@ -303,7 +353,9 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         itconverged <- TRUE
 
         lt$aux <- c(optim.options, bounds, misc.options)
-        ddfobj <- assign.par(ddfobj, lt$par)
+
+
+        # put ddf back in the lt object
         lt$aux$ddfobj <- ddfobj
       }else{
       # If we don't have convergence what do we do
@@ -315,13 +367,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
           # if the new values weren't as good, take the last set
           # and jiggle them a bit...
-
-          # previously this was a bit weird? That addition should be the
-          # same sign (and be allowed to be negative) otherwise we're
-          # just making it more positive
-          #initialvalues <- lt$par*(runif(length(initialvalues))+.5)
-
-          initialvalues <- lt$par*runif(length(initialvalues),
+          initialvalues <- getpar(ddfobj)*runif(length(initialvalues),
                                         sign(lowerbounds-1),
                                         sign(upperbounds+1))
 
@@ -335,6 +381,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           itconverged <- TRUE
         }
       }
+
+      optim.history <- rbind(optim.history, c(lt$conv, -lt$value, getpar(ddfobj)))
     }
 
     if(any(is.na(lt$par)) | lt$conv!=0){
@@ -350,7 +398,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     }
 
     # check whether parameters hit their bounds
-    bounded <- check.bounds(lt, lowerbounds, upperbounds, ddfobj,
+    bounded <- check.bounds(getpar(ddfobj), lowerbounds.full, upperbounds.full, ddfobj,
                             showit, setlower, setupper)
 
     if(!refit){
@@ -397,6 +445,23 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
   lt$bounded <- bounded
 
   # save the bounds
+  if(fitting == "key"){
+    if(!is.null(ddfobj[["shape"]])){
+      lowerbounds <- c(lowerbounds[1:2], lowerbounds.full[c(3:length(lowerbounds.full))])
+      upperbounds <- c(upperbounds[1:2], upperbounds.full[c(3:length(upperbounds.full))])
+    }else{
+      lowerbounds <- c(lowerbounds[1], lowerbounds.full[-1])
+      upperbounds <- c(upperbounds[1], upperbounds.full[-1])
+    }
+  }else if(fitting == "adjust"){
+    if(!is.null(ddfobj[["shape"]])){
+      lowerbounds <- c(lowerbounds.full[1:2], lowerbounds)
+      upperbounds <- c(upperbounds.full[1:2], upperbounds)
+    }else{
+      lowerbounds <- c(lowerbounds.full[1], lowerbounds)
+      upperbounds <- c(upperbounds.full[1], upperbounds)
+    }
+  }
   bounds$lower <- lowerbounds
   bounds$upper <- upperbounds
   lt$bounds <- bounds

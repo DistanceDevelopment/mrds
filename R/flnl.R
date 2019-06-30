@@ -34,40 +34,16 @@
 #' @keywords utility
 flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
 
-  # During the optimisation we want to make sure that we are keeping the
-  # right things constant, so lets do that...
-  set.na.pars <- function(par.name,ddfobj,fpar){
-    # if the parameters exist
-    if(!is.null(ddfobj[[par.name]])){
-      # set those we don't want to optimise as NA
-      save.pars <- ddfobj[[par.name]]$parameters
-      ddfobj[[par.name]]$parameters <- rep(NA,
-                                          length(ddfobj[[par.name]]$parameters))
-      pars <- getpar(ddfobj)
-      fpar[which(is.na(pars))] <- save.pars
-    }
-    return(list(fpar=fpar,ddfobj=ddfobj))
-  }
-
+  # fiddle with pars if we are not fitting everything at once
   if(fitting=="key"){
-    setna <- set.na.pars("adjustment",ddfobj,fpar)
-    ddfobj <- setna$ddfobj
-    fpar <- setna$fpar
-  }else if(fitting=="adjust"){
-
-    setna <- set.na.pars("scale",ddfobj,fpar)
-    ddfobj <- setna$ddfobj
-    fpar <- setna$fpar
-
-    # if we have a hazard model
-    if(!is.null(ddfobj$shape)){
-      save.pars <- ddfobj[["shape"]]$parameters
-      ddfobj[["shape"]]$parameters <- rep(NA,
-                                          length(ddfobj[["shape"]]$parameters))
-      pars <- getpar(ddfobj)
-      index <- (1+ncol(ddfobj$shape$dm))
-      fpar[index:(index+ncol(ddfobj$scale$dm)-1)] <- save.pars
+    ddfobj[["scale"]]$parameters <- fpar[1]
+    if(!is.null(ddfobj[["shape"]])){
+      ddfobj[["shape"]]$parameters <- fpar[2]
     }
+    fpar <- getpar(ddfobj)
+  }else if(fitting=="adjust"){
+    ddfobj[["adjustment"]]$parameters <- fpar
+    fpar <- getpar(ddfobj)
   }
 
   #  compute total negative log-likelihood
