@@ -25,15 +25,15 @@ test_that("standardisation is done correctly",{
   # now with adjustments
   # again this will complain about first partial hessian being singular
   # suppress that
-  mm <- suppressWarnings(ddf(dsmodel=~cds(key="gamma", adj.series="cos",
-                                          adj.order=2),
-                             data=gdata, method="ds",
-                             meta.data=list(width=max(gdata$distance))))
+  #mm <- suppressWarnings(ddf(dsmodel=~cds(key="gamma", adj.series="cos",
+  #                                        adj.order=2),
+  #                           data=gdata, method="ds",
+  #                           meta.data=list(width=max(gdata$distance))))
 
-  # check fitted parameters
-  parcomp <- mm$par
-  names(parcomp) <- NULL
-  expect_equal(c(-10.4721653, 0.1106817, 0.2100327), parcomp, tol=par.tol)
+  ## check fitted parameters
+  #parcomp <- mm$par
+  #names(parcomp) <- NULL
+  #expect_equal(c(-10.4721653, 0.1106817, 0.2100327), parcomp, tol=par.tol)
 
   # generate some gamma data where the mode is away from 0
   set.seed(123)

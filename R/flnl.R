@@ -36,9 +36,11 @@ flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
 
   # fiddle with pars if we are not fitting everything at once
   if(fitting=="key"){
-    ddfobj[["scale"]]$parameters <- fpar[1]
     if(!is.null(ddfobj[["shape"]])){
-      ddfobj[["shape"]]$parameters <- fpar[2]
+      ddfobj[["shape"]]$parameters <- fpar[1]
+      ddfobj[["scale"]]$parameters <- fpar[2:length(fpar)]
+    }else{
+      ddfobj[["scale"]]$parameters <- fpar[1:length(fpar)]
     }
     fpar <- getpar(ddfobj)
   }else if(fitting=="adjust"){

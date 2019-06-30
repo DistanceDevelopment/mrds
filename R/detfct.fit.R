@@ -117,7 +117,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
       metaiter <- 0
 
       # loop through fitting the adjustment, key and full detection function
-      for(fitting in c("adjust", "key", "all")){
+      for(fitting in c("key", "adjust", "key", "all")){
 
         # don't do refitting when we are just fitting key or adjustments
         if(fitting == "adjust" | fitting == "key"){
