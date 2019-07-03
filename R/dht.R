@@ -148,7 +148,8 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
                                       Nchat       = Nhat*CoveredArea/Area))
 
     bysample.table$Dhat <- bysample.table$Nchat/bysample.table$Sample.Area
-    Nhat.by.region <- by(Nhat.by.sample$Nhat, Nhat.by.sample$Region.Label,sum)
+    Nhat.by.region <- as.numeric(by(Nhat.by.sample$Nhat,
+                                    Nhat.by.sample$Region.Label, sum))
 
     # Create estimate table
     numRegions <- length(unique(samples$Region.Label))
