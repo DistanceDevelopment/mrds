@@ -19,7 +19,7 @@ scale formula, and shape formula}
 \value{
 Distance sampling function object list with elements that all can be
   null except type: \item{type}{type of detection function
-  hn,hr,gamma,unif,logistic} \item{xmat}{model data frame}
+  hn, hr, gamma, unif, logistic} \item{xmat}{model data frame}
   \item{intercept.only}{TRUE if scale = ~1 and any shape formula =~1}
   \item{scale}{sublist with elements (can be NULL i.e., unif key):formula,
   parameters, design matrix (dm)} \item{shape}{sublist with elements (power

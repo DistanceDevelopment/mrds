@@ -6,8 +6,8 @@
 sampling independent observer model with full independence (\code{io.fi})}
 \usage{
 \method{plot}{io.fi}(x, which = 1:6, breaks = NULL, nc = NULL,
-  maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
-  angle = -45, density = 20, col = "black", jitter = NULL,
+  maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0,
+  1), angle = -45, density = 20, col = "black", jitter = NULL,
   divisions = 25, pages = 0, xlab = "Distance",
   ylab = "Detection probability", subtitle = TRUE, ...)
 }

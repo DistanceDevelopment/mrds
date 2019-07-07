@@ -4,8 +4,8 @@
 \alias{nlminb_wrapper}
 \title{Wrapper around \code{nlminb}}
 \usage{
-nlminb_wrapper(par, ll, ugr = NULL, lower = NULL, upper = NULL, mcontrol,
-  hess = NULL, ddfobj, data, ...)
+nlminb_wrapper(par, ll, ugr = NULL, lower = NULL, upper = NULL,
+  mcontrol, hess = NULL, ddfobj, data, ...)
 }
 \arguments{
 \item{par}{starting parameters}

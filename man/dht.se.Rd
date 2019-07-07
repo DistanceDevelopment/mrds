@@ -4,8 +4,8 @@
 \alias{dht.se}
 \title{Variance and confidence intervals for density and abundance estimates}
 \usage{
-dht.se(model, region.table, samples, obs, options, numRegions, estimate.table,
-  Nhat.by.sample)
+dht.se(model, region.table, samples, obs, options, numRegions,
+  estimate.table, Nhat.by.sample)
 }
 \arguments{
 \item{model}{ddf model object}

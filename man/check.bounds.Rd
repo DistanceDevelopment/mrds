@@ -4,7 +4,8 @@
 \alias{check.bounds}
 \title{Check parameters bounds during optimsations}
 \usage{
-check.bounds(lt, lowerbounds, upperbounds, ddfobj, showit, setlower, setupper)
+check.bounds(lt, lowerbounds, upperbounds, ddfobj, showit, setlower,
+  setupper)
 }
 \arguments{
 \item{lt}{optimisation object}

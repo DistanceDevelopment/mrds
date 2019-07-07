@@ -4,8 +4,8 @@
 \alias{rem.glm}
 \title{Iterative offset model fitting of mark-recapture with removal model}
 \usage{
-rem.glm(datavec, fitformula, eps = 1e-05, iterlimit = 500, GAM = FALSE,
-  gamplot = TRUE, datavec2)
+rem.glm(datavec, fitformula, eps = 1e-05, iterlimit = 500,
+  GAM = FALSE, gamplot = TRUE, datavec2)
 }
 \arguments{
 \item{datavec}{dataframe containing records seen by either observer 1 or 2}

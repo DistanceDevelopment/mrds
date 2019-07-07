@@ -4,8 +4,8 @@
 \alias{io.glm}
 \title{Iterative offset GLM/GAM for fitting detection function}
 \usage{
-io.glm(datavec, fitformula, eps = 1e-05, iterlimit = 500, GAM = FALSE,
-  gamplot = TRUE)
+io.glm(datavec, fitformula, eps = 1e-05, iterlimit = 500,
+  GAM = FALSE, gamplot = TRUE)
 }
 \arguments{
 \item{datavec}{dataframe}

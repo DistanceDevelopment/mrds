@@ -4,8 +4,8 @@
 \alias{pdot.dsr.integrate.logistic}
 \title{Compute probability that a object was detected by at least one observer}
 \usage{
-pdot.dsr.integrate.logistic(right, width, beta, x, integral.numeric, BT, models,
-  GAM = FALSE, rem = FALSE, point = FALSE)
+pdot.dsr.integrate.logistic(right, width, beta, x, integral.numeric, BT,
+  models, GAM = FALSE, rem = FALSE, point = FALSE)
 }
 \arguments{
 \item{right}{either an integration range for binned data (vector of 2) or the rightmost value for integration (from 0 to right)}

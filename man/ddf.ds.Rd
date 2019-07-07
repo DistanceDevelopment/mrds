@@ -4,8 +4,8 @@
 \alias{ddf.ds}
 \title{CDS/MCDS Distance Detection Function Fitting}
 \usage{
-\method{ddf}{ds}(model, data, meta.data = list(), control = list(), call,
-  method = "ds")
+\method{ddf}{ds}(model, data, meta.data = list(), control = list(),
+  call, method = "ds")
 }
 \arguments{
 \item{model}{model list with key function and scale formula if any}

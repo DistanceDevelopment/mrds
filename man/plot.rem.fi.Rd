@@ -6,8 +6,8 @@
 sampling model}
 \usage{
 \method{plot}{rem.fi}(x, which = 1:3, breaks = NULL, nc = NULL,
-  maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0, 1),
-  angle = -45, density = 20, col = "black", jitter = NULL,
+  maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0,
+  1), angle = -45, density = 20, col = "black", jitter = NULL,
   divisions = 25, pages = 0, xlab = "Distance",
   ylab = "Detection probability", subtitle = TRUE, ...)
 }

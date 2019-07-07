@@ -7,8 +7,8 @@
 \method{plot}{ds}(x, which = 2, breaks = NULL, nc = NULL,
   jitter.v = rep(0, 3), showpoints = TRUE, subset = NULL,
   pl.col = "black", bw.col = grey(0), black.white = FALSE,
-  pl.den = rep(20, 1), pl.ang = rep(-45, 1), main = NULL, pages = 0,
-  pdf = FALSE, ylim = NULL, xlab = "Distance", ...)
+  pl.den = rep(20, 1), pl.ang = rep(-45, 1), main = NULL,
+  pages = 0, pdf = FALSE, ylim = NULL, xlab = "Distance", ...)
 }
 \arguments{
 \item{x}{fitted model from \code{ddf}.}
