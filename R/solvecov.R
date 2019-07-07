@@ -1,5 +1,6 @@
 # solvecov code was taken from package fpc: Christian
 # Hennig chrish@@stats.ucl.ac.uk http://www.homepages.ucl.ac.uk/~ucakche/
+#' @export
 solvecov <- function (m, cmax = 1e+10){
   options(show.error.messages = FALSE)
   covinv <- try(solve(m))
