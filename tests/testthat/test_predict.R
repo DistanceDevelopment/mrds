@@ -37,7 +37,6 @@ test_that("covar df, covar in data",{
 })
 
 
-
 # test that a factor outside of the observed ones makes things explode
 
 nd <- data.frame(distance=0,
@@ -46,3 +45,29 @@ test_that("covar df, no covar level in data",{
   expect_error(predict(dd_h, newdata=nd), "fields or factor levels in `newdata` do not match data used in fitted model")
 })
 
+# make prediction where there are NAs in sex
+nd <- data.frame(distance=c(0,0),
+                 sex = c(book.tee.data$book.tee.dataframe[1,]$sex, NA))
+
+test_that("covar df, NA covar in data",{
+  pp <- predict(dd_h, newdata=nd)
+  expect_equal(pp$fitted, c(unname(fitted(dd_h)[1]), NA))
+})
+
+# make prediction where there are NAs in sex
+nd <- data.frame(distance=0,
+                 sex = c(book.tee.data$book.tee.dataframe$sex, NA))
+
+test_that("covar df, NA covar in data",{
+  pp <- predict(dd_h, newdata=nd)
+  expect_equal(pp$fitted, c(unname(fitted(dd_h)[1]), NA))
+})
+
+# extra nonsense, need to ignore additional columns not in df
+nd <- data.frame(distance=c(0,0),
+                 sex = book.tee.data$book.tee.dataframe[1:2,]$sex,
+                 foo = c(NA, NA))
+test_that("covar df, NA in noncovar data",{
+  pp <- predict(dd_h, newdata=nd)
+  expect_equal(pp$fitted, c(unname(fitted(dd_h)[1:2])))
+})

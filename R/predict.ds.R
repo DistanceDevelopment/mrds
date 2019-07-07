@@ -88,17 +88,18 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
     # Extract other values from model object
     if(!is.null(newdata)){
 
-
       # set the distance column to be the left truncation distance
       # this gets around an issue that Nat Kelly found where later process.data
       # will remove entires with distance < left truncation
       newdata$distance <- left
 
-
       newdata_save <- newdata
 
       # get the data in the model
       model_dat <- model$data
+
+      # counter for NAs...
+      naind <- rep(FALSE, nrow(newdata))
 
       # do this for both scale and shape parameters
       for(df_par in c("scale", "shape")){
@@ -116,6 +117,12 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
 
           model_dat <- model_dat[,c("distance", fvars), drop=FALSE]
 
+          if(df_par =="scale"){
+            # which rows have NAs?
+            naind <- naind | apply(newdata_save[, c("distance", fvars), drop=FALSE],
+                                   1, function(x) any(is.na(x)))
+          }
+
           # setup the covariate matrix, using the model data to ensure that
           # the levels are right
           newdata <- rbind(model_dat,
@@ -124,7 +131,7 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
 
           # now check that the column names are the same for the model
           # and prediction data matrices
-          if(!identical(colnames(dm), znames) || any(is.na(newdata))){
+          if(!identical(colnames(dm), znames)){
             stop("fields or factor levels in `newdata` do not match data used in fitted model\n")
           }
 
@@ -154,6 +161,8 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
       # update xmat too
       datalist <- process.data(newdata, object$meta.data, check=FALSE)
       ddfobj$xmat <- datalist$xmat[(nrow(model_dat)+1):nrow(datalist$xmat),,drop=FALSE]
+      ddfobj$xmat <- ddfobj$xmat[!naind, , drop=FALSE]
+      int.range <- int.range[!naind, , drop=FALSE]
       # reset newdata to be the right thing
       newdata <- newdata[(nrow(model_dat)+1):nrow(newdata), , drop=FALSE]
 
@@ -170,6 +179,13 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
     int1 <- integratepdf(ddfobj, select=rep(TRUE, nrow(ddfobj$xmat)),
                          width=width, int.range=int.range, standardize=TRUE,
                          point=point, left=left, doeachint=TRUE)
+
+    # do the switcheroo and pad with NAs where necessary
+    if(exists("naind")){
+      rr <- rep(NA, nrow(newdata))
+      rr[!naind] <- int1
+      int1<-rr
+    }
   }else{
     # If the predicted values don't need to be computed, then use the values
     # in the model object (model$fitted) and change to integral (esw) values.
