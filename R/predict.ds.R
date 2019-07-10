@@ -91,7 +91,10 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
       # set the distance column to be the left truncation distance
       # this gets around an issue that Nat Kelly found where later process.data
       # will remove entires with distance < left truncation
+      # BUT save the NAs!
+      nas <- is.na(newdata$distance)
       newdata$distance <- left
+      newdata$distance[nas] <- NA
 
       newdata_save <- newdata
 
@@ -115,9 +118,9 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
             stop("columns in `newdata` do not match those in fitted model\n")
           }
 
-          model_dat <- model_dat[,c("distance", fvars), drop=FALSE]
+          model_dat <- model_dat[, c("distance", fvars), drop=FALSE]
 
-          if(df_par =="scale"){
+          if(df_par=="scale"){
             # which rows have NAs?
             naind <- naind | apply(newdata_save[, c("distance", fvars), drop=FALSE],
                                    1, function(x) any(is.na(x)))
@@ -136,7 +139,7 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
           }
 
           # get only the new rows for prediction
-          dm <- dm[(nrow(model_dat)+1):nrow(dm),,drop=FALSE]
+          dm <- dm[(nrow(model_dat)+1):nrow(dm), , drop=FALSE]
           # assign that!
           ddfobj[[df_par]]$dm <- dm
 
@@ -146,6 +149,9 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
       # handle data setup for uniform key case
       if(ddfobj$type == "unif"){
         model_dat <- model_dat[, "distance", drop=FALSE]
+        # which rows have NAs?
+        naind <- any(is.na(newdata_save$distance))
+
         newdata <- rbind(model_dat,
                          newdata_save[, "distance", drop=FALSE])
         dm <- setcov(newdata, ~1)
