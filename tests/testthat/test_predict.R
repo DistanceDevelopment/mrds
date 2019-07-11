@@ -56,7 +56,7 @@ test_that("covar df, NA covar in data",{
 
 # make prediction where there are NAs in sex
 nd <- data.frame(distance=0,
-                 sex = c(book.tee.data$book.tee.dataframe$sex, NA))
+                 sex = c(book.tee.data$book.tee.dataframe$sex[1], NA))
 
 test_that("covar df, NA covar in data",{
   pp <- predict(dd_h, newdata=nd)
