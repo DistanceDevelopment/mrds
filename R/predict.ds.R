@@ -161,7 +161,12 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
       # get the bins when you have binned data
       # use the breaks specified in the model!
       if(model$meta.data$binned){
-        newdata <- create.bins(newdata, model$meta.data$breaks)
+        nanana <- apply(newdata[, c("distance", fvars), drop=FALSE],
+                        1, function(x) any(is.na(x)))
+        newdata_b <- create.bins(newdata[!nanana, , drop=FALSE], model$meta.data$breaks)
+        newdata$distbegin <- NA
+        newdata$distend <- NA
+        newdata[!nanana, ] <- newdata_b
       }
 
       # update xmat too
