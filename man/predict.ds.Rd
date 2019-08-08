@@ -31,12 +31,16 @@
 
 \item{esw}{if \code{TRUE}, returns effective strip half-width (or effective area of detection for point transect models) integral from 0 to the truncation distance (\code{width}) of \eqn{p(y)dy}; otherwise it returns the integral from 0 to truncation width of \eqn{p(y)\pi(y)} where \eqn{\pi(y)=1/w} for lines and \eqn{\pi(y)=2r/w^2} for points.}
 
+\item{se.fit}{for \code{*.ds} models only, generate standard errors on the predicted probabilities of detection (or ESW if \code{esw=TRUE}), stored in the \code{se.fit} element}
+
 \item{\dots}{for S3 consistency}
 
 \item{integrate}{for \code{*.fi} methods, see Details below.}
 }
 \value{
 For all but the exceptions below, the value is a list with a single element: \code{fitted}, a vector of average detection probabilities or esw values for each observation in the original data or\code{newdata}
+
+For \code{predict.ds}, if \code{se.fit=TRUE} there is an additional element \code{$se.fit}, which contains the standard errors of the probabilities of detection or ESW.
 
 For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with \code{integrate=TRUE}, the value is a list with one element: \code{fitted}, which is a vector of integrated (average) detection probabilities for each observation in the original data or \code{newdata}.
 

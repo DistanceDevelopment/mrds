@@ -5,6 +5,7 @@ mrds 2.2.1
 * Check for NA covariate values, thanks to Ana Cañadas for highlighting this issue.
 * enable P2 variance estimator for points
 * Corrected handling of NA covariates
+* new option se.fit for predict.ds to obtain standard errors for the probability of detection or ESW
 
 mrds 2.2.0
 -----------

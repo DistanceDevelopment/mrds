@@ -17,6 +17,7 @@
 #' @param int.range integration range for variable range analysis; either vector or 2 column matrix.
 #' @param esw if \code{TRUE}, returns effective strip half-width (or effective area of detection for point transect models) integral from 0 to the truncation distance (\code{width}) of \eqn{p(y)dy}; otherwise it returns the integral from 0 to truncation width of \eqn{p(y)\pi(y)} where \eqn{\pi(y)=1/w} for lines and \eqn{\pi(y)=2r/w^2} for points.
 #' @param integrate for \code{*.fi} methods, see Details below.
+#' @param se.fit for \code{*.ds} models only, generate standard errors on the predicted probabilities of detection (or ESW if \code{esw=TRUE}), stored in the \code{se.fit} element
 #' @param \dots for S3 consistency
 #' @usage \method{predict}{ds}(object, newdata, compute=FALSE, int.range=NULL, esw=FALSE, ...)
 #'        \method{predict}{io.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
@@ -26,6 +27,8 @@
 #'        \method{predict}{rem}(object, newdata, compute=FALSE, int.range=NULL, ...)
 #'        \method{predict}{rem.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
 #' @return For all but the exceptions below, the value is a list with a single element: \code{fitted}, a vector of average detection probabilities or esw values for each observation in the original data or\code{newdata}
+#'
+#' For \code{predict.ds}, if \code{se.fit=TRUE} there is an additional element \code{$se.fit}, which contains the standard errors of the probabilities of detection or ESW.
 #'
 #' For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with \code{integrate=TRUE}, the value is a list with one element: \code{fitted}, which is a vector of integrated (average) detection probabilities for each observation in the original data or \code{newdata}.
 #'
@@ -44,7 +47,7 @@
 #' @importFrom stats predict
 # Uses: integratedetfct, integratedetfct.logistic
 predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
-                       esw=FALSE, ...){
+                       esw=FALSE, se.fit=FALSE, ...){
   model <- object
   ltmodel <- model$ds
   x <- ltmodel$aux$ddfobj$xmat
@@ -234,5 +237,21 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
     names(fitted) <- newdata$object
   }
 
-  return(list(fitted=fitted))
+  # create the return object
+  ret <- list(fitted=fitted)
+
+  # get model standard errors
+  if(se.fit){
+    # create a dummy function
+    predict_f <- function(par, model, newdata, esw){
+      model$par <- par
+      predict(model, compute=TRUE, newdata=newdata, esw=esw)$fitted
+    }
+    ret$se.fit <- sqrt(diag(DeltaMethod(object$par, predict_f,
+                                        solve(object$hessian),
+                                        esw=esw, newdata=newdata, model=object,
+                                        delta=1e-8)$variance))
+  }
+
+  return(ret)
 }
