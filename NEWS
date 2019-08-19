@@ -6,6 +6,7 @@ mrds 2.2.1
 * enable P2 variance estimator for points
 * Corrected handling of NA covariates
 * new option se.fit for predict.ds to obtain standard errors for the probability of detection or ESW
+* Fixed a bug in dht when left truncation is used. Previously left truncation was ignored. See https://github.com/DistanceDevelopment/mrds/issues/22 thanks to Carl Schwarz for finding this bug.
 
 mrds 2.2.0
 -----------
