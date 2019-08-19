@@ -127,7 +127,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
 
     # Scale up abundances to survey region
     # jll 19-Jan-05 - sort Nhat.by.sample by Region.Label and Sample.Label
-    width <- model$meta.data$width * options$convert.units
+    width <- (model$meta.data$width-model$meta.data$left) * options$convert.units
     Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,width,point)
     Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
                                            Nhat.by.sample$Sample.Label),]
@@ -361,7 +361,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   }
 
   # Convert width value
-  width <- model$meta.data$width * options$convert.units
+  width <- (model$meta.data$width-model$meta.data$left) * options$convert.units
 
   # If area is zero for all regions reset to the area of the covered region
   DensityOnly <- FALSE
