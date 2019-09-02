@@ -71,7 +71,15 @@ process.data <- function(data, meta.data=list(), check=TRUE){
         length(data$detected[data$observer==2])){
       stop("number of records for primary observer not equal to number for secondary observer")
     }
+    # check each object is included twice
+    objtab <- table(data$object)
+    if(all(objtab != 2)){
+      stop(paste("objects",
+                 paste(names(objtab)[objtab!=2], collapse=", "),
+                 "do not have records for both observers"))
+    }
   }
+
 
   # Create field which counts the number of times an object was detected 0,1,2
   if(check){

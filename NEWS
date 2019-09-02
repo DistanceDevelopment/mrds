@@ -7,6 +7,7 @@ mrds 2.2.1
 * Corrected handling of NA covariates
 * new option se.fit for predict.ds to obtain standard errors for the probability of detection or ESW
 * Fixed a bug in dht when left truncation is used. Previously left truncation was ignored. See https://github.com/DistanceDevelopment/mrds/issues/22 thanks to Carl Schwarz for finding this bug.
+* Fix bug where two objects could have a missing observer and no error was thrown. Thanks to Ainars Aunins for reporting this bug and Eric Rexstad for diagnosing.
 
 mrds 2.2.0
 -----------
