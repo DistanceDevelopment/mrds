@@ -1,5 +1,13 @@
-# solvecov code was taken from package fpc: Christian
-# Hennig chrish@@stats.ucl.ac.uk http://www.homepages.ucl.ac.uk/~ucakche/
+#' Invert of covariance matrices
+#'
+#' Tries to invert a matrix by \code{solve}. If this fails because of singularity, an eigenvector decomposition is computed, and eigenvalues below \code{1/cmax} are replaced by \code{1/cmax}, i.e., \code{cmax} will be the corresponding eigenvalue of the inverted matrix.
+#' @param m a numeric symmetric matrix.
+#' @param cmax a positive value, see above.
+#' @return A list with the following components: \code{inv} the inverted matrix, \code{coll} \code{TRUE} if \code{solve} failed because of singularity.
+#' @author Christian Hennig \url{http://www.homepages.ucl.ac.uk/~ucakche/}
+#' @seealso solve, eigen
+#' @section Source:
+#' \code{solvecov} code was taken from package \code{fpc}: Christian Hennig \url{http://www.homepages.ucl.ac.uk/~ucakche/}
 #' @export
 solvecov <- function (m, cmax = 1e+10){
   options(show.error.messages = FALSE)
