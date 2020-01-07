@@ -4,8 +4,14 @@
 \alias{check.mono}
 \title{Check that a detection function is monotone}
 \usage{
-check.mono(df, strict = TRUE, n.pts = 100, tolerance = 1e-06,
-  plot = FALSE, max.plots = 6)
+check.mono(
+  df,
+  strict = TRUE,
+  n.pts = 100,
+  tolerance = 1e-06,
+  plot = FALSE,
+  max.plots = 6
+)
 }
 \arguments{
 \item{df}{a fitted detection function object}

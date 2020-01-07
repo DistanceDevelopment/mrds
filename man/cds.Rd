@@ -4,9 +4,15 @@
 \alias{cds}
 \title{CDS function definition}
 \usage{
-cds(key = NULL, adj.series = NULL, adj.order = NULL,
-  adj.scale = "width", adj.exp = FALSE, formula = ~1,
-  shape.formula = ~1)
+cds(
+  key = NULL,
+  adj.series = NULL,
+  adj.order = NULL,
+  adj.scale = "width",
+  adj.exp = FALSE,
+  formula = ~1,
+  shape.formula = ~1
+)
 }
 \arguments{
 \item{key}{string identifying key function (currently either "hn"

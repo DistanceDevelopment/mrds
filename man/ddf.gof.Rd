@@ -10,8 +10,15 @@
 \alias{gof.rem.fi}
 \title{Goodness of fit tests for distance sampling models}
 \usage{
-ddf.gof(model, breaks = NULL, nc = NULL, qq = TRUE, nboot = 100,
-  ks = FALSE, ...)
+ddf.gof(
+  model,
+  breaks = NULL,
+  nc = NULL,
+  qq = TRUE,
+  nboot = 100,
+  ks = FALSE,
+  ...
+)
 }
 \arguments{
 \item{model}{model object}

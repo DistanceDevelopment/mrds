@@ -4,8 +4,7 @@
 \alias{ddf.trial.fi}
 \title{Mark-Recapture Analysis of Trial Configuration - FI}
 \usage{
-\method{ddf}{trial.fi}(model, data, meta.data = list(),
-  control = list(), call = "", method)
+\method{ddf}{trial.fi}(model, data, meta.data = list(), control = list(), call = "", method)
 }
 \arguments{
 \item{model}{mark-recapture model specification}

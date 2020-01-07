@@ -4,9 +4,18 @@
 \alias{gstdint}
 \title{Integral of pdf of distances}
 \usage{
-gstdint(x, ddfobj, index = NULL, select = NULL, width,
-  standardize = TRUE, point = FALSE, stdint = TRUE,
-  doeachint = FALSE, left = left)
+gstdint(
+  x,
+  ddfobj,
+  index = NULL,
+  select = NULL,
+  width,
+  standardize = TRUE,
+  point = FALSE,
+  stdint = TRUE,
+  doeachint = FALSE,
+  left = left
+)
 }
 \arguments{
 \item{x}{lower, upper value for integration}

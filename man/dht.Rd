@@ -4,8 +4,15 @@
 \alias{dht}
 \title{Density and abundance estimates and variances}
 \usage{
-dht(model, region.table, sample.table, obs.table = NULL, subset = NULL,
-  se = TRUE, options = list())
+dht(
+  model,
+  region.table,
+  sample.table,
+  obs.table = NULL,
+  subset = NULL,
+  se = TRUE,
+  options = list()
+)
 }
 \arguments{
 \item{model}{ddf model object}

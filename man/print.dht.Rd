@@ -4,8 +4,7 @@
 \alias{print.dht}
 \title{Prints density and abundance estimates}
 \usage{
-\method{print}{dht}(x, cor = FALSE, bysample = FALSE,
-  vcmatrices = FALSE, ...)
+\method{print}{dht}(x, cor = FALSE, bysample = FALSE, vcmatrices = FALSE, ...)
 }
 \arguments{
 \item{x}{dht object that results from call to dht for a specific ddf object}

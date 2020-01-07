@@ -19,13 +19,13 @@
 #' @param integrate for \code{*.fi} methods, see Details below.
 #' @param se.fit for \code{*.ds} models only, generate standard errors on the predicted probabilities of detection (or ESW if \code{esw=TRUE}), stored in the \code{se.fit} element
 #' @param \dots for S3 consistency
-#' @usage \method{predict}{ds}(object, newdata, compute=FALSE, int.range=NULL, esw=FALSE, ...)
-#'        \method{predict}{io.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
-#'        \method{predict}{io}(object, newdata, compute=FALSE, int.range=NULL, ...)
-#'        \method{predict}{trial}(object, newdata, compute=FALSE, int.range=NULL, ...)
-#'        \method{predict}{trial.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
-#'        \method{predict}{rem}(object, newdata, compute=FALSE, int.range=NULL, ...)
-#'        \method{predict}{rem.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
+#' @usage \method{predict}{ds}(object, newdata=NULL, compute=FALSE, int.range=NULL, esw=FALSE, se.fit=FALSE, ...)
+#'        \method{predict}{io.fi}(object, newdata=NULL, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
+#'        \method{predict}{io}(object, newdata=NULL, compute=FALSE, int.range=NULL, ...)
+#'        \method{predict}{trial}(object, newdata=NULL, compute=FALSE, int.range=NULL, ...)
+#'        \method{predict}{trial.fi}(object, newdata=NULL, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
+#'        \method{predict}{rem}(object, newdata=NULL, compute=FALSE, int.range=NULL, ...)
+#'        \method{predict}{rem.fi}(object, newdata=NULL, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
 #' @return For all but the exceptions below, the value is a list with a single element: \code{fitted}, a vector of average detection probabilities or esw values for each observation in the original data or\code{newdata}
 #'
 #' For \code{predict.ds}, if \code{se.fit=TRUE} there is an additional element \code{$se.fit}, which contains the standard errors of the probabilities of detection or ESW.

@@ -57,7 +57,7 @@ bird.data <- data.frame(object=x$ObjectID, observer=x$Observer,
 bird.data$observer=factor(bird.data$observer)
 
 # Jeff Laake suggested this snippet to quickly create distance medians
-# which adds bin information to the \\code{bird.data} dataframe
+# which adds bin information to the \code{bird.data} dataframe
 
 bird.data$distbegin=0
 bird.data$distend=100
@@ -70,11 +70,11 @@ bird.data$distbegin[bird.data$distance==87.5]=50
 bird.data$distend[bird.data$distance==87.5]=100
 
 # Removed all survey points with distance=NA for a survey event;
-# hence no observations for use in \\code{ddf()} but needed later
+# hence no observations for use in \code{ddf()} but needed later
 bird.data=bird.data[complete.cases(bird.data),]
 
 # Manipulations on full dataset for various data.frame creation
-# for use in density estimation using \\code{dht()}
+# for use in density estimation using \code{dht()}
 
 # Samples dataframe
 xx <- x

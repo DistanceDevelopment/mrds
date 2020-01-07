@@ -4,8 +4,7 @@
 \alias{summary.rem.fi}
 \title{Summary of distance detection function model object}
 \usage{
-\method{summary}{rem.fi}(object, se = TRUE, N = TRUE,
-  fittedmodel = NULL, ...)
+\method{summary}{rem.fi}(object, se = TRUE, N = TRUE, fittedmodel = NULL, ...)
 }
 \arguments{
 \item{object}{a \code{ddf} model object}

@@ -12,13 +12,13 @@
 \alias{predict.rem.fi}
 \title{Predictions from \code{mrds} models}
 \usage{
-\method{predict}{ds}(object, newdata, compute=FALSE, int.range=NULL, esw=FALSE, ...)
-       \method{predict}{io.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
-       \method{predict}{io}(object, newdata, compute=FALSE, int.range=NULL, ...)
-       \method{predict}{trial}(object, newdata, compute=FALSE, int.range=NULL, ...)
-       \method{predict}{trial.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
-       \method{predict}{rem}(object, newdata, compute=FALSE, int.range=NULL, ...)
-       \method{predict}{rem.fi}(object, newdata, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
+\method{predict}{ds}(object, newdata=NULL, compute=FALSE, int.range=NULL, esw=FALSE, se.fit=FALSE, ...)
+       \method{predict}{io.fi}(object, newdata=NULL, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
+       \method{predict}{io}(object, newdata=NULL, compute=FALSE, int.range=NULL, ...)
+       \method{predict}{trial}(object, newdata=NULL, compute=FALSE, int.range=NULL, ...)
+       \method{predict}{trial.fi}(object, newdata=NULL, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
+       \method{predict}{rem}(object, newdata=NULL, compute=FALSE, int.range=NULL, ...)
+       \method{predict}{rem.fi}(object, newdata=NULL, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
 }
 \arguments{
 \item{object}{\code{ddf} model object.}

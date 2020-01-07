@@ -4,8 +4,7 @@
 \alias{ddf.io.fi}
 \title{Mark-Recapture Distance Sampling (MRDS) IO - FI}
 \usage{
-\method{ddf}{io.fi}(model, data, meta.data = list(), control = list(),
-  call = "", method)
+\method{ddf}{io.fi}(model, data, meta.data = list(), control = list(), call = "", method)
 }
 \arguments{
 \item{model}{mark-recapture model specification}

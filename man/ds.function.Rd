@@ -4,8 +4,14 @@
 \alias{ds.function}
 \title{Distance Sampling Functions}
 \usage{
-ds.function(model, newdata = NULL, obs = "All", conditional = FALSE,
-  pdf = TRUE, finebr)
+ds.function(
+  model,
+  newdata = NULL,
+  obs = "All",
+  conditional = FALSE,
+  pdf = TRUE,
+  finebr
+)
 }
 \arguments{
 \item{model}{model object}

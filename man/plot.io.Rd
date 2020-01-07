@@ -5,11 +5,26 @@
 \title{Plot fit of detection functions and histograms of data from distance
 sampling independent observer (\code{io}) model}
 \usage{
-\method{plot}{io}(x, which = 1:6, breaks = NULL, nc = NULL,
-  maintitle = "", showlines = TRUE, showpoints = TRUE, ylim = c(0,
-  1), angle = -45, density = 20, col = "black", jitter = NULL,
-  divisions = 25, pages = 0, xlab = "Distance",
-  ylab = "Detection probability", subtitle = TRUE, ...)
+\method{plot}{io}(
+  x,
+  which = 1:6,
+  breaks = NULL,
+  nc = NULL,
+  maintitle = "",
+  showlines = TRUE,
+  showpoints = TRUE,
+  ylim = c(0, 1),
+  angle = -45,
+  density = 20,
+  col = "black",
+  jitter = NULL,
+  divisions = 25,
+  pages = 0,
+  xlab = "Distance",
+  ylab = "Detection probability",
+  subtitle = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{fitted model from \code{ddf}}

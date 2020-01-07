@@ -4,8 +4,16 @@
 \alias{integratepdf}
 \title{Numerically integrate pdf of observed distances over specified ranges}
 \usage{
-integratepdf(ddfobj, select, width, int.range, standardize = TRUE,
-  point = FALSE, left = 0, doeachint = FALSE)
+integratepdf(
+  ddfobj,
+  select,
+  width,
+  int.range,
+  standardize = TRUE,
+  point = FALSE,
+  left = 0,
+  doeachint = FALSE
+)
 }
 \arguments{
 \item{ddfobj}{distance detection function specification}
