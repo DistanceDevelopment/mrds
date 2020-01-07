@@ -12,7 +12,7 @@
 solvecov <- function (m, cmax = 1e+10){
   options(show.error.messages = FALSE)
   covinv <- try(solve(m))
-  if(class(covinv) != "try-error"){
+  if("try-error" %in% class(covinv)){
     coll <- FALSE
   }else{
     p <- nrow(m)
