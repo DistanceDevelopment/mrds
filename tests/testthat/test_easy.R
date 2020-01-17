@@ -170,7 +170,7 @@ for(i in model.set){
     result <- try(test.df(eval(parse(text=mcds.call)), ltexample, width,
                           mono=mono, strict=mono.strict, showit=0))
 
-    expect_that(all(class(result)=="try-error"), is_false(), info=i)
+    expect_false("try-error" %in% class(result), info = i)
 
     if(all(class(result) != "try-error")){
 
@@ -179,7 +179,7 @@ for(i in model.set){
 
       if(result$lnl <= this.model$LnL){
         test_that(this.test, {
-          expect_that(result$lnl <= this.model$LnL, is_true(),
+          expect_true(result$lnl <= this.model$LnL,
                       info=paste("Likelihood for model", i,
                                   "better than MCDS"))
         })
