@@ -44,7 +44,7 @@ flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
       ddfobj[[par.name]]$parameters <- rep(NA,
                                           length(ddfobj[[par.name]]$parameters))
       pars <- getpar(ddfobj)
-      fpar[which(is.na(pars))] <- save.pars
+      fpar[is.na(pars)] <- save.pars
     }
     return(list(fpar=fpar,ddfobj=ddfobj))
   }
