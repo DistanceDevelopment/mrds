@@ -149,6 +149,8 @@
 #'   \item{\code{optimx.maxit}}{maximum number of iterations to use in the optimisation.}
 #'   \item{\code{silent}}{silences warnings within ds fitting method (helpful for running many times without generating many warning/error messages).}}
 #'
+#' Examples of distance sampling analyses are available at \url{http://examples.distancesampling.org/}.
+#'
 #' @param dsmodel distance sampling model specification
 #' @param mrmodel mark-recapture model specification
 #' @param data dataframe containing data to be analyzed

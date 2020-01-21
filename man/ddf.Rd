@@ -179,6 +179,8 @@ infrequently.  The list values include:
   \item{\code{optimx.method}}{one (or a vector of) string(s) giving the optimisation method to use. If more than one is supplied, the results from one are used as the starting values for the next. See \code{\link{optimx}}}
   \item{\code{optimx.maxit}}{maximum number of iterations to use in the optimisation.}
   \item{\code{silent}}{silences warnings within ds fitting method (helpful for running many times without generating many warning/error messages).}}
+
+Examples of distance sampling analyses are available at \url{http://examples.distancesampling.org/}.
 }
 \examples{
 # load data
