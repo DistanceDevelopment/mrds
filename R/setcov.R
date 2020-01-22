@@ -8,7 +8,7 @@
 #' majority of the work.  This function handles 2 exceptions "~.", the null
 #' model with 0 columns and "~1" the intercept only model - a column of 1s.  If
 #' a model other than the 2 exceptions is provided, it calls
-#' \code{\link{model.matrix}} to construct the columns. If any of the colums of
+#' \code{\link{model.matrix}} to construct the columns. If any of the columns of
 #' the design matrix are all 0's the column is removed.  This occurs when there
 #' is no data for a particular factor.
 #'
