@@ -8,3 +8,4 @@ LICENSE
 ^tic\.R$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^CRAN-RELEASE$
