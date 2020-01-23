@@ -153,7 +153,7 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
       if(ddfobj$type == "unif"){
         model_dat <- model_dat[, "distance", drop=FALSE]
         # which rows have NAs?
-        naind <- any(is.na(newdata_save$distance))
+        naind <- is.na(newdata_save$distance)
 
         newdata <- rbind(model_dat,
                          newdata_save[, "distance", drop=FALSE])

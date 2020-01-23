@@ -1,3 +1,8 @@
+mrds 2.2.2
+----------
+
+* fix issue in predict() when uniform key functions are used with new data.
+
 mrds 2.2.1
 ----------
 
