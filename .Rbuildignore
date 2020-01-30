@@ -1,11 +1,9 @@
-.travis.yml
 tests
 inst/testData
 inst/docs
 LICENSE
 ^\.travis\.yml$
 ^appveyor\.yml$
-^tic\.R$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^CRAN-RELEASE$
