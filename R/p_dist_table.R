@@ -30,6 +30,11 @@
 #' }
 p_dist_table <- function(object, bins=seq(0, 1, by=0.1), proportion=FALSE){
 
+  # if we have a ds object from Distance
+  if("dsmodel" %in%class(object)){
+    object <- object$ddf
+  }
+
   # get the probabilities from the fitted object
   ps <- fitted(object)
 
