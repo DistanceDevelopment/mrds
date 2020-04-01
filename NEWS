@@ -2,6 +2,7 @@ mrds 2.2.2
 ----------
 
 * fix issue in predict() when uniform key functions are used with new data.
+* new function p_dist_table to show the distribution of estimated probabilities of detection. Useful for covariate models to determine issues with very small ps.
 
 mrds 2.2.1
 ----------
