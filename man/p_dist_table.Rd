@@ -17,7 +17,7 @@ p_dist_table(object, bins = seq(0, 1, by = 0.1), proportion = FALSE)
 a \code{data.frame} with probability bins, counts and (optionally) proportions. The object has an attribute \code{p_range} which contains the range of estimated detection probabilities
 }
 \description{
-Generate a table of frequencies of probability of detection from a detection function model. This is particularly useful when employing covariates, as it can indicate if there are detections with very small \hat{P}s that can be unduly influential when calculating abundance estimates.
+Generate a table of frequencies of probability of detection from a detection function model. This is particularly useful when employing covariates, as it can indicate if there are detections with very small detection probabilities that can be unduly influential when calculating abundance estimates.
 }
 \author{
 David L Miller

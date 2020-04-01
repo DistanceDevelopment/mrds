@@ -1,6 +1,6 @@
 #' Distribution of probabilities of detection
 #'
-#' Generate a table of frequencies of probability of detection from a detection function model. This is particularly useful when employing covariates, as it can indicate if there are detections with very small \hat{P}s that can be unduly influential when calculating abundance estimates.
+#' Generate a table of frequencies of probability of detection from a detection function model. This is particularly useful when employing covariates, as it can indicate if there are detections with very small detection probabilities that can be unduly influential when calculating abundance estimates.
 #'
 #' @param object fitted detection function
 #' @param bins how the results should be binned
