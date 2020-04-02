@@ -26,7 +26,8 @@
 #' @param ylim user-specified y axis limits.
 #' @param pdf plot the histogram of distances with the PDF of the probability of detection overlaid. Ignored (with warning) for line transect models.
 #' @param pages the number of pages over which to spread the plots. For example, if \code{pages=1} then all plots will be displayed on one page. Default is 0, which prompts the user for the next plot to be displayed.
-#' @param xlab label for the x axis.
+#' @param xlab label for the x axis (defaults to "Distance")
+#' @param ylab label for the y axis (default automatically sets depending on plot type)
 #' @param \dots other graphical parameters, passed to the plotting functions (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}}, \code{\link{points}}, etc).
 #' @return Just plots.
 #' @author Jeff Laake, Jon Bishop, David Borchers, David L Miller
@@ -57,7 +58,7 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
                     jitter.v=rep(0,3), showpoints=TRUE, subset=NULL,
                     pl.col='black', bw.col=grey(0), black.white=FALSE,
                     pl.den=rep(20,1), pl.ang=rep(-45,1), main=NULL, pages=0,
-                    pdf=FALSE, ylim=NULL, xlab="Distance", ...){
+                    pdf=FALSE, ylim=NULL, xlab="Distance", ylab=NULL, ...){
 
   model<-x
   lower <- 0
@@ -247,9 +248,10 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
 
   # Data summary plot
   if(show[1]){
+    if(is.null(ylab)) ylab <- "Frequency"
     if(is.null(ylim)) ylim <- c(0, ymax)
     histline(hist.obj$counts, breaks=breaks, lineonly=FALSE, ylim=ylim,
-             xlab=xlab, ylab="Frequency", angle=angval1,
+             xlab=xlab, ylab=ylab, angle=angval1,
              density=denval1, col=byval1, ...)
   }
 
@@ -273,10 +275,10 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
     # are plotting PDF or df
     if(is.null(ylim)) ylim<-c(0, max(hist.obj$density, max(point_vals)))
     if(pdf){
-      ylab <- "Probability density"
+      if(is.null(ylab)) ylab <- "Probability density"
       det.plot <- FALSE
     }else{
-      ylab <- "Detection probability"
+      if(is.null(ylab)) ylab <- "Detection probability"
       det.plot <- TRUE
     }
 

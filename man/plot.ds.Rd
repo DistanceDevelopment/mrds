@@ -22,6 +22,7 @@
   pdf = FALSE,
   ylim = NULL,
   xlab = "Distance",
+  ylab = NULL,
   ...
 )
 }
@@ -60,7 +61,9 @@
 
 \item{ylim}{user-specified y axis limits.}
 
-\item{xlab}{label for the x axis.}
+\item{xlab}{label for the x axis (defaults to "Distance")}
+
+\item{ylab}{label for the y axis (default automatically sets depending on plot type)}
 
 \item{\dots}{other graphical parameters, passed to the plotting functions (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}}, \code{\link{points}}, etc).}
 }
