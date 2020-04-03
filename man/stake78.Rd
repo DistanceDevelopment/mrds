@@ -4,7 +4,8 @@
 \name{stake78}
 \alias{stake78}
 \title{Wooden stake data from 1978 survey}
-\format{A data frame with 150 observations on the following 13 variables.
+\format{
+A data frame with 150 observations on the following 13 variables.
   \describe{ \item{StakeNo}{unique number for each stake 1-150}
   \item{PD}{perpendicular distance at which the stake was placed
   from the line} \item{Obs1}{0/1 whether missed/seen by observer 1}
@@ -17,7 +18,8 @@
   \item{Obs8}{0/1 whether missed/seen by observer 8}
   \item{Obs9}{0/1 whether missed/seen by observer 9}
   \item{Obs10}{0/1 whether missed/seen by observer 10}
-  \item{Obs11}{0/1 whether missed/seen by observer 11} }}
+  \item{Obs11}{0/1 whether missed/seen by observer 11} }
+}
 \source{
 Laake, J. 1978. Line transect estimators robust to animal movement.
   M.S. Thesis. Utah State University, Logan, Utah. 55p.

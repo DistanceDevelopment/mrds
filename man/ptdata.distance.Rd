@@ -4,13 +4,15 @@
 \name{ptdata.distance}
 \alias{ptdata.distance}
 \title{Single observer point count data example from Distance}
-\format{The format is 144 obs of 6 variables:
+\format{
+The format is 144 obs of 6 variables:
   distance: numeric distance from center
   observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...
   detected: numeric 0/1
   object: sequential object number
   Sample.Label: point label
-  Region.Label: single region label}
+  Region.Label: single region label
+}
 \description{
 Single observer point count data example from Distance
 }

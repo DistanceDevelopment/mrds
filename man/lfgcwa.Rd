@@ -4,7 +4,8 @@
 \name{lfgcwa}
 \alias{lfgcwa}
 \title{Golden-cheeked warbler mark-recapture distance sampling analysis}
-\format{The format is a data frame with the following covariate metrics.
+\format{
+The format is a data frame with the following covariate metrics.
 \describe{\item{PointID}{Unique identifier for each sample location; locations are the same for both species}
 \item{VisitNumber}{Visit number to the point}
 \item{Species}{Species designation, either Golden-cheeked warbler (GW) or Black-capped Vireo (BV)}
@@ -17,7 +18,8 @@
 \item{Category}{Region.Label categorization, see R package \code{mrds} help file for details on data structure}
 \item{Effort}{Amount of survey effort at the point}
 \item{Day}{Number of days since 15 March 2011, numeric value}
-\item{ObjectID}{Unique ID for each paired observations} }}
+\item{ObjectID}{Unique ID for each paired observations} }
+}
 \description{
 These data represent avian point count surveys conducted at 453 point sample survey locations on the 24,000 (approx) live-fire region of Fort Hood
 in central Texas.  Surveys were conducted by independent double observers (2 per survey occasion) and as such we had a maximum of 3 paired survey histories, giving a maximum of

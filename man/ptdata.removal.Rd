@@ -4,13 +4,15 @@
 \name{ptdata.removal}
 \alias{ptdata.removal}
 \title{Simulated removal observer point count data}
-\format{The format is 408 obs of 6 variables:
+\format{
+The format is 408 obs of 6 variables:
  distance: numeric distance from center
  observer: Factor w/ 2 levels "1","2": 1 2 1 2 1 2 1 2 1 2 ...
  detected: numeric 0/1
  person: Factor with 2 levels A,B
  pair: Factor with 2 levels "AB" BA"
- object: sequential object number}
+ object: sequential object number
+}
 \description{
 Simulated removal observer point count data with detection p(0)=0.8;
 hn sigma=30; w=100 for both observers with dependency y>0, gamma=0.1

@@ -4,7 +4,8 @@
 \name{pronghorn}
 \alias{pronghorn}
 \title{Pronghorn aerial survey data from Wyoming}
-\format{A data frame with 660 observations on the following 5 variables.
+\format{
+A data frame with 660 observations on the following 5 variables.
   \describe{ \item{STRATUM}{a numeric vector}
   \item{direction}{a factor with levels \code{N} \code{S}
   representing the survey direction} \item{AGL}{height above ground
@@ -12,7 +13,8 @@
   \code{D} which represent angular bands between breaks at
   35.42,44.56,51.52,61.02,70.97 degrees.  These angles were set based on
   selected distance bins based on the target AGL.}
-  \item{cluster}{number of pronghorn in the observed cluster} }}
+  \item{cluster}{number of pronghorn in the observed cluster} }
+}
 \source{
 Data provided courtesy of Rich Guenzel of Wyoming Game and Fish.
 }
