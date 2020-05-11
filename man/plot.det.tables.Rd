@@ -7,10 +7,10 @@
 \method{plot}{det.tables}(
   x,
   which = 1:6,
-  angle = -45,
-  density = 20,
-  col1 = "black",
-  col2 = "blue",
+  angle = NULL,
+  density = NULL,
+  col1 = "white",
+  col2 = "lightgrey",
   new = TRUE,
   ...
 )
@@ -24,12 +24,11 @@
 
 \item{density}{shading density for hatching}
 
-\item{col1}{plotting colour for observer 1 detections}
+\item{col1}{plotting colour for total histogram bars.}
 
-\item{col2}{plotting colour for observer 2 detections within observer 1
-subset detections}
+\item{col2}{plotting colour for subset histogram bars.}
 
-\item{new}{if TRUE new plotting window for each plot}
+\item{new}{if \code{TRUE} new plotting window for each plot}
 
 \item{\dots}{other graphical parameters, passed to plotting functions}
 }
@@ -40,6 +39,17 @@ Just plots.
 Plot the tables created by \code{\link{det.tables}}. Produces a series of
 tables for dual observer data that shows the number missed and detected for
 each observer within defined distance classes.
+}
+\details{
+Plots that are produced are as follows (controlled by the \code{which} argument):
+\describe{
+  \item{1}{Detected by either observer/Detected by observer 1}
+  \item{2}{Detected by either observer/Detected by observer 2}
+  \item{3}{Seen by both observers}
+  \item{4}{Seen by either observer}
+  \item{5}{Detected by observer 2/Detected by observer 1 | 2}
+  \item{6}{Detected by observer 1/Detected by observer 2 | 1}
+}
 }
 \examples{
 \donttest{
@@ -57,5 +67,5 @@ plot(tabs,which=1:6,new=FALSE)
 }
 }
 \author{
-Jeff Laake
+Jeff Laake, David L Miller
 }
