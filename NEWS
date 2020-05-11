@@ -2,7 +2,8 @@ mrds 2.2.2
 ----------
 
 * fix issue in predict() when uniform key functions are used with new data.
-* new function p_dist_table to show the distribution of estimated probabilities of detection. Useful for covariate models to determine issues with very small ps.
+* new function p_dist_table() to show the distribution of estimated probabilities of detection. Useful for covariate models to determine issues with very small ps.
+* new function add_df_covar_line(), which can be used to add lines plots showing the detection function for a given covariate combination. Thanks to various members of the distance sampling mailing list for this suggestion.
 
 mrds 2.2.1
 ----------
