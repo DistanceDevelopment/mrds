@@ -90,7 +90,7 @@ Expected cluster size
 
   expect_warning(dht(model, region.table=pt.region, sample.table=pt.sample,
                      obs.table=pt.obs, options=list(ervar="O1")),
-                 "Point transect encounter rate variance can only use estimator P3, switching to this estimator.", fixed=TRUE)
+                 "Point transect encounter rate variance can only use estimators P2 or P3, switching to P3.", fixed=TRUE)
 
 })
 

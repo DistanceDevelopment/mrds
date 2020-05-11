@@ -99,7 +99,7 @@ test_that("P3 variance estimator", {
   sample$Effort <- sample(1:3, nrow(sample), replace=TRUE)
   d <- dht(xx, obs.table=obs, region.table=region, sample.table=sample,
            options = list(ervar = "P3"))
-  expect_equal(d$individuals$N$se, 0.0007365085886)
+  expect_equal(d$individuals$N$se, 0.0005956190468)
 
 
   # save code for later for testing...

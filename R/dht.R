@@ -354,10 +354,10 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
 
   # switch to the P3 estimator if using points
   if(model$meta.data$point){
-    if(options$ervar != "P3"){
-      warning("Point transect encounter rate variance can only use estimator P3, switching to this estimator.")
+    if(!(options$ervar %in% c("P2", "P3"))){
+      warning("Point transect encounter rate variance can only use estimators P2 or P3, switching to P3.")
+      options$ervar <- "P3"
     }
-    options$ervar <- "P3"
   }
 
   # Convert width value
