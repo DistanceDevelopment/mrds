@@ -90,13 +90,15 @@ test_that("P3 variance estimator", {
 
   # with equal effort
   sample$Effort <- 1
-  d <- dht(xx, obs.table=obs, region.table=region, sample.table=sample, options = list(ervar = "P3"))
+  d <- dht(xx, obs.table=obs, region.table=region, sample.table=sample,
+           options = list(ervar = "P3"))
   expect_equal(d$individuals$N$se, 0.001000225155)
 
   # make effort unequal
   set.seed(1234)
   sample$Effort <- sample(1:3, nrow(sample), replace=TRUE)
-  d <- dht(xx, obs.table=obs, region.table=region, sample.table=sample, options = list(ervar = "P3"))
+  d <- dht(xx, obs.table=obs, region.table=region, sample.table=sample,
+           options = list(ervar = "P3"))
   expect_equal(d$individuals$N$se, 0.0007365085886)
 
 
