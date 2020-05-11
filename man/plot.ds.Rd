@@ -12,11 +12,9 @@
   jitter.v = rep(0, 3),
   showpoints = TRUE,
   subset = NULL,
-  pl.col = "black",
-  bw.col = grey(0),
-  black.white = FALSE,
-  pl.den = rep(20, 1),
-  pl.ang = rep(-45, 1),
+  pl.col = "lightgrey",
+  pl.den = NULL,
+  pl.ang = NULL,
   main = NULL,
   pages = 0,
   pdf = FALSE,
@@ -37,33 +35,29 @@
 
 \item{nc}{number of equal width bins for histogram}
 
-\item{jitter.v}{scaling option for plotting points.  Jitter is applied to points by multiplying the fitted value by a random draw from a normal distribution with mean 1 and sd \code{jitter.v[j]}.  Where \code{j=1,2} corresponds to observer \code{j} and \code{j=3} corresponds to pooled/duplicate detections.}
+\item{jitter.v}{apply jitter to points by multiplying the fitted value by a random draw from a normal distribution with mean 1 and sd \code{jitter.v}.}
 
-\item{showpoints}{logical variable; if \code{TRUE} plots predicted value for each observation.}
+\item{showpoints}{logical variable; if \code{TRUE} plots predicted value for each observation (conditional on its observed distance).}
 
 \item{subset}{subset of data to plot.}
 
-\item{pl.col}{colours plotting colours for obs 1, obs 2 detections.}
+\item{pl.col}{colour for histogram bars.}
 
-\item{bw.col}{grayscale plotting colours for obs 1, obs 2 detections.}
+\item{pl.den}{shading density for histogram bars.}
 
-\item{black.white}{logical variable; if \code{TRUE} plots are grayscale.}
+\item{pl.ang}{shading angle for histogram bars.}
 
-\item{pl.den}{shading density for plots of obs 1, obs 2 detections.}
-
-\item{pl.ang}{shading angle for plots of obs 1, obs 2 detections.}
-
-\item{main}{user-specified plot title.}
+\item{main}{plot title.}
 
 \item{pages}{the number of pages over which to spread the plots. For example, if \code{pages=1} then all plots will be displayed on one page. Default is 0, which prompts the user for the next plot to be displayed.}
 
 \item{pdf}{plot the histogram of distances with the PDF of the probability of detection overlaid. Ignored (with warning) for line transect models.}
 
-\item{ylim}{user-specified y axis limits.}
+\item{ylim}{vertical axis limits.}
 
-\item{xlab}{label for the x axis (defaults to "Distance")}
+\item{xlab}{horizontal axis label (defaults to "Distance").}
 
-\item{ylab}{label for the y axis (default automatically sets depending on plot type)}
+\item{ylab}{vertical axis label (default automatically set depending on plot type).}
 
 \item{\dots}{other graphical parameters, passed to the plotting functions (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}}, \code{\link{points}}, etc).}
 }
@@ -97,6 +91,9 @@ plot(xx, breaks=c(0, 0.5, 1, 2, 3, 4), subset=sex==1)
 # put both plots on one page
 plot(xx, breaks=c(0, 0.5, 1, 2, 3, 4), pages=1, which=1:2)
 }
+}
+\seealso{
+add_df_covar_line
 }
 \author{
 Jeff Laake, Jon Bishop, David Borchers, David L Miller

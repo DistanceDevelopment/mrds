@@ -14,20 +14,18 @@
 #'               2 \tab histogram of observed distances with fitted line and points (default)\cr}
 #' @param breaks user defined breakpoints
 #' @param nc number of equal width bins for histogram
-#' @param jitter.v scaling option for plotting points.  Jitter is applied to points by multiplying the fitted value by a random draw from a normal distribution with mean 1 and sd \code{jitter.v[j]}.  Where \code{j=1,2} corresponds to observer \code{j} and \code{j=3} corresponds to pooled/duplicate detections.
-#' @param showpoints logical variable; if \code{TRUE} plots predicted value for each observation.
+#' @param jitter.v apply jitter to points by multiplying the fitted value by a random draw from a normal distribution with mean 1 and sd \code{jitter.v}.
+#' @param showpoints logical variable; if \code{TRUE} plots predicted value for each observation (conditional on its observed distance).
 #' @param subset subset of data to plot.
-#' @param pl.col colours plotting colours for obs 1, obs 2 detections.
-#' @param bw.col grayscale plotting colours for obs 1, obs 2 detections.
-#' @param black.white logical variable; if \code{TRUE} plots are grayscale.
-#' @param pl.den shading density for plots of obs 1, obs 2 detections.
-#' @param pl.ang shading angle for plots of obs 1, obs 2 detections.
-#' @param main user-specified plot title.
-#' @param ylim user-specified y axis limits.
+#' @param pl.col colour for histogram bars.
+#' @param pl.den shading density for histogram bars.
+#' @param pl.ang shading angle for histogram bars.
+#' @param main plot title.
+#' @param ylim vertical axis limits.
 #' @param pdf plot the histogram of distances with the PDF of the probability of detection overlaid. Ignored (with warning) for line transect models.
 #' @param pages the number of pages over which to spread the plots. For example, if \code{pages=1} then all plots will be displayed on one page. Default is 0, which prompts the user for the next plot to be displayed.
-#' @param xlab label for the x axis (defaults to "Distance")
-#' @param ylab label for the y axis (default automatically sets depending on plot type)
+#' @param xlab horizontal axis label (defaults to "Distance").
+#' @param ylab vertical axis label (default automatically set depending on plot type).
 #' @param \dots other graphical parameters, passed to the plotting functions (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}}, \code{\link{points}}, etc).
 #' @return Just plots.
 #' @author Jeff Laake, Jon Bishop, David Borchers, David L Miller
@@ -35,6 +33,7 @@
 #' @importFrom graphics hist par lines points title
 #' @importFrom grDevices devAskNewPage grey
 #' @importFrom stats rnorm
+#' @seealso add_df_covar_line
 #' @examples
 #' \donttest{
 #' # fit a model to the tee data
@@ -56,8 +55,8 @@
 #' }
 plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
                     jitter.v=rep(0,3), showpoints=TRUE, subset=NULL,
-                    pl.col='black', bw.col=grey(0), black.white=FALSE,
-                    pl.den=rep(20,1), pl.ang=rep(-45,1), main=NULL, pages=0,
+                    pl.col="lightgrey",
+                    pl.den=NULL, pl.ang=NULL, main=NULL, pages=0,
                     pdf=FALSE, ylim=NULL, xlab="Distance", ylab=NULL, ...){
 
   model<-x
@@ -75,16 +74,6 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
   show <- rep(FALSE, 2)
   show[which] <- TRUE
 
-  ## Set printing options for plots:
-  # By default  pl.col=c('black'),
-  #             bw.col=c(grey(0))
-  # If greyscale plots are required use the following colours:
-  if(black.white){
-    byval1 <- bw.col[1]
-  }else{
-    # If colour plots are required use the following:
-    byval1 <- pl.col[1]
-  }
   # Density of shaded lines - default is set all to 20
   denval1 <- pl.den[1]
   # Angle of shaded lines - default is set all to -45
@@ -116,9 +105,9 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
 
   ## make selection of the data subset to plot
   if(!is.null(substitute(subset))){
-    selected <- eval(substitute(subset),ddfobj$xmat)
+    selected <- eval(substitute(subset), ddfobj$xmat)
   }else{
-    selected <- rep(TRUE,nrow(ddfobj$xmat))
+    selected <- rep(TRUE, nrow(ddfobj$xmat))
   }
   # die if there was nothing selected
   if(all(!selected)){
@@ -126,14 +115,14 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
   }
 
   if(is.matrix(int.range)){
-    int.range <- int.range[selected,]
+    int.range <- int.range[selected, ]
   }
 
   xmat <- ddfobj$xmat[selected,]
   if(!is.null(ddfobj$scale)){
-    z <- ddfobj$scale$dm[selected,,drop=FALSE]
+    z <- ddfobj$scale$dm[selected, , drop=FALSE]
   }else{
-    z <- matrix(1,nrow=1,ncol=1)
+    z <- matrix(1, nrow=1, ncol=1)
   }
 
   if(length(model$fitted)==1){
@@ -165,7 +154,7 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
   # plotting of detection functions.
   if(!hascov){
     xgrid <- seq(0, width, length.out=101)
-    zgrid <- matrix(rep(z[1,],length(xgrid)), byrow=TRUE, ncol=sum(zdim))
+    zgrid <- matrix(rep(z[1,], length(xgrid)), byrow=TRUE, ncol=sum(zdim))
   }
 
   # create intervals of distance (breaks) for the chosen number of classes (nc).
@@ -182,14 +171,14 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
       breaks <- c(max(0, (max.range[1])),
                   max.range[1]+((max.range[2]-max.range[1])/nc)*(1:nc))
       if(breaks[1]>left){
-        breaks <- c(left,breaks)
+        breaks <- c(left, breaks)
         nc <- nc+1
       }
     }
   }
 
   # test breaks for validity and reset as needed
-  breaks <- test.breaks(breaks,model$meta.data$left,width)
+  breaks <- test.breaks(breaks, model$meta.data$left, width)
   nc <- length(breaks)-1
   lower <- min(breaks)
   upper <- max(breaks)
@@ -252,7 +241,7 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
     if(is.null(ylim)) ylim <- c(0, ymax)
     histline(hist.obj$counts, breaks=breaks, lineonly=FALSE, ylim=ylim,
              xlab=xlab, ylab=ylab, angle=angval1,
-             density=denval1, col=byval1, ...)
+             density=denval1, col=pl.col, ...)
   }
 
   ## Detection function plot overlaid on histogram of observed distances
@@ -285,7 +274,7 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
     # plot the histogram
     histline(hist.obj$density, breaks=breaks, lineonly=FALSE,
              xlab=xlab, ylab=ylab, ylim=ylim,
-             angle=angval1, density=denval1, col=byval1,
+             angle=angval1, density=denval1, col=pl.col,
              det.plot=det.plot, ...)
 
     # when we have covariates
@@ -364,11 +353,11 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
     }
 
     # actually plot the lines
-    lines(xgrid, linevalues, col=byval1, ...)
+    lines(xgrid, linevalues, ...)
 
     if(showpoints){
       jitter.p <- rnorm(length(point_vals), 1, jitter.v[1])
-      points(xmat$distance, point_vals*jitter.p, col=byval1, ...)
+      points(xmat$distance, point_vals*jitter.p, ...)
     }
 
     # use the user-supplied main= ...
