@@ -21,7 +21,7 @@
 #' @importFrom graphics plot box
 histline <- function(height, breaks, lineonly=FALSE, outline=FALSE,
                      ylim=range(height), xlab="x", ylab="y", det.plot=FALSE,
-                     add=FALSE,...){
+                     add=FALSE, ...){
 
   # make hist object
   hh <- list()
