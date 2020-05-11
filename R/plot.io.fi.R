@@ -36,10 +36,10 @@
 #'   observation
 #' @param showlines logical variable; if TRUE a line representing the average
 #'   detection probability is plotted
-#' @param ylim range of y axis; defaults to (0,1)
-#' @param angle shading angle for hatching
-#' @param density shading density for hatching
-#' @param col plotting colour
+#' @param ylim range of vertical axis; defaults to (0,1)
+#' @param angle shading angle for histogram bars.
+#' @param density shading density for histogram bars.
+#' @param col colour for histogram bars.
 #' @param jitter scaling option for plotting points.  Jitter is applied to
 #'   points by multiplying the fitted value by a random draw from a normal
 #'   distribution with mean 1 and sd jitter.
@@ -71,8 +71,9 @@
 #' plot(result.io.fi,which=c(1,2,5,6),pages=2)
 #' }
 plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
-                       showlines=TRUE, showpoints=TRUE,ylim=c(0,1),angle=-45,
-                       density=20,col="black",jitter=NULL,divisions=25,pages=0,
+                       showlines=TRUE, showpoints=TRUE, ylim=c(0, 1),
+                       angle=NULL, density=NULL, col="lightgrey", jitter=NULL,
+                       divisions=25, pages=0,
                        xlab="Distance",ylab="Detection probability",
                        subtitle=TRUE,...){
   # Functions used: process.data, predict.io.fi, plot_uncond,plot_cond
