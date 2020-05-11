@@ -59,7 +59,7 @@ observation}
 
 \item{col}{colour for histogram bars.}
 
-\item{jitter}{scaling option for plotting points.  Jitter is applied to
+\item{jitter}{scaling option for plotting points. Jitter is applied to
 points by multiplying the fitted value by a random draw from a normal
 distribution with mean 1 and sd jitter.}
 

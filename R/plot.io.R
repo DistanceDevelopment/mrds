@@ -39,7 +39,7 @@
 #' @param angle shading angle for histogram bars.
 #' @param density shading density for histogram bars.
 #' @param col colour for histogram bars.
-#' @param jitter scaling option for plotting points.  Jitter is applied to
+#' @param jitter scaling option for plotting points. Jitter is applied to
 #'   points by multiplying the fitted value by a random draw from a normal
 #'   distribution with mean 1 and sd jitter.
 #' @param divisions number of divisions for averaging line values; default = 25
