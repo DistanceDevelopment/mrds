@@ -27,14 +27,14 @@
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
 #' @param maintitle main title line for each plot
-#' @param showpoints logical variable; if TRUE plots predicted value for each
+#' @param showpoints logical variable; if \code{TRUE} plots predicted value for each
 #'   observation
-#' @param showlines logical variable; if TRUE a line representing the average
+#' @param showlines logical variable; if \code{TRUE} a line representing the average
 #'   detection probability is plotted
-#' @param ylim range of y axis; defaults to (0,1)
-#' @param angle shading angle for hatching
-#' @param density shading density for hatching
-#' @param col plotting colour
+#' @param ylim range of vertical axis; defaults to (0,1)
+#' @param angle shading angle for histogram bars.
+#' @param density shading density for histogram bars.
+#' @param col colour for histogram bars.
 #' @param jitter scaling option for plotting points.  Jitter is applied to
 #'   points by multiplying the fitted value by a random draw from a normal
 #'   distribution with mean 1 and sd jitter.
@@ -44,17 +44,18 @@
 #' @param divisions number of divisions for averaging line values; default = 25
 #' @param xlab label for x-axis
 #' @param ylab label for y-axis
-#' @param subtitle if TRUE, shows plot type as sub-title
+#' @param subtitle if \code{TRUE}, shows plot type as sub-title
 #' @param \dots other graphical parameters, passed to the plotting functions
 #'   (\code{plot}, \code{hist}, \code{lines}, \code{points}, etc)
 #' @return NULL
 #' @author Jeff Laake, Jon Bishop, David Borchers, David L Miller
 #' @keywords plot
-plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
-                     showlines=TRUE, showpoints=TRUE,ylim=c(0,1),angle=-45,
-                     density=20,col="black",jitter=NULL,divisions=25,pages=0,
-                     xlab="Distance",ylab="Detection probability",
-                     subtitle=TRUE,...){
+plot.rem <- function(x, which=1:3, breaks=NULL, nc=NULL, maintitle="",
+                     showlines=TRUE,  showpoints=TRUE, ylim=c(0, 1), angle=NULL,
+                     density=NULL, col="lightgrey", jitter=NULL, divisions=25,
+                     pages=0,
+                     xlab="Distance", ylab="Detection probability",
+                     subtitle=TRUE, ...){
 
   model <- x
 
@@ -64,14 +65,14 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   xmat.p0$distance <- 0
   ddfobj <- model$ds$ds$aux$ddfobj
   if(ddfobj$type=="gamma"){
-    xmat.p0$distance <- rep(apex.gamma(ddfobj),2)
+    xmat.p0$distance <- rep(apex.gamma(ddfobj), 2)
   }
-  p0 <- predict(model$mr,newdata=xmat.p0,integrate=FALSE)$fitted
+  p0 <- predict(model$mr, newdata=xmat.p0, integrate=FALSE)$fitted
   xmat <- model$mr$data
-  cond.det <- predict(model$mr,newdata=xmat,integrate=FALSE)
+  cond.det <- predict(model$mr, newdata=xmat, integrate=FALSE)
   width <- model$meta.data$width
   left <- model$meta.data$left
-  detfct.pooled.values <- detfct(xmat$distance[xmat$observer==1],ddfobj,
+  detfct.pooled.values <- detfct(xmat$distance[xmat$observer==1], ddfobj,
                                  width=width-left)
   delta <- cond.det$fitted/(p0*detfct.pooled.values)
   p1 <- cond.det$p1
@@ -100,32 +101,33 @@ plot.rem <- function(x,which=1:3,breaks=NULL,nc=NULL,maintitle="",
   on.exit(devAskNewPage(oask))
 
   # Plot primary unconditional detection function
-  if(is.element(1,which)){
-    plot_uncond(model,1,xmat,gxvalues=p1/delta,nc,
+  if(is.element(1, which)){
+    plot_uncond(model, 1, xmat, gxvalues=p1/delta, nc,
                 finebr=(width/divisions)*(0:divisions),
-                breaks,showpoints,showlines,maintitle,ylim,
-                angle=angle,density=density,
-                col=col,jitter=jitter,xlab=xlab,ylab=ylab,subtitle=subtitle,...)
+                breaks, showpoints, showlines, maintitle, ylim,
+                angle=angle, density=density,
+                col=col, jitter=jitter, xlab=xlab, ylab=ylab, subtitle=subtitle,
+                ...)
   }
 
   # Plot pooled unconditional detection function
-  if(is.element(2,which)){
-    plot_uncond(model,3,xmat,gxvalues=(p1+p2*(1-p1))/delta,nc,
-                finebr=(width/divisions)*(0:divisions),breaks,showpoints,
-                showlines,maintitle,ylim,
-                angle=angle,density=density,col=col,jitter=jitter,
-                xlab=xlab,ylab=ylab,subtitle=subtitle,...)
+  if(is.element(2, which)){
+    plot_uncond(model, 3, xmat, gxvalues=(p1+p2*(1-p1))/delta, nc,
+                finebr=(width/divisions)*(0:divisions), breaks, showpoints,
+                showlines, maintitle, ylim,
+                angle=angle, density=density, col=col, jitter=jitter,
+                xlab=xlab, ylab=ylab, subtitle=subtitle, ...)
   }
 
   # Plot conditional detection function
   data <- process.data(model$mr$data,model$meta.data)$xmat
   data$offsetvalue <- 0
-  if(is.element(3,which)){
+  if(is.element(3, which)){
     gxvalues <- p1[xmat$detected[xmat$observer==2]==1]
-    plot_cond(1,data,gxvalues,model,nc,breaks,
-              finebr=(width/divisions)*(0:divisions),showpoints,showlines,
-              maintitle,ylim,angle=angle,density=density,col=col,jitter=jitter,
-              xlab=xlab,ylab=ylab,subtitle=subtitle,...)
+    plot_cond(1, data, gxvalues, model, nc, breaks,
+              finebr=(width/divisions)*(0:divisions), showpoints, showlines,
+              maintitle, ylim, angle=angle, density=density, col=col,
+              jitter=jitter, xlab=xlab, ylab=ylab, subtitle=subtitle, ...)
   }
   invisible(NULL)
 }
