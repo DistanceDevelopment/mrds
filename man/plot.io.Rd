@@ -14,9 +14,9 @@ sampling independent observer (\code{io}) model}
   showlines = TRUE,
   showpoints = TRUE,
   ylim = c(0, 1),
-  angle = -45,
-  density = 20,
-  col = "black",
+  angle = NULL,
+  density = NULL,
+  col = "lightgrey",
   jitter = NULL,
   divisions = 25,
   pages = 0,
@@ -51,15 +51,15 @@ detection probability is plotted}
 \item{showpoints}{logical variable; if TRUE plots predicted value for each
 observation}
 
-\item{ylim}{range of y axis; defaults to (0,1)}
+\item{ylim}{range of vertical axis; defaults to (0,1)}
 
-\item{angle}{shading angle for hatching}
+\item{angle}{shading angle for histogram bars.}
 
-\item{density}{shading density for hatching}
+\item{density}{shading density for histogram bars.}
 
-\item{col}{plotting colour}
+\item{col}{colour for histogram bars.}
 
-\item{jitter}{scaling option for plotting points.  Jitter is applied to
+\item{jitter}{scaling option for plotting points. Jitter is applied to
 points by multiplying the fitted value by a random draw from a normal
 distribution with mean 1 and sd jitter.}
 
