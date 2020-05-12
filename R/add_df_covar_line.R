@@ -134,7 +134,7 @@ add_df_covar_line <- function(ddf, data, ndist=250, ...){
         # the levels are right
         newdata <- rbind(model_dat,
                          newdata_save[, c("distance", fvars), drop=FALSE])
-        dm <- mrds:::setcov(newdata, as.formula(ddfobj[[df_par]]$formula))
+        dm <- setcov(newdata, as.formula(ddfobj[[df_par]]$formula))
 
         # now check that the column names are the same for the model
         # and prediction data matrices
@@ -174,7 +174,7 @@ add_df_covar_line <- function(ddf, data, ndist=250, ...){
     }
 
     # update xmat too
-    datalist <- mrds:::process.data(newdata, model$meta.data, check=FALSE)
+    datalist <- process.data(newdata, model$meta.data, check=FALSE)
     ddfobj$xmat <- datalist$xmat[(nrow(model_dat)+1):nrow(datalist$xmat),,drop=FALSE]
     ddfobj$xmat <- ddfobj$xmat[!naind, , drop=FALSE]
     int.range <- int.range[!naind, , drop=FALSE]
