@@ -2,7 +2,7 @@
 % Please edit documentation in R/check.bounds.R
 \name{check.bounds}
 \alias{check.bounds}
-\title{Check parameters bounds during optimsations}
+\title{Check parameters bounds during optimisations}
 \usage{
 check.bounds(lt, lowerbounds, upperbounds, ddfobj, showit, setlower, setupper)
 }

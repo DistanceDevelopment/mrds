@@ -1,4 +1,4 @@
-#' Check parameters bounds during optimsations
+#' Check parameters bounds during optimisations
 #'
 #' Simple internal function to check that the optimisation didn't hit bounds. Based on code that used to live in \code{detfct.fit.opt}.
 #'

@@ -9,14 +9,14 @@ add_df_covar_line(ddf, data, ndist = 250, ...)
 \arguments{
 \item{ddf}{a fitted detection function object}
 
-\item{data}{a data.frame with the covariate combination you want to plot}
+\item{data}{a \code{data.frame} with the covariate combination you want to plot}
 
 \item{ndist}{number of points to evaluate the detection function at}
 
-\item{\dots}{extra arguments to give to line() (like lty or lwd, or col)}
+\item{\dots}{extra arguments to give to \code{\link{line}} (\code{lty}, \code{lwd}, \code{col})}
 }
 \value{
-inivisbly, the values of p over the truncation range
+invisibly, the values of detectability over the truncation range
 }
 \description{
 Add a line or lines to a plot of the detection function which correspond to a a given covariate combination. These can be particularly useful when there is a small number of factor levels or if quantiles of a continuous covariate are specified.

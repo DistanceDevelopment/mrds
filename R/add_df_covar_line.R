@@ -7,10 +7,10 @@
 #' Arguments to \code{\link{lines}} are supplied in \dots and aesthetics like line type (\code{lty}), line width (\code{lwd}) and colour (\code{col}) are recycled. By default \code{lty} is used to distinguish between the lines. It may be useful to add a \code{\link{legend}} to the plot (lines are plotted in the order of \code{data}).
 #'
 #' @param ddf a fitted detection function object
-#' @param data a data.frame with the covariate combination you want to plot
-#' @param \dots extra arguments to give to line() (like lty or lwd, or col)
+#' @param data a \code{data.frame} with the covariate combination you want to plot
+#' @param \dots extra arguments to give to \code{\link{line}} (\code{lty}, \code{lwd}, \code{col})
 #' @param ndist number of points to evaluate the detection function at
-#' @return inivisbly, the values of p over the truncation range
+#' @return invisibly, the values of detectability over the truncation range
 #'
 #' @export
 #' @author David L Miller

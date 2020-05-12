@@ -4,10 +4,10 @@
 #' can just call plots and R will make the prompt for us
 #' Warning, this function has side effects! It modifies \code{devAskNewPage}!
 #'
-#' Code is stolen and modified from plot.R in mgcv by Simon Wood
+#' Code is stolen and modified from \code{plot.R} in \code{mgcv} by Simon Wood
 #'
 #' @param which which plots are to be created
-#' @param pages number of pages to span the plots accross
+#' @param pages number of pages to span the plots across
 #'
 #' @author David L. Miller, based on code by Simon N. Wood
 #' @importFrom grDevices dev.interactive
