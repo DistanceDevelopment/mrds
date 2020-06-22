@@ -6,6 +6,7 @@
 #'
 #' Arguments to \code{\link{lines}} are supplied in \dots and aesthetics like line type (\code{lty}), line width (\code{lwd}) and colour (\code{col}) are recycled. By default \code{lty} is used to distinguish between the lines. It may be useful to add a \code{\link{legend}} to the plot (lines are plotted in the order of \code{data}).
 #'
+# Update Distance::add_df_covar_line when updating parameters here
 #' @param ddf a fitted detection function object
 #' @param data a \code{data.frame} with the covariate combination you want to plot
 #' @param \dots extra arguments to give to \code{\link{line}} (\code{lty}, \code{lwd}, \code{col})

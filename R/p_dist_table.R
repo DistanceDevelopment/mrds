@@ -4,6 +4,7 @@
 #'
 #' Because \code{\link{dht}} uses a Horvitz-Thompson-like estimator, abundance estimates can be sensitive to errors in the estimated probabilities. The estimator is based on \eqn{\sum 1/ \hat{P}_a(z_i)}, which means that the sensitivity is greater for smaller detection probabilities. As a rough guide, we recommend that the method be not used if more than say 5\% of the \eqn{\hat{P}_a(z_i)} are less than 0.2, or if any are less than 0.1. If these conditions are violated, the truncation distance w can be reduced. This causes some loss of precision relative to standard distance sampling without covariates.
 #'
+# Update Distance::p_dist_table when changing pars here!!
 #' @param object fitted detection function
 #' @param bins how the results should be binned
 #' @param proportion should proportions be returned as well as counts?
