@@ -34,7 +34,7 @@
 #' For options \code{1} and \code{2}, it is then possible to choose one of the estimator forms given in Fewster et al (2009) for line transects: \code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"}, \code{"O1"}, \code{"O2"} or \code{"O3"} by specifying the \code{ervar=} option (default \code{"R2"}). For points estimator \code{"P3"} is the only option. See \code{\link{varn}} and Fewster et al (2009) for further details on these estimators.
 #'
 #' @param model ddf model object
-#' @param region.table \code{data.frame} of region records. Two columns: \code{Region.Label} and \code{Area}.
+#' @param region.table \code{data.frame} of region records. Two columns: \code{Region.Label} and \code{Area}. If only density is required, one can set \code{Area=0} for all regions.
 #' @param sample.table \code{data.frame} of sample records. Three columns: \code{Region.Label}, \code{Sample.Label}, \code{Effort}.
 #' @param obs.table \code{data.frame} of observation records with fields: \code{object}, \code{Region.Label}, and \code{Sample.Label} which give links to \code{sample.table}, \code{region.table} and the data records used in \code{model}. Not necessary if the \code{data.frame} used to create the model contains \code{Region.Label}, \code{Sample.Label} columns.
 #' @param subset subset statement to create \code{obs.table}

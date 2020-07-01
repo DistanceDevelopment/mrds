@@ -17,7 +17,7 @@ dht(
 \arguments{
 \item{model}{ddf model object}
 
-\item{region.table}{\code{data.frame} of region records. Two columns: \code{Region.Label} and \code{Area}.}
+\item{region.table}{\code{data.frame} of region records. Two columns: \code{Region.Label} and \code{Area}. If only density is required, one can set \code{Area=0} for all regions.}
 
 \item{sample.table}{\code{data.frame} of sample records. Three columns: \code{Region.Label}, \code{Sample.Label}, \code{Effort}.}
 
