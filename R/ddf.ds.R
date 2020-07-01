@@ -201,6 +201,11 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
 
+  # check that hazard models have a reasonable scale parameter
+  if(ddfobj$type=="hr" && lt$par[1] < sqrt(.Machine$double.eps)){
+    warning("Estimated hazard-rate scale parameter close to 0 (on log scale). Possible problem in data (e.g., spike near zero distance).", immediate.=TRUE)
+  }
+
   # add call and others to return values
   stored_data <- data[row.names(data)%in%row.names(xmat), ]
   stored_data$detected <- 1
