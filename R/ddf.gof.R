@@ -30,6 +30,13 @@ ddf.gof <- function(model, breaks=NULL, nc=NULL, qq=TRUE, nboot=100, ks=FALSE,
   # Functions Used: gof.ds, gof.io, gof.io.fi, gof.trial,
   #                 gof.trial.fi, qqplot.df
 
+  # if we have a Distance object rather than mrds, use that
+  if(all(class(model)=="dsmodel")){
+    model <- model$ddf
+  }else{
+    model <- model
+  }
+
   if(!is.null(breaks)){
     breaks <- test.breaks(breaks,model$meta.data$left,model$meta.data$width)
     nc <- length(breaks)-1
