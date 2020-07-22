@@ -369,8 +369,8 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     DensityOnly <- TRUE
     # cat("Warning: Area for regions is zero. They have been set to area of covered region(strips), \nso N is for covered region.",
     #     "However, standard errors will not match \nprevious covered region SE because it includes spatial variation\n")
-    Effort.by.region <- by(sample.table$Effort, sample.table$Region.Label,sum)
-    region.table$Area <- ifelse(point,
+    Effort.by.region <- by(sample.table$Effort, sample.table$Region.Label, sum)
+    region.table$Area <- ifelse(rep(point, length(Effort.by.region)),
                                 pi*as.vector(Effort.by.region)*width^2,
                                 2*as.vector(Effort.by.region)*width)
   }

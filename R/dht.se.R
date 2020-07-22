@@ -92,7 +92,7 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
 
   scale <- region.table$Area/region.table$CoveredArea
 
-  # If no areas were given or varflag=0 use approach #1 (varflag=0)
+  # If no areas were given or varflag=0 use approach #1
   # Note: vc2 is of proper dimension because Region.Label for obs is setup
   # with all levels of the Region.Label from the region.table.
   if(sum(region.table$Area) == 0 | options$varflag == 0){
