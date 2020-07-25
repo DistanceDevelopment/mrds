@@ -13,14 +13,14 @@ setinitial.ds(ddfobj, width, initial, point, left)
 
 \item{width}{half-width of transect or radius of point count}
 
-\item{initial}{list of user-defined initial values with possible elements
-scale,shape,adjustment}
+\item{initial}{list of user-defined initial values with possible elements:
+\code{scale}, \code{shape}, \code{adjustment}}
 
-\item{point}{if TRUE, point count data; otherwise, line transect data}
+\item{point}{if \code{TRUE}, point count data; otherwise, line transect data}
 
 \item{left}{left truncation}
 
-\item{dmat}{xmat from ddfobj}
+\item{dmat}{\code{xmat} from \code{ddfobj}}
 }
 \value{
 \item{scale}{vector of initial scale parameter values}

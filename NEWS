@@ -2,6 +2,7 @@ mrds 2.2.3
 ----------
 
 * fix bug where region areas were not duplicated properly when density was estimated (using Area=0 in data)
+* fix a bug in getting starting values for hazard-rate detection functions when point transect data is used
 
 mrds 2.2.2
 ----------

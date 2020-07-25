@@ -1,4 +1,4 @@
-sethazard <- function(ddfobj, dmat, width, left=0){
+sethazard <- function(ddfobj, dmat, width, left=0, point=FALSE){
 
   if("distend" %in% names(ddfobj$xmat)){
     binned <- TRUE
@@ -28,7 +28,7 @@ sethazard <- function(ddfobj, dmat, width, left=0){
          misc.options=list(width=width, int.range=c(0, width), showit=0,
                            integral.numeric=FALSE, standardize=FALSE,
                            binned=binned, left=left,
-                           fitting="none", point=FALSE))
+                           fitting="none", point=point))
   }
 
   # Using code from CDS in Distance.
