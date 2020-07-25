@@ -1,9 +1,4 @@
 Package: mrds
-Imports:
-    optimx (>= 2013.8.6),
-    mgcv,
-    numDeriv,
-    Rsolnp
 Maintainer: Laura Marshall <lhm@st-andrews.ac.uk>
 License: GPL (>=2)
 Title: Mark-Recapture Distance Sampling
@@ -17,9 +12,15 @@ Description: Animal abundance estimation via conventional, multiple covariate
     and plotting for fitted detection functions. Abundance estimation is via a
     Horvitz-Thompson-like estimator.
 Version: 2.2.3.9002
+URL: http://github.com/DistanceDevelopment/mrds/
 BugReports: https://github.com/DistanceDevelopment/mrds/issues
 Depends:
     R (>= 3.0)
+Imports:
+    optimx (>= 2013.8.6),
+    mgcv,
+    numDeriv,
+    Rsolnp
 Suggests:
     testthat
 RoxygenNote: 7.1.1
