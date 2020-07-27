@@ -42,7 +42,7 @@ The choice of type follows the notation of Fewster et al. (2009) in that there a
 \item{\code{P3}}{random point placement, potentially unequal number of visits per point, model-based estimator}
 }
 
-Default value is \code{"R2"}, shown in Fewster et al. (2009) to have good performance for completely random designs for lines. For systematic parallel line transect designs, Fewster et al. recommend \code{"O2"}. For point transects the default (and currently only implemented option) is \code{"P3"}.
+Default value is \code{"R2"}, shown in Fewster et al. (2009) to have good performance for completely random designs for lines. For systematic parallel line transect designs, Fewster et al. recommend \code{"O2"}. For point transects the default is \code{"P3"} (but \code{"P2"} is also available).
 
 For the systematic estimators, pairs are assigned in the order they are given in the \code{lengths} and \code{groups} vectors.
 }
