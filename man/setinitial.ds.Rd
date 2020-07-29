@@ -6,7 +6,7 @@
 \title{Set initial values for detection function based on distance sampling}
 \usage{
 setinitial.ds(ddfobj, width, initial, point, left)
-       sethazard(ddfobj, dmat, width, left)
+       sethazard(ddfobj, dmat, width, left, point)
 }
 \arguments{
 \item{ddfobj}{distance detection function object}

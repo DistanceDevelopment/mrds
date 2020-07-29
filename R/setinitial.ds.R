@@ -6,7 +6,7 @@
 #' parameters not specified by the user are computed.
 #'
 #' @usage setinitial.ds(ddfobj, width, initial, point, left)
-#'        sethazard(ddfobj, dmat, width, left)
+#'        sethazard(ddfobj, dmat, width, left, point)
 #' @aliases setinitial.ds sethazard
 #' @param ddfobj distance detection function object
 #' @param width half-width of transect or radius of point count

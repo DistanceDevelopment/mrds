@@ -40,7 +40,6 @@
 #' @param subset subset statement to create \code{obs.table}
 #' @param se if \code{TRUE} computes standard errors, coefficient of variation and confidence intervals (based on log-normal approximation). See "Uncertainty" below.
 #' @param options a list of options that can be set, see "\code{dht} options", below.
-#' @export
 #' @return list object of class \code{dht} with elements:
 #' \item{clusters}{result list for object clusters}
 #' \item{individuals}{result list for individuals}
@@ -107,6 +106,8 @@
 #'   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
 #'   Oxford University Press.
 #' @keywords utility
+#' @importFrom stats aggregate
+#' @export
 dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
                 se=TRUE, options=list()){
   # Functions Used:  assign.default.values, create.varstructure,
