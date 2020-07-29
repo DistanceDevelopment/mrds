@@ -1,8 +1,3 @@
----
-title: mrds - Mark-Recapture Distance Sampling
-
----
-
 mrds - Mark-Recapture Distance Sampling
 =======================================
 
