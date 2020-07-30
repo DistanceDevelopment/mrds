@@ -7,3 +7,4 @@ LICENSE
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^CRAN-RELEASE$
+^codecov\.yml$
