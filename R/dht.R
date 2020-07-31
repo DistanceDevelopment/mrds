@@ -127,11 +127,15 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     average.p <- nrow(obs)/sum(Nhat.by.sample$Nhat)
 
     # Scale up abundances to survey region
-    # jll 19-Jan-05 - sort Nhat.by.sample by Region.Label and Sample.Label
-    width <- (model$meta.data$width-model$meta.data$left) * options$convert.units
+    # note that we don't need to account for left truncation, as
+    # it is taken care of when calculating average detection prob (by setting
+    # detection prob to 0 between 0 and left truncation distance)
+    width <- model$meta.data$width * options$convert.units
+
     Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,width,point)
+    # sort Nhat.by.sample by Region.Label and Sample.Label
     Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
-                                           Nhat.by.sample$Sample.Label),]
+                                           Nhat.by.sample$Sample.Label), ]
     if(point){
       s.area <- Nhat.by.sample$Effort.x*pi*width^2
     }else{
@@ -361,12 +365,12 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     }
   }
 
-  # Convert width value
-  width <- (model$meta.data$width-model$meta.data$left) * options$convert.units
 
   # If area is zero for all regions reset to the area of the covered region
   DensityOnly <- FALSE
   if(sum(region.table$Area)==0){
+    # Convert width value (needed here to set the area)
+    width <- (model$meta.data$width-model$meta.data$left)*options$convert.units
     DensityOnly <- TRUE
     # cat("Warning: Area for regions is zero. They have been set to area of covered region(strips), \nso N is for covered region.",
     #     "However, standard errors will not match \nprevious covered region SE because it includes spatial variation\n")
