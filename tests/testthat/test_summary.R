@@ -21,9 +21,8 @@ test_that("summary results are correct",{
   #     file="mrds/inst/testData/summaryresults.rda")
 
   ### load the results (summary objects)
-  res.filename<-system.file("testData/summaryresults.rda", package="mrds")
+  res.filename <- system.file("testData/summaryresults.rda", package="mrds")
   load(res.filename)
-
 
   ### io method -- line transects
   # load some data as usual
@@ -34,23 +33,27 @@ test_that("summary results are correct",{
   tee.result <- ddf(dsmodel = ~cds(key = "hn"), mrmodel = ~glm(~distance),
                 data = egdata, method = "io", meta.data = list(width = 4))
 
-  expect_that(summary(tee.result)$mr.summary,equals(tee.result.summ$mr.summary))
-  expect_that(summary(tee.result)$ds.summary,equals(tee.result.summ$ds.summary))
-  expect_that(summary(tee.result),equals(tee.result.summ))
+  expect_that(summary(tee.result)$mr.summary,
+              equals(tee.result.summ$mr.summary), tol=tol)
+  expect_that(summary(tee.result)$ds.summary,
+              equals(tee.result.summ$ds.summary), tol=tol)
+  expect_that(summary(tee.result), equals(tee.result.summ), tol=tol)
 
   ### trial.fi method -- line transect
   tee.result.trial.fi <- ddf(mrmodel=~glm(formula=~distance),
                              dsmodel = ~mcds(key = "hn", formula = ~sex),
                              data=egdata, method="trial.fi",
                              meta.data=list(width=4))
-  expect_that(summary(tee.result.trial.fi),equals(tee.result.trial.fi.summ))
+  expect_that(summary(tee.result.trial.fi),
+              equals(tee.result.trial.fi.summ), tol=tol)
 
   #### trial method -- line transect
   tee.result.trial <- ddf(mrmodel=~glm(formula=~distance),
                           dsmodel = ~mcds(key = "hn", formula = ~sex),
                           data=egdata, method="trial",
                           meta.data=list(width=4))
-  expect_that(summary(tee.result.trial),equals(tee.result.trial.summ))
+  expect_that(summary(tee.result.trial),
+              equals(tee.result.trial.summ), tol=tol)
 
 
   ### rem method -- line transect
@@ -58,9 +61,8 @@ test_that("summary results are correct",{
                           dsmodel = ~mcds(key = "hn", formula = ~sex),
                           data=egdata, method="rem",
                           meta.data=list(width=4))
-  expect_that(summary(tee.result.rem),equals(tee.result.rem.summ))
-
-
+  expect_that(summary(tee.result.rem),
+              equals(tee.result.rem.summ), tol=tol)
 
   ## io method -- point data
   data(ptdata.dual)
