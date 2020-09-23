@@ -1,6 +1,7 @@
 #' @export
 # see predict.ds for documentation
-predict.io <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
+predict.io <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
+                       ...){
   # Functions Used: predict.io.fi and predict.ds
 
   # change 6/7/05 jll: removed dopdot argument and took dopdot=FALSE
@@ -20,18 +21,19 @@ predict.io <- function(object,newdata=NULL,compute=FALSE,int.range=NULL,...){
 
   # for gamma models need to find where p(x)=1 (apex), set that as distance
   if(ddfobj$type=="gamma"){
-    xmat$distance <- rep(apex.gamma(ddfobj),2)
+    xmat$distance <- rep(apex.gamma(ddfobj), 2)
   }
 
   # calculate ps for each part of the model
   xmat$offsetvalue <- 0
-  p.0 <- predict(model$mr,newdata=xmat,integrate=FALSE,compute=compute)$fitted
+  p.0 <- predict(model$mr, newdata=xmat, integrate=FALSE,
+                 compute=compute)$fitted
   if(is.null(newdata)){
-    pdot <- predict(model$ds,esw=FALSE,compute=compute,
-                     int.range=int.range)$fitted
+    pdot <- predict(model$ds, esw=FALSE, compute=compute,
+                    int.range=int.range)$fitted
   }else{
-    pdot <- predict(model$ds,newdata=newdata[newdata$observer==1,],
-                    esw=FALSE,compute=compute,int.range=int.range)$fitted
+    pdot <- predict(model$ds, newdata=newdata[newdata$observer==1, ],
+                    esw=FALSE, compute=compute, int.range=int.range)$fitted
   }
 
   # take the product for the overall p
