@@ -1,3 +1,10 @@
+mrds 2.2.4
+----------
+
+* add_df_covar_line now plots probability density functions for the point transect case
+* warning is no longer raised when truncation is not set but bins are specified for binned data (it's assumed that the furthest cutpoint is the truncation)
+* AIC/logLik functions now work for all methods
+
 mrds 2.2.3
 ----------
 
