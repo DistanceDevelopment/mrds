@@ -7,11 +7,13 @@
 #' Arguments to \code{\link{lines}} are supplied in \dots and aesthetics like line type (\code{lty}), line width (\code{lwd}) and colour (\code{col}) are recycled. By default \code{lty} is used to distinguish between the lines. It may be useful to add a \code{\link{legend}} to the plot (lines are plotted in the order of \code{data}).
 #'
 # Update Distance::add_df_covar_line when updating parameters here
-#' @param ddf a fitted detection function object
-#' @param data a \code{data.frame} with the covariate combination you want to plot
-#' @param \dots extra arguments to give to \code{\link{line}} (\code{lty}, \code{lwd}, \code{col})
-#' @param ndist number of points to evaluate the detection function at
-#' @return invisibly, the values of detectability over the truncation range
+#' @param ddf a fitted detection function object.
+#' @param data a \code{data.frame} with the covariate combination you want to plot.
+#' @param \dots extra arguments to give to \code{\link{line}} (\code{lty}, \code{lwd}, \code{col}).
+#' @param ndist number of distances at which to evaluate the detection function.
+#' @param pdf should the line be drawn on the probability density scale; ignored for line transects.
+#' @param breaks required to ensure that PDF lines are the right size, should match what is supplied to original \code{plot} command. Defaults to "Sturges" breaks, as in \code{\link{hist}}. Only used if \code{pdf=TRUE}.
+#' @return invisibly, the values of detectability over the truncation range.
 #'
 #' @export
 #' @author David L Miller
@@ -44,13 +46,19 @@
 #' legend(3, 1, c("Average", "sex==0", "sex==1"), lty=1,
 #'        col=c("black", "red", "green"))
 #' }
-add_df_covar_line <- function(ddf, data, ndist=250, ...){
+add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges", ...){
 
   # if we have a Distance object rather than mrds, use that
   if(all(class(ddf)=="dsmodel")){
     df <- ddf$ddf
   }else{
     df <- ddf
+  }
+
+  # ignore pdf=TRUE with line transect data
+  if(pdf & !df$meta.data$point){
+    warning("Ignoring pdf=TRUE for line transect data")
+    pdf <- FALSE
   }
 
   left <- df$meta.data$left
@@ -68,7 +76,7 @@ add_df_covar_line <- function(ddf, data, ndist=250, ...){
   data$detected <- rep(0, nrow(data))
   data$binned <- rep(df$ds$aux$ddfobj$xmat$binned[1], nrow(data))
 
-  eval_with_covars <- function(distance, newdata, model){
+  eval_with_covars <- function(distance, newdata, model, pdf){
     ddfobj <- model$ds$aux$ddfobj
 
     fpar <- model$par
@@ -168,7 +176,8 @@ add_df_covar_line <- function(ddf, data, ndist=250, ...){
     if(model$meta.data$binned){
       nanana <- apply(newdata[, c("distance", fvars), drop=FALSE],
                       1, function(x) any(is.na(x)))
-      newdata_b <- create.bins(newdata[!nanana, , drop=FALSE], model$meta.data$breaks)
+      newdata_b <- create.bins(newdata[!nanana, , drop=FALSE],
+                               model$meta.data$breaks)
       newdata$distbegin <- NA
       newdata$distend <- NA
       newdata[!nanana, ] <- newdata_b
@@ -182,9 +191,28 @@ add_df_covar_line <- function(ddf, data, ndist=250, ...){
     # reset newdata to be the right thing
     newdata <- newdata[(nrow(model_dat)+1):nrow(newdata), , drop=FALSE]
 
+    if(pdf){
+      if(is.null(model$ds$aux$int.range)){
+        int.range <- c(0,width)
+      }else{
+        int.range <- model$ds$aux$int.range
+      }
 
-    detfct(distance, ddfobj, select=NULL, index=NULL, width=width,
-           standardize=TRUE, stdint=FALSE, left=left)
+      pdf_vals <- distpdf(distance, ddfobj, width=width, point=TRUE,
+                          standardize=TRUE)/
+                  integratepdf(ddfobj, select=NULL, width=width,
+                               int.range=int.range, standardize=TRUE,
+                               point=TRUE)
+
+      # now rescale such that area under pdf == area under histogram
+      hist.obj <- hist(model$data$distance, breaks=breaks, plot=FALSE)
+      hist_area <- sum(hist.obj$density*diff(hist.obj$breaks))
+
+      pdf_vals * hist_area
+    }else{
+      detfct(distance, ddfobj, select=NULL, index=NULL, width=width,
+             standardize=TRUE, stdint=FALSE, left=left)
+    }
   }
 
   # fiddle to get nice lty behaviour by default
@@ -208,14 +236,13 @@ add_df_covar_line <- function(ddf, data, ndist=250, ...){
     col <- rep_len(lines_args$col, nrow(data))
   }
 
-
   # storage
   linedat <- matrix(NA, nrow(data), length(xx))
 
   # now loop over the data rows
   for(i in 1:nrow(data)){
     # evaluate and save data
-    linedat[i,] <- eval_with_covars(xx, data[i, ], df)
+    linedat[i,] <- eval_with_covars(xx, data[i, ], df, pdf)
     # plot
     lines_args$lty <- lty[i]
     lines_args$lwd <- lwd[i]

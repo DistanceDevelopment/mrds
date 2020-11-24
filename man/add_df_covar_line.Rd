@@ -4,19 +4,23 @@
 \alias{add_df_covar_line}
 \title{Add covariate levels detection function plots}
 \usage{
-add_df_covar_line(ddf, data, ndist = 250, ...)
+add_df_covar_line(ddf, data, ndist = 250, pdf = FALSE, breaks = "Sturges", ...)
 }
 \arguments{
-\item{ddf}{a fitted detection function object}
+\item{ddf}{a fitted detection function object.}
 
-\item{data}{a \code{data.frame} with the covariate combination you want to plot}
+\item{data}{a \code{data.frame} with the covariate combination you want to plot.}
 
-\item{ndist}{number of points to evaluate the detection function at}
+\item{ndist}{number of distances at which to evaluate the detection function.}
 
-\item{\dots}{extra arguments to give to \code{\link{line}} (\code{lty}, \code{lwd}, \code{col})}
+\item{pdf}{should the line be drawn on the probability density scale; ignored for line transects.}
+
+\item{breaks}{required to ensure that PDF lines are the right size, should match what is supplied to original \code{plot} command. Defaults to "Sturges" breaks, as in \code{\link{hist}}. Only used if \code{pdf=TRUE}.}
+
+\item{\dots}{extra arguments to give to \code{\link{line}} (\code{lty}, \code{lwd}, \code{col}).}
 }
 \value{
-invisibly, the values of detectability over the truncation range
+invisibly, the values of detectability over the truncation range.
 }
 \description{
 Add a line or lines to a plot of the detection function which correspond to a a given covariate combination. These can be particularly useful when there is a small number of factor levels or if quantiles of a continuous covariate are specified.
