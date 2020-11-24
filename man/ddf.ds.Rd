@@ -9,20 +9,20 @@
 \arguments{
 \item{model}{model list with key function and scale formula if any}
 
-\item{data}{analysis dataframe}
+\item{data}{\code{data.frame}; see \code{\link{ddf}} for details}
 
-\item{meta.data}{list containing settings controlling data structure}
+\item{meta.data}{\code{list} containing settings controlling data structure}
 
-\item{control}{list containing settings controlling model fitting}
+\item{control}{\code{list} containing settings controlling model fitting}
 
 \item{call}{original function call if this function not called directly from
-\code{ddf} (e.g., called via \code{ddf.io}}
+\code{ddf} (e.g., called via \code{ddf.io})}
 
 \item{method}{analysis method; only needed if this function called from
 \code{ddf.io} or \code{ddf.trial}}
 }
 \value{
-result: a ds model object
+result: a \code{ds} model object
 }
 \description{
 Fits a conventional distance sampling (CDS) (likelihood eq 6.6 in Laake and

@@ -19,14 +19,14 @@
 #' @export
 #' @method ddf ds
 #' @param model model list with key function and scale formula if any
-#' @param data analysis dataframe
-#' @param meta.data list containing settings controlling data structure
-#' @param control list containing settings controlling model fitting
+#' @param data \code{data.frame}; see \code{\link{ddf}} for details
+#' @param meta.data \code{list} containing settings controlling data structure
+#' @param control \code{list} containing settings controlling model fitting
 #' @param call original function call if this function not called directly from
-#'   \code{ddf} (e.g., called via \code{ddf.io}
+#'   \code{ddf} (e.g., called via \code{ddf.io})
 #' @param method analysis method; only needed if this function called from
 #'   \code{ddf.io} or \code{ddf.trial}
-#' @return result: a ds model object
+#' @return result: a \code{ds} model object
 #' @note If mixture of binned and unbinned distance, width must be set to be >=
 #'   largest interval endpoint; this could be changed with a more complicated
 #'   analysis; likewise, if all binned and bins overlap, the above must also
@@ -207,7 +207,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   }
 
   # add call and others to return values
-  stored_data <- data[row.names(data)%in%row.names(xmat), ]
+  stored_data <- data[row.names(data) %in% row.names(xmat), ]
   stored_data$detected <- 1
   result <- list(call=call, data=stored_data, model=substitute(model),
                  meta.data=meta.data, control=control, method=method,
@@ -257,7 +257,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   result$criterion <- 2*lt$value + 2*npar
 
   # give the object some class
-  class(result) <- c("ds","ddf")
+  class(result) <- c("ds", "ddf")
 
   # if we have adjustments then check the monotonicity constraints
   if(!is.null(ddfobj$adjustment) & (ddfobj$type %in% c("hn", "hr", "unif"))){
@@ -271,9 +271,9 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   if(lt$message == "FALSE CONVERGENCE"){
     warning("Model fitting did not converge. Try different initial values or different model")
   }else{
-    result$fitted <- predict(result,esw=FALSE)$fitted
+    result$fitted <- predict(result, esw=FALSE)$fitted
     if(control$estimate){
-      result$Nhat <- NCovered(result,group=TRUE)
+      result$Nhat <- NCovered(result, group=TRUE)
     }
   }
 
