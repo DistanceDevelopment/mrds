@@ -8,8 +8,7 @@
 #' @export
 #' @author David L Miller
 #' @aliases logLik.ds logLik.io logLik.io.fi logLik.rem logLik.rem.fi logLik.trial logLik.trial.fi
-logLik.ds <- logLik.io <- logLik.io.fi <- logLik.rem <- logLik.rem.fi <-
-  logLik.trial <- logLik.trial.fi <- function(object, ...){
+logLik.ddf <- function(object, ...){
 
   # see ?logLik for information on why
 

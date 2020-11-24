@@ -9,8 +9,7 @@
 #' @export
 #' @importFrom stats logLik
 #' @aliases AIC.ds AIC.io AIC.io.fi AIC.rem AIC.rem.fi AIC.trial AIC.trial.fi
-AIC.ds <- AIC.io <- AIC.io.fi <- AIC.rem <- AIC.rem.fi <-
-  AIC.trial <- AIC.trial.fi <- function(object, ..., k=2){
+AIC.ddf <- function(object, ..., k=2){
 
   # get the models
   models <- list(object, ...)
