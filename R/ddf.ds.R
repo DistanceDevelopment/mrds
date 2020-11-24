@@ -123,7 +123,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
     stop("\nobject field is missing in the data\n")
   }
   # Next call function to process data based on values of meta.data
-  datalist <- process.data(data,meta.data,check=FALSE)
+  datalist <- process.data(data, meta.data, check=FALSE)
   xmat <- datalist$xmat
   meta.data <- datalist$meta.data
 

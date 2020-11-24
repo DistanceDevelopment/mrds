@@ -55,7 +55,7 @@ process.data <- function(data, meta.data=list(), check=TRUE){
   #  meta.data - meta.data list
   # Values:  width of transect
     if(meta.data$binned){
-      width <- max(c(data$distend, data$distance),na.rm=TRUE)
+      width <- max(c(data$distend, data$distance), na.rm=TRUE)
     }else{
       width <- max(data$distance)
     }
@@ -68,7 +68,7 @@ process.data <- function(data, meta.data=list(), check=TRUE){
   # records = number of secondary
   if(check){
     if(length(data$detected[data$observer==1]) !=
-        length(data$detected[data$observer==2])){
+       length(data$detected[data$observer==2])){
       stop("number of records for primary observer not equal to number for secondary observer")
     }
     # check each object is included twice
@@ -80,20 +80,19 @@ process.data <- function(data, meta.data=list(), check=TRUE){
     }
   }
 
-
   # Create field which counts the number of times an object was detected 0,1,2
   if(check){
     timesdetected <- data$detected[data$observer==1] +
                      data$detected[data$observer==2]
-    data$timesdetected <- rep(0,dim(data)[1])
+    data$timesdetected <- rep(0, dim(data)[1])
     data$timesdetected[data$observer==1] <- timesdetected
     data$timesdetected[data$observer==2] <- timesdetected
 
     # If any 00 (not detected by either observer), stop and issue error message
     if(any(data$timesdetected==0)){
       stop("following objects were never detected:",
-            paste(data$object[data$observer==1&data$timesdetected==0],
-                  collapse=","),"\n")
+            paste(data$object[data$observer==1 & data$timesdetected==0],
+                  collapse=","), "\n")
     }
   }
 
@@ -136,7 +135,7 @@ process.data <- function(data, meta.data=list(), check=TRUE){
   }
 
   # Fill in distance field for binned observations and create logical variable
-  data$binned <- rep(FALSE,dim(data)[1])
+  data$binned <- rep(FALSE, dim(data)[1])
   if(binned){
     meta.data$binned <- TRUE
     data$distance[!is.na(data$distend)]<-(data$distbegin[!is.na(data$distend)]+
@@ -144,10 +143,10 @@ process.data <- function(data, meta.data=list(), check=TRUE){
     data$binned[!is.na(data$distbegin)] <- TRUE
   }
 
-  # Restrict data to width interval 
+  # Restrict data to width interval
   # If no width set, use largest measured distance as width
   if(is.na(meta.data$width)){
-    width <- set.default.width(data,meta.data)
+    width <- set.default.width(data, meta.data)
     meta.data$width <- width
     xmat <- data
     warning("no truncation distance specified; using largest observed distance",immediate.=TRUE)
@@ -160,44 +159,43 @@ process.data <- function(data, meta.data=list(), check=TRUE){
         stop("width must exceed largest interval end point")
       }else{
         xmat <- data[data$binned |
-                     (!data$binned&data$distance<=meta.data$width),]
+                     (!data$binned & data$distance <= meta.data$width), ]
       }
     }else{
-      xmat <- data[data$distance <= meta.data$width,]
+      xmat <- data[data$distance <= meta.data$width, ]
     }
   }
 
   # Determine if integration range has been specified
   if(is.null(xmat$int.begin) | is.null(xmat$int.end)){
     if(any(is.na(meta.data$int.range))){
-      meta.data$int.range <- c(meta.data$left,meta.data$width)
+      meta.data$int.range <- c(meta.data$left, meta.data$width)
     }else{
-      meta.data$int.range <- #rbind(c(meta.data$left,meta.data$width),
-                                   meta.data$int.range#)
+      meta.data$int.range <- meta.data$int.range
     }
   }else{
-      meta.data$int.range <- #rbind(c(meta.data$left,meta.data$width),
-                                   cbind(xmat$int.begin,xmat$int.end)#)
+      meta.data$int.range <- cbind(xmat$int.begin, xmat$int.end)
   }
 
   # If left >0 perform left truncation by restricting values
-  if(meta.data$left >0){
+  if(meta.data$left > 0){
     if(binned){
-      if(any(data$binned&data$distbegin < meta.data$left)){
+      if(any(data$binned & data$distbegin < meta.data$left)){
         stop("left truncation must be smaller than the smallest interval begin point")
       }else{
-        xmat <- data[data$binned|(!data$binned&data$distance>=meta.data$left),]
+        xmat <- data[data$binned | (!data$binned &
+                                    data$distance >= meta.data$left), ]
       }
     }else{
-      xmat <- xmat[xmat$distance>=meta.data$left,]
+      xmat <- xmat[xmat$distance>=meta.data$left, ]
     }
   }
 
   # Clean up factor levels
   b <- dim(xmat)[2]
   for(i in 1:b){
-    if(is.factor(xmat[,i])){
-      xmat[,i] <- factor (xmat[,i])
+    if(is.factor(xmat[, i])){
+      xmat[,i] <- factor(xmat[, i])
     }
   }
 
@@ -206,5 +204,5 @@ process.data <- function(data, meta.data=list(), check=TRUE){
     stop("no data to analyze")
   }
 
-  return(list(xmat=xmat,meta.data=meta.data))
+  return(list(xmat=xmat, meta.data=meta.data))
 }
