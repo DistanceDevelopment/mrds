@@ -149,7 +149,9 @@ process.data <- function(data, meta.data=list(), check=TRUE){
     width <- set.default.width(data, meta.data)
     meta.data$width <- width
     xmat <- data
-    warning("no truncation distance specified; using largest observed distance",immediate.=TRUE)
+    if(!meta.data$binned){
+      warning("no truncation distance specified; using largest observed distance",immediate.=TRUE)
+    }
   }else{
     # change: jll 2 June 05; ref to width changed to meta.data$width
     # This piece of code makes sure that the set width is as large as the
