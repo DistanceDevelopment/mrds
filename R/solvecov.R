@@ -7,7 +7,7 @@
 #' @author Christian Hennig \url{http://www.homepages.ucl.ac.uk/~ucakche/}
 #' @seealso solve, eigen
 #' @section Source:
-#' \code{solvecov} code was taken from package \code{fpc}: Christian Hennig \url{http://www.homepages.ucl.ac.uk/~ucakche/}
+#' \code{solvecov} code was taken from package \code{fpc}: Christian Hennig
 #' @export
 solvecov <- function (m, cmax = 1e+10){
   options(show.error.messages = FALSE)

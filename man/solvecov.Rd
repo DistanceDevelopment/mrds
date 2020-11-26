@@ -19,7 +19,7 @@ Tries to invert a matrix by \code{solve}. If this fails because of singularity, 
 }
 \section{Source}{
 
-\code{solvecov} code was taken from package \code{fpc}: Christian Hennig \url{http://www.homepages.ucl.ac.uk/~ucakche/}
+\code{solvecov} code was taken from package \code{fpc}: Christian Hennig
 }
 
 \seealso{
