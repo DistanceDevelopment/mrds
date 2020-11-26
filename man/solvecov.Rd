@@ -26,5 +26,5 @@ Tries to invert a matrix by \code{solve}. If this fails because of singularity, 
 solve, eigen
 }
 \author{
-Christian Hennig \url{http://www.homepages.ucl.ac.uk/~ucakche/}
+Christian Hennig
 }

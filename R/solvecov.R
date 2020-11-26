@@ -4,7 +4,7 @@
 #' @param m a numeric symmetric matrix.
 #' @param cmax a positive value, see above.
 #' @return A list with the following components: \code{inv} the inverted matrix, \code{coll} \code{TRUE} if \code{solve} failed because of singularity.
-#' @author Christian Hennig \url{http://www.homepages.ucl.ac.uk/~ucakche/}
+#' @author Christian Hennig
 #' @seealso solve, eigen
 #' @section Source:
 #' \code{solvecov} code was taken from package \code{fpc}: Christian Hennig
