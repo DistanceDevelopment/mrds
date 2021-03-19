@@ -36,7 +36,7 @@ flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
 
   # During the optimisation we want to make sure that we are keeping the
   # right things constant, so lets do that...
-  set.na.pars <- function(par.name,ddfobj,fpar){
+  set.na.pars <- function(par.name, ddfobj, fpar){
     # if the parameters exist
     if(!is.null(ddfobj[[par.name]])){
       # set those we don't want to optimise as NA
@@ -46,16 +46,16 @@ flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
       pars <- getpar(ddfobj)
       fpar[is.na(pars)] <- save.pars
     }
-    return(list(fpar=fpar,ddfobj=ddfobj))
+    return(list(fpar=fpar, ddfobj=ddfobj))
   }
 
   if(fitting=="key"){
-    setna <- set.na.pars("adjustment",ddfobj,fpar)
+    setna <- set.na.pars("adjustment", ddfobj, fpar)
     ddfobj <- setna$ddfobj
     fpar <- setna$fpar
   }else if(fitting=="adjust"){
 
-    setna <- set.na.pars("scale",ddfobj,fpar)
+    setna <- set.na.pars("scale", ddfobj, fpar)
     ddfobj <- setna$ddfobj
     fpar <- setna$fpar
 
