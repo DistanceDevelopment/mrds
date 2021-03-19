@@ -238,8 +238,6 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
           # run the optimiser
           lt <- try(nlminb_wrapper(par=initialvalues, ll=flnl,
-                                   #lower=rep(-Inf, length(initialvalues)),
-                                   #upper=rep(Inf, length(initialvalues)),
                                    lower=lowerbounds,
                                    upper=upperbounds,
                                    mcontrol=optim.options, ddfobj=ddfobj,
