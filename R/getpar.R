@@ -21,30 +21,30 @@
 #' @author Jeff Laake
 #' @seealso assign.par
 #' @keywords utility
-getpar <- function(ddfobj,fitting="all",index=FALSE){
+getpar <- function(ddfobj, fitting="all", index=FALSE){
 
   pars <- NULL
 
   if(!index){
     if(fitting=="key" | fitting=="all"){
-      if(!is.null(ddfobj$shape)) pars <- c(pars,ddfobj$shape$parameters)
-      if(!is.null(ddfobj$scale)) pars <- c(pars,ddfobj$scale$parameters)
+      if(!is.null(ddfobj$shape)) pars <- c(pars, ddfobj$shape$parameters)
+      if(!is.null(ddfobj$scale)) pars <- c(pars, ddfobj$scale$parameters)
     }else{
       if(!is.null(ddfobj$shape)){
-        pars <- c(pars,rep(NA,length(ddfobj$shape$parameters)))
+        pars <- c(pars, rep(NA, length(ddfobj$shape$parameters)))
       }
       if(!is.null(ddfobj$scale)){
-        pars <- c(pars,rep(NA,length(ddfobj$scale$parameters)))
+        pars <- c(pars, rep(NA, length(ddfobj$scale$parameters)))
       }
     }
 
     if(fitting=="adjust" | fitting=="all"){
       if(!is.null(ddfobj$adjustment)){
-        pars <- c(pars,ddfobj$adjustment$parameters)
+        pars <- c(pars, ddfobj$adjustment$parameters)
       }
     }else{
       if(!is.null(ddfobj$adjustment)){
-        pars <- c(pars,rep(NA,length(ddfobj$adjustment$parameters)))
+        pars <- c(pars, rep(NA, length(ddfobj$adjustment$parameters)))
       }
     }
 
