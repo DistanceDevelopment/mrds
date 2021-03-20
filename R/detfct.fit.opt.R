@@ -393,7 +393,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
 
     if(!refit){
-        bounded <- FALSE
+      bounded <- FALSE
     }else{
       refit.count <- refit.count+1
       if(!is.null(nrefits)){
@@ -425,9 +425,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       if(showit>=1){
         cat("DEBUG: Refitting ...\n")
       }
+    } # end of bounds checking
 
-    }
-  }
+  } # end of while(bounded)
+
   lt$model <- list(scalemodel=misc.options$scalemodel)
   lt$converge <- lt$conv
   lt$conv <- NULL
