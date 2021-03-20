@@ -90,13 +90,13 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
     lt <- list()
     lt$par <- initialvalues
-    lt$value <- flnl(initialvalues,ddfobj,misc.options)
+    lt$value <- flnl(initialvalues,ddfobj, misc.options)
     lt$hessian <- NULL
     lt$model <- list(scalemodel=misc.options$scalemodel)
     lt$converge <- 0
     lt$message <- "MAYBE CONVERGENCE?"
 
-    lt$aux <- c(optim.options,bounds,misc.options)
+    lt$aux <- c(optim.options,bounds, misc.options)
     ddfobj <- assign.par(ddfobj,lt$par)
     lt$aux$ddfobj <- ddfobj
 
@@ -266,10 +266,31 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           # remove this again, because of conflicts
           optim.options$optimx.method <- NULL
 
+          # if we're only fitting one part of the model, we need to do the
+          # optimisation over that bit only (with only the relevant parameters
+          # and corresponding bounds)
+          if(fitting == "key"){
+            savedvalues <- initialvalues
+            parind <- getpar(ddfobj, index=TRUE)
+            initialvalues <- initialvalues[1:parind[2]]
+            ub <- upperbounds[1:parind[2]]
+            lb <- lowerbounds[1:parind[2]]
+          }else if(fitting=="adjust"){
+            savedvalues <- initialvalues
+            parind <- getpar(ddfobj, index=TRUE)
+            initialvalues <- initialvalues[(parind[2]+1):parind[3]]
+            ub <- upperbounds[(parind[2]+1):parind[3]]
+            lb <- lowerbounds[(parind[2]+1):parind[3]]
+          }else{
+            ub <- upperbounds
+            lb <- lowerbounds
+          }
+
+          # now run the optimizer
           lt <- try(optimx(initialvalues, flnl, method=opt.method,
-                           control=optim.options,
-                           hessian=TRUE, lower=lowerbounds,
-                           upper=upperbounds, ddfobj=ddfobj, fitting=fitting,
+                           control=optim.options, hessian=TRUE,
+                           lower=lb, upper=ub,
+                           ddfobj=ddfobj, fitting=fitting,
                            misc.options=misc.options), silent=TRUE)
 
           if(any(class(lt)=="try-error") || any(is.na(lt[,1:attr(lt,"npar")]))){
@@ -280,15 +301,34 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
           # put the results in a nice format
           lt <- parse.optimx(lt, lnl.last, initialvalues)
+
+          # ensure that ddfobj has the full parameter set by putting the
+          # saved values back in place
+          if(fitting == "key"){
+            if(parind[1] == 0){
+              # half-normal
+              ddfobj$scale$parameters <- lt$par
+            }else{
+              # hazard-rate
+              ddfobj$shape$parameters <- lt$par[1]
+              ddfobj$scale$parameters <- lt$par[2:parind[2]]
+            }
+            lt$par <- c(lt$par, savedvalues[(parind[2]+1):parind[3]])
+          }else if(fitting == "adjust"){
+            ddfobj$adjustment$parameters <- lt$par
+            lt$par <- c(savedvalues[1:parind[2]], lt$par)
+          }
+
           initialvalues <- lt$par
+
 
         } # end optimx
       } # end unconstrained optimisation
 
       # Print debug information
       if(showit>=2){
-        cat("DEBUG: Converge   =",lt$conv,"\n",
-            "      lnl        =",lt$value,"\n",
+        cat("DEBUG: Converge   =", lt$conv, "(", fitting, ")\n",
+            "      lnl        =", lt$value,"\n",
             "      parameters =", paste(round(lt$par, 7), collapse=", "), "\n")
       }
 
@@ -350,6 +390,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     # check whether parameters hit their bounds
     bounded <- check.bounds(lt, lowerbounds, upperbounds, ddfobj,
                             showit, setlower, setupper)
+
 
     if(!refit){
         bounded <- FALSE

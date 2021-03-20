@@ -110,7 +110,6 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
 
       # Variable to count sub iterations
       metaiter <- 0
-
       # loop through fitting the adjustment, key and full detection function
       for(fitting in c("adjust", "key", "all")){
 
@@ -175,6 +174,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
       }
 
       iter <- iter + 1
+
     } # end while loop
 
     if(iter > misc.options$maxiter){
