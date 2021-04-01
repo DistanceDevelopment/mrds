@@ -41,7 +41,7 @@ fitted detection function model object with the following list
   \item width: radius of point count or half-width of strip \item
   standardize: if TRUE, detection function is scaled so g(0)=1 \item ddfobj:
   distance detection function object; see \code{\link{create.ddfobj}} \item
-  bounded: TRUE if parameters ended up a boundary (I think) \item model:
+  bounded: TRUE if estimated parameters are at the bounds \item model:
   list of formulas for detection function model (probably can remove this)
   }}
 }
