@@ -4,6 +4,7 @@ optimist changes !!to merge!!
 * use "probabalists" definition of Hermite polynomials, as from Distance. More numerically stable
 * remove setting of Hermite parameter to 1 (unclear why this was the case!)
 * refinement of adjustment-key-all outer optimisation, optimization is now only over the subset of parameters, rather than holding one parameter constant
+* refine outer optimization, using best previous values (by likelihood) rather than last values. Use optimizer's convergence diagnostic to assess outer convergence.
 
 mrds 2.2.4
 ----------
