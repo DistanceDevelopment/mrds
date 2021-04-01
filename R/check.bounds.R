@@ -9,7 +9,7 @@
 #' @param showit debug level
 #' @param setlower were lower bounds set by the user
 #' @param setupper were upper bounds set by the user
-#' @return \code{TRUE} if bounded (ie parameters close to bound), else \code{FALSE}
+#' @return \code{TRUE} if parameters are close to the bound, else \code{FALSE}
 #'
 #' @author Dave Miller; Jeff Laake
 check.bounds <- function(lt, lowerbounds, upperbounds, ddfobj, showit,
