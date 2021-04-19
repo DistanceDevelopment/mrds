@@ -1,6 +1,6 @@
 #' Wrapper around \code{nlminb}
 #'
-#' This is a wrapper around nlminb to use scaling, as this is not available (nor will it be) in \code{\link{optimx}}.
+#' This is a wrapper around nlminb to use scaling, as this is not available in \code{\link{optimx}}.
 #'
 #' @import optimx
 #' @inheritParams optimx::nlminb
@@ -60,7 +60,7 @@ nlminb_wrapper <- function(par, ll, ugr=NULL, lower=NULL, upper=NULL,
 
   # my addition here to get the parscaling
   if(!is.null(mcontrol$parscale)){
-    scale <- 1/mcontrol$parscale
+    scale <- mcontrol$parscale
     mcontrol$parscale <- NULL
   }else{
     scale <- 1# NULL

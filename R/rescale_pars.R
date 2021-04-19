@@ -12,9 +12,9 @@ rescale_pars <- function(initialvalues, ddfobj){
 
   par_scaling <- rep(1, length(initialvalues))
 
-  # from optimx:::optimx.setup, scaletol = 3 (so setting 3 here for consistency)
+  # from optimx:::optimx.setup, scaletol = 3 lowered here
   # here we use a local copy in scalecheck.R
-  if(scalecheck(initialvalues, NA, NA, dowarn=FALSE)$lpratio > 3){
+  if(scalecheck(initialvalues, NA, NA, dowarn=FALSE)$lpratio > 2){
     # do the rescaling to the scale parameters only
     # this is (still) a bit hackish
     # divide by the standard deviation of the distances
