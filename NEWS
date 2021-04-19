@@ -8,6 +8,7 @@ optimist changes !!to merge!!
 * Refinement of "inner" optimization (detfct.fit.opt): (1) simplification of stopping rules (one while() loop rather than two), (2) parameters are nudged only when bounds have not been hit, if bounds have   been hit then they are expanded
 * Rescaling of covariate models' parameters (when scaling difference was large) was inverted, causing all kinds of issues.
 * Made the scaling kick-in at smaller scales.
+* Removed inner (detfct.fit.opt) while() loop dependence on bounded status, since that didn't seem to make sense
 
 
 mrds 2.2.4

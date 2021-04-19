@@ -119,7 +119,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
   # Continue fitting until convergence occurs while parameters are within
   # their bounds
   itconverged <- FALSE
-  while(!bounded & !itconverged){
+  while(!itconverged){
     # Call optimization routine to find constrained mles; upon
     # completion add the user specified models and return the list.
 
@@ -221,8 +221,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       # AND we are fitting all of the parameters
       # AND parscale is TRUE
       # AND using nlminb
-      # no rescaling happens if the scaling factor is less than 3 see
-      # rescale_pars
+      # rescaling only happens if the scaling factor is above some threshold
+      # see ?rescale_pars
       if(!is.null(ddfobj$scale$formula) && (ddfobj$scale$formula != ~1) &&
          !is.null(optim.options$parscale) &&
          all(optim.options$parscale) &&
