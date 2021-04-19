@@ -124,11 +124,12 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
                   left=left)
     p1[p1<1.0e-15] <- 1.0e-15
     p1[is.nan(p1)] <- 1.0e-15
+
     # Compute integrals - repeat with doeachint if not set and any 
     # integral values < 0
     int1 <- -1
     i <- 0
-    while (any(int1 < 0) & (i < 2)){
+    while(any(int1 < 0) & (i < 2)){
       if(ddfobj$intercept.only & samelimits){
         int1 <- integratepdf(ddfobj,
                              select=c(TRUE, rep(FALSE, nrow(ddfobj$xmat))),
@@ -142,17 +143,19 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
           intrange <- int.range[rep(1, nrow(x)), ]
         }
 
-#        int1 <- integratepdf(ddfobj, select=!x$binned, width=width,
         int1 <- integratepdf(ddfobj, select=!x$binned, width=right,
                              int.range=intrange[!x$binned, ],
                              point=misc.options$point, standardize=FALSE,
                              left=left)
       }
+
       doeachint <- TRUE
+      # set to -1 to flag above if we get NaNs
+      int1[is.nan(int1)] <- -1
       i <- i + 1
     }
-    if(any(int1<=0)){
-      int1[int1<=0] <- 1e-15
+    if(any(int1<=0 | is.nan(int1))){
+      int1[int1<=0 | is.nan(int1)] <- 1e-15
       warning("\n Problems with integration. integral <=0. Setting integral to 1E-25\n")
     }
 
