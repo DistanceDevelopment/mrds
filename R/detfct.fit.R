@@ -81,7 +81,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
       ddfobj <- assign.par(ddfobj, lt$par)
       # recalculate lower/upper bounds
       if(check.bounds(lt, bounds$lower, bounds$upper, ddfobj,
-                            showit,bounds$setlower, bounds$setupper)){
+                      showit, bounds$setlower, bounds$setupper)){
         bounds <- setbounds(rep(NA, length(lt$par)), rep(NA, length(lt$par)),
                             lt$par, ddfobj)
       }
