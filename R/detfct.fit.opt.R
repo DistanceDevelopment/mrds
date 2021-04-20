@@ -392,9 +392,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       }
     } # end convergence check
 
-    # fix: jll 18-Nov-04; previous code would get stuck at 0 if sign of
-    # initial value was opposite of the mle.
-    # Additional statement skips over 0.
+    # for parameters that were at their bounds, we widen those bounds
     if(bounded){
       bound.low <- abs(lt$par-lowerbounds)<1e-6
       bound.hi <- abs(lt$par-upperbounds)<1e-6
