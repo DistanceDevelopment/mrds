@@ -135,22 +135,23 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       lowerbounds.ic <- rep(0, 2*misc.options$mono.points)
       upperbounds.ic <- rep(10^10, 2*misc.options$mono.points)
 
-      if(length(initialvalues)==1){
-        ## gosolnp (below) doesn't work when there is only 1 parameter
-        ## since there is a bug that leaves the optimisation with a vector
-        ## when it is expecting a matrix. To avoid this bug, don't do the
-        ## multiple start points in that case (should only be unif+cos(1))
-        lt <- try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
-                        ineqfun=flnl.constr,
-                        ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
-                        LB=lowerbounds, UB=upperbounds,
-                        ddfobj=ddfobj, misc.options=misc.options,
-                        control=list(trace=as.integer(showit),
-                                     tol=misc.options$mono.tol,
-                                     delta=misc.options$mono.delta)))
-      }else{
-        # this code randomly generates starting values see ?gosolnp
-        lt <- try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+      lt <- try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+                      ineqfun=flnl.constr,
+                      ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                      LB=lowerbounds, UB=upperbounds,
+                      ddfobj=ddfobj, misc.options=misc.options,
+                      control=list(trace=as.integer(showit),
+                                   tol=misc.options$mono.tol,
+                                   delta=misc.options$mono.delta)))
+
+      if(length(initialvalues)>1){
+        # gosolnp doesn't work when there is only 1 parameter
+        # since there is a bug that leaves the optimisation with a vector
+        # when it is expecting a matrix. To avoid this bug, don't do the
+        # multiple start points in that case (should only be unif+cos(1))
+
+        # in other cases we probably want to explore the this code randomly generates starting values see ?gosolnp
+        lt2 <- try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
                           ineqfun=flnl.constr,
                           ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
                           LB=lowerbounds, UB=upperbounds,
@@ -161,6 +162,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                           distr = rep(1, length(lowerbounds)),
                           n.restarts = 2, n.sim = 200,
                           rseed=as.integer(runif(1)*1e9)))
+        if(!is.na(lt2$value) && (lt2$value < lt$value)) lt <- lt2
       }
 
 
