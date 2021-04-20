@@ -311,7 +311,9 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
             ddfobj$shape$parameters <- lt$par[1]
             ddfobj$scale$parameters <- lt$par[2:parind[2]]
           }
-          lt$par <- c(lt$par, savedvalues[(parind[2]+1):parind[3]])
+          if(parind[3] != 0){
+            lt$par <- c(lt$par, savedvalues[(parind[2]+1):parind[3]])
+          }
         }else if(fitting == "adjust"){
           ddfobj$adjustment$parameters <- lt$par
           lt$par <- c(savedvalues[1:parind[2]], lt$par)
@@ -337,7 +339,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                             showit, setlower, setupper)
 
     # did the optimisation converge? (code 0 is GOOD)
-    if(lt$conv==0 | !refit){
+    if(!bounded & (lt$conv==0 | !refit)){
       itconverged <- TRUE
 
       lt$aux <- c(optim.options, bounds, misc.options)
