@@ -154,19 +154,10 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
       int1[is.nan(int1)] <- -1
       i <- i + 1
     }
-    if(any(int1<=0 | is.nan(int1))){
-      int1[int1<=0 | is.nan(int1)] <- 1e-15
-      warning("\n Problems with integration. integral <=0. Setting integral to 1E-25\n")
-    }
-
-    # Handle some special cases that can occur
-    if(is.vector(left)){
-      int1[is.infinite(int1)] <-  right - left
-      int1[is.nan(int1)] <- right - left
-    }else{
-      int1[is.infinite(int1)] <- right[is.infinite(int1)] -
-                                  left[is.infinite(int1)]
-      int1[is.nan(int1)] <- right[is.nan(int1)] - left[is.nan(int1)]
+    # if the integral is <=0 something Very Bad has happened
+    if(any(int1<=0)){
+      int1[int1<=0] <- NaN
+      warning("\n Problems with integration (integral <=0).\n")
     }
 
     if(is.matrix(int1) && dim(int1)==c(1, 1)){

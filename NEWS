@@ -9,6 +9,7 @@ optimist changes !!to merge!!
 * Rescaling of covariate models' parameters (when scaling difference was large) was inverted, causing all kinds of issues.
 * Made the scaling kick-in at smaller scales.
 * Removed inner (detfct.fit.opt) while() loop dependence on bounded status, since that didn't seem to make sense
+* Stop "correcting" infinite/NaN integrals to small numbers as this was misleading the optimizer to think these were "good" values
 
 
 mrds 2.2.4
