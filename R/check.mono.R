@@ -33,6 +33,11 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
 
   # extract the ddf object from the fitted model
   ddfobj <- df$ds$aux$ddfobj
+
+  # if we didn't converge then ddfobj ends-up NULL, so just return NULL
+  # in that case
+  if(is.null(ddfobj)) return(NULL)
+
   # extract the truncation
   right.trunc <- df$meta.data$width
   left.trunc <- df$meta.data$left

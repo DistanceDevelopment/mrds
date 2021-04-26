@@ -11,6 +11,7 @@ optimist changes !!to merge!!
 * Removed inner (detfct.fit.opt) while() loop dependence on bounded status, since that didn't seem to make sense
 * Stop "correcting" infinite/NaN integrals to small numbers as this was misleading the optimizer to think these were "good" values
 * Refine constrained optimisation to use actual starting values once, then use random start points and compare the two.
+* handle the case where a model failed in AIC adjustment term selection, montonicity check would throw an error
 
 
 mrds 2.2.4
