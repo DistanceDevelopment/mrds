@@ -1,8 +1,5 @@
 # point transect testing
 
-library(mrds)
-library(testthat)
-
 par.tol <- 1e-5
 lnl.tol <- 1e-4
 

@@ -2,8 +2,8 @@
 # possible though
 
 # TODO
-# * check that qqplot.dff() gives a list of 4 when adjustments are used
-#   * need to surpress plotting?
+# * check that qqplot.dff() gives a list of 4 when adjustments are used
+# * need to surpress plotting?
 
 
 # missing duplicates

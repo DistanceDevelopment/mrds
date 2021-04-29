@@ -1,8 +1,5 @@
 # testing for summary.* functions
 
-library(testthat)
-library(mrds)
-
 tol <- 1e-6
 
 context("Summary tests")

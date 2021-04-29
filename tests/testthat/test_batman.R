@@ -1,6 +1,4 @@
 # NA NA NA NA NA NA NA NA NA
-library(mrds)
-
 context("covariate NAs")
 
 data(book.tee.data)

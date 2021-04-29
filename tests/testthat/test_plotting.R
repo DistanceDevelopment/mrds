@@ -1,8 +1,4 @@
 # testing for plotting functions
-
-library(testthat)
-library(mrds)
-
 line.tol <- 1e-4
 
 context("Plotting tests: average.line")

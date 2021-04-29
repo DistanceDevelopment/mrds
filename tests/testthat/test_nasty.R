@@ -1,8 +1,3 @@
-# hopefully these should cause some problems
-library(testthat)
-library(mrds)
-# pull in the mixture simulation code
-
 context("nasty mixtures")
 test_that("easy mixture",{
 

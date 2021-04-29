@@ -1,8 +1,5 @@
 # bugs in trial and trial.io go here...
 
-library(testthat)
-library(mrds)
-
 context("trial and trial.fi")
 
 # bug from Louise Burt 31/10/11

@@ -1,6 +1,4 @@
-library(mrds)
-
-lnl.tol<-1e-3#4
+lnl.tol<-1e-3
 par.tol<-1e-6
 
 context("dht")

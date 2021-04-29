@@ -1,5 +1,3 @@
-library(mrds)
-
 lnl.tol<-1e-3#4
 par.tol<-1e-6
 
