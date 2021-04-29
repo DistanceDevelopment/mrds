@@ -8,16 +8,24 @@
 flnl(fpar, ddfobj, misc.options, fitting = "all")
 }
 \arguments{
-\item{fpar}{parameter values for detection function at which negative log-likelihood should be evaluated}
+\item{fpar}{parameter values for detection function at which negative
+log-likelihood should be evaluated}
 
 \item{ddfobj}{distance sampling object}
 
-\item{misc.options}{a \code{list} with the following elements: \code{width} transect width; \code{int.range} the integration range for observations; \code{showit} 0 to 3 controls level debug output; \code{integral.numeric} if \code{TRUE} integral is computed numerically rather than analytically; \code{point} is this a point transect?}
+\item{misc.options}{a \code{list} with the following elements: \code{width}
+transect width; \code{int.range} the integration range for observations;
+\code{showit} 0 to 3 controls level debug output; \code{integral.numeric} if
+\code{TRUE} integral is computed numerically rather than analytically;
+\code{point} is this a point transect?}
 
-\item{fitting}{character \code{"key"} if only fitting key function parameters, \code{"adjust"} if fitting adjustment parameters or \code{"all"} to fit both}
+\item{fitting}{character \code{"key"} if only fitting key function
+parameters, \code{"adjust"} if fitting adjustment parameters or \code{"all"}
+to fit both}
 }
 \value{
-negative log-likelihood value at the parameter values specified in \code{fpar}
+negative log-likelihood value at the parameter values specified in
+\code{fpar}
 }
 \description{
 For a specific set of parameter values, it computes and returns the negative
@@ -44,7 +52,9 @@ functions are in source code file for \code{link{detfct}} and are called from
 \code{\link{integratepdf}}.
 }
 \note{
-These are internal functions used by \code{\link{ddf.ds}} to fit distance sampling detection functions.  It is not intended for the user to invoke these functions but they are documented here for completeness.
+These are internal functions used by \code{\link{ddf.ds}} to fit
+distance sampling detection functions.  It is not intended for the user to
+invoke these functions but they are documented here for completeness.
 }
 \seealso{
 \code{\link{flt.var}}, \code{\link{detfct}}

@@ -1,6 +1,7 @@
 #' Logistic for duplicates as a function of covariates (fast)
 #'
-#' As \code{\link{logisticdupbyx}}, but faster when distance is a covariate (but no interactions with distance occur.
+#' As \code{\link{logisticdupbyx}}, but faster when distance is a covariate
+#' (but no interactions with distance occur.
 #'
 #' @inheritParams logisticdupbyx
 #' @param beta_distance parameter for distance

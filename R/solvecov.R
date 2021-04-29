@@ -1,9 +1,14 @@
 #' Invert of covariance matrices
 #'
-#' Tries to invert a matrix by \code{solve}. If this fails because of singularity, an eigenvector decomposition is computed, and eigenvalues below \code{1/cmax} are replaced by \code{1/cmax}, i.e., \code{cmax} will be the corresponding eigenvalue of the inverted matrix.
+#' Tries to invert a matrix by \code{solve}. If this fails because of
+#' singularity, an eigenvector decomposition is computed, and eigenvalues below
+#' \code{1/cmax} are replaced by \code{1/cmax}, i.e., \code{cmax} will be the
+#' corresponding eigenvalue of the inverted matrix.
 #' @param m a numeric symmetric matrix.
 #' @param cmax a positive value, see above.
-#' @return A list with the following components: \code{inv} the inverted matrix, \code{coll} \code{TRUE} if \code{solve} failed because of singularity.
+#' @return A list with the following components: \code{inv} the inverted
+#' matrix, \code{coll} \code{TRUE} if \code{solve} failed because of
+#' singularity.
 #' @author Christian Hennig
 #' @seealso solve, eigen
 #' @section Source:

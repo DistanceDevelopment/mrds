@@ -37,7 +37,8 @@
 #' @return result: a trial.fi model object
 #' @author Jeff Laake
 #' @seealso
-#'   \code{\link{ddf.trial}},\code{\link{summary.trial.fi}},\code{\link{coef.trial.fi}},\code{\link{plot.trial.fi}},
+#'   \code{\link{ddf.trial}}, \code{\link{summary.trial.fi}},
+#'   \code{\link{coef.trial.fi}}, \code{\link{plot.trial.fi}},
 #'   \code{\link{gof.trial.fi}}
 #' @references Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
 #'   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.

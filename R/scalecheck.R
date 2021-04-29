@@ -1,16 +1,17 @@
 ## Code taken from optimx-package.R in package optimx
 ## Code by John C Nash [aut, cre], Ravi Varadhan [aut], Gabor Grothendieck [ctb]
 ## See http://cran.r-project.org/web/packages/optimx/index.html
-##################################################################
-scalecheck<-function(par, lower=lower, upper=upper,dowarn){
-  # a function to check the initial parameters and bounds for inputs to optimization codes
+scalecheck <- function(par, lower=lower, upper=upper,dowarn){
+  # a function to check the initial parameters and bounds for inputs to
+  # optimization codes
   # Arguments:
   # par -- starting parameters supplied 
   #   lower, upper -- lower and upper bounds supplied
   #
   # Returns:
-  # list(lpratio, lbratio) -- the log of the ratio of largest to smallest parameters
-  #   and bounds intervals (upper-lower) in absolute value (ignoring Inf, NULL, NA)
+  # list(lpratio, lbratio) -- the log of the ratio of largest to smallest
+  # parameters and bounds intervals (upper-lower) in absolute value (ignoring
+  # Inf, NULL, NA)
   ######################################
   if (is.null(par)) { stop("Null parameter vector") }
   npar<-length(par)
@@ -40,5 +41,3 @@ scalecheck<-function(par, lower=lower, upper=upper,dowarn){
   ratios<-list(lpratio=lpratio,lbratio=lbratio)
   # return(ratios)
 }
-# -------------- end scalecheck ----------------- #
-#################################################################

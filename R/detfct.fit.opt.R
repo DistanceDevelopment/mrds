@@ -150,7 +150,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         # when it is expecting a matrix. To avoid this bug, don't do the
         # multiple start points in that case (should only be unif+cos(1))
 
-        # in other cases we probably want to explore the this code randomly generates starting values see ?gosolnp
+        # in other cases we probably want to explore the this code randomly
+        # generates starting values see ?gosolnp
         lt2 <- try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
                           ineqfun=flnl.constr,
                           ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,

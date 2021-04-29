@@ -1,6 +1,7 @@
 #' Check parameters bounds during optimisations
 #'
-#' Simple internal function to check that the optimisation didn't hit bounds. Based on code that used to live in \code{detfct.fit.opt}.
+#' Simple internal function to check that the optimisation didn't hit bounds.
+#' Based on code that used to live in \code{detfct.fit.opt}.
 #'
 #' @param lt optimisation object
 #' @param lowerbounds current lower bounds
@@ -24,7 +25,9 @@ check.bounds <- function(lt, lowerbounds, upperbounds, ddfobj, showit,
 
     if(bound.label=="lower" && (any(par<bounds) | any(abs((bounds-par))<tol))){
       bounded <- TRUE
-    }else if(bound.label=="upper" && (any(par>bounds) | any(abs(((bounds-par)<tol))))){
+    }else if(bound.label=="upper" &&
+             (any(par>bounds) |
+              any(abs(((bounds-par)<tol))))){
       bounded <- TRUE
     }else{
       bounded <-FALSE

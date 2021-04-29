@@ -1,6 +1,7 @@
 #' Integral of pdf of distances
 #'
-#' Computes the integral of \code{distpdf} with scale=1 (\code{stdint=TRUE}) or specified scale (\code{stdint=FALSE}).
+#' Computes the integral of \code{distpdf} with scale=1 (\code{stdint=TRUE}) or
+#' specified scale (\code{stdint=FALSE}).
 #'
 #' @param x lower, upper value for integration
 #' @param ddfobj distance detection function specification
@@ -8,12 +9,16 @@
 #' @param select logical vector for selection of data values
 #' @param width truncation width
 #' @param left left truncation width
-#' @param standardize if \code{TRUE}, divide through by the function evaluated at 0
-#' @param point logical to determine if point (\code{TRUE}) or line transect(\code{FALSE})
+#' @param standardize if \code{TRUE}, divide through by the function evaluated
+#' at 0
+#' @param point logical to determine if point (\code{TRUE}) or line
+#' transect(\code{FALSE})
 #' @param stdint if \code{TRUE}, scale=1 otherwise specified scale used
-#' @param doeachint if \code{TRUE} perform integration using \code{\link{integrate}}
+#' @param doeachint if \code{TRUE} perform integration using
+#' \code{\link{integrate}}
 #' @return vector of integral values of detection function
-#' @note This is an internal function that is not intended to be invoked directly.
+#' @note This is an internal function that is not intended to be invoked
+#' directly.
 #' @author Jeff Laake and David L Miller
 #' @keywords utility
 #' @importFrom stats pnorm smooth.spline

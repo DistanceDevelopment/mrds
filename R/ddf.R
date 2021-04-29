@@ -10,8 +10,10 @@
 #' The fitting code has certain expectations about \code{data}.  It should be a
 #' dataframe with at least the following fields named and defined as follows:
 #' \tabular{ll}{ \code{object} \tab object number \cr
-#'               \code{observer} \tab observer number (1 or 2) for double observer; only 1 if single observer \cr
-#'               \code{detected} \tab 1 if detected by the observer and 0 if missed; always 1 for single observer \cr
+#'               \code{observer} \tab observer number (1 or 2) for double
+#'               observer; only 1 if single observer \cr
+#'               \code{detected} \tab 1 if detected by the observer and 0 if
+#'               missed; always 1 for single observer \cr
 #'               \code{distance} \tab perpendicular distance\cr }
 #' If the data are for clustered objects, the dataframe should also contain a
 #' field named \code{size} that gives the observed number in the cluster. If
@@ -102,14 +104,23 @@
 #' the data to be set. These options include:
 #'
 #' \describe{
-#'  \item{\code{point}}{if \code{TRUE} the data are from point counts and \code{FALSE} (default) implies line transect data}
+#'  \item{\code{point}}{if \code{TRUE} the data are from point counts and
+#'  \code{FALSE} (default) implies line transect data}
 #'  \item{\code{width}}{distance specifying half-width of the transect}
 #'  \item{\code{left}}{distance specifying inner truncation value}
-#'  \item{\code{binned}}{\code{TRUE} or \code{FALSE} to specify whether distances should be binned for analysis}
-#'  \item{\code{breaks}}{if \code{binned=TRUE}, this is a required sequence of break points that are used for plotting/gof. They should match \code{distbegin}, \code{distend} values if bins are fixed}
-#'  \item{\code{int.range}}{an integration range for detection probability; either a vector of 2 or matrix with 2 columns}
-#'  \item{\code{mono}}{constrain the detection function to be weakly monotonically decreasing (only applicable when there are no covariates in the detection function)}
-#'  \item{\code{mono.strict}}{when \code{TRUE} constrain the detection function to be strictly monotonically decreasing (again, only applicable when there are no covariates in the detection function)}
+#'  \item{\code{binned}}{\code{TRUE} or \code{FALSE} to specify whether
+#'  distances should be binned for analysis}
+#'  \item{\code{breaks}}{if \code{binned=TRUE}, this is a required sequence of
+#'  break points that are used for plotting/gof. They should match
+#'  \code{distbegin}, \code{distend} values if bins are fixed}
+#'  \item{\code{int.range}}{an integration range for detection probability;
+#'  either a vector of 2 or matrix with 2 columns}
+#'  \item{\code{mono}}{constrain the detection function to be weakly
+#'  monotonically decreasing (only applicable when there are no covariates in
+#'  the detection function)}
+#'  \item{\code{mono.strict}}{when \code{TRUE} constrain the detection function
+#'  to be strictly monotonically decreasing (again, only applicable when there
+#'  are no covariates in the detection function)}
 #' }
 #'
 #' Using \code{meta.data=list(int.range=c(1,10))} is the same as
@@ -135,21 +146,37 @@
 #' infrequently.  The list values include:
 #'
 #' \describe{
-#'   \item{\code{showit}}{Integer (0-3, default 0) controls the (increasing)amount of information printed during fitting. 0 - none, >=1 - information about refitting and bound changes is printed, >=2 - information about adjustment term fitting is printed, ==3 -per-iteration parameter estimates and log-likelihood printed.}
-#'   \item{\code{estimate}}{if FALSE fits model but doesn't estimate predicted probabilities}
-#'   \item{\code{refit}}{if TRUE the algorithm will attempt multiple optimizations at different starting values if it doesn't converge}
+#'   \item{\code{showit}}{Integer (0-3, default 0) controls the
+#'   (increasing)amount of information printed during fitting. 0 - none, >=1 -
+#'   information about refitting and bound changes is printed, >=2 -
+#'   information about adjustment term fitting is printed, ==3 -per-iteration
+#'   parameter estimates and log-likelihood printed.}
+#'   \item{\code{estimate}}{if FALSE fits model but doesn't estimate predicted
+#'   probabilities}
+#'   \item{\code{refit}}{if TRUE the algorithm will attempt multiple
+#'   optimizations at different starting values if it doesn't converge}
 #'   \item{\code{nrefits}}{number of refitting attempts}
-#'   \item{\code{initial}}{a named list of starting values for the parameters (e.g. \code{$scale}, \code{$shape}, \code{$adjustment})}
+#'   \item{\code{initial}}{a named list of starting values for the parameters
+#'   (e.g. \code{$scale}, \code{$shape}, \code{$adjustment})}
 #'   \item{\code{lowerbounds}}{a vector of lowerbounds for the parameters}
 #'   \item{\code{upperbounds}}{a vector of upperbounds for the parameters}
-#'   \item{\code{limit}}{if TRUE restrict analysis to observations with \code{detected}=1}
-#'   \item{\code{debug}}{ if TRUE, if fitting fails, return an object with fitting information}
-#'   \item{\code{nofit}}{if TRUE don't fit a model, but use the starting values and generate an object based on those values}
-#'   \item{\code{optimx.method}}{one (or a vector of) string(s) giving the optimisation method to use. If more than one is supplied, the results from one are used as the starting values for the next. See \code{\link{optimx}}}
-#'   \item{\code{optimx.maxit}}{maximum number of iterations to use in the optimisation.}
-#'   \item{\code{silent}}{silences warnings within ds fitting method (helpful for running many times without generating many warning/error messages).}}
+#'   \item{\code{limit}}{if TRUE restrict analysis to observations with
+#'   \code{detected}=1}
+#'   \item{\code{debug}}{ if TRUE, if fitting fails, return an object with
+#'   fitting information}
+#'   \item{\code{nofit}}{if TRUE don't fit a model, but use the starting values
+#'   and generate an object based on those values}
+#'   \item{\code{optimx.method}}{one (or a vector of) string(s) giving the
+#'   optimisation method to use. If more than one is supplied, the results from
+#'   one are used as the starting values for the next. See
+#'   \code{\link{optimx}}}
+#'   \item{\code{optimx.maxit}}{maximum number of iterations to use in the
+#'   optimisation.}
+#'   \item{\code{silent}}{silences warnings within ds fitting method (helpful
+#'   for running many times without generating many warning/error messages).}}
 #'
-#' Examples of distance sampling analyses are available at \url{http://examples.distancesampling.org/}.
+#' Examples of distance sampling analyses are available at
+#' \url{http://examples.distancesampling.org/}.
 #'
 #' @param dsmodel distance sampling model specification
 #' @param mrmodel mark-recapture model specification
@@ -160,8 +187,10 @@
 #' @return model object of class=(method, "ddf")
 #' @export
 #' @author Jeff Laake
-#' @seealso \code{\link{ddf.ds}},
-#'   \code{\link{ddf.io}},\code{\link{ddf.io.fi}},\code{\link{ddf.trial}},\code{\link{ddf.trial.fi}},\code{\link{ddf.rem}},\code{\link{ddf.rem.fi}}, \code{\link{mrds-opt}}
+#' @seealso \code{\link{ddf.ds}}, \code{\link{ddf.io}},
+#' \code{\link{ddf.io.fi}}, \code{\link{ddf.trial}},
+#' \code{\link{ddf.trial.fi}}, \code{\link{ddf.rem}}, \code{\link{ddf.rem.fi}},
+#' \code{\link{mrds-opt}}
 #' @references Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
 #'   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
@@ -195,8 +224,10 @@
 #'
 #' # simulated single observer point count data (see ?ptdata.single)
 #' data(ptdata.single)
-#' ptdata.single$distbegin <- (as.numeric(cut(ptdata.single$distance,10*(0:10)))-1)*10
-#' ptdata.single$distend <- (as.numeric(cut(ptdata.single$distance,10*(0:10))))*10
+#' ptdata.single$distbegin <- (as.numeric(cut(ptdata.single$distance,
+#'                             10*(0:10)))-1)*10
+#' ptdata.single$distend <- (as.numeric(cut(ptdata.single$distance,
+#'                           10*(0:10))))*10
 #' model <- ddf(data=ptdata.single, dsmodel=~cds(key="hn"),
 #'              meta.data=list(point=TRUE,binned=TRUE,breaks=10*(0:10)))
 #'
@@ -209,15 +240,17 @@
 #'
 #' summary(model)
 #'
-#' plot(model,main="Single observer binned point data - hazard rate")
+#' plot(model, main="Single observer binned point data - hazard rate")
 #'
 #' dev.new()
 #'
 #' # simulated double observer point count data (see ?ptdata.dual)
 #' # setup data
 #' data(ptdata.dual)
-#' ptdata.dual$distbegin <- (as.numeric(cut(ptdata.dual$distance,10*(0:10)))-1)*10
-#' ptdata.dual$distend <- (as.numeric(cut(ptdata.dual$distance,10*(0:10))))*10
+#' ptdata.dual$distbegin <- (as.numeric(cut(ptdata.dual$distance,
+#'                           10*(0:10)))-1)*10
+#' ptdata.dual$distend <- (as.numeric(cut(ptdata.dual$distance,
+#'                         10*(0:10))))*10
 #'
 #' model <- ddf(method="io", data=ptdata.dual, dsmodel=~cds(key="hn"),
 #'              mrmodel=~glm(formula=~distance*observer),

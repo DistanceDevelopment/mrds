@@ -57,7 +57,8 @@ Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
   Thomas. Oxford University Press.
 }
 \seealso{
-\code{\link{ddf.trial}},\code{\link{summary.trial.fi}},\code{\link{coef.trial.fi}},\code{\link{plot.trial.fi}},
+\code{\link{ddf.trial}}, \code{\link{summary.trial.fi}},
+  \code{\link{coef.trial.fi}}, \code{\link{plot.trial.fi}},
   \code{\link{gof.trial.fi}}
 }
 \author{

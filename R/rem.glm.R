@@ -73,9 +73,9 @@ function(datavec, fitformula, eps = 0.00001, iterlimit = 500, GAM = FALSE,
   while(i <= iterlimit & !done) {
 #  fit the glm or gam
     if(GAM) {
-      ioglm <- mgcv::gam(formula = fitformula, family = binomial, data = datavec)
+      ioglm <- mgcv::gam(formula=fitformula, family=binomial, data=datavec)
     }else{
-      ioglm <- glm(formula = fitformula, family = binomial, data = datavec)
+      ioglm <- glm(formula=fitformula, family=binomial, data=datavec)
     }
 
     coeff <- ioglm$coeff
@@ -88,14 +88,14 @@ function(datavec, fitformula, eps = 0.00001, iterlimit = 500, GAM = FALSE,
     }else{
 #    calculate differences between previous and present set of model outputs
       reldiff <- max(abs(plogis(coeff) - plogis(oldcoeff))/plogis(oldcoeff))
-      
+
       if(is.na(reldiff)) {
-        print("Can't calculate regression coefficients - model has not converged")
+        print("Can't calculate regression coefficients: model has not converged")
         print(" - last fit used for estimation" )
         ioglm <- oldmodel
         done <- TRUE
       }
-      
+
       if(reldiff < eps & !done) {
         done <- TRUE
       }else{

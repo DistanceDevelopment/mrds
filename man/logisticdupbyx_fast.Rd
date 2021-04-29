@@ -22,7 +22,8 @@ logisticdupbyx_fast(distance, x1, x2, models, beta, point, beta_distance)
 \item{beta_distance}{parameter for distance}
 }
 \description{
-As \code{\link{logisticdupbyx}}, but faster when distance is a covariate (but no interactions with distance occur.
+As \code{\link{logisticdupbyx}}, but faster when distance is a covariate
+(but no interactions with distance occur.
 }
 \author{
 David L Miller

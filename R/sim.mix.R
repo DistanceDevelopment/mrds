@@ -14,8 +14,7 @@
 #'
 #' @note At the moment this is TOTALLY UNSUPPORTED!
 #'       Please don't use it for anything important!
-
-sim.mix<-function(n, sigma, mix.prop, width, means=0){
+sim.mix <- function(n, sigma, mix.prop, width, means=0){
 
    # TODO:
    #  * covariates

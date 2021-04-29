@@ -2,7 +2,10 @@
 #'
 #' @param ds.object a fitted detection function object
 #'
-#' @note This function changes the random number generator seed. To avoid any potential side-effects, use something like: \code{seed <- get(".Random.seed",envir=.GlobalEnv)} before running code and \code{assign(".Random.seed",seed,envir=.GlobalEnv)} after.
+#' @note This function changes the random number generator seed. To avoid any
+#' potential side-effects, use something like: \code{seed <-
+#' get(".Random.seed",envir=.GlobalEnv)} before running code and
+#' \code{assign(".Random.seed",seed,envir=.GlobalEnv)} after.
 #' @author David L. Miller
 #' @importFrom stats runif rnorm fitted
 sample_ddf <- function(ds.object){
@@ -148,7 +151,8 @@ sample_ddf <- function(ds.object){
 
         # was it accepted?
         inout <- U <= accept_p(this_xdat$distance, ddfobj,
-                               standardize=FALSE, width=ds.object$meta.data$width)
+                               standardize=FALSE,
+                               width=ds.object$meta.data$width)
 
         dists <- rbind(dists, this_xdat[inout, ])
         if(covars){

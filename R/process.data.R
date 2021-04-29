@@ -96,13 +96,6 @@ process.data <- function(data, meta.data=list(), check=TRUE){
     }
   }
 
-  # also check for mrds that the data fields have the same value for both 
-  # observers for example same distance, size etc.  This is only a warning as 
-  #some fields may be validly different
-  #  if(any(apply(data[data$observer==1,names(data)!="observer"&names(data)!="detected"],1,paste,collapse="")!=
-  #    apply(data[data$observer==2,names(data)!="observer"&names(data)!="detected"],1,paste,collapse="")))
-  #    warning("If analysis fails it may be due to difference in data between observer 1 and 2;\n fields such as distance, size and covariates should be the same")
-
   # Determine if data are binned by presence of distbegin and distend fields
   if(is.null(data$distend) | is.null(data$distbegin)){
     binned <- FALSE
@@ -120,11 +113,11 @@ process.data <- function(data, meta.data=list(), check=TRUE){
   }
 
   if(meta.data$binned & !binned){
-    stop("binned set to TRUE in meta.data but distbegin and distend fields are missing")
+    stop("binned=TRUE in meta.data but distbegin/distend fields are missing")
   }
 
   if(!meta.data$binned & binned){
-    warning("data contain distbegin and distend fields but binned=FALSE. Analyzing as not binned", immediate.=TRUE)
+    warning("data contain distbegin/distend fields but binned=FALSE. Analyzing as not binned", immediate.=TRUE)
     binned <- FALSE
   }
 

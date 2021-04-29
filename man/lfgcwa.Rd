@@ -6,39 +6,65 @@
 \title{Golden-cheeked warbler mark-recapture distance sampling analysis}
 \format{
 The format is a data frame with the following covariate metrics.
-\describe{\item{PointID}{Unique identifier for each sample location; locations are the same for both species}
+\describe{\item{PointID}{Unique identifier for each sample location;
+locations are the same for both species}
 \item{VisitNumber}{Visit number to the point}
-\item{Species}{Species designation, either Golden-cheeked warbler (GW) or Black-capped Vireo (BV)}
-\item{Distance}{Distance measure, which is either NA (representing no detection), or the median of the binned detection distances}
-\item{PairNumber}{ID value indicating which observers were paired for that sampling occasion}
+\item{Species}{Species designation, either Golden-cheeked warbler (GW) or
+Black-capped Vireo (BV)}
+\item{Distance}{Distance measure, which is either NA (representing no
+detection), or the median of the binned detection distances}
+\item{PairNumber}{ID value indicating which observers were paired for that
+sampling occasion}
 \item{Observer}{Observer ID, either primary(1), or secondary (2)}
-\item{Detected}{Detection of a bird, either 1 = detected, or 0 = not detected}
+\item{Detected}{Detection of a bird, either 1 = detected, or 0 = not
+detected}
 \item{Date}{Date of survey since 15 March 2011, numeric value}
-\item{Pred}{Predicted occupancy value for that survey hexagon based on Farrell et al. (2013)}
-\item{Category}{Region.Label categorization, see R package \code{mrds} help file for details on data structure}
+\item{Pred}{Predicted occupancy value for that survey hexagon based on
+Farrell et al. (2013)}
+\item{Category}{Region.Label categorization, see R package \code{mrds} help
+file for details on data structure}
 \item{Effort}{Amount of survey effort at the point}
 \item{Day}{Number of days since 15 March 2011, numeric value}
 \item{ObjectID}{Unique ID for each paired observations} }
 }
 \description{
-These data represent avian point count surveys conducted at 453 point sample survey locations on the 24,000 (approx) live-fire region of Fort Hood
-in central Texas.  Surveys were conducted by independent double observers (2 per survey occasion) and as such we had a maximum of 3 paired survey histories, giving a maximum of
-6 sample occasions (see MacKenzie et al. 2006, MacKenzie and Royle 2005, and Laake et al. 2011 for various sample survey design details).  At each point, we surveyed for 5 minutes (technically broken into
-3 time intervals of 2, 2, and 1 minutes; not used here) and we noted detections by each observer and collected distance to each observation within a set of distance bins (0-50, 50-100m; Laake et al. 2011)
-of the target species (Golden-cheeked warblers in this case) for each surveyor.  Our primary focus was to use mark-recapture distance sampling methods to estimate density of
-Golden-cheeked warblers, and to estimate detection rates for the mark-recapture, distance, and composite model.
+These data represent avian point count surveys conducted at 453 point sample
+survey locations on the 24,000 (approx) live-fire region of Fort Hood in
+central Texas.  Surveys were conducted by independent double observers (2
+per survey occasion) and as such we had a maximum of 3 paired survey
+histories, giving a maximum of 6 sample occasions (see MacKenzie et al.
+2006, MacKenzie and Royle 2005, and Laake et al. 2011 for various sample
+survey design details).  At each point, we surveyed for 5 minutes
+(technically broken into 3 time intervals of 2, 2, and 1 minutes; not used
+here) and we noted detections by each observer and collected distance to
+each observation within a set of distance bins (0-50, 50-100m; Laake et al.
+2011) of the target species (Golden-cheeked warblers in this case) for each
+surveyor.  Our primary focus was to use mark-recapture distance sampling
+methods to estimate density of Golden-cheeked warblers, and to estimate
+detection rates for the mark-recapture, distance, and composite model.
 }
 \details{
-In addition to detailing the analysis used by Collier et al. (2013, In Review), this example documents the use of \code{mrds} for avian point count surveys and shows how density models
-can be incorporated with occupancy models to develop spatially explicit density surface maps. For those that are interested, for the distance sampling portion of our analysis, we
-used both conventional distance sampling (\code{cds}) and multiple covariate distance sampling (\code{mcds}) with uniform and half-normal key functions.  For the mark-recapture portion of
-our analysis, we tended to use covariates for distance (median bin width), observer, and date of survey (days since 15 March 2011).
+In addition to detailing the analysis used by Collier et al.
+(2013, In Review), this example documents the use of \code{mrds} for avian
+point count surveys and shows how density models can be incorporated with
+occupancy models to develop spatially explicit density surface maps. For
+those that are interested, for the distance sampling portion of our
+analysis, we used both conventional distance sampling (\code{cds}) and
+multiple covariate distance sampling (\code{mcds}) with uniform and
+half-normal key functions.  For the mark-recapture portion of our analysis,
+we tended to use covariates for distance (median bin width), observer, and
+date of survey (days since 15 March 2011).
 
-We combined our \code{mrds} density estimates via a Horvitz-Thompson styled estimator with the resource selection function gradient developed
-in Farrell et al. (2013) and estimated density on an ~3.14ha hexagonal grid across our study area, which provided a density gradient for Fort Hood.  Because there
-was considerable data manipulation needed for each analysis to structure the data appropriately for use in \code{mrds}, rather than wrap each analysis in a single function, we have provided
-both the Golden-cheeked warbler and Black-capped vireo analyses in their full detail.  The primary differences you will see will be changes to
-model structures and model outputs between the two species.
+We combined our \code{mrds} density estimates via a Horvitz-Thompson styled
+estimator with the resource selection function gradient developed in Farrell
+et al. (2013) and estimated density on an ~3.14ha hexagonal grid across our
+study area, which provided a density gradient for Fort Hood.  Because there
+was considerable data manipulation needed for each analysis to structure the
+data appropriately for use in \code{mrds}, rather than wrap each analysis in
+a single function, we have provided both the Golden-cheeked warbler and
+Black-capped vireo analyses in their full detail.  The primary differences
+you will see will be changes to model structures and model outputs between
+the two species.
 }
 \examples{
 
@@ -342,11 +368,20 @@ model.average(mmi.list, revised=TRUE)
 
 }
 \references{
-Farrell, S.F., B.A. Collier, K.L. Skow, A.M. Long, A.J. Campomizzi, M.L. Morrison, B. Hays, and R.N. Wilkins. 2013. Using LiDAR-derived structural vegetation characteristics to develop high-resolution, small-scale, species distribution models for conservation planning. Ecosphere 43(3): 42. http://dx.doi.org/10.1890/ES12-000352.1
+Farrell, S.F., B.A. Collier, K.L. Skow, A.M. Long, A.J.
+Campomizzi, M.L. Morrison, B. Hays, and R.N. Wilkins. 2013. Using
+LiDAR-derived structural vegetation characteristics to develop
+high-resolution, small-scale, species distribution models for conservation
+planning. Ecosphere 43(3): 42. http://dx.doi.org/10.1890/ES12-000352.1
 
-Laake, J.L., B.A. Collier, M.L. Morrison, and R.N. Wilkins. 2011. Point-based mark recapture distance sampling. Journal of Agricultural, Biological and Environmental Statistics 16: 389-408.
+Laake, J.L., B.A. Collier, M.L. Morrison, and R.N. Wilkins.
+2011. Point-based mark recapture distance sampling. Journal of Agricultural,
+Biological and Environmental Statistics 16: 389-408.
 
-Collier, B.A., S.L. Farrell, K.L. Skow, A.M. Long, A.J. Campomizzi, K.B. Hays, J.L. Laake, M.L. Morrison, and R.N. Wilkins. 2013. Spatially explicit density of endangered avian species in a disturbed landscape.  Auk, In Review.
+Collier, B.A., S.L. Farrell, K.L. Skow, A.M. Long, A.J.
+Campomizzi, K.B. Hays, J.L. Laake, M.L. Morrison, and R.N. Wilkins. 2013.
+Spatially explicit density of endangered avian species in a disturbed
+landscape.  Auk, In Review.
 }
 \author{
 Bret Collier and Jeff Laake

@@ -16,27 +16,40 @@ check.mono(
 \arguments{
 \item{df}{a fitted detection function object}
 
-\item{strict}{if \code{TRUE} (default) the detection function must be "strictly" monotone, that is that (\code{g(x[i])<=g(x[i-1])}) over the whole range (left to right truncation points).}
+\item{strict}{if \code{TRUE} (default) the detection function must be
+"strictly" monotone, that is that (\code{g(x[i])<=g(x[i-1])}) over the whole
+range (left to right truncation points).}
 
-\item{n.pts}{number of equally-spaced points between left and right truncation at which to evaluate the detection function (default 100)}
+\item{n.pts}{number of equally-spaced points between left and right
+truncation at which to evaluate the detection function (default 100)}
 
 \item{tolerance}{numerical tolerance for monotonicity checks (default 1e-6)}
 
-\item{plot}{plot a diagnostic highlighting the non-monotonic areas (default FALSE)}
+\item{plot}{plot a diagnostic highlighting the non-monotonic areas (default
+\code{FALSE})}
 
-\item{max.plots}{when \code{plot=TRUE}, what is the maximum number of plots of non-monotone covariate combinations that should be plotted? Plotted combinations are a random sample of the non-monotonic subset of evaluations. No effect for non-covariate models.}
+\item{max.plots}{when \code{plot=TRUE}, what is the maximum number of plots
+of non-monotone covariate combinations that should be plotted? Plotted
+combinations are a random sample of the non-monotonic subset of evaluations.
+No effect for non-covariate models.}
 }
 \value{
-\code{TRUE} if the detection function is monotone, \code{FALSE} if it's not. \code{warning}s are issued to warn the user that the function is non-monotonic.
+\code{TRUE} if the detection function is monotone, \code{FALSE} if
+it's not. \code{warning}s are issued to warn the user that the function is
+non-monotonic.
 }
 \description{
 Check that a fitted detection function is monotone non-increasing.
 }
 \details{
-Evaluates a series of points over the range of the detection function (left to right truncation) then determines:
+Evaluates a series of points over the range of the detection function (left
+to right truncation) then determines:
 
-1. If the detection function is always less than or equal to its value at the left truncation (\code{g(x)<=g(left)}, or usually \code{g(x)<=g(0)}).
-2. (Optionally) The detection function is always monotone decreasing (\code{g(x[i])<=g(x[i-1])}). This check is only performed when \code{strict=TRUE} (the default).
+1. If the detection function is always less than or equal to its value at
+the left truncation (\code{g(x)<=g(left)}, or usually \code{g(x)<=g(0)}).
+2. (Optionally) The detection function is always monotone decreasing
+(\code{g(x[i])<=g(x[i-1])}). This check is only performed when
+\code{strict=TRUE} (the default).
 3. The detection function is never less than 0 (\code{g(x)>=0}).
 4. The detection function is never greater than 1 (\code{g(x)<=1}).
 

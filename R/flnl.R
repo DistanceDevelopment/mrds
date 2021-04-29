@@ -23,12 +23,22 @@
 #' \code{\link{integratepdf}}.
 #'
 #' @aliases flnl flpt.lnl
-#' @param fpar parameter values for detection function at which negative log-likelihood should be evaluated
+#' @param fpar parameter values for detection function at which negative
+#' log-likelihood should be evaluated
 #' @param ddfobj distance sampling object
-#' @param misc.options a \code{list} with the following elements: \code{width} transect width; \code{int.range} the integration range for observations; \code{showit} 0 to 3 controls level debug output; \code{integral.numeric} if \code{TRUE} integral is computed numerically rather than analytically; \code{point} is this a point transect?
-#' @param fitting character \code{"key"} if only fitting key function parameters, \code{"adjust"} if fitting adjustment parameters or \code{"all"} to fit both
-#' @return negative log-likelihood value at the parameter values specified in \code{fpar}
-#' @note These are internal functions used by \code{\link{ddf.ds}} to fit distance sampling detection functions.  It is not intended for the user to invoke these functions but they are documented here for completeness.
+#' @param misc.options a \code{list} with the following elements: \code{width}
+#' transect width; \code{int.range} the integration range for observations;
+#' \code{showit} 0 to 3 controls level debug output; \code{integral.numeric} if
+#' \code{TRUE} integral is computed numerically rather than analytically;
+#' \code{point} is this a point transect?
+#' @param fitting character \code{"key"} if only fitting key function
+#' parameters, \code{"adjust"} if fitting adjustment parameters or \code{"all"}
+#' to fit both
+#' @return negative log-likelihood value at the parameter values specified in
+#' \code{fpar}
+#' @note These are internal functions used by \code{\link{ddf.ds}} to fit
+#' distance sampling detection functions.  It is not intended for the user to
+#' invoke these functions but they are documented here for completeness.
 #' @author Jeff Laake, David L Miller
 #' @seealso \code{\link{flt.var}}, \code{\link{detfct}}
 #' @keywords utility

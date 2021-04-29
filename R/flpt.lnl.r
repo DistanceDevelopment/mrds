@@ -48,7 +48,7 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
 
     int.index <- match(allbins,
                        apply(cbind(bins,
-                              z[x$binned, , drop=FALSE])[uniquevals, , drop=FALSE],
+                              z[x$binned,,drop=FALSE])[uniquevals,,drop=FALSE],
                               1, paste, collapse=""))
 
     which.obs <- x$binned
@@ -91,7 +91,7 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
 
       int.index <- match(allbins,
                          apply(cbind(bins,
-                               z[x$binned, , drop=FALSE])[uniquevals, , drop=FALSE],
+                               z[x$binned,,drop=FALSE])[uniquevals,,drop=FALSE],
                                1, paste, collapse=""))
 
       which.obs <- x$binned

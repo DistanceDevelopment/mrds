@@ -1,8 +1,13 @@
 #' Calculate the parameter rescaling for parameters associated with covariates
 #'
-#' This will calculate the rescaling needed when covariates to be included in the scale of the detection function are "too big". Based on code from \code{\link{optimx}}.
+#' This will calculate the rescaling needed when covariates to be included in
+#' the scale of the detection function are "too big". Based on code from
+#' \code{\link{optimx}}.
 #'
-#' Derivative-free methods like nlminb are sensitive to the parameters being poorly scaled. This can also cause problems for quasi-Newton methods too (at least, bad scaling won't _help_ the optimisation). So here we rescale the parameters if necessary (unless we already got scaling from control)
+#' Derivative-free methods like nlminb are sensitive to the parameters being
+#' poorly scaled. This can also cause problems for quasi-Newton methods too (at
+#' least, bad scaling won't _help_ the optimisation). So here we rescale the
+#' parameters if necessary (unless we already got scaling from control)
 #'
 #' @author David L Miller
 #' @param initialvalues starting values for the optimisation

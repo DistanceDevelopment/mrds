@@ -12,10 +12,15 @@ solvecov(m, cmax = 1e+10)
 \item{cmax}{a positive value, see above.}
 }
 \value{
-A list with the following components: \code{inv} the inverted matrix, \code{coll} \code{TRUE} if \code{solve} failed because of singularity.
+A list with the following components: \code{inv} the inverted
+matrix, \code{coll} \code{TRUE} if \code{solve} failed because of
+singularity.
 }
 \description{
-Tries to invert a matrix by \code{solve}. If this fails because of singularity, an eigenvector decomposition is computed, and eigenvalues below \code{1/cmax} are replaced by \code{1/cmax}, i.e., \code{cmax} will be the corresponding eigenvalue of the inverted matrix.
+Tries to invert a matrix by \code{solve}. If this fails because of
+singularity, an eigenvector decomposition is computed, and eigenvalues below
+\code{1/cmax} are replaced by \code{1/cmax}, i.e., \code{cmax} will be the
+corresponding eigenvalue of the inverted matrix.
 }
 \section{Source}{
 
