@@ -168,12 +168,12 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
                           lcl = rep(NA,numRegions + 1),
                           ucl = rep(NA, numRegions + 1))
     }else{
-      estimate.table = data.frame(Label    = c("Total"),
-                                  Estimate = rep(0, 1),
-                                  se       = rep(NA, 1),
-                                  cv       = rep(NA, 1),
-                                  lcl      = rep(NA, 1),
-                                  ucl      = rep(NA, 1))
+      estimate.table <- data.frame(Label    = c("Total"),
+                                   Estimate = rep(0, 1),
+                                   se       = rep(NA, 1),
+                                   cv       = rep(NA, 1),
+                                   lcl      = rep(NA, 1),
+                                   ucl      = rep(NA, 1))
     }
 
     if(numRegions > 1){

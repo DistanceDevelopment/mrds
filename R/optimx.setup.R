@@ -180,9 +180,9 @@ optimx.setup <- function(par, fn, gr=NULL, hess=NULL, lower=-Inf, upper=Inf,
      nmeth <- length(method) # number of methods requested
   } # JN 2011-1-17 fix for default when there are bounds
   if ((nmeth==0) && have.bounds) {
-      method="L-BFGS-B"
+      method <- "L-BFGS-B"
       if (ctrl$dowarn) warning("Default method when bounds specified is L-BFGS-B to match optim()")
-      nmeth<-1
+      nmeth <- 1
   }
   ## Check that methods are indeed available and loaded
   for (i in 1:nmeth) {

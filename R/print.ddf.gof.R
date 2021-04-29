@@ -17,7 +17,7 @@ print.ddf.gof <- function(x,...){
     x <- rbind(observed, expected, (observed-expected)^2/expected)
     x <- cbind(x, apply(x, 1, sum))
     colnames(x)[dim(x)[2]] <- "Total"
-    rownames(x)=c("Observed", "Expected", "Chisquare")
+    rownames(x) <- c("Observed", "Expected", "Chisquare")
     return(x)
   }
 
