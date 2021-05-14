@@ -6,15 +6,14 @@
 #' @param lnl.last last value of the log likelihood
 #' @param par.last last value of the parameters
 parse.optimx <- function(lt, lnl.last, par.last){
-  if(any(class(lt)=="try-error") || any(is.na(lt[,1:attr(lt,"npar")]))){
+  if(any(class(lt)=="try-error") || any(is.na(lt[, 1:attr(lt,"npar")]))){
     lt <- list()
     lt$conv <- 9
     lt$value <- lnl.last
     lt$par <- par.last
-
   }else{
     topfit.par <- coef(lt, order="value")[1, ]
-    details <- attr(lt,"details")[1,]
+    details <- attr(lt,"details")[1, ]
     lt <- as.list(summary(lt, order="value")[1, ])
     lt$par <- topfit.par
     lt$message <- ""
