@@ -343,10 +343,6 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     # did the optimisation converge? (code 0 is GOOD)
     if(!bounded & (lt$conv==0 | !refit)){
       itconverged <- TRUE
-
-#      lt$aux <- c(optim.options, bounds, misc.options)
-#      ddfobj <- assign.par(ddfobj, lt$par)
-#      lt$aux$ddfobj <- ddfobj
     }else{
     # If we don't have convergence what do we do
 
@@ -356,12 +352,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         # if there was no convergence then just return the
         # lt object for debugging
         warning("Problems with fitting model. Did not converge")
-#      lt$aux <- c(optim.options, bounds, misc.options)
-#      ddfobj <- assign.par(ddfobj, lt$par)
-#      lt$aux$ddfobj <- ddfobj
         lt$optim.history <- optim.history
         break
-#        return(lt)
       }
 
 
