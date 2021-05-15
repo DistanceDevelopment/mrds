@@ -10,13 +10,11 @@ test_that("Point transect example from distance gives same results",{
   data(ptdata.distance)
   xx <- ddf(dsmodel=~cds(key="hn", formula=~1), data=ptdata.distance,
             method="ds",
-            meta.data=list(point=TRUE,width=max(ptdata.distance$distance)))#,
-            #control=list(upperbounds=Inf,lowerbounds=-Inf,showit=3))
-            #control=list(optimx.maxit=10000,showit=3))
+            meta.data=list(point=TRUE, width=max(ptdata.distance$distance)))
 
-  expect_that(xx$par,equals(2.283007,tol=par.tol))
-  expect_that(xx$lnl,equals(-458.5701,tol=lnl.tol))
-  expect_that(summary(xx)$average.p,equals(0.1644288,tol=par.tol))
+  expect_that(xx$par, equals(2.283007, tol=par.tol))
+  expect_that(xx$lnl, equals(-458.5701, tol=lnl.tol))
+  expect_that(summary(xx)$average.p, equals(0.1644288, tol=par.tol))
 
 
 })
@@ -31,15 +29,15 @@ test_that("Nothing has changed?", {
   n <- 1000
   w <- 8000
   sigma <- 3000
-  xs <- runif(n,-w,w)
-  ys <- runif(n,-w,w)
+  xs <- runif(n, -w, w)
+  ys <- runif(n, -w, w)
   rs <- sqrt(xs^2+ys^2)
-  gx <- function(x,sigma){exp(-(x/sigma)^2)}
-  px <- gx(rs,sigma)
-  pdet <- runif(n,0,1)
+  gx <- function(x, sigma){exp(-(x/sigma)^2)}
+  px <- gx(rs, sigma)
+  pdet <- runif(n, 0, 1)
   det <- px>pdet
   data4D <- data.frame(distance=rs[det==1])
-  data4D$object <- 1:nrow(data4D)
+  data4D$object <- seq_len(nrow(data4D))
   data4D$detected <- rep(1, nrow(data4D))
 
 
@@ -83,7 +81,7 @@ test_that("P3 variance estimator", {
   # fit a model
   xx <- ddf(dsmodel=~cds(key="hn", formula=~1), data=ptdata.distance,
             method="ds",
-            meta.data=list(point=TRUE,width=max(ptdata.distance$distance)))
+            meta.data=list(point=TRUE, width=max(ptdata.distance$distance)))
 
   # with equal effort
   sample$Effort <- 1

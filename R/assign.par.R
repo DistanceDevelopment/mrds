@@ -22,7 +22,7 @@ assign.par <- function(ddfobj, fpar){
   index <- 1
   # Shape parameters
   if(!is.null(ddfobj$shape)){
-    ddfobj$shape$parameters <- fpar[1:ncol(ddfobj$shape$dm)]
+    ddfobj$shape$parameters <- fpar[seq_len(ncol(ddfobj$shape$dm))]
     index <- index+ncol(ddfobj$shape$dm)
   }
 

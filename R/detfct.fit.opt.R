@@ -44,7 +44,6 @@
 #' @importFrom stats runif optim
 detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            fitting="all"){
-  # Functions Used: assign.par, detfct.fit.opt, get.par
 
   # grab the initial values
   initialvalues <- getpar(ddfobj)
@@ -294,14 +293,14 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                          ddfobj=ddfobj, fitting=fitting,
                          misc.options=misc.options), silent=TRUE)
 
-        if(any(class(lt)=="try-error") || any(is.na(lt[,1:attr(lt,"npar")]))){
+        if(any(class(lt)=="try-error") || any(is.na(lt[, 1:attr(lt,"npar")]))){
           if(showit >= 2){
             cat("DEBUG: Optimisation failed, ignoring and carrying on...\n")
           }
         }
 
         # put the results in a nice format
-        lt <- parse.optimx(lt, lnl.last, savedvalues)
+        lt <- parse.optimx(lt, lnl.last, initialvalues)
 
         # ensure that ddfobj has the full parameter set by putting the
         # saved values back in place
@@ -345,9 +344,9 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     if(!bounded & (lt$conv==0 | !refit)){
       itconverged <- TRUE
 
-      lt$aux <- c(optim.options, bounds, misc.options)
-      ddfobj <- assign.par(ddfobj, lt$par)
-      lt$aux$ddfobj <- ddfobj
+#      lt$aux <- c(optim.options, bounds, misc.options)
+#      ddfobj <- assign.par(ddfobj, lt$par)
+#      lt$aux$ddfobj <- ddfobj
     }else{
     # If we don't have convergence what do we do
 
@@ -357,8 +356,12 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         # if there was no convergence then just return the
         # lt object for debugging
         warning("Problems with fitting model. Did not converge")
+#      lt$aux <- c(optim.options, bounds, misc.options)
+#      ddfobj <- assign.par(ddfobj, lt$par)
+#      lt$aux$ddfobj <- ddfobj
         lt$optim.history <- optim.history
-        return(lt)
+        break
+#        return(lt)
       }
 
 
@@ -414,6 +417,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     } # end of bounds checking
   } # end of while(!bounded & !itconverged)
 
+  # build the lt object to return
+  lt$aux <- c(optim.options, bounds, misc.options)
+  ddfobj <- assign.par(ddfobj, lt$par)
+  lt$aux$ddfobj <- ddfobj
   lt$model <- list(scalemodel=misc.options$scalemodel)
   lt$converge <- lt$conv
   lt$conv <- NULL

@@ -30,7 +30,7 @@
 #'   based on the type of model.
 #' @author Jeff Laake
 #' @importFrom stats coef
-coef.ds <- function(object,...){
+coef.ds <- function(object, ...){
   ltmodel <- object$ds
   coeff <- NULL
   if(is.null(object$par)){
@@ -40,11 +40,11 @@ coef.ds <- function(object,...){
   }
 
   ddfobj <- ltmodel$aux$ddfobj
-  indices <- getpar(ddfobj,index=TRUE)
+  indices <- getpar(ddfobj, index=TRUE)
   se <- sqrt(diag(vcov))
 
   if(indices[1]!=0){
-    key.shape.se <- se[1:indices[1]]
+    key.shape.se <- se[seq_len(indices[1])]
   }
 
   if(indices[2]!=0){
@@ -80,24 +80,23 @@ coef.ds <- function(object,...){
     adj.names <- NULL
     for(i in 1:nrow(adj.coeff)){
       adj.names[i] <- paste(ddfobj$adjustment$series,
-                            ", order ",ddfobj$adjustment$order[i],sep="")
+                            ", order ", ddfobj$adjustment$order[i], sep="")
     }
     row.names(adj.coeff) <- adj.names
 
     # Return values if we have adjustment terms
     if(!is.null(ddfobj$shape)){
-      return(list(scale=coeff,exponent=exp.coeff,adjustment=adj.coeff))
+      return(list(scale=coeff, exponent=exp.coeff, adjustment=adj.coeff))
     }else if(is.null(ddfobj$scale)){
       return(list(adjustment=adj.coeff))
     }else{
-      return(list(scale=coeff,adjustment=adj.coeff))
+      return(list(scale=coeff, adjustment=adj.coeff))
     }
-
   }
 
   # Return values if no adjustment terms
   if(!is.null(ddfobj$shape)){
-    return(list(scale=coeff,exponent=exp.coeff))
+    return(list(scale=coeff, exponent=exp.coeff))
   }else{
     return(list(scale=coeff))
   }

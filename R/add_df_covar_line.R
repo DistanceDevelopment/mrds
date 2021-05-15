@@ -88,7 +88,7 @@ add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
   #data <- model.frame(df$ds$aux$ddfobj$scale$formula, data)
   xm <- df$ds$aux$ddfobj$xmat
 
-  data$object <- 1:nrow(data)
+  data$object <- seq_len(nrow(data))
   data$distance <- rep(0, nrow(data))
   data$observer <- rep(0, nrow(data))
   data$detected <- rep(0, nrow(data))
@@ -259,7 +259,7 @@ add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
   linedat <- matrix(NA, nrow(data), length(xx))
 
   # now loop over the data rows
-  for(i in 1:nrow(data)){
+  for(i in seq_len(nrow(data))){
     # evaluate and save data
     linedat[i,] <- eval_with_covars(xx, data[i, ], df, pdf)
     # plot
