@@ -23,11 +23,12 @@ check.bounds <- function(lt, lowerbounds, upperbounds, ddfobj, showit,
 
     if(set) return(FALSE)
 
-    if(bound.label=="lower" && (any(par<bounds) | any(abs((bounds-par))<tol))){
+    if(bound.label=="lower" &&
+       (any(is.na(par)) || any(par<bounds) | any(abs((bounds-par))<tol))){
       bounded <- TRUE
     }else if(bound.label=="upper" &&
-             (any(par>bounds) |
-              any(abs(((bounds-par)<tol))))){
+             (any(is.na(par)) || any(par>bounds) |
+                                any(abs(((bounds-par)<tol))))){
       bounded <- TRUE
     }else{
       bounded <-FALSE
