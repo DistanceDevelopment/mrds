@@ -119,7 +119,7 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
     }
 
     # Negative log-likelihood values for binned data
-    lnl[x$binned] <- -log(int.bin/int.all)
+    lnl[x$binned] <- -(log(int.bin) -log(int.all))
   }
 
   # Compute log-likelihood for any unbinned data
@@ -169,7 +169,7 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
       int1 <- as.vector(int1)
     }
     # Negative log-likelihood values for unbinned data
-    lnl[!x$binned] <- -log(p1/int1)
+    lnl[!x$binned] <- -(log(p1) -log(int1))
   }
 
   if(any(is.nan(lnl))){
