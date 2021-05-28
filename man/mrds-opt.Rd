@@ -19,6 +19,11 @@ Sometimes convergence issues in covariate (MCDS) models are caused by values of 
 It is important to note that one needs to use the original covariate (size) when computing Horvitz-Thompson estimates of population size if the group size is used in that estimate. i.e. use the unscaled size in the numerator of the H-T estimator.
 }
 
+\section{Factor levels}{
+
+By default R will set the base factor level to be the label which comes first alphabetically. Sometimes this can be an issue when that factor level corresponds to a subset of the data with very few observations. This can lead to very large uncertainty estimates (CVs) for model parameters. One way around this is to use \code{\link{relevel}} to set the base level to a level with more observations.
+}
+
 \section{Initial values}{
 
 Initial (or starting) values can be set via the \code{initial} element of the \code{control} list. \code{initial} is a list itself with elements \code{scale}, \code{shape} and \code{adjustment}, corresponding to the associated parameters. If a model has covariates then the \code{scale} or \code{shape} elements will be vectors with parameter initial values in the same order as they are specific in the model formula (using \code{showit} is a good check they are in the correct order). Adjustment starting values are in order of the order of that term (cosine order 2 is before cosine order 3 terms).
