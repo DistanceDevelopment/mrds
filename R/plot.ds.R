@@ -352,15 +352,28 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
       }
     }
 
+    # remove elements of ... which are used in the histogram but don't
+    # make sense for the lines or points next
+    dots <- list(...)
+    dots$border <- NULL
+
     # actually plot the lines
-    lines(xgrid, linevalues, ...)
+    ldots <- dots
+    ldots$x <- xgrid
+    ldots$y <- linevalues
+    #lines(xgrid, linevalues, ...)
+    do.call(lines, ldots)
 
     if(showpoints){
       jitter.p <- rnorm(length(point_vals), 1, jitter.v[1])
-      points(xmat$distance, point_vals*jitter.p, ...)
+      pdots <- dots
+      pdots$x <- xmat$distance
+      pdots$y <- point_vals*jitter.p
+      #points(xmat$distance, point_vals*jitter.p, ...)
+      do.call(points, pdots)
     }
 
-    # use the user-supplied main= ...
+    # use the user-supplied plot title
     if(!is.null(main)){
        title(main, cex.main=0.8)
     }
