@@ -146,8 +146,19 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
       left <- rep(left, nrow(x))
     }
 
+    # wrapper around detection function to handle the case where g(x) < 0
+    dpdf <- function(x, width, ddfobj, select, index, standardize, stdint,
+                     point, left){
+      v <- distpdf(x, width=width, ddfobj=ddfobj, select=select, index=index,
+                   standardize=standardize, stdint=stdint, point=point,
+                   left=left)
+      v[v<1e-6] <- 0
+      v
+    }
+
+    # now integrate for each observation
     for(i in 1:nrow(x)){
-      res[i] <- integrate(distpdf, lower=x[i, 1], upper=x[i, 2], width=width[i],
+      res[i] <- integrate(dpdf, lower=x[i, 1], upper=x[i, 2], width=width[i],
                           ddfobj=ddfobj, select=select[i], index=index[i],
                           rel.tol=1e-7, standardize=standardize,
                           stdint=stdint, point=point, left=left[i])$value
