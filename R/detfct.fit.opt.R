@@ -392,14 +392,15 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     if(bounded){
       bound.low <- abs(lt$par-lowerbounds)<1e-6
       bound.hi <- abs(lt$par-upperbounds)<1e-6
+      bound.scale <- 0.5
       if(!setlower) {
         lowerbounds[bound.low] <- lowerbounds[bound.low] -
-                                   0.5*abs(lowerbounds[bound.low])
+                                   bound.scale*abs(lowerbounds[bound.low])
         lowerbounds[bound.low & lowerbounds>0 & lowerbounds < 0.5] <- -0.5
       }
       if(!setupper){
         upperbounds[bound.hi] <- upperbounds[bound.hi] +
-                                  0.5*abs(upperbounds[bound.hi])
+                                  bound.scale*abs(upperbounds[bound.hi])
         upperbounds[bound.hi & upperbounds<0 & upperbounds > -0.5] <- 0.5
       }
 
