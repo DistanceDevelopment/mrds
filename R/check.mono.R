@@ -86,20 +86,15 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
     ps <- as.vector(detfct(x, ddfobj, width=right.trunc, standardize=TRUE))
 
     ## check for monotonicity
-    # first: weak monotonicity
-    #  check that all evaluations are less than that at
-    #  the left truncation point
+    # weak monotonicity
+    # check all evaluations are less than that at the left truncation point
     weak.diff <- ps[2:length(ps)]-ps[1]
     ps.weak.chk <- weak.diff <= tolerance
     #  maybe some are greater than g(left), but
     #  they might be less than tolerance
     ps.weak.chk[!ps.weak.chk] <- abs(weak.diff[!ps.weak.chk]) <= tolerance
-    # combine these two checks and issue a warning
-    if(!all(ps.weak.chk)){
-      warning("Detection function is not weakly monotonic!")
-    }
 
-    # second: strict monotonicity
+    # strict monotonicity
     if(strict){
       # check that all values are less than or equal to the previous
       strict.diff <- diff(ps)
@@ -107,26 +102,12 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
       # is the greater than difference less than tolerance?
       ps.strict.chk[!ps.strict.chk] <- abs(strict.diff[!ps.strict.chk]) <=
                                         tolerance
-      # combine these two checks and issue a warning
-      if(!all(ps.strict.chk)){
-        warning("Detection function is not strictly monotonic!")
-      }
     }else{
       ps.strict.chk <- TRUE
     }
 
-    # third: check that the detection function is always in (0,1)
-    if(any(ps>1)){
-      warning("Detection function is greater than 1 at some distances")
-    }
-    if(any(ps<0)){
-      warning("Detection function is less than 0 at some distances")
-    }
-
-
     ## if we were asked to provide a diagnostic plot
     if(plot){
-
       # min and max values of the evaluations
       gmax <- max(c(1, ps))
       gmin <- min(c(0, ps))
@@ -180,12 +161,31 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
     }
 
     # return logical -- TRUE == montonic
-    return(all(ps.weak.chk) & all(ps.strict.chk) &
-                 all(ps<=1) & all(ps>=0))
-  }
+    return(c(all(ps.weak.chk), all(ps.strict.chk),
+             all(ps<=1), all(ps>=0)))
+  } # end chpply
 
   # apply the check function to all the unique covariate combinations
-  mono.status <- apply(udat, 1, chpply, x=x, strict=strict, ddfobj=ddfobj)
+  mono <- apply(udat, 1, chpply, x=x, strict=strict, ddfobj=ddfobj)
+
+  # roll together for general info
+  mono.status <- all(mono)
+
+  # give individual warnings for each situation
+  if(!mono[1]){
+    warning("Detection function is not weakly monotonic!", immediate.=TRUE)
+  }
+  if(!mono[2]){
+    warning("Detection function is not strictly monotonic!", immediate.=TRUE)
+  }
+  if(!mono[3]){
+    warning("Detection function is greater than 1 at some distances",
+            immediate.=TRUE)
+  }
+  if(!mono[4]){
+    warning("Detection function is less than 0 at some distances",
+            immediate.=TRUE)
+  }
 
   # if plotting was requested and there are non-monotonicity
   if(plot){

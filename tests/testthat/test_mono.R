@@ -61,25 +61,25 @@ context("Monotonicity: mixture tests")
 set.seed(341)
 
 # simulate some non-monotonic data
-dat<-mrds:::sim.mix(1000,c(0.1,0.5),c(0.2,0.8),10,means=c(0,2.5))
-dat<-data.frame(distance=dat,
-                object=1:length(dat),
-                observed=rep(1,length(dat)))
+dat <- mrds:::sim.mix(1000,c(0.1,0.5),c(0.2,0.8),10,means=c(0,2.5))
+dat <- data.frame(distance=dat,
+                  object=1:length(dat),
+                  observed=rep(1,length(dat)))
 
-trunc<-5
+trunc <- 5
 
 # fit without constraint
-expect_warning(result.n<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,
-                             adj.series="cos", adj.order=c(2,3)),
-                             data=dat, method = "ds",
-                             meta.data=list(width=trunc,mono=FALSE)),
+expect_warning(result.n <- ddf(dsmodel = ~mcds(key = "hn",formula=~1,
+                               adj.series="cos", adj.order=c(2,3)),
+                               data=dat, method = "ds",
+                               meta.data=list(width=trunc,mono=FALSE)),
                "Detection function is not strictly monotonic!")
 # with weak monotonicity
-expect_warning(result.w<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,
-                             adj.series="cos", adj.order=c(2,3)),
-                             data=dat, method = "ds",
-                             meta.data=list(width=trunc,mono=TRUE,
-                                            mono.strict=FALSE)),
+expect_warning(result.w <- ddf(dsmodel = ~mcds(key = "hn",formula=~1,
+                               adj.series="cos", adj.order=c(2,3)),
+                               data=dat, method = "ds",
+                               meta.data=list(width=trunc,mono=TRUE,
+                                              mono.strict=FALSE)),
                "Detection function is not strictly monotonic!")
 # with strong monotonicity
 result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
@@ -97,16 +97,18 @@ result.s<-ddf(dsmodel = ~mcds(key = "hn",formula=~1,adj.series="cos",
 
 test_that("non-monotonic for non-monotone data",{
   # expect a non-monotonic fit
-  expect_warning(mono.chk <- check.mono(result.n,n.pts=20),"Detection function is not strictly monotonic!")
+  expect_warning(mono.chk <- check.mono(result.n, n.pts=20),
+                 "Detection function is not strictly monotonic!")
   expect_false(mono.chk)
 })
 
 
 test_that("weakly monotone for weakly monotone constraints",{
   # check the weak fit is weak
-  expect_true(check.mono(result.w,strict=FALSE,n.pts=20))
+  expect_true(check.mono(result.w, strict=FALSE, n.pts=20))
 
-  expect_warning(mono.chk <- check.mono(result.w,n.pts=20),"Detection function is not strictly monotonic!")
+  expect_warning(mono.chk <- check.mono(result.w, n.pts=20),
+                 "Detection function is not strictly monotonic!")
   expect_false(mono.chk)
 })
 
