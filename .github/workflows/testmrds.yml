@@ -1,0 +1,26 @@
+# this should trigger running of tests in the (private) testmrds repo
+# based on https://github.community/t/triggering-by-other-repository/16163
+
+name: trigger-testmrds
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push to master or optimist
+  push:
+    branches: [ master, optimist ]
+
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      run: |
+curl -XPOST -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/DistanceDevelopment/testmrds/dispatches --data '{"event_type": "build_application"}'
