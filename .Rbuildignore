@@ -8,3 +8,4 @@ LICENSE
 ^\.Rproj\.user$
 ^CRAN-RELEASE$
 ^codecov\.yml$
+.github/
