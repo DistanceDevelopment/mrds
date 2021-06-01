@@ -162,7 +162,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                           distr = rep(1, length(lowerbounds)),
                           n.restarts = 2, n.sim = 200,
                           rseed=as.integer(runif(1)*1e9)))
-        if(!is.na(lt2$value) && (lt2$value < lt$value)) lt <- lt2
+        if(!is.na(lt2$values[length(lt2$values)]) &&
+           (lt2$values[length(lt2$values)] < lt$values[length(lt$values)])){
+          lt <- lt2
+        }
       }
 
 
