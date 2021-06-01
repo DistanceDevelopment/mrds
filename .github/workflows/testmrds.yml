@@ -7,7 +7,7 @@ name: trigger-testmrds
 on:
   # Triggers the workflow on push to master or optimist
   push:
-    branches: [ master, optimist ]
+    branches: [ optimist ]
 
 
   # Allows you to run this workflow manually from the Actions tab
