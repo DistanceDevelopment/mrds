@@ -1,5 +1,5 @@
-optimist changes !!to merge!!
------------------------------
+mrds 2.2.5
+----------
 
 * use "probabalists" definition of Hermite polynomials, as from Distance. More numerically stable
 * remove setting of Hermite parameter to 1 (unclear why this was the case!)
