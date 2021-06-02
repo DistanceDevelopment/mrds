@@ -71,7 +71,7 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
                               left=misc.options$left)
     }
 
-    if(any(int.bin<=0)){
+    if(any(int.bin<=0) && misc.options$showit > 0){
       warning("\nDetection function integral <=0. Setting integral to 1E-25\n")
       int.bin[int.bin<=0] <- 1E-25
     }
@@ -160,7 +160,8 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
       i <- i + 1
     }
     # if the integral is <=0 something Very Bad has happened
-    if(any(int1<=0)){
+    # but usually we recover as this is just a bad par combination
+    if(any(int1<=0) && misc.options$showit > 0){
       int1[int1<=0] <- NaN
       warning("\n Problems with integration (integral <=0).\n")
     }
