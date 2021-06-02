@@ -11,9 +11,11 @@ qqplot.ddf(model, plot = TRUE, nboot = 100, ks = FALSE, ...)
 
 \item{plot}{the Q-Q plot be plotted or just report statistics?}
 
-\item{nboot}{number of replicates to use to calculate p-values for the goodness of fit test statistics}
+\item{nboot}{number of replicates to use to calculate p-values for the
+goodness of fit test statistics}
 
-\item{ks}{perform the Kolmogorov-Smirnov test (this involves many bootstraps so can take a while)}
+\item{ks}{perform the Kolmogorov-Smirnov test (this involves many bootstraps
+so can take a while)}
 
 \item{\dots}{additional arguments passed to \code{\link{plot}}}
 }
@@ -25,16 +27,33 @@ A list of goodness of fit related values: \item{edf}{matrix of lower
   (\code{W}) and p-value (\code{p})}
 }
 \description{
-Constructs a quantile-quantile (Q-Q) plot for fitted model as a graphical check of goodness of fit. Formal goodness of fit testing for detection function models using Kolmogorov-Smirnov and Cramer-von Mises tests. Both tests are based on looking at the quantile-quantile plot produced by \code{\link{qqplot.ddf}} and deviations from the line x=y.
+Constructs a quantile-quantile (Q-Q) plot for fitted model as a graphical
+check of goodness of fit. Formal goodness of fit testing for detection
+function models using Kolmogorov-Smirnov and Cramer-von Mises tests. Both
+tests are based on looking at the quantile-quantile plot produced by
+\code{\link{qqplot.ddf}} and deviations from the line x=y.
 }
 \details{
-The Kolmogorov-Smirnov test asks the question "what's the largest vertical distance between a point and the y=x line?" It uses this distance as a statistic to test the null hypothesis that the samples (EDF and CDF in our case) are from the same distribution (and hence our model fits well). If the deviation between the y=x line and the points is too large we reject the null hypothesis and say the model doesn't have a good fit.
+The Kolmogorov-Smirnov test asks the question "what's the largest vertical
+distance between a point and the y=x line?" It uses this distance as a
+statistic to test the null hypothesis that the samples (EDF and CDF in our
+case) are from the same distribution (and hence our model fits well). If the
+deviation between the y=x line and the points is too large we reject the
+null hypothesis and say the model doesn't have a good fit.
 
-Rather than looking at the single biggest difference between the y=x line and the points in the Q-Q plot, we might prefer to think about all the differences between line and points, since there may be many smaller differences that we want to take into account rather than looking for one large deviation. Its null hypothesis is the same, but the statistic it uses is the sum of the deviations from each of the point to the line.
+Rather than looking at the single biggest difference between the y=x line
+and the points in the Q-Q plot, we might prefer to think about all the
+differences between line and points, since there may be many smaller
+differences that we want to take into account rather than looking for one
+large deviation. Its null hypothesis is the same, but the statistic it uses
+is the sum of the deviations from each of the point to the line.
 }
 \section{Details}{
 
-Note that a bootstrap procedure is required to ensure that the p-values from the procedure are correct as the we are comparing the cumulative distribution function (CDF) and empirical distribution function (EDF) and we have estimated the parameters of the detection function.
+Note that a bootstrap procedure is required to ensure that the p-values from
+the procedure are correct as the we are comparing the cumulative
+distribution function (CDF) and empirical distribution function (EDF) and we
+have estimated the parameters of the detection function.
 }
 
 \references{

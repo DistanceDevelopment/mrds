@@ -23,51 +23,40 @@
 #' \code{\link{integratepdf}}.
 #'
 #' @aliases flnl flpt.lnl
-#' @param fpar parameter values for detection function at which negative log-likelihood should be evaluated
+#' @param fpar parameter values for detection function at which negative
+#' log-likelihood should be evaluated
 #' @param ddfobj distance sampling object
-#' @param misc.options a \code{list} with the following elements: \code{width} transect width; \code{int.range} the integration range for observations; \code{showit} 0 to 3 controls level debug output; \code{integral.numeric} if \code{TRUE} integral is computed numerically rather than analytically; \code{point} is this a point transect?
-#' @param fitting character \code{"key"} if only fitting key function parameters, \code{"adjust"} if fitting adjustment parameters or \code{"all"} to fit both
-#' @return negative log-likelihood value at the parameter values specified in \code{fpar}
-#' @note These are internal functions used by \code{\link{ddf.ds}} to fit distance sampling detection functions.  It is not intended for the user to invoke these functions but they are documented here for completeness.
+#' @param misc.options a \code{list} with the following elements: \code{width}
+#' transect width; \code{int.range} the integration range for observations;
+#' \code{showit} 0 to 3 controls level debug output; \code{integral.numeric} if
+#' \code{TRUE} integral is computed numerically rather than analytically;
+#' \code{point} is this a point transect?
+#' @param fitting character \code{"key"} if only fitting key function
+#' parameters, \code{"adjust"} if fitting adjustment parameters or \code{"all"}
+#' to fit both
+#' @return negative log-likelihood value at the parameter values specified in
+#' \code{fpar}
+#' @note These are internal functions used by \code{\link{ddf.ds}} to fit
+#' distance sampling detection functions.  It is not intended for the user to
+#' invoke these functions but they are documented here for completeness.
 #' @author Jeff Laake, David L Miller
 #' @seealso \code{\link{flt.var}}, \code{\link{detfct}}
 #' @keywords utility
 flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
 
-  # During the optimisation we want to make sure that we are keeping the
-  # right things constant, so lets do that...
-  set.na.pars <- function(par.name,ddfobj,fpar){
-    # if the parameters exist
-    if(!is.null(ddfobj[[par.name]])){
-      # set those we don't want to optimise as NA
-      save.pars <- ddfobj[[par.name]]$parameters
-      ddfobj[[par.name]]$parameters <- rep(NA,
-                                          length(ddfobj[[par.name]]$parameters))
-      pars <- getpar(ddfobj)
-      fpar[is.na(pars)] <- save.pars
-    }
-    return(list(fpar=fpar,ddfobj=ddfobj))
-  }
-
+  # if we're fitting by key or adjustments only, add in the other parameters
+  # to ensure that we can evaluate the likelihood. The other values
+  # are in ddfobj (see corresponding code in detfct.fit.opt)
   if(fitting=="key"){
-    setna <- set.na.pars("adjustment",ddfobj,fpar)
-    ddfobj <- setna$ddfobj
-    fpar <- setna$fpar
+    allvals <- getpar(ddfobj)
+    parind <- getpar(ddfobj, index=TRUE)
+    allvals[1:parind[2]] <- fpar
+    fpar <- allvals
   }else if(fitting=="adjust"){
-
-    setna <- set.na.pars("scale",ddfobj,fpar)
-    ddfobj <- setna$ddfobj
-    fpar <- setna$fpar
-
-    # if we have a hazard model
-    if(!is.null(ddfobj$shape)){
-      save.pars <- ddfobj[["shape"]]$parameters
-      ddfobj[["shape"]]$parameters <- rep(NA,
-                                          length(ddfobj[["shape"]]$parameters))
-      pars <- getpar(ddfobj)
-      index <- (1+ncol(ddfobj$shape$dm))
-      fpar[index:(index+ncol(ddfobj$scale$dm)-1)] <- save.pars
-    }
+    allvals <- getpar(ddfobj)
+    parind <- getpar(ddfobj, index=TRUE)
+    allvals[(parind[2]+1):parind[3]] <- fpar
+    fpar <- allvals
   }
 
   #  compute total negative log-likelihood

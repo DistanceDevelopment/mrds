@@ -39,7 +39,7 @@
 #' @importFrom stats glm plogis binomial
 io.glm <- function(datavec, fitformula, eps = 0.00001, iterlimit = 500,
                    GAM = FALSE, gamplot = TRUE){
-# ---------------------------------------------------------------
+
 #  This is the code that uses the iterative offset glm or gam
 #  approach; iteration is done until parameters are within a
 #  certain epsilon (eps) or iteration limit (iterlimit) exceeded.

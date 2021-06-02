@@ -20,10 +20,12 @@ This package implements mark-recapture distance sampling
     Biometrics 62:372-378.)
 }
 \details{
-Examples of distance sampling analyses are available at \url{http://examples.distancesampling.org/}.
+Examples of distance sampling analyses are available at
+\url{http://examples.distancesampling.org/}.
 
 
-For help with distance sampling and this package, there is a Google Group \url{https://groups.google.com/forum/#!forum/distance-sampling}.
+For help with distance sampling and this package, there is a Google Group
+\url{https://groups.google.com/forum/#!forum/distance-sampling}.
 }
 \author{
 Jeff Laake <jeff.laake@noaa.gov>,

@@ -28,13 +28,16 @@ gstdint(
 
 \item{width}{truncation width}
 
-\item{standardize}{if \code{TRUE}, divide through by the function evaluated at 0}
+\item{standardize}{if \code{TRUE}, divide through by the function evaluated
+at 0}
 
-\item{point}{logical to determine if point (\code{TRUE}) or line transect(\code{FALSE})}
+\item{point}{logical to determine if point (\code{TRUE}) or line
+transect(\code{FALSE})}
 
 \item{stdint}{if \code{TRUE}, scale=1 otherwise specified scale used}
 
-\item{doeachint}{if \code{TRUE} perform integration using \code{\link{integrate}}}
+\item{doeachint}{if \code{TRUE} perform integration using
+\code{\link{integrate}}}
 
 \item{left}{left truncation width}
 }
@@ -42,10 +45,12 @@ gstdint(
 vector of integral values of detection function
 }
 \description{
-Computes the integral of \code{distpdf} with scale=1 (\code{stdint=TRUE}) or specified scale (\code{stdint=FALSE}).
+Computes the integral of \code{distpdf} with scale=1 (\code{stdint=TRUE}) or
+specified scale (\code{stdint=FALSE}).
 }
 \note{
-This is an internal function that is not intended to be invoked directly.
+This is an internal function that is not intended to be invoked
+directly.
 }
 \author{
 Jeff Laake and David L Miller

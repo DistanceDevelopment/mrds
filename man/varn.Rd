@@ -24,30 +24,50 @@ varn(lvec,nvec,type)
 Variance of encounter rate as defined by arguments
 }
 \description{
-Computes one of a series of possible variance estimates for the observed encounter rate for a set of sample measurements (e.g., line lengths) and number of observations per sample.
+Computes one of a series of possible variance estimates for the observed
+encounter rate for a set of sample measurements (e.g., line lengths) and
+number of observations per sample.
 }
 \details{
 The choice of type follows the notation of Fewster et al. (2009) in that there are 8 choices of encounter rate variance that can be computed for lines and one for points:
 
 \describe{
-\item{\code{R2}}{random line placement with unequal line lengths (design-assisted estimator)}
-\item{\code{R3}}{random line placement, model-assisted estimator, based on true contagion process}
-\item{\code{R4}}{random line placement, model-assisted estimator, based on apparent contagion process}
-\item{\code{S1}}{systematic line placement, post-stratification with no strata overlap}
-\item{\code{S2}}{systematic line placement, post-stratification with no strata overlap, variances weighted by line length per stratum}
-\item{\code{O1}}{systematic line placement, post-stratification with overlapping strata (akin to S1)}
-\item{\code{O2}}{systematic line placement, post-stratification with overlapping strata (weighted by line length per stratum, akin to S2)}
-\item{\code{O3}}{systematic line placement, post-stratification with overlapping strata, model-assisted estimator with trend in encounter rate with line length}
-\item{\code{P2}}{random point placement, potentially unequal number of visits per point, design-based estimator}
-\item{\code{P3}}{random point placement, potentially unequal number of visits per point, model-based estimator}
+\item{\code{R2}}{random line placement with unequal line lengths
+(design-assisted estimator)}
+\item{\code{R3}}{random line placement, model-assisted estimator, based on
+true contagion process}
+\item{\code{R4}}{random line placement, model-assisted estimator, based on
+apparent contagion process}
+\item{\code{S1}}{systematic line placement, post-stratification with no
+strata overlap}
+\item{\code{S2}}{systematic line placement, post-stratification with no
+strata overlap, variances weighted by line length per stratum}
+\item{\code{O1}}{systematic line placement, post-stratification with
+overlapping strata (akin to S1)}
+\item{\code{O2}}{systematic line placement, post-stratification with
+overlapping strata (weighted by line length per stratum, akin to S2)}
+\item{\code{O3}}{systematic line placement, post-stratification with
+overlapping strata, model-assisted estimator with trend in encounter rate
+with line length}
+\item{\code{P2}}{random point placement, potentially unequal number of
+visits per point, design-based estimator}
+\item{\code{P3}}{random point placement, potentially unequal number of
+visits per point, model-based estimator}
 }
 
-Default value is \code{"R2"}, shown in Fewster et al. (2009) to have good performance for completely random designs for lines. For systematic parallel line transect designs, Fewster et al. recommend \code{"O2"}. For point transects the default is \code{"P3"} (but \code{"P2"} is also available).
+Default value is \code{"R2"}, shown in Fewster et al. (2009) to have good
+performance for completely random designs for lines. For systematic parallel
+line transect designs, Fewster et al. recommend \code{"O2"}. For point
+transects the default is \code{"P3"} (but \code{"P2"} is also available).
 
-For the systematic estimators, pairs are assigned in the order they are given in the \code{lengths} and \code{groups} vectors.
+For the systematic estimators, pairs are assigned in the order they are
+given in the \code{lengths} and \code{groups} vectors.
 }
 \note{
-This function is also used with different calling arguments to compute Innes et al variance of the estimated abundances/length rather than observation encounter rate. The function covn is probably only valid for R3 and R2.  Currently, the R2 form is used for all types other than R3.
+This function is also used with different calling arguments to compute
+Innes et al variance of the estimated abundances/length rather than
+observation encounter rate. The function covn is probably only valid for R3
+and R2.  Currently, the R2 form is used for all types other than R3.
 }
 \references{
 Fewster, R.M., S.T. Buckland, K.P. Burnham, D.L. Borchers, P.E.

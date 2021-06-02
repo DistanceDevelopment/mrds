@@ -27,10 +27,10 @@
 #' @param breaks user define breakpoints
 #' @param nc number of equal-width bins for histogram
 #' @param maintitle main title line for each plot
-#' @param showpoints logical variable; if \code{TRUE} plots predicted value for each
-#'   observation
-#' @param showlines logical variable; if \code{TRUE} a line representing the average
-#'   detection probability is plotted
+#' @param showpoints logical variable; if \code{TRUE} plots predicted value for
+#' each observation
+#' @param showlines logical variable; if \code{TRUE} a line representing the
+#' average detection probability is plotted
 #' @param ylim range of vertical axis; defaults to (0,1)
 #' @param angle shading angle for histogram bars.
 #' @param density shading density for histogram bars.

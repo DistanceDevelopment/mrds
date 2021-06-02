@@ -8,7 +8,7 @@ optimx.setup <- function(par, fn, gr=NULL, hess=NULL, lower=-Inf, upper=Inf,
 # Get real name of function to be minimized
   fname<-deparse(substitute(fn))
   if (!is.null(control$trace) && control$trace>0) {
-	cat("fn is ",fname,"\n")
+    cat("fn is ",fname,"\n")
   }
   optcfg<-list()
   optcfg$fname<-fname
@@ -18,22 +18,20 @@ optimx.setup <- function(par, fn, gr=NULL, hess=NULL, lower=-Inf, upper=Inf,
   optcfg$npar <- npar
 
 # Set control defaults
-    ctrl <- list(
-	follow.on=FALSE, 
-	save.failures=TRUE,
-	trace=0,
-	kkt=TRUE,
-	all.methods=FALSE,
-	starttests=TRUE,
-	maximize=FALSE,
-	dowarn=TRUE, 
-        usenumDeriv=FALSE,
-	kkttol=0.001,
-	kkt2tol=1.0E-6,
-	badval=(0.5)*.Machine$double.xmax,
-	scaletol=3
-    ) 
-    
+  ctrl <- list(follow.on=FALSE,
+               save.failures=TRUE,
+               trace=0,
+               kkt=TRUE,
+               all.methods=FALSE,
+               starttests=TRUE,
+               maximize=FALSE,
+               dowarn=TRUE,
+               usenumDeriv=FALSE,
+               kkttol=0.001,
+               kkt2tol=1.0E-6,
+               badval=(0.5)*.Machine$double.xmax,
+               scaletol=3)
+
 # Note that we do NOT want to check on the names, because we may introduce 
 #    new names in the control lists of added methods
 #    if (!all(namc %in% names(ctrl))) 
@@ -58,20 +56,25 @@ optimx.setup <- function(par, fn, gr=NULL, hess=NULL, lower=-Inf, upper=Inf,
          }
       } else {
          if (npar > 500) {
-            ctrl$kkt <- FALSE # too much work when large number of parameters, even with analytic gradient
+            ctrl$kkt <- FALSE # too much work when large number of parameters,
+                              # even with analytic gradient
             if (ctrl$trace>0) cat("gr NULL, npar > 50, kkt set FALSE\n")
          }
       }
     } else { # kkt is set
       if (control$kkt) {
         if (is.null(gr)) {
-           if (npar > 50) {
-             if ((ctrl$trace>0) && ctrl$dowarn) warning("Computing hessian for gr NULL, npar > 50, can be slow\n")
-           }
+          if (npar > 50) {
+            if ((ctrl$trace>0) && ctrl$dowarn){
+              warning("Computing hessian for gr NULL, npar > 50, can be slow\n")
+            }
+          }
         } else {
-           if (npar > 500) {
-             if ((ctrl$trace>0) && ctrl$dowarn) warning("Computing hessian with gr code, npar > 500, can be slow\n")
-           }
+          if (npar > 500) {
+            if ((ctrl$trace>0) && ctrl$dowarn){
+              warning("Computing hessian with gr code, npar > 500, can be slow\n")
+            }
+          }
         }
       }
     }
@@ -130,68 +133,83 @@ optimx.setup <- function(par, fn, gr=NULL, hess=NULL, lower=-Inf, upper=Inf,
   # List of methods in packages. 
   allmeth <- bmeth
 # Now make sure methods loaded
-   allmeth <- bmeth # start with base methods
-   testload <- TRUE # This is a temporary fix for NAMESPACE changes in R 3.1.2
-#   testload <- suppressWarnings(require(BB, quietly=TRUE))
-   if (testload)  allmeth<-c(allmeth,"spg")
-   else if (ctrl$trace>0) { warning("Package `BB' Not installed", call.=FALSE) }
+  allmeth <- bmeth # start with base methods
+  testload <- TRUE # This is a temporary fix for NAMESPACE changes in R 3.1.2
+#  testload <- suppressWarnings(require(BB, quietly=TRUE))
+  if (testload)  allmeth<-c(allmeth,"spg")
+  else if (ctrl$trace>0) { warning("Package `BB' Not installed", call.=FALSE) }
 
-#   testload <- suppressWarnings(require(ucminf, quietly=TRUE))
-   if (testload)  allmeth<-c(allmeth,"ucminf")
-   else if (ctrl$trace>0) { warning("Package `ucminf' Not installed", call.=FALSE) }
-   
-#   testload <- suppressWarnings(require(Rcgmin, quietly=TRUE))
-   if (testload)  allmeth<-c(allmeth,"Rcgmin")
-   else if (ctrl$trace>0) { warning("Package `Rcgmin' Not installed", call.=FALSE) }
-   
-#   testload <- suppressWarnings(require(Rvmmin, quietly=TRUE))
-   if (testload)  allmeth<-c(allmeth,"Rvmmin")
-   else if (ctrl$trace>0) { warning("Package `Rvmmin' Not installed", call.=FALSE) }
-   
-#   testload <- suppressWarnings(require(minqa, quietly=TRUE))
-   if (testload) { allmeth<-c(allmeth, "newuoa", "bobyqa")  }
-   else if (ctrl$trace>0) { warning("Package `minqa' (for uobyqa, newuoa, and bobyqa) Not installed", call.=FALSE) }
-   # leave out uobyqa in CRAN version 120421 (from earlier 1104 change)
+#  testload <- suppressWarnings(require(ucminf, quietly=TRUE))
+  if (testload){
+    allmeth <- c(allmeth,"ucminf")
+  }else if (ctrl$trace>0) {
+    warning("Package `ucminf' Not installed", call.=FALSE)
+  }
 
-#   testload <- suppressWarnings(require(dfoptim, quietly=TRUE))
-   if (testload)  allmeth<-c(allmeth,"nmkb", "hjkb")
-   else if (ctrl$trace>0) { warning("Package `dfoptim' Not installed", call.=FALSE) }
-   
-   bdsmeth<-c("L-BFGS-B", "nlminb", "spg", "Rcgmin", "Rvmmin", "bobyqa", "nmkb", "hjkb")
+#  testload <- suppressWarnings(require(Rcgmin, quietly=TRUE))
+  if (testload)  allmeth<-c(allmeth,"Rcgmin")
+  else if (ctrl$trace>0) {
+    warning("Package `Rcgmin' Not installed", call.=FALSE)
+  }
+
+#  testload <- suppressWarnings(require(Rvmmin, quietly=TRUE))
+  if (testload)  allmeth<-c(allmeth,"Rvmmin")
+  else if (ctrl$trace>0) {
+    warning("Package `Rvmmin' Not installed", call.=FALSE)
+  }
+
+#  testload <- suppressWarnings(require(minqa, quietly=TRUE))
+  if (testload) { allmeth<-c(allmeth, "newuoa", "bobyqa")  }
+  else if (ctrl$trace>0) {
+    warning("Package `minqa' (for uobyqa, newuoa, and bobyqa) Not installed", call.=FALSE)
+  }
+  # leave out uobyqa in CRAN version 120421 (from earlier 1104 change)
+
+#  testload <- suppressWarnings(require(dfoptim, quietly=TRUE))
+  if (testload)  allmeth<-c(allmeth,"nmkb", "hjkb")
+  else if (ctrl$trace>0) {
+    warning("Package `dfoptim' Not installed", call.=FALSE)
+  }
+
+  bdsmeth <- c("L-BFGS-B", "nlminb", "spg", "Rcgmin", "Rvmmin", "bobyqa",
+               "nmkb", "hjkb")
   # Restrict list of methods if we have bounds
   if (any(is.finite(c(lower, upper)))) allmeth <- allmeth[which(allmeth %in% bdsmeth)]
   if (ctrl$all.methods) { # Changes method vector!
-	method<-allmeth
-        if (ctrl$trace>0) {
-		cat("all.methods is TRUE -- Using all available methods\n")
-		print(method)
-	}
-  } 
+    method<-allmeth
+    if (ctrl$trace>0) {
+      cat("all.methods is TRUE -- Using all available methods\n")
+      print(method)
+    }
+  }
 
   # Partial matching of method string allowed
   # avoid duplicates here
   # 2011-1-17 JN: to set L-BFGS-B
-  method <- try(unique(match.arg(method, allmeth, several.ok=TRUE) ),silent=TRUE)
+  method <- try(unique(match.arg(method, allmeth, several.ok=TRUE) ),
+                silent=TRUE)
   if (class(method)=="try-error") {
-     warning("optimx: No match to available methods")
-     method<-NULL
-     nmeth<-0
+    warning("optimx: No match to available methods")
+    method<-NULL
+    nmeth<-0
   } else {
-     nmeth <- length(method) # number of methods requested
+    nmeth <- length(method) # number of methods requested
   } # JN 2011-1-17 fix for default when there are bounds
   if ((nmeth==0) && have.bounds) {
-      method="L-BFGS-B"
-      if (ctrl$dowarn) warning("Default method when bounds specified is L-BFGS-B to match optim()")
-      nmeth<-1
+    method <- "L-BFGS-B"
+    if (ctrl$dowarn){
+      warning("Default method when bounds specified is L-BFGS-B to match optim()")
+    }
+    nmeth <- 1
   }
   ## Check that methods are indeed available and loaded
   for (i in 1:nmeth) {
-     cmeth <- method[i]
-     if (ctrl$trace > 0) cat("Looking for method = ",cmeth,"\n")
-     if (! (cmeth %in% allmeth) ) {
-         errmsg <- paste(cmeth," not found in any list of methods available")
-         stop(errmsg, call.=FALSE)
-     } # otherwise the method is available, and just needs to be loaded
+    cmeth <- method[i]
+    if (ctrl$trace > 0) cat("Looking for method = ",cmeth,"\n")
+    if (! (cmeth %in% allmeth) ) {
+      errmsg <- paste(cmeth," not found in any list of methods available")
+      stop(errmsg, call.=FALSE)
+    } # otherwise the method is available, and just needs to be loaded
   } # end check methods available
   if (ctrl$trace>1) {
     cat("Methods to be used:")

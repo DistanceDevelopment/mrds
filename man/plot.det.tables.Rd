@@ -41,7 +41,8 @@ tables for dual observer data that shows the number missed and detected for
 each observer within defined distance classes.
 }
 \details{
-Plots that are produced are as follows (controlled by the \code{which} argument):
+Plots that are produced are as follows (controlled by the \code{which}
+argument):
 \describe{
   \item{1}{Detected by either observer/Detected by observer 1}
   \item{2}{Detected by either observer/Detected by observer 2}

@@ -24,9 +24,11 @@ integratepdf(
 
 \item{int.range}{integration range matrix; vector is converted to matrix}
 
-\item{standardize}{logical used to decide whether to divide through by the function evaluated at 0}
+\item{standardize}{logical used to decide whether to divide through by the
+function evaluated at 0}
 
-\item{point}{logical to determine if point count (\code{TRUE}) or line transect (\code{FALSE})}
+\item{point}{logical to determine if point count (\code{TRUE}) or line
+transect (\code{FALSE})}
 
 \item{left}{left truncation width}
 

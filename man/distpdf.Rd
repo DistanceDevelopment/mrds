@@ -52,7 +52,8 @@ distpdf(distance,ddfobj,select=NULL,index=NULL,width=NULL,standardize=TRUE,
 
 \item{width}{(right) truncation width}
 
-\item{standardize}{logical used to decide whether to divide through by the function evaluated at 0}
+\item{standardize}{logical used to decide whether to divide through by the
+function evaluated at 0}
 
 \item{stdint}{logical used to decide whether integral is standardized}
 
@@ -97,25 +98,34 @@ where a log link is used to relate \eqn{\sigma} to the covariates,
 function only returning the probability of detection at that distance. In
 addition to the simple model above, we may specify adjustment terms to fit
 the data better. These adjustments are either Cosine, Hermite and simple
-polynomials.
-These are specified as arguments to \code{detfct}, as detailed below.
+polynomials. These are specified as arguments to \code{detfct}, as detailed
+below.
 
-\code{detfct} function which calls the others and assembles the final result using either key(x)[1+series(x)] or (key(x)[1+series(x)])/(key(0)[1+series(0)]) (depending on the value of \code{standardize}).
+\code{detfct} function which calls the others and assembles the final result
+using either key(x)[1+series(x)] or
+(key(x)[1+series(x)])/(key(0)[1+series(0)]) (depending on the value of
+\code{standardize}).
 
-\code{keyfct.*} functions calculate key function values and \code{adjfct.*} calculate adjustment term values.
+\code{keyfct.*} functions calculate key function values and \code{adjfct.*}
+calculate adjustment term values.
 
 \code{scalevalue} for either detection function it computes the scale with
 the log link using the parameters and the covariate design matrix
 
-\code{fx}, \code{fr} non-normalized probability density for line transects and point
-counts respectively
+\code{fx}, \code{fr} non-normalized probability density for line transects
+and point counts respectively
 }
 \references{
-Marques, F. F. C., & Buckland, S. T. (2003). Incorporating covariates into standard line transect analyses. Biometrics, 59(4), 924-935.
+Marques, F. F. C., & Buckland, S. T. (2003). Incorporating covariates into
+standard line transect analyses. Biometrics, 59(4), 924-935.
 
-Buckland, S. T., Anderson, D. R., Burnham, K. P., Laake, J. L., Borchers, D. L., & Thomas, L. (2004). Advanced Distance Sampling. Oxford University Press, Oxford, UK.
+Buckland, S. T., Anderson, D. R., Burnham, K. P., Laake, J. L., Borchers, D.
+L., & Thomas, L. (2004). Advanced Distance Sampling. Oxford University
+Press, Oxford, UK.
 
-Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection function for line transect surveys with mark-recapture and covariate data. Journal of Agricultural Biological and Environmental Statistics 14:207-223.
+Becker, E. F. and P. X. Quang. 2009. A gamma-shaped detection function for
+line transect surveys with mark-recapture and covariate data. Journal of
+Agricultural Biological and Environmental Statistics 14:207-223.
 }
 \seealso{
 \code{\link{mcds}},  \code{\link{cds}}

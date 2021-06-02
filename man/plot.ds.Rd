@@ -2,7 +2,8 @@
 % Please edit documentation in R/plot.ds.R
 \name{plot.ds}
 \alias{plot.ds}
-\title{Plot fit of detection functions and histograms of data from distance sampling model}
+\title{Plot fit of detection functions and histograms of data from distance
+sampling model}
 \usage{
 \method{plot}{ds}(
   x,
@@ -29,15 +30,18 @@
 
 \item{which}{index to specify which plots should be produced:
 \tabular{ll}{1 \tab histogram of observed distances\cr
-             2 \tab histogram of observed distances with fitted line and points (default)\cr}}
+             2 \tab histogram of observed distances with fitted line and
+             points (default)\cr}}
 
 \item{breaks}{user defined breakpoints}
 
 \item{nc}{number of equal width bins for histogram}
 
-\item{jitter.v}{apply jitter to points by multiplying the fitted value by a random draw from a normal distribution with mean 1 and sd \code{jitter.v}.}
+\item{jitter.v}{apply jitter to points by multiplying the fitted value by a
+random draw from a normal distribution with mean 1 and sd \code{jitter.v}.}
 
-\item{showpoints}{logical variable; if \code{TRUE} plots predicted value for each observation (conditional on its observed distance).}
+\item{showpoints}{logical variable; if \code{TRUE} plots predicted value for
+each observation (conditional on its observed distance).}
 
 \item{subset}{subset of data to plot.}
 
@@ -49,28 +53,41 @@
 
 \item{main}{plot title.}
 
-\item{pages}{the number of pages over which to spread the plots. For example, if \code{pages=1} then all plots will be displayed on one page. Default is 0, which prompts the user for the next plot to be displayed.}
+\item{pages}{the number of pages over which to spread the plots. For
+example, if \code{pages=1} then all plots will be displayed on one page.
+Default is 0, which prompts the user for the next plot to be displayed.}
 
-\item{pdf}{plot the histogram of distances with the PDF of the probability of detection overlaid. Ignored (with warning) for line transect models.}
+\item{pdf}{plot the histogram of distances with the PDF of the probability
+of detection overlaid. Ignored (with warning) for line transect models.}
 
 \item{ylim}{vertical axis limits.}
 
 \item{xlab}{horizontal axis label (defaults to "Distance").}
 
-\item{ylab}{vertical axis label (default automatically set depending on plot type).}
+\item{ylab}{vertical axis label (default automatically set depending on plot
+type).}
 
-\item{\dots}{other graphical parameters, passed to the plotting functions (\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}}, \code{\link{points}}, etc).}
+\item{\dots}{other graphical parameters, passed to the plotting functions
+(\code{\link{plot}}, \code{\link{hist}}, \code{\link{lines}},
+\code{\link{points}}, etc).}
 }
 \value{
 Just plots.
 }
 \description{
-Plots the fitted detection function(s) with a histogram of the observed distances to compare visually the fitted model and data.
+Plots the fitted detection function(s) with a histogram of the observed
+distances to compare visually the fitted model and data.
 }
 \details{
-The structure of the histogram can be controlled by the user-defined arguments \code{nc} or \code{breaks}. The observation specific detection probabilities along with the line representing the fitted average detection probability.
+The structure of the histogram can be controlled by the user-defined
+arguments \code{nc} or \code{breaks}. The observation specific detection
+probabilities along with the line representing the fitted average detection
+probability.
 
-It is not intended for the user to call \code{plot.ds} but its arguments are documented here. Instead the generic \code{plot} command should be used and it will call the appropriate function based on the class of the \code{ddf} object.
+It is not intended for the user to call \code{plot.ds} but its arguments are
+documented here. Instead the generic \code{plot} command should be used and
+it will call the appropriate function based on the class of the \code{ddf}
+object.
 }
 \examples{
 \donttest{

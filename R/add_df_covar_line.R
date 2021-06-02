@@ -1,18 +1,35 @@
 #' Add covariate levels detection function plots
 #'
-#' Add a line or lines to a plot of the detection function which correspond to a a given covariate combination. These can be particularly useful when there is a small number of factor levels or if quantiles of a continuous covariate are specified.
+#' Add a line or lines to a plot of the detection function which correspond to
+#' a a given covariate combination. These can be particularly useful when there
+#' is a small number of factor levels or if quantiles of a continuous covariate
+#' are specified.
 #'
-#' All covariates must be specified in \code{data}. Plots can become quite busy when this approach is used. It may be useful to fix some covariates at their median level and plot set values of a covariate of interest. For example setting weather (e.g., Beaufort) to its median and plotting levels of observer, then creating a second plot for a fixed observer with levels of weather.
+#' All covariates must be specified in \code{data}. Plots can become quite busy
+#' when this approach is used. It may be useful to fix some covariates at their
+#' median level and plot set values of a covariate of interest. For example
+#' setting weather (e.g., Beaufort) to its median and plotting levels of
+#' observer, then creating a second plot for a fixed observer with levels of
+#' weather.
 #'
-#' Arguments to \code{\link{lines}} are supplied in \dots and aesthetics like line type (\code{lty}), line width (\code{lwd}) and colour (\code{col}) are recycled. By default \code{lty} is used to distinguish between the lines. It may be useful to add a \code{\link{legend}} to the plot (lines are plotted in the order of \code{data}).
+#' Arguments to \code{\link{lines}} are supplied in \dots and aesthetics like
+#' line type (\code{lty}), line width (\code{lwd}) and colour (\code{col}) are
+#' recycled. By default \code{lty} is used to distinguish between the lines. It
+#' may be useful to add a \code{\link{legend}} to the plot (lines are plotted
+#' in the order of \code{data}).
 #'
 # Update Distance::add_df_covar_line when updating parameters here
 #' @param ddf a fitted detection function object.
-#' @param data a \code{data.frame} with the covariate combination you want to plot.
-#' @param \dots extra arguments to give to \code{\link{line}} (\code{lty}, \code{lwd}, \code{col}).
+#' @param data a \code{data.frame} with the covariate combination you want to
+#' plot.
+#' @param \dots extra arguments to give to \code{\link{line}} (\code{lty},
+#' \code{lwd}, \code{col}).
 #' @param ndist number of distances at which to evaluate the detection function.
-#' @param pdf should the line be drawn on the probability density scale; ignored for line transects.
-#' @param breaks required to ensure that PDF lines are the right size, should match what is supplied to original \code{plot} command. Defaults to "Sturges" breaks, as in \code{\link{hist}}. Only used if \code{pdf=TRUE}.
+#' @param pdf should the line be drawn on the probability density scale;
+#' ignored for line transects.
+#' @param breaks required to ensure that PDF lines are the right size, should
+#' match what is supplied to original \code{plot} command. Defaults to
+#' "Sturges" breaks, as in \code{\link{hist}}. Only used if \code{pdf=TRUE}.
 #' @return invisibly, the values of detectability over the truncation range.
 #'
 #' @export
@@ -46,7 +63,8 @@
 #' legend(3, 1, c("Average", "sex==0", "sex==1"), lty=1,
 #'        col=c("black", "red", "green"))
 #' }
-add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges", ...){
+add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
+                              ...){
 
   # if we have a Distance object rather than mrds, use that
   if(all(class(ddf)=="dsmodel")){
@@ -70,7 +88,7 @@ add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
   #data <- model.frame(df$ds$aux$ddfobj$scale$formula, data)
   xm <- df$ds$aux$ddfobj$xmat
 
-  data$object <- 1:nrow(data)
+  data$object <- seq_len(nrow(data))
   data$distance <- rep(0, nrow(data))
   data$observer <- rep(0, nrow(data))
   data$detected <- rep(0, nrow(data))
@@ -148,7 +166,7 @@ add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
         # now check that the column names are the same for the model
         # and prediction data matrices
         if(!identical(colnames(dm), znames)){
-          stop("fields or factor levels in `newdata` do not match data used in fitted model\n")
+          stop("columns/levels in `newdata` do not match data in fitted model")
         }
 
         # get only the new rows for prediction
@@ -185,7 +203,8 @@ add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
 
     # update xmat too
     datalist <- process.data(newdata, model$meta.data, check=FALSE)
-    ddfobj$xmat <- datalist$xmat[(nrow(model_dat)+1):nrow(datalist$xmat),,drop=FALSE]
+    ddfobj$xmat <- datalist$xmat[(nrow(model_dat)+1):nrow(datalist$xmat), ,
+                                 drop=FALSE]
     ddfobj$xmat <- ddfobj$xmat[!naind, , drop=FALSE]
     int.range <- int.range[!naind, , drop=FALSE]
     # reset newdata to be the right thing
@@ -240,7 +259,7 @@ add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
   linedat <- matrix(NA, nrow(data), length(xx))
 
   # now loop over the data rows
-  for(i in 1:nrow(data)){
+  for(i in seq_len(nrow(data))){
     # evaluate and save data
     linedat[i,] <- eval_with_covars(xx, data[i, ], df, pdf)
     # plot

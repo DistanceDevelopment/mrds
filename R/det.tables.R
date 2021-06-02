@@ -7,8 +7,10 @@
 #' @param model fitted model from \code{ddf}
 #' @param nc number of equal-width bins for histogram
 #' @param breaks user define breakpoints
-#' @return list object of class "det.tables" \item{Observer1}{table for observer 1}
-#' \item{Observer2}{table for observer 2} \item{Duplicates}{histogram counts for duplicates}
+#' @return list object of class "det.tables" \item{Observer1}{table for
+#' observer 1}
+#' \item{Observer2}{table for observer 2} \item{Duplicates}{histogram counts
+#' for duplicates}
 #' \item{Pooled}{histogram counts for all observations by either observer}
 #' \item{Obs1_2}{table for observer 1 within subset seen by observer 2}
 #' \item{Obs2_1}{table for observer 2 within subset seen by observer 1}
@@ -17,16 +19,16 @@
 #' @examples
 #' \donttest{
 #' data(book.tee.data)
-#' region<<-book.tee.data$book.tee.region
-#' egdata<<-book.tee.data$book.tee.dataframe
-#' samples<<-book.tee.data$book.tee.samples
-#' obs<<-book.tee.data$book.tee.obs
-#' xx=ddf(mrmodel=~glm(formula=~distance*observer),
-#'  dsmodel = ~mcds(key = "hn", formula = ~sex), data = egdata, method = "io",
-#' meta.data = list(width = 4))
-#' tabs=det.tables(xx,breaks=c(0,.5,1,2,3,4))
-#' par(mfrow=c(2,2))
-#' plot(tabs,new=FALSE,which=c(1,2,5,6))
+#' region <- book.tee.data$book.tee.region
+#' egdata <- book.tee.data$book.tee.dataframe
+#' samples <- book.tee.data$book.tee.samples
+#' obs <- book.tee.data$book.tee.obs
+#' xx <- ddf(mrmodel=~glm(formula=~distance*observer),
+#'           dsmodel=~mcds(key="hn", formula=~sex),
+#'           data=egdata, method="io", meta.data=list(width=4))
+#' tabs <- det.tables(xx, breaks=c(0, 0.5, 1, 2, 3, 4))
+#' par(mfrow=c(2, 2))
+#' plot(tabs, new=FALSE, which=c(1, 2, 5, 6))
 #' }
 det.tables <- function(model, nc=NULL, breaks=NULL){
 

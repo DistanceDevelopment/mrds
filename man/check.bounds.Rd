@@ -22,10 +22,11 @@ check.bounds(lt, lowerbounds, upperbounds, ddfobj, showit, setlower, setupper)
 \item{setupper}{were upper bounds set by the user}
 }
 \value{
-\code{TRUE} if bounded (ie parameters close to bound), else \code{FALSE}
+\code{TRUE} if parameters are close to the bound, else \code{FALSE}
 }
 \description{
-Simple internal function to check that the optimisation didn't hit bounds. Based on code that used to live in \code{detfct.fit.opt}.
+Simple internal function to check that the optimisation didn't hit bounds.
+Based on code that used to live in \code{detfct.fit.opt}.
 }
 \author{
 Dave Miller; Jeff Laake

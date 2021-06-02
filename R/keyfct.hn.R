@@ -6,7 +6,9 @@
 # distance perpendicular distance vector
 # key.scale vector of scale values
 #
-# return a vector of probabilities that the observation were detected given they were at the specified distance and assuming that g`(0)=1 (ie a standard line transect detection function)
+# return a vector of probabilities that the observation were detected given
+# they were at the specified distance and assuming that g`(0)=1 (ie a standard
+# line transect detection function)
 # documented in ?distpdf
 keyfct.hn <- function(distance, key.scale){
   exp( - (( distance/ (sqrt(2) * key.scale) )^2) )

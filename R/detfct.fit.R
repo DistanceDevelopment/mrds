@@ -81,7 +81,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
       ddfobj <- assign.par(ddfobj, lt$par)
       # recalculate lower/upper bounds
       if(check.bounds(lt, bounds$lower, bounds$upper, ddfobj,
-                            showit,bounds$setlower, bounds$setupper)){
+                      showit, bounds$setlower, bounds$setupper)){
         bounds <- setbounds(rep(NA, length(lt$par)), rep(NA, length(lt$par)),
                             lt$par, ddfobj)
       }
@@ -96,26 +96,18 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
       attr(lt, "details") <- list(nhatend=hess)
     }
   }else{
-  # Otherwise we need to play around...
+  # more complex situations require some cycling
 
-    # think this needs to live elsewhere, but let's leave it here for
-    # the moment
-    if(!is.null(ddfobj$adjustment) && ddfobj$adjustment$series=="herm")
-      ddfobj$adjustment$parameters <- rep(1, length(ddfobj$adjustment$order))
-
+    # get the starting values
     initialvalues <- getpar(ddfobj)
-    # This holds the previous values, to test for convergence
-    lastvalues <- initialvalues
 
     # Now start to alternate between adjustment and key
-    if(showit>=2)
-      cat("DEBUG: starting to cycle the optimisation...\n")
+    if(showit>=2) cat("DEBUG: starting to cycle the optimisation...\n")
 
     while(iter < misc.options$maxiter){
 
       # Variable to count sub iterations
       metaiter <- 0
-
       # loop through fitting the adjustment, key and full detection function
       for(fitting in c("adjust", "key", "all")){
 
@@ -125,6 +117,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
           misc.options$refit <- FALSE
         }
 
+        # report if we're in debug mode
         if(showit >= 2) {
           cat("DEBUG:", fitting, "iteration ", iter, ".", metaiter, "\n")
           cat("DEBUG: initial values =",
@@ -144,9 +137,11 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
             stop("Fitting failed! Try again with better initial values.\n")
           }
         }else{
+        # if everything went okay
           # update bounds
           bounds <- lt$bounds
 
+          # report if we're in debug mode
           if(showit >= 2){
             cat("DEBUG: iteration", paste(iter, metaiter, sep="."),
                 ":\n       Converge   =", lt$converge,
@@ -155,36 +150,44 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
                 "\n")
           }
 
-          # were any of the pars NA?
-          # if so, reset to initialvalues
+          # were any of the pars NA? if so, reset to initialvalues
           if(any(is.na(lt$par))){
             lt$par[is.na(lt$par)] <- initialvalues[is.na(lt$par)]
           }
-          # Rebuild initialvalues again
-          ddfobj <- assign.par(ddfobj, lt$par)
-          initialvalues <- getpar(ddfobj)
 
           # save the optimisation history
           optim.history <- lt$optim.history
           misc.options$optim.history <- optim.history
+
+          # setup starting values for the next iteration
+          oh <- optim.history[!is.na(optim.history[,1]) &
+                              optim.history[, 1]==0, ]
+          if(fitting=="all" & !is.null(nrow(oh))){
+            # use the best value so far
+            initialvalues <- oh[which.max(oh[2]), -(1:2)]
+            ddfobj <- assign.par(ddfobj, initialvalues)
+          }else{
+            ddfobj <- assign.par(ddfobj, lt$par)
+            initialvalues <- getpar(ddfobj)
+          }
         }
 
         # restore the refit status
         misc.options$refit <- refit.save
-      }
+        # did we converge in an "all" fitting situation? If so, we're done
+        if(fitting == "all" & lt$conv==0) break
+      } # end key/adjust/all loop
 
-      # did we converge? If so, let's get out of here!
-      if(!(all((abs(initialvalues-lastvalues)/(epsilon+abs(lastvalues))) <
-          (epsilon/sqrt(nrow(ddfobj$xmat)))))){
-        break()
-      }
+      # exit if we've converged
+      if(lt$conv==0) break
 
       iter <- iter + 1
     } # end while loop
 
+    # report if we ex
     if(iter > misc.options$maxiter){
-      warning("Maximum iterations exceeded!",
-          iter,">",misc.options$maxiter,"\n")
+      warning("Maximum iterations exceeded!", iter, ">",
+              misc.options$maxiter, "\n")
     }
 
   }

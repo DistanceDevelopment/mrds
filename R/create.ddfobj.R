@@ -8,7 +8,9 @@
 #'   scale formula, and shape formula
 #' @param xmat model data frame
 #' @param meta.data list of options describing data like width, etc
-#' @param initial named list of initial values for parameters of the detection function (should have at least \code{"scale"}, maybe also have \code{"shape"} and \code{"adjustments"})
+#' @param initial named list of initial values for parameters of the detection
+#' function (should have at least \code{"scale"}, maybe also have
+#' \code{"shape"} and \code{"adjustments"})
 #' @return Distance sampling function object list with elements that all can be
 #'   null except type: \item{type}{type of detection function
 #'   hn, hr, gamma, unif, logistic} \item{xmat}{model data frame}

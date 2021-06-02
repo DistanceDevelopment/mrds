@@ -63,7 +63,8 @@ extract.stake.pairs <- function(stake,obs1,obs2,removal=FALSE){
   example <- data.frame(object   = rep(1:nrow(example),2),
                         distance = rep(example$distance,2),
                         detected = detected,
-                        observer = c(rep(1,nrow(example)),rep(2,nrow(example))))
+                        observer = c(rep(1,nrow(example)),
+                                     rep(2,nrow(example))))
   if(removal) example$detected[example$observer==2] <- 1
   return(example)
 }

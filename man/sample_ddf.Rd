@@ -13,7 +13,10 @@ sample_ddf(ds.object)
 Generate data from a fitted detection function and refit the model
 }
 \note{
-This function changes the random number generator seed. To avoid any potential side-effects, use something like: \code{seed <- get(".Random.seed",envir=.GlobalEnv)} before running code and \code{assign(".Random.seed",seed,envir=.GlobalEnv)} after.
+This function changes the random number generator seed. To avoid any
+potential side-effects, use something like: \code{seed <-
+get(".Random.seed",envir=.GlobalEnv)} before running code and
+\code{assign(".Random.seed",seed,envir=.GlobalEnv)} after.
 }
 \author{
 David L. Miller

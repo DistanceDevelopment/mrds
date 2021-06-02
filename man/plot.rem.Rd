@@ -40,11 +40,11 @@ sampling model}
 
 \item{maintitle}{main title line for each plot}
 
-\item{showlines}{logical variable; if \code{TRUE} a line representing the average
-detection probability is plotted}
+\item{showlines}{logical variable; if \code{TRUE} a line representing the
+average detection probability is plotted}
 
-\item{showpoints}{logical variable; if \code{TRUE} plots predicted value for each
-observation}
+\item{showpoints}{logical variable; if \code{TRUE} plots predicted value for
+each observation}
 
 \item{ylim}{range of vertical axis; defaults to (0,1)}
 

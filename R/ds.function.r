@@ -8,11 +8,15 @@
 #'
 #' @param model model object
 #' @param newdata dataframe at which to compute values; if NULL uses fitting data
-#' @param obs 1 or 2 for observer 1 or 2, 3 for duplicates, "." for combined and "All" to return all of the values
-#' @param conditional if FALSE, computes p(x) based on distance detection function and if TRUE based on mr detection function
-#' @param pdf if FALSE, returns p(x) and if TRUE, returns p(x)*pi(x)/integral p(x)*pi(x)
+#' @param obs 1 or 2 for observer 1 or 2, 3 for duplicates, "." for combined
+#' and "All" to return all of the values
+#' @param conditional if FALSE, computes p(x) based on distance detection
+#' function and if TRUE based on mr detection function
+#' @param pdf if FALSE, returns p(x) and if TRUE, returns p(x)*pi(x)/integral
+#' p(x)*pi(x)
 #' @param finebr fine break values over which line is averaged
-#' @return List containing \item{xgrid }{grid of distance values} \item{values }{average detection fct values at the xgrid values}
+#' @return List containing \item{xgrid}{grid of distance values}
+#' \item{values}{average detection fct values at the xgrid values}
 #' @author Jeff Laake
 ds.function <- function(model,newdata=NULL,obs="All",conditional=FALSE,
                         pdf=TRUE,finebr){

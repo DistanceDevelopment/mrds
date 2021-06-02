@@ -1,3 +1,20 @@
+optimist changes !!to merge!!
+-----------------------------
+
+* use "probabalists" definition of Hermite polynomials, as from Distance. More numerically stable
+* remove setting of Hermite parameter to 1 (unclear why this was the case!)
+* refinement of adjustment-key-all outer optimisation, optimization is now only over the subset of parameters, rather than holding one parameter constant
+* refine outer optimization, using best previous values (by likelihood) rather than last values. Use optimizer's convergence diagnostic to assess outer convergence.
+* Refinement of "inner" optimization (detfct.fit.opt): (1) simplification of stopping rules (one while() loop rather than two), (2) parameters are nudged only when bounds have not been hit, if bounds have   been hit then they are expanded
+* Rescaling of covariate models' parameters (when scaling difference was large) was inverted, causing all kinds of issues.
+* Made the scaling kick-in at smaller scales.
+* Removed inner (detfct.fit.opt) while() loop dependence on bounded status, since that didn't seem to make sense
+* Stop "correcting" infinite/NaN integrals to small numbers as this was misleading the optimizer to think these were "good" values
+* Refine constrained optimisation to use actual starting values once, then use random start points and compare the two.
+* handle the case where a model failed in AIC adjustment term selection, montonicity check would throw an error
+* assign g(x)=0 for g(x)<0 when integrating the detection function
+
+
 mrds 2.2.4
 ----------
 

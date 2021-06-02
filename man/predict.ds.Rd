@@ -12,59 +12,110 @@
 \alias{predict.rem.fi}
 \title{Predictions from \code{mrds} models}
 \usage{
-\method{predict}{ds}(object, newdata=NULL, compute=FALSE, int.range=NULL, esw=FALSE, se.fit=FALSE, ...)
-       \method{predict}{io.fi}(object, newdata=NULL, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
-       \method{predict}{io}(object, newdata=NULL, compute=FALSE, int.range=NULL, ...)
-       \method{predict}{trial}(object, newdata=NULL, compute=FALSE, int.range=NULL, ...)
-       \method{predict}{trial.fi}(object, newdata=NULL, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
-       \method{predict}{rem}(object, newdata=NULL, compute=FALSE, int.range=NULL, ...)
-       \method{predict}{rem.fi}(object, newdata=NULL, compute=FALSE, int.range=NULL, integrate=FALSE, ...)
+\method{predict}{ds}(object, newdata=NULL, compute=FALSE,
+int.range=NULL, esw=FALSE, se.fit=FALSE, ...)
+       \method{predict}{io.fi}(object, newdata=NULL, compute=FALSE,
+       int.range=NULL, integrate=FALSE, ...)
+       \method{predict}{io}(object, newdata=NULL, compute=FALSE,
+       int.range=NULL, ...)
+       \method{predict}{trial}(object, newdata=NULL, compute=FALSE,
+       int.range=NULL, ...)
+       \method{predict}{trial.fi}(object, newdata=NULL, compute=FALSE,
+       int.range=NULL, integrate=FALSE, ...)
+       \method{predict}{rem}(object, newdata=NULL, compute=FALSE,
+       int.range=NULL, ...)
+       \method{predict}{rem.fi}(object, newdata=NULL, compute=FALSE,
+       int.range=NULL, integrate=FALSE, ...)
 }
 \arguments{
 \item{object}{\code{ddf} model object.}
 
-\item{newdata}{new \code{data.frame} for prediction, this must include a column called "\code{distance}".}
+\item{newdata}{new \code{data.frame} for prediction, this must include a
+column called "\code{distance}".}
 
-\item{compute}{if \code{TRUE} compute values and don't use the fitted values stored in the model object.}
+\item{compute}{if \code{TRUE} compute values and don't use the fitted values
+stored in the model object.}
 
-\item{int.range}{integration range for variable range analysis; either vector or 2 column matrix.}
+\item{int.range}{integration range for variable range analysis; either
+vector or 2 column matrix.}
 
-\item{esw}{if \code{TRUE}, returns effective strip half-width (or effective area of detection for point transect models) integral from 0 to the truncation distance (\code{width}) of \eqn{p(y)dy}; otherwise it returns the integral from 0 to truncation width of \eqn{p(y)\pi(y)} where \eqn{\pi(y)=1/w} for lines and \eqn{\pi(y)=2r/w^2} for points.}
+\item{esw}{if \code{TRUE}, returns effective strip half-width (or effective
+area of detection for point transect models) integral from 0 to the
+truncation distance (\code{width}) of \eqn{p(y)dy}; otherwise it returns the
+integral from 0 to truncation width of \eqn{p(y)\pi(y)} where
+\eqn{\pi(y)=1/w} for lines and \eqn{\pi(y)=2r/w^2} for points.}
 
-\item{se.fit}{for \code{*.ds} models only, generate standard errors on the predicted probabilities of detection (or ESW if \code{esw=TRUE}), stored in the \code{se.fit} element}
+\item{se.fit}{for \code{*.ds} models only, generate standard errors on the
+predicted probabilities of detection (or ESW if \code{esw=TRUE}), stored in
+the \code{se.fit} element}
 
 \item{\dots}{for S3 consistency}
 
 \item{integrate}{for \code{*.fi} methods, see Details below.}
 }
 \value{
-For all but the exceptions below, the value is a list with a single element: \code{fitted}, a vector of average detection probabilities or esw values for each observation in the original data or\code{newdata}
+For all but the exceptions below, the value is a list with a single
+element: \code{fitted}, a vector of average detection probabilities or esw
+values for each observation in the original data or\code{newdata}
 
-For \code{predict.ds}, if \code{se.fit=TRUE} there is an additional element \code{$se.fit}, which contains the standard errors of the probabilities of detection or ESW.
+For \code{predict.ds}, if \code{se.fit=TRUE} there is an additional element
+\code{$se.fit}, which contains the standard errors of the probabilities of
+detection or ESW.
 
-For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with \code{integrate=TRUE}, the value is a list with one element: \code{fitted}, which is a vector of integrated (average) detection probabilities for each observation in the original data or \code{newdata}.
+For \code{predict.io.fi},\code{predict.trial.fi},\code{predict.rem.fi} with
+\code{integrate=TRUE}, the value is a list with one element: \code{fitted},
+which is a vector of integrated (average) detection probabilities for each
+observation in the original data or \code{newdata}.
 
-For \code{predict.io.fi}, \code{predict.trial.fi}, or \code{predict.rem.fi} with \code{integrate=FALSE}, the value is a list with the following elements:
+For \code{predict.io.fi}, \code{predict.trial.fi}, or \code{predict.rem.fi}
+with \code{integrate=FALSE}, the value is a list with the following
+elements:
  \describe{
    \item{\code{fitted}}{\eqn{p(y)} values}
-   \item{\code{p1}}{\eqn{p_{1|2}(y)}, conditional detection probability for observer 1}
-   \item{\code{p2}}{\eqn{p_{2|1}(y)}, conditional detection probability for observer 2}
-   \item{\code{fitted}}{\eqn{p_.(y)=p_{1|2}(y)+p_{2|1}(y)-p_{1|2}(y)*p_{2|1}(y)}, conditional detection probability of being seen by either observer}}
+   \item{\code{p1}}{\eqn{p_{1|2}(y)}, conditional detection probability for
+   observer 1}
+   \item{\code{p2}}{\eqn{p_{2|1}(y)}, conditional detection probability for
+   observer 2}
+   \item{\code{fitted}}{\eqn{p_.(y) = p_{1|2}(y) + p_{2|1}(y) - p_{1|2}(y) *
+   p_{2|1}(y)}, conditional detection probability of being seen by either
+   observer}}
 }
 \description{
-Predict detection probabilities (or effective strip widths/effective areas of detection) from a fitted distance sampling model using either the original data (i.e. "fitted" values) or using new data.
+Predict detection probabilities (or effective strip widths/effective areas
+of detection) from a fitted distance sampling model using either the
+original data (i.e. "fitted" values) or using new data.
 }
 \details{
-The first 4 arguments are the same in each predict function.  The latter 2 are specific to certain functions. For line transects, the effective strip half-width (\code{esw=TRUE}) is the integral of the fitted detection function over either 0 to W or the specified \code{int.range}.  The predicted detection probability is the average probability which is simply the integral divided by the distance range. For point transect models, \code{esw=TRUE} calculates the effective area of detection (commonly referred to as "nu", this is the integral of \code{2/width^2 * rg(r)}.
+The first 4 arguments are the same in each predict function.  The latter 2
+are specific to certain functions. For line transects, the effective strip
+half-width (\code{esw=TRUE}) is the integral of the fitted detection
+function over either 0 to W or the specified \code{int.range}.  The
+predicted detection probability is the average probability which is simply
+the integral divided by the distance range. For point transect models,
+\code{esw=TRUE} calculates the effective area of detection (commonly
+referred to as "nu", this is the integral of \code{2/width^2 * rg(r)}.
 
-Fitted detection probabilities are stored in the \code{model} object and these are returned unless \code{compute=TRUE} or \code{newdata} is specified. \code{compute=TRUE} is used to estimate numerical derivatives for use in delta method approximations to the variance.
+Fitted detection probabilities are stored in the \code{model} object and
+these are returned unless \code{compute=TRUE} or \code{newdata} is
+specified. \code{compute=TRUE} is used to estimate numerical derivatives for
+use in delta method approximations to the variance.
 
-For \code{method="io.fi"} or \code{method="trial.fi"} if \code{integrate=FALSE}, \code{predict} returns the value of the conditional detection probability and if \code{integrate=TRUE}, it returns the average conditional detection probability by integrating over x (distance) with respect to a uniform distribution.
+For \code{method="io.fi"} or \code{method="trial.fi"} if
+\code{integrate=FALSE}, \code{predict} returns the value of the conditional
+detection probability and if \code{integrate=TRUE}, it returns the average
+conditional detection probability by integrating over x (distance) with
+respect to a uniform distribution.
 
-Note that the ordering of the returned results when no new data is supplied (the "fitted" values) will not necessarily be the same as the data supplied to \code{\link{ddf}}, the data (and hence results from \code{predict}) will be sorted by object ID (\code{object}) then observer ID (\code{observer}).
+Note that the ordering of the returned results when no new data is supplied
+(the "fitted" values) will not necessarily be the same as the data supplied
+to \code{\link{ddf}}, the data (and hence results from \code{predict}) will
+be sorted by object ID (\code{object}) then observer ID (\code{observer}).
 }
 \note{
-Each function is called by the generic function \code{predict} for the appropriate \code{ddf} model object.  They can be called directly by the user, but it is typically safest to use \code{predict} which calls the appropriate function based on the type of model.
+Each function is called by the generic function \code{predict} for the
+appropriate \code{ddf} model object.  They can be called directly by the
+user, but it is typically safest to use \code{predict} which calls the
+appropriate function based on the type of model.
 }
 \seealso{
 \code{\link{ddf}}, \code{\link{summary.ds}}, \code{\link{plot.ds}}

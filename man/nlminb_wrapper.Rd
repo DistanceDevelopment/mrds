@@ -42,8 +42,10 @@ nlminb_wrapper(
 \code{optimx} object
 }
 \description{
-This is a wrapper around nlminb to use scaling, as this is not available (nor will it be) in \code{\link{optimx}}.
+This is a wrapper around nlminb to use scaling, as this is not available in
+\code{\link{optimx}}.
 }
 \author{
-David L Miller, modified from \code{optimx.run} by JC Nash, R Varadhan, G Grothendieck.
+David L Miller, modified from \code{optimx.run} by JC Nash, R
+Varadhan, G Grothendieck.
 }

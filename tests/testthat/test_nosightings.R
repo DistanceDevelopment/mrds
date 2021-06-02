@@ -1,6 +1,3 @@
-library(mrds)
-library(testthat)
-
 context("No sightings")
 
 test_that("a dht object with only 0's for estimates is returned", {

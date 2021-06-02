@@ -1,11 +1,20 @@
-#' Cumulative distribution function (cdf) for fitted distance sampling detection function
+#' Cumulative distribution function (cdf) for fitted distance sampling
+#' detection function
 #'
-#' Computes cdf values of observed distances from fitted distribution. For a set of observed x it returns the integral of f(x) for the range= (inner, x), where inner is the innermost distance which is observable (either 0 or left if left truncated).  In terms of g(x) this is the integral of g(x) over range divided by the integral of g(x) over the entire range of the data (inner, W).
+#' Computes cdf values of observed distances from fitted distribution. For a
+#' set of observed x it returns the integral of f(x) for the range= (inner, x),
+#' where inner is the innermost distance which is observable (either 0 or left
+#' if left truncated).  In terms of g(x) this is the integral of g(x) over
+#' range divided by the integral of g(x) over the entire range of the data
+#' (inner, W).
 #'
 #' @param model fitted distance sampling model
-#' @param newdata new data values if computed for values other than the original observations
+#' @param newdata new data values if computed for values other than the
+#' original observations
 #' @return vector of cdf values for each observation
-#' @note This is an internal function that is not intended to be invoked directly.  It is called by \code{\link{qqplot.ddf}} to compute values for Kolmogorov-Smirnov and Cramer-von Mises tests and the Q-Q plot.
+#' @note This is an internal function that is not intended to be invoked
+#' directly.  It is called by \code{\link{qqplot.ddf}} to compute values for
+#' Kolmogorov-Smirnov and Cramer-von Mises tests and the Q-Q plot.
 #' @author Jeff Laake
 #' @seealso \code{\link{qqplot.ddf}}
 #' @keywords utility

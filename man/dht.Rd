@@ -17,17 +17,27 @@ dht(
 \arguments{
 \item{model}{ddf model object}
 
-\item{region.table}{\code{data.frame} of region records. Two columns: \code{Region.Label} and \code{Area}. If only density is required, one can set \code{Area=0} for all regions.}
+\item{region.table}{\code{data.frame} of region records. Two columns:
+\code{Region.Label} and \code{Area}. If only density is required, one can
+set \code{Area=0} for all regions.}
 
-\item{sample.table}{\code{data.frame} of sample records. Three columns: \code{Region.Label}, \code{Sample.Label}, \code{Effort}.}
+\item{sample.table}{\code{data.frame} of sample records. Three columns:
+\code{Region.Label}, \code{Sample.Label}, \code{Effort}.}
 
-\item{obs.table}{\code{data.frame} of observation records with fields: \code{object}, \code{Region.Label}, and \code{Sample.Label} which give links to \code{sample.table}, \code{region.table} and the data records used in \code{model}. Not necessary if the \code{data.frame} used to create the model contains \code{Region.Label}, \code{Sample.Label} columns.}
+\item{obs.table}{\code{data.frame} of observation records with fields:
+\code{object}, \code{Region.Label}, and \code{Sample.Label} which give links
+to \code{sample.table}, \code{region.table} and the data records used in
+\code{model}. Not necessary if the \code{data.frame} used to create the
+model contains \code{Region.Label}, \code{Sample.Label} columns.}
 
 \item{subset}{subset statement to create \code{obs.table}}
 
-\item{se}{if \code{TRUE} computes standard errors, coefficient of variation and confidence intervals (based on log-normal approximation). See "Uncertainty" below.}
+\item{se}{if \code{TRUE} computes standard errors, coefficient of variation
+and confidence intervals (based on log-normal approximation). See
+"Uncertainty" below.}
 
-\item{options}{a list of options that can be set, see "\code{dht} options", below.}
+\item{options}{a list of options that can be set, see "\code{dht} options",
+below.}
 }
 \value{
 list object of class \code{dht} with elements:
@@ -39,50 +49,148 @@ list object of class \code{dht} with elements:
  and not clusters and \code{Expected.S}.}
 
 The list structure of clusters and individuals are the same:
-\item{bysample}{\code{data.frame} giving results for each sample; \code{Nchat} is the estimated abundance within the sample and \code{Nhat} is scaled by surveyed area/covered area within that region}
-\item{summary}{\code{data.frame} of summary statistics for each region and total}
-\item{N}{\code{data.frame} of estimates of abundance for each region and total}
+\item{bysample}{\code{data.frame} giving results for each sample;
+\code{Nchat} is the estimated abundance within the sample and \code{Nhat} is
+scaled by surveyed area/covered area within that region}
+\item{summary}{\code{data.frame} of summary statistics for each region and
+total}
+\item{N}{\code{data.frame} of estimates of abundance for each region and
+total}
 \item{D}{\code{data.frame} of estimates of density for each region and total}
 \item{average.p}{average detection probability estimate}
-\item{cormat}{correlation matrix of regional abundance/density estimates and total (if more than one region)}
-\item{vc}{list of 3: total variance-covariance matrix, detection function component of variance and encounter rate component of variance. For detection the v-c matrix and partial vector are returned}
-\item{Nhat.by.sample}{another summary of \code{Nhat} by sample used by \code{\link{dht.se}}}
+\item{cormat}{correlation matrix of regional abundance/density estimates and
+total (if more than one region)}
+\item{vc}{list of 3: total variance-covariance matrix, detection function
+component of variance and encounter rate component of variance. For
+detection the v-c matrix and partial vector are returned}
+\item{Nhat.by.sample}{another summary of \code{Nhat} by sample used by
+\code{\link{dht.se}}}
 }
 \description{
-Compute density and abundance estimates and variances based on Horvitz-Thompson-like estimator.
+Compute density and abundance estimates and variances based on
+Horvitz-Thompson-like estimator.
 }
 \details{
-Density and abundance within the sampled region is computed based on a Horvitz-Thompson-like estimator for groups and individuals (if a clustered population) and this is extrapolated to the entire survey region based on any defined regional stratification. The variance is based on replicate samples within any regional stratification. For clustered populations, \eqn{E(s)} and its standard error are also output.
+Density and abundance within the sampled region is computed based on a
+Horvitz-Thompson-like estimator for groups and individuals (if a clustered
+population) and this is extrapolated to the entire survey region based on
+any defined regional stratification. The variance is based on replicate
+samples within any regional stratification. For clustered populations,
+\eqn{E(s)} and its standard error are also output.
 
-Abundance is estimated with a Horvitz-Thompson-like estimator (Huggins 1989, 1991; Borchers et al 1998; Borchers and Burnham 2004). The abundance in the sampled region is simply \eqn{1/p_1 + 1/p_2 + ... + 1/p_n} where \eqn{p_i} is the estimated detection probability for the \eqn{i}th detection of \eqn{n} total observations. It is not strictly a Horvitz-Thompson estimator because the \eqn{p_i} are estimated and not known. For animals observed in tight clusters, that estimator gives the abundance of groups (\code{group=TRUE} in \code{options}) and the abundance of individuals is estimated as \eqn{s_1/p_1 + s_2/p_2 + ... + s_n/p_n}, where \eqn{s_i} is the size (e.g., number of animals in the group) of each observation (\code{group=FALSE} in \code{options}).
+Abundance is estimated with a Horvitz-Thompson-like estimator (Huggins 1989,
+1991; Borchers et al 1998; Borchers and Burnham 2004). The abundance in the
+sampled region is simply \eqn{1/p_1 + 1/p_2 + ... + 1/p_n} where \eqn{p_i}
+is the estimated detection probability for the \eqn{i}th detection of
+\eqn{n} total observations. It is not strictly a Horvitz-Thompson estimator
+because the \eqn{p_i} are estimated and not known. For animals observed in
+tight clusters, that estimator gives the abundance of groups
+(\code{group=TRUE} in \code{options}) and the abundance of individuals is
+estimated as \eqn{s_1/p_1 + s_2/p_2 + ... + s_n/p_n}, where \eqn{s_i} is the
+size (e.g., number of animals in the group) of each observation
+(\code{group=FALSE} in \code{options}).
 
-Extrapolation and estimation of abundance to the entire survey region is based on either a random sampling design or a stratified random sampling design. Replicate samples (lines) are specified within regional strata \code{region.table}, if any. If there is no stratification, \code{region.table} should contain only a single record with the \code{Area} for the entire survey region. The \code{sample.table} is linked to the \code{region.table} with the \code{Region.Label}. The \code{obs.table} is linked to the \code{sample.table} with the \code{Sample.Label} and \code{Region.Label}. Abundance can be restricted to a subset (e.g., for a particular species) of the population by limiting the list the observations in \code{obs.table} to those in the desired subset. Alternatively, if \code{Sample.Label} and \code{Region.Label} are in the \code{data.frame} used to fit the model, then a \code{subset} argument can be given in place of the \code{obs.table}. To use the \code{subset} argument but include all of the observations, use \code{subset=1==1} to avoid creating an \code{obs.table}.
+Extrapolation and estimation of abundance to the entire survey region is
+based on either a random sampling design or a stratified random sampling
+design. Replicate samples (lines) are specified within regional strata
+\code{region.table}, if any. If there is no stratification,
+\code{region.table} should contain only a single record with the \code{Area}
+for the entire survey region. The \code{sample.table} is linked to the
+\code{region.table} with the \code{Region.Label}. The \code{obs.table} is
+linked to the \code{sample.table} with the \code{Sample.Label} and
+\code{Region.Label}. Abundance can be restricted to a subset (e.g., for a
+particular species) of the population by limiting the list the observations
+in \code{obs.table} to those in the desired subset. Alternatively, if
+\code{Sample.Label} and \code{Region.Label} are in the \code{data.frame}
+used to fit the model, then a \code{subset} argument can be given in place
+of the \code{obs.table}. To use the \code{subset} argument but include all
+of the observations, use \code{subset=1==1} to avoid creating an
+\code{obs.table}.
 
-In extrapolating to the entire survey region it is important that the unit measurements be consistent or converted for consistency. A conversion factor can be specified with the \code{convert.units} variable in the \code{options} list. The values of \code{Area} in \code{region.table}, must be made consistent with the units for \code{Effort} in \code{sample.table} and the units of \code{distance} in the \code{data.frame} that was analyzed. It is easiest to do if the units of \code{Area} is the square of the units of \code{Effort} and then it is only necessary to convert the units of \code{distance} to the units of \code{Effort}. For example, if \code{Effort} was entered in kilometres and \code{Area} in square kilometres and \code{distance} in metres then using \code{options=list(convert.units=0.001)} would convert metres to kilometres, density would be expressed in square kilometres which would then be consistent with units for \code{Area}. However, they can all be in different units as long as the appropriate composite value for \code{convert.units} is chosen. Abundance for a survey region can be expressed as: \code{A*N/a} where \code{A} is \code{Area} for the survey region, \code{N} is the abundance in the covered (sampled) region, and \code{a} is the area of the sampled region and is in units of \code{Effort * distance}. The sampled region \code{a} is multiplied by \code{convert.units}, so it should be chosen such that the result is in the same units of \code{Area}. For example, if \code{Effort} was entered in kilometres, \code{Area} in hectares (100m x 100m) and \code{distance} in metres, then using \code{options=list(convert.units=10)} will convert \code{a} to units of hectares (100 to convert metres to 100 metres for distance and .1 to convert km to 100m units).
+In extrapolating to the entire survey region it is important that the unit
+measurements be consistent or converted for consistency. A conversion factor
+can be specified with the \code{convert.units} variable in the
+\code{options} list. The values of \code{Area} in \code{region.table}, must
+be made consistent with the units for \code{Effort} in \code{sample.table}
+and the units of \code{distance} in the \code{data.frame} that was analyzed.
+It is easiest to do if the units of \code{Area} is the square of the units
+of \code{Effort} and then it is only necessary to convert the units of
+\code{distance} to the units of \code{Effort}. For example, if \code{Effort}
+was entered in kilometres and \code{Area} in square kilometres and
+\code{distance} in metres then using
+\code{options=list(convert.units=0.001)} would convert metres to kilometres,
+density would be expressed in square kilometres which would then be
+consistent with units for \code{Area}. However, they can all be in different
+units as long as the appropriate composite value for \code{convert.units} is
+chosen. Abundance for a survey region can be expressed as: \code{A*N/a}
+where \code{A} is \code{Area} for the survey region, \code{N} is the
+abundance in the covered (sampled) region, and \code{a} is the area of the
+sampled region and is in units of \code{Effort * distance}. The sampled
+region \code{a} is multiplied by \code{convert.units}, so it should be
+chosen such that the result is in the same units of \code{Area}. For
+example, if \code{Effort} was entered in kilometres, \code{Area} in hectares
+(100m x 100m) and \code{distance} in metres, then using
+\code{options=list(convert.units=10)} will convert \code{a} to units of
+hectares (100 to convert metres to 100 metres for distance and .1 to convert
+km to 100m units).
 
-The argument \code{options} is a list of \code{variable=value} pairs that set options for the analysis. All but one of these has been described so far. The remaining variable \code{pdelta} should not need to be changed but was included for completeness. It controls the precision of the first derivative calculation for the delta method variance.
+The argument \code{options} is a list of \code{variable=value} pairs that
+set options for the analysis. All but one of these has been described so
+far. The remaining variable \code{pdelta} should not need to be changed but
+was included for completeness. It controls the precision of the first
+derivative calculation for the delta method variance.
 }
 \section{Uncertainty}{
 
-If the argument \code{se=TRUE}, standard errors for density and abundance is computed. Coefficient of variation and log-normal confidence intervals are constructed using a Satterthwaite approximation for degrees of freedom (Buckland et al. 2001 p. 90). The function \code{\link{dht.se}} computes the variance and interval estimates.
+If the argument \code{se=TRUE}, standard errors for density and abundance is
+computed. Coefficient of variation and log-normal confidence intervals are
+constructed using a Satterthwaite approximation for degrees of freedom
+(Buckland et al. 2001 p. 90). The function \code{\link{dht.se}} computes the
+variance and interval estimates.
 
 The variance has two components:
 \itemize{
-  \item variation due to uncertainty from estimation of the detection function parameters;
+  \item variation due to uncertainty from estimation of the detection
+  function parameters;
   \item variation in abundance due to random sample selection;
 }
-The first component (model parameter uncertainty) is computed using a delta method estimate of variance (Huggins 1989, 1991, Borchers et al. 1998) in which the first derivatives of the abundance estimator with respect to the parameters in the detection function are computed numerically (see \code{\link{DeltaMethod}}).
+The first component (model parameter uncertainty) is computed using a delta
+method estimate of variance (Huggins 1989, 1991, Borchers et al. 1998) in
+which the first derivatives of the abundance estimator with respect to the
+parameters in the detection function are computed numerically (see
+\code{\link{DeltaMethod}}).
 
-The second component (encounter rate variance) can be computed in one of several ways depending on the form taken for the encounter rate and the estimator used. To begin with there three possible values for \code{varflag} to calculate encounter rate:
+The second component (encounter rate variance) can be computed in one of
+several ways depending on the form taken for the encounter rate and the
+estimator used. To begin with there three possible values for \code{varflag}
+to calculate encounter rate:
 \itemize{
- \item \code{0} uses a binomial variance for the number of observations (equation 13 of Borchers et al. 1998). This estimator is only useful if the sampled region is the survey region and the objects are not clustered; this situation will not occur very often;
- \item \code{1} uses the encounter rate \eqn{n/L} (objects observed per unit transect) from Buckland et al. (2001) pg 78-79 (equation 3.78) for line transects (see also Fewster et al, 2009 estimator R2). This variance estimator is not appropriate if \code{size} or a derivative of \code{size} is used in the detection function;
- \item \code{2} is the default and uses the encounter rate estimator \eqn{\hat{N}/L} (estimated abundance per unit transect) suggested by Innes et al (2002) and Marques & Buckland (2004).
+ \item \code{0} uses a binomial variance for the number of observations
+ (equation 13 of Borchers et al. 1998). This estimator is only useful if the
+ sampled region is the survey region and the objects are not clustered; this
+ situation will not occur very often;
+ \item \code{1} uses the encounter rate \eqn{n/L} (objects observed per unit
+ transect) from Buckland et al. (2001) pg 78-79 (equation 3.78) for line
+ transects (see also Fewster et al, 2009 estimator R2). This variance
+ estimator is not appropriate if \code{size} or a derivative of \code{size}
+ is used in the detection function;
+ \item \code{2} is the default and uses the encounter rate estimator
+ \eqn{\hat{N}/L} (estimated abundance per unit transect) suggested by Innes
+ et al (2002) and Marques & Buckland (2004).
 }
 
-In general if any covariates are used in the models, the default \code{varflag=2} is preferable as the estimated abundance will take into account variability due to covariate effects. If the population is clustered the mean group size and standard error is also reported.
+In general if any covariates are used in the models, the default
+\code{varflag=2} is preferable as the estimated abundance will take into
+account variability due to covariate effects. If the population is clustered
+the mean group size and standard error is also reported.
 
-For options \code{1} and \code{2}, it is then possible to choose one of the estimator forms given in Fewster et al (2009) for line transects: \code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"}, \code{"O1"}, \code{"O2"} or \code{"O3"} by specifying the \code{ervar=} option (default \code{"R2"}). For points estimator \code{"P3"} is the only option. See \code{\link{varn}} and Fewster et al (2009) for further details on these estimators.
+For options \code{1} and \code{2}, it is then possible to choose one of the
+estimator forms given in Fewster et al (2009) for line transects:
+\code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"},
+\code{"O1"}, \code{"O2"} or \code{"O3"} by specifying the \code{ervar=}
+option (default \code{"R2"}). For points estimator \code{"P3"} is the only
+option. See \code{\link{varn}} and Fewster et al (2009) for further details
+on these estimators.
 }
 
 \section{\code{dht} options}{
@@ -90,11 +198,16 @@ For options \code{1} and \code{2}, it is then possible to choose one of the esti
  Several options are available to control calculations and output:
 
 \describe{
- \item{\code{ci.width}}{Confidence interval width, expressed as a decimal between 0 and 1 (default \code{0.95}, giving a 95\% CI)}
- \item{\code{pdelta}}{delta value for computing numerical first derivatives (Default: 0.001)}
+ \item{\code{ci.width}}{Confidence interval width, expressed as a decimal
+ between 0 and 1 (default \code{0.95}, giving a 95\% CI)}
+ \item{\code{pdelta}}{delta value for computing numerical first derivatives
+ (Default: 0.001)}
  \item{\code{varflag}}{0,1,2 (see "Uncertainty") (Default: \code{2})}
- \item{\code{convert.units}}{ multiplier for width to convert to units of length (Default: \code{1})}
- \item{\code{ervar}}{encounter rate variance type (see "Uncertainty" and \code{type} argument of \code{\link{varn}}). (Default: \code{"R2"} for lines and \code{"P3"} for points)}
+ \item{\code{convert.units}}{ multiplier for width to convert to units of
+ length (Default: \code{1})}
+ \item{\code{ervar}}{encounter rate variance type (see "Uncertainty" and
+ \code{type} argument of \code{\link{varn}}). (Default: \code{"R2"} for
+ lines and \code{"P3"} for points)}
 }
 }
 

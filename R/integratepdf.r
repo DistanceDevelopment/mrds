@@ -9,8 +9,10 @@
 #' @param width truncation width
 #' @param left left truncation width
 #' @param int.range integration range matrix; vector is converted to matrix
-#' @param standardize logical used to decide whether to divide through by the function evaluated at 0
-#' @param point logical to determine if point count (\code{TRUE}) or line transect (\code{FALSE})
+#' @param standardize logical used to decide whether to divide through by the
+#' function evaluated at 0
+#' @param point logical to determine if point count (\code{TRUE}) or line
+#' transect (\code{FALSE})
 #' @param doeachint calculate each integral numerically
 #' @return vector of integral values - one for each observation
 #' @author Jeff Laake & Dave Miller

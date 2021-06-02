@@ -4,7 +4,11 @@
 #' of the correct order.
 #'
 #'
-#' Only even functions are allowed as adjustment terms. Also Hermite polynomials must be of degree at least 4 and Cosine of order at least 3. Finally, also checks that order of the terms >1 for half-normal/hazard-rate, as per p.47 of Buckland et al (2001). If incorrect terms are supplied then an error is throw via \code{stop}.
+#' Only even functions are allowed as adjustment terms. Also Hermite
+#' polynomials must be of degree at least 4 and Cosine of order at least 3.
+#' Finally, also checks that order of the terms >1 for half-normal/hazard-rate,
+#' as per p.47 of Buckland et al (2001). If incorrect terms are supplied then
+#' an error is throw via \code{stop}.
 #'
 #' @param adj.series Adjustment series used
 #'   ('\code{cos}','\code{herm}','\code{poly}')

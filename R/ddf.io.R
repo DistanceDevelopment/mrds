@@ -46,11 +46,12 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.io<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
+ddf.io <- function(dsmodel, mrmodel, data, meta.data=list(), control=list(),
+                   call=""){
 
   # Save current user options and then set design contrasts to treatment style
-  save.options<-options()
-  options(contrasts=c("contr.treatment","contr.poly"))
+  save.options <- options()
+  options(contrasts=c("contr.treatment", "contr.poly"))
 
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
