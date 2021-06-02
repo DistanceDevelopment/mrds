@@ -141,7 +141,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                       ddfobj=ddfobj, misc.options=misc.options,
                       control=list(trace=as.integer(showit),
                                    tol=misc.options$mono.tol,
-                                   delta=misc.options$mono.delta))))
+                                   delta=misc.options$mono.delta)))
 
       if(length(initialvalues)>1){
         # gosolnp doesn't work when there is only 1 parameter
@@ -161,7 +161,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                         delta=misc.options$mono.delta),
                            distr = rep(1, length(lowerbounds)),
                            n.restarts = 2, n.sim = 200,
-                           rseed=as.integer(runif(1)*1e9))))
+                           rseed=as.integer(runif(1)*1e9)))
         # was this better than the first time?
         if(!is.na(lt2$values[length(lt2$values)]) &&
            (lt2$values[length(lt2$values)] < lt$values[length(lt$values)])){
