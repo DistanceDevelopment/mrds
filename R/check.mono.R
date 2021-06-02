@@ -64,7 +64,7 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
     # just return a 1x1 matrix of 1
     udat <- matrix(1, 1, 1)
   }else{
-    udat <- unique(model.matrix(as.formula(ddfobj$scale$formula), data=df$dat))
+    udat <- unique(ddfobj$scale$dm)
   }
 
   # function to apply over the unique rows
@@ -74,7 +74,7 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
     if(ddfobj$type!="unif"){
       # build the design matrix for this covariate combination
       this.udat.save <- this.udat
-      this.udat <- as.matrix(matrix(this.udat, nrow=1)[rep(1, length(x), by=1), ])
+      this.udat <- matrix(this.udat, nrow=1)[rep(1, length(x)), , drop=FALSE]
       ddfobj$scale$dm <- this.udat
 
       # dummy data matrix for shape
