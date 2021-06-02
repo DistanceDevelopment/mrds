@@ -12,7 +12,8 @@ name: test-coverage
 
 jobs:
   test-coverage:
-    runs-on: macOS-latest
+#    runs-on: macOS-latest
+    runs-on: ubuntu-20.04
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -36,6 +37,13 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
+      - name: Install system dependencies
+        run: |
+          while read -r cmd
+          do
+            eval sudo $cmd
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
+
       - name: Install dependencies
         run: |
           install.packages(c("remotes"))
@@ -51,7 +59,3 @@ jobs:
           sessionInfo()
         shell: Rscript {0}
 
-      - name: Show debug output
-        if: always()
-        run: find /tmp/Rtmp*/R_LIBS*/mrds/mrds-tests/ -name 'testthat.Rout*' -exec cat '{}' \; || true
-        shell: bash
