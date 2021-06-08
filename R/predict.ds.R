@@ -212,6 +212,8 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
                          newdata_save[, "distance", drop=FALSE])
         dm <- setcov(newdata, ~1)
         dm <- dm[(nrow(model_dat)+1):nrow(dm), , drop=FALSE]
+        # setup dummy fvars for later
+        fvars <- c()
       }
 
       # get the bins when you have binned data
