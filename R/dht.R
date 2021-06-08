@@ -462,10 +462,12 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
                                    levels=levels(sample.table$Sample.Label))
 
   # Assign default values to options
-  options <- assign.default.values(options, pdelta = 0.001, varflag = 2,
-                                   convert.units = 1, ervar="R2")
+  options <- assign.default.values(options, pdelta=0.001, varflag=2,
+                                   convert.units=1,
+                                   ervar=ifelse(model$meta.data$point, "P3",
+                                                "R2"))
 
-  ## break if we use anything other than P3 with points or P3 with lines
+  # P3 can only be used with points
   if(options$ervar=="P3" & !model$meta.data$point){
     stop("Encounter rate variance estimator P3 may only be used with point transects, set with options=list(ervar=...)")
   }
@@ -477,7 +479,6 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
       options$ervar <- "P3"
     }
   }
-
 
   # If area is zero for all regions reset to the area of the covered region
   DensityOnly <- FALSE
