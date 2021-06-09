@@ -1,8 +1,7 @@
 lnl.tol<-1e-3#4
 par.tol<-1e-6
 
-context("errors thrown for invalid models")
-test_that("golf tee data gives the same results as Distance",{
+test_that("errors thrown for invalid models",{
   data(book.tee.data)
   egdata<-book.tee.data$book.tee.dataframe
 
@@ -34,6 +33,19 @@ test_that("golf tee data gives the same results as Distance",{
                                data = egdata, method = "ds",
                                meta.data = list(width = 4)),
                "Odd polynomial adjustment terms selected")
+
+  # errors when more pars than data
+  egdata <- create.bins(egdata, 0:4)
+  expect_error(ddf(dsmodel = ~cds(key = "hr", formula = ~1, adj.series = "cos",
+                   adj.order = c(2, 3, 4), adj.scale = "width"), data = egdata,
+                   method = "ds", meta.data = list(binned=TRUE,
+                   breaks=0:4)),
+               "More parameters to estimate than distance bins")
+
+  obs <- data.frame(distance=rep(0, 17), object=1:17, observer=1)
+  expect_error(a<-ddf(dsmodel = ~mcds(key = "hr", formula = ~1),
+                   data = obs, method = "ds", meta.data = list(width=2)),
+               "More parameters to estimate than unique distances")
 
 })
 

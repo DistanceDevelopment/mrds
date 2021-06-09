@@ -15,6 +15,7 @@ mrds 2.2.5
 * assign g(x)=0 for g(x)<0 when integrating the detection function (but check post-optimisation that this is not a problem!)
 * fix bug in predict.ds when uniform key was used with binned data (Thanks to Noémie Cappelle for reporting this issue!)
 * dht now prints additional information about the variance estimators used
+* errors now thrown when more parameters than data (either unique distance values or bins)
 
 
 mrds 2.2.4

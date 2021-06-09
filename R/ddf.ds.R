@@ -97,7 +97,6 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                                     int.range=NA, mono=FALSE, mono.strict=FALSE,
                                     point=FALSE)
 
-
   # Set up control values
   control <- assign.default.values(control, showit=0,
                                    estimate=TRUE, refit=TRUE, nrefits=25,
@@ -157,6 +156,21 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
     breaks <- NULL
   }
 
+  # check we don't have more parameters than data
+  npars <- switch(model[[2]]$key,
+                  "unif"  = 0,
+                  "hn"    = 1,
+                  2) + length(model[[2]]$adj.order)
+  if(meta.data$binned){
+    if((length(breaks)-1) < npars){
+      stop("More parameters to estimate than distance bins")
+    }
+  }else{
+    if(length(unique(data$distance)) < npars){
+      stop("More parameters to estimate than unique distances")
+    }
+  }
+
   # Setup detection model
   ddfobj <- create.ddfobj(model, xmat, meta.data, control$initial)
 
@@ -198,16 +212,6 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   if(is.null(initialvalues)) misc.options$nofit <- TRUE
 
-  # check we don't have more parameters than data
-  if(meta.data$binned){
-    if((length(breaks)-1) < length(initialvalues)){
-      stop("More parameters to estimate than distance bins")
-    }
-  }else{
-    if(length(unique(data$distance) < length(initialvalues))){
-      stop("More parameters to estimate than unique distances")
-    }
-  }
 
   # Actually do the optimisation
   lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
