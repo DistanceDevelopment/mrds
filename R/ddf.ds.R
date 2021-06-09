@@ -115,9 +115,9 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   # Process data
   # First remove data with missing distances
   if(!is.null(data$distance)){
-    data <- data[!is.na(data$distance),]
+    data <- data[!is.na(data$distance), ]
   }else{
-    data <- data[!is.na(data$distbegin)&!is.na(data$distend),]
+    data <- data[!is.na(data$distbegin)&!is.na(data$distend), ]
   }
   if(is.null(data$object)){
     stop("\nobject field is missing in the data\n")
@@ -196,9 +196,20 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                         optimx.method = control$optimx.method,
                         parscale      = control$parscale)
 
-  # Actually do the optimisation if not just a uniform key!
   if(is.null(initialvalues)) misc.options$nofit <- TRUE
 
+  # check we don't have more parameters than data
+  if(meta.data$binned){
+    if((length(breaks)-1) < length(initialvalues)){
+      stop("More parameters to estimate than distance bins")
+    }
+  }else{
+    if(length(unique(data$distance) < length(initialvalues))){
+      stop("More parameters to estimate than unique distances")
+    }
+  }
+
+  # Actually do the optimisation
   lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
 
   # check that hazard models have a reasonable scale parameter
