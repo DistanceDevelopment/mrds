@@ -14,6 +14,7 @@ mrds 2.2.5
 * handle the case where a model failed in AIC adjustment term selection, montonicity check would throw an error
 * assign g(x)=0 for g(x)<0 when integrating the detection function (but check post-optimisation that this is not a problem!)
 * fix bug in predict.ds when uniform key was used with binned data (Thanks to Noémie Cappelle for reporting this issue!)
+* dht now prints additional information about the variance estimators used
 
 
 mrds 2.2.4

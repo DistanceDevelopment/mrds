@@ -43,6 +43,13 @@ print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE, ...){
     }
   }
 
+  # general information
+  cat("Abundance and density estimates from distance sampling\n")
+  cat("Variance       :", paste0(attr(x, "ER_var")[1], ","),
+      ifelse(attr(x, "ER_var")[2], "N/L", "n/L"),
+      ifelse(attr(x, "ER_var")[3], ", binomial", ""), "\n")
+
+  # now print
   if(is.null(x$clusters)){
     print.tables(x$individuals, cor, bysample, vcmatrices)
   }else{

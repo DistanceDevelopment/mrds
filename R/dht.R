@@ -601,6 +601,11 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     result <- list(individuals=individuals)
   }
 
+  # add some meta data
+  # save enounter rate variance information
+  attr(result, "ER_var") <- c(options$ervar, options$varflag==2,
+                              options$varflag==0)
+
   class(result) <- "dht"
   return(result)
 }
