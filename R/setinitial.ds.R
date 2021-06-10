@@ -58,7 +58,7 @@ setinitial.ds <- function(ddfobj, width, initial, point, left){
 
   # Set initial values for the adjustment term parameters
   if(!is.null(ddfobj$adjustment)){
-    initialvalues$adjustment <- rep(0, length(ddfobj$adjustment$order))
+    initialvalues$adjustment <- rep(1e-10, length(ddfobj$adjustment$order))
   }
 
   if(!any(is.na(initial))){
