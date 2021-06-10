@@ -134,6 +134,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       lowerbounds.ic <- rep(0, 2*misc.options$mono.points)
       upperbounds.ic <- rep(10^10, 2*misc.options$mono.points)
 
+      # small initialvalues lead to errors in solnp, so work around that
+      initialvalues[initialvalues<1e-2] <- sign(initialvalues[initialvalues<1e-2]) * 1e-2
       lt <- try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
                       ineqfun=flnl.constr,
                       ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
