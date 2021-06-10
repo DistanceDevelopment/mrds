@@ -208,6 +208,9 @@ infrequently.  The list values include:
 
 Examples of distance sampling analyses are available at
 \url{http://examples.distancesampling.org/}.
+
+Hints and tips on fitting (particularly optimisation issues) are on the
+\code{\link{mrds-opt}} manual page.
 }
 \examples{
 # load data

@@ -178,6 +178,9 @@
 #' Examples of distance sampling analyses are available at
 #' \url{http://examples.distancesampling.org/}.
 #'
+#' Hints and tips on fitting (particularly optimisation issues) are on the
+#' \code{\link{mrds-opt}} manual page.
+#'
 #' @param dsmodel distance sampling model specification
 #' @param mrmodel mark-recapture model specification
 #' @param data dataframe containing data to be analyzed
