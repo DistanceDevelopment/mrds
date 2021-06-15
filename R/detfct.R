@@ -138,6 +138,8 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
       scale.dm <- ddfobj$scale$dm[index, , drop=FALSE]
       shape.dm <- ddfobj$shape$dm[index, , drop=FALSE]
     }
+    ddfobj$scale$dm <- scale.dm
+    ddfobj$shape$dm <- shape.dm
   }else{
     # Use those with select=TRUE
     if(is.null(index)){
@@ -148,6 +150,8 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
       scale.dm <- ddfobj$scale$dm[select, , drop=FALSE][index, , drop=FALSE]
       shape.dm <- ddfobj$shape$dm[select, , drop=FALSE][index, , drop=FALSE]
     }
+    ddfobj$scale$dm <- scale.dm
+    ddfobj$shape$dm <- shape.dm
   }
 
   # Key function
@@ -187,7 +191,8 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
               unif  = rep(1/(width-left), length(distance)),
               gamma = keyfct.gamma(distance, key.scale, key.shape),
               th1   = keyfct.th1(distance, key.scale, key.shape),
-              th2   = keyfct.th2(distance, key.scale, key.shape))
+              th2   = keyfct.th2(distance, key.scale, key.shape),
+              tpn   = keyfct.tpn(distance, ddfobj))
 
   # Adjustment functions
   # If we are using adjustment terms.

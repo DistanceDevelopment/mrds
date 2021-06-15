@@ -1,0 +1,63 @@
+#' Two part normal key function
+#'
+#' @param distance perpendicular distance vector
+#' @param ddfobj meta object containing parameters, design matrices etc
+#'
+#' @return a vector of probabilities that the observation were detected given
+#' they were at the specified distance and assuming that g(mu)=1
+#'
+#' @aliases two-part-normal
+#' @author Earl F Becker, David L Miller
+#' @references
+#' Becker, E. F., & Christ, A. M. (2015). A Unimodal Model for Double Observer
+#' Distance Sampling Surveys. PLOS ONE, 10(8), e0136403.
+#' \doi{10.1371/journal.pone.0136403}
+#' @noRd
+keyfct.tpn <- function(distance, ddfobj){
+
+  # get mu first, the centre of the function
+  mu <- exp(ddfobj$shape$parameters)
+
+
+  # decide which side each observation lies on
+  ind <- distance < mu
+
+  # extract the design matrix for the scale parameter
+  scale.dm <- ddfobj$scale$dm
+  # if we have just one element (e.g., when integrating) then fill this
+  # out to have same # rows as distance
+  if(nrow(scale.dm)==1){
+    scale.dm <- scale.dm[rep(1, length(distance)), ]
+  }
+
+  # dummy parameter that gives the other side of the detection function
+  # fix the design matrix to have which side each distance is on
+  scale.dm[, which(colnames(scale.dm)=="dummyTRUE")] <- as.numeric(!ind)
+
+  # return vector
+  ret <- rep(NA, length(distance))
+
+  # find values for distances >= mu
+  if(sum(ind)>0){
+    # get scale parameters
+    left_scale <- scalevalue(ddfobj$scale$parameters,
+                             scale.dm[ind, , drop=FALSE])
+    # evaluate normal density
+    left_m <- (distance[ind] - mu)
+    left_vals <- exp( -((left_m/ (sqrt(2) * left_scale))^2) )
+    # fill-in the correct values
+    ret[ind] <- left_vals
+  }
+
+  # find values for distances < mu
+  # see above for meaning
+  if(sum(!ind)>0){
+    right_scale <- scalevalue(ddfobj$scale$parameters,
+                              scale.dm[!ind, , drop=FALSE])
+    right_m <- (distance[!ind] - mu)
+    right_vals <- exp( -((right_m/ (sqrt(2) * right_scale))^2) )
+    ret[!ind] <- right_vals
+  }
+
+  return(ret)
+}

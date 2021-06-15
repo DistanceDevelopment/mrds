@@ -42,7 +42,7 @@ create.ddfobj <- function(model, xmat, meta.data, initial){
     stop("Logistic detection function has been temporarily disabled")
   }
 
-  if(!ddfobj$type %in% c("gamma", "hn", "hr", "unif", "th1", "th2")){
+  if(!ddfobj$type %in% c("gamma", "hn", "hr", "unif", "th1", "th2", "tpn")){
     stop("Invalid value for detection key function =",ddfobj$type,
          "  Only hn, hr, gamma, unif, th1, th2 allowed")
   }
