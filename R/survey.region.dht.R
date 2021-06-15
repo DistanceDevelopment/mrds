@@ -11,7 +11,7 @@
 #' @keywords utility
 survey.region.dht <- function(Nhat.by.sample, samples, width, point){
   #  Compute effort in each region and the area in the covered region
-  Effort.by.region <- by(samples$Effort,samples$Region.Label,sum)
+  Effort.by.region <- by(samples$Effort, samples$Region.Label, sum)
   if(point){
     CoveredArea <- pi*as.vector(Effort.by.region)*width^2
   }else{

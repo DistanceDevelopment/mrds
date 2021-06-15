@@ -11,7 +11,7 @@
 #' @note Internal function called by \code{\link{covered.region.dht}}
 #' @author Jeff Laake
 #' @keywords utility
-compute.Nht <- function(pdot,group=TRUE,size=NULL){
+compute.Nht <- function(pdot, group=TRUE, size=NULL){
   if(group){
      return(1/pdot)
   }else{

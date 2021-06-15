@@ -245,7 +245,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     # detection prob to 0 between 0 and left truncation distance)
     width <- model$meta.data$width * options$convert.units
 
-    Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,width,point)
+    Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples, width, point)
     # sort Nhat.by.sample by Region.Label and Sample.Label
     Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
                                            Nhat.by.sample$Sample.Label), ]
