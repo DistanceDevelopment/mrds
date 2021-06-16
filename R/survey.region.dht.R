@@ -2,20 +2,22 @@
 #'
 #' @param Nhat.by.sample dataframe of abundance by sample
 #' @param samples samples table
-#' @param width transect width
+#' @param width truncation width
+#' @param left left truncation if any
 #' @param point if TRUE point count otherwise line transect
 #' @return Revised Nhat.by.sample dataframe containing estimates extrapolated
 #'   to survey region
 #' @note Internal function called by \code{\link{dht}} and related functions.
 #' @author Jeff Laake
 #' @keywords utility
-survey.region.dht <- function(Nhat.by.sample, samples, width, point){
+survey.region.dht <- function(Nhat.by.sample, samples, width, left, point){
   #  Compute effort in each region and the area in the covered region
   Effort.by.region <- by(samples$Effort, samples$Region.Label, sum)
   if(point){
-    CoveredArea <- pi*as.vector(Effort.by.region)*width^2
+    CoveredArea <- pi*as.vector(Effort.by.region)*width^2 -
+                    pi*as.vector(Effort.by.region)*left^2
   }else{
-    CoveredArea <- 2*as.vector(Effort.by.region)*width
+    CoveredArea <- 2*as.vector(Effort.by.region)*(width-left)
   }
 
   # Scale up abundance in covered region to the survey region

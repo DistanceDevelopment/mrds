@@ -239,20 +239,20 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     # which is simply n/Nhat in the covered region
     average.p <- nrow(obs)/sum(Nhat.by.sample$Nhat)
 
-    # Scale up abundances to survey region
-    # note that we don't need to account for left truncation, as
-    # it is taken care of when calculating average detection prob (by setting
-    # detection prob to 0 between 0 and left truncation distance)
     width <- model$meta.data$width * options$convert.units
+    left <- model$meta.data$left * options$convert.units
 
-    Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples, width, point)
+    # Scale up abundances to survey region
+    Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples, width,
+                                        left, point)
     # sort Nhat.by.sample by Region.Label and Sample.Label
     Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
                                            Nhat.by.sample$Sample.Label), ]
     if(point){
-      s.area <- Nhat.by.sample$Effort.x*pi*width^2
+      s.area <- Nhat.by.sample$Effort.x*pi*width^2 -
+                  Nhat.by.sample$Effort.x*pi*left^2
     }else{
-      s.area <- Nhat.by.sample$Effort.x*2*width
+      s.area <- Nhat.by.sample$Effort.x*2*(width-left)
     }
 
     bysample.table <- with(Nhat.by.sample,
