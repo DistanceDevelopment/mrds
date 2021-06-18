@@ -90,7 +90,7 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
   #  Functions Used:  DeltaMethod, dht.deriv (in DeltaMethod), varn
 
   # Define function: compute.df
-  compute.df<- function(k,type){
+  compute.df <- function(k, type){
     if(type=="O1" | type=="O2"| type=="O3"){
       H.O <- k - 1
       k.h.O <- rep(2, H.O)
@@ -167,7 +167,7 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
                               by.y = "Label", all.x = TRUE)
       Nhat.by.sample$n[is.na(Nhat.by.sample$n)] <- 0
     }else{
-      Nhat.by.sample <- cbind(Nhat.by.sample, n = rep(0,nrow(Nhat.by.sample)))
+      Nhat.by.sample <- cbind(Nhat.by.sample, n = rep(0, nrow(Nhat.by.sample)))
     }
 
     # Compute number of lines per region for df calculation
@@ -184,16 +184,18 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
     # of mean for group size.
     if(!options$group){
       if(length(obs$size) > 0){
-        vars <- by(obs$size, obs$Region.Label, var)/
-                  by(obs$size, obs$Region.Label, length)
+        ngroup <- by(obs$size, obs$Region.Label, length)
+        vars <- by(obs$size, obs$Region.Label, var)/ngroup
         sbar <- by(obs$size, obs$Region.Label, mean)
         sobs <- data.frame(Region.Label = names(sbar),
                            vars         = as.vector(vars),
-                           sbar         = as.vector(sbar))
+                           sbar         = as.vector(sbar),
+                           ngroup       = as.vector(ngroup))
       }else{
         sobs <- data.frame(Region.Label = levels(obs$Region.Label),
                            vars = rep(NA, length(levels(obs$Region.Label))),
-                           sbar = rep(NA, length(levels(obs$Region.Label))))
+                           sbar = rep(NA, length(levels(obs$Region.Label))),
+                           ngroup = NA)
       }
       Nhat.by.sample <- merge(Nhat.by.sample, sobs, by.x = "Region.Label",
                               by.y = "Region.Label", all.x = TRUE)
@@ -201,13 +203,13 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
       Nhat.by.sample$vars[is.na(Nhat.by.sample$vars)] <- 0
     }else{
       # If group abundance is being estimated, set mean=1, var=0
-      Nhat.by.sample$sbar <- rep(1, dim(Nhat.by.sample)[1])
-      Nhat.by.sample$vars <- rep(0, dim(Nhat.by.sample)[1])
+      Nhat.by.sample$sbar <- rep(1, nrow(Nhat.by.sample))
+      Nhat.by.sample$vars <- rep(0, nrow(Nhat.by.sample))
     }
 
     # sort Nhat.by.sample by Region.Label and Sample.Label
     Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
-                                           Nhat.by.sample$Sample.Label),]
+                                           Nhat.by.sample$Sample.Label), ]
 
     # Loop over each region and compute each variance;
     # jll 11/11/04 - changes made in following code using
@@ -225,9 +227,9 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
 
       if(length(stratum.data$Effort.y) == 1){
         if (options$varflag == 1){
-          vc2[i] <- Ni^2 * (1/stratum.data$n + vars/sbar^2)
+          vc2[i] <- Ni^2 * (1/stratum.data$n + vars[i]/sbar^2)
         }else{
-          vc2[i] <- Ni^2 * (1/Ni + vars/sbar^2)
+          vc2[i] <- Ni^2 * (1/Ni + vars[i]/sbar^2)
         }
       }else if (options$varflag == 1){
         vc2[i] <- (Ni * Li)^2 * varn(stratum.data$Effort.x,
@@ -287,10 +289,28 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
     if(is.na(vc1) || all(vc1==0)){
       estimate.table$df <- df
     }else{
-      estimate.table$df <- estimate.table$cv^4/((diag(vc1)/
-                            estimate.table$Estimate^2)^2/(length(model$fitted) -
-                            length(model$par)) +
-                            (diag(vc2)/estimate.table$Estimate^2)^2/df)
+      # loop over the strata, calculating the components of the df calc
+      # see Buckland et al. (2001) Eqn 3.75
+      for(i in 1:numRegions){
+        cvs <- c(sqrt(diag(vc1)[i])/estimate.table$Estimate[i],
+                 sqrt(diag(vc2)[i])/estimate.table$Estimate[i])
+        df_cvs <- c(length(model$fitted)-length(model$par), df[i])
+
+        # add in group size component if we need to
+        if(!options$group & options$varflag==1){
+          # remove group size component from encounter rate
+          cvs[2] <- sqrt((cvs[2]*estimate.table$Estimate[i])^2 -
+                     (estimate.table$Estimate[i]^2 *
+                      (sobs$vars[i])/sobs$sbar[i]^2))/
+                     estimate.table$Estimate[i]
+          cvs <- c(cvs, sqrt(sobs$vars[i])/sobs$sbar[i])
+          df_cvs <- c(df_cvs, sobs$ngroup[i]-1)
+        }
+        # NB numerator here is "total CV"^4, so we assume independence,
+        # sum squares, then square again
+        estimate.table$df[i] <- estimate.table$cv[i]^4 / sum((cvs^4)/df_cvs)
+#        estimate.table$df[i] <- sum(cvs^2)^2 / sum((cvs^4)/df_cvs)
+      }
     }
 
     # compute proper satterthwaite
@@ -303,12 +323,29 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
       if(all(vc1==0)){
           estimate.table$df[numRegions+1] <- df.total
       }else{
-        estimate.table$df[numRegions+1] <- estimate.table$cv[numRegions+1]^4 /
-                    ((diag(vc1)[numRegions+1]/
-                    estimate.table$Estimate[numRegions+1]^2)^2/
-                    (length(model$fitted)-length(model$par))
-                    + (diag(vc2)[numRegions+1]/
-                        estimate.table$Estimate[numRegions+1]^2)^2/df.total)
+        cvs <- c(sqrt(diag(vc1)[numRegions+1])/
+                   estimate.table$Estimate[numRegions+1],
+                 sqrt(diag(vc2)[numRegions+1])/
+                   estimate.table$Estimate[numRegions+1])
+        df_cvs <- c(length(model$fitted)-length(model$par), df.total)
+
+        # add in group size component if we need to
+        if(!options$group & options$varflag==1){
+          # remove group size component from encounter rate
+          #varcor <- (cvs[2]*estimate.table$Estimate[numRegions+1])^2 -
+          #           sum(estimate.table$Estimate[1:numRegions]^2 *
+          #            (sobs$vars)/sobs$sbar^2)
+          varcor <- diag(vc2)[numRegions+1] -
+                     estimate.table$Estimate[numRegions+1]^2 *
+                     (var(obs$size)/nrow(obs))/mean(obs$size)^2
+
+          cvs[2] <- sqrt(varcor)/estimate.table$Estimate[numRegions+1]
+
+          cvs <- c(cvs, sqrt(var(obs$size)/nrow(obs))/mean(obs$size))
+
+          df_cvs <- c(df_cvs, nrow(obs)-1)
+        }
+        estimate.table$df[numRegions+1] <- sum(cvs^2)^2 / sum((cvs^4)/df_cvs)
       }
     }
 
