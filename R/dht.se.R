@@ -215,6 +215,7 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
     # jll 11/11/04 - changes made in following code using
     # Effort.x (effort per line) rather than previous errant code
     # that used Effort.y (effort per region)
+    if(!options$group) vg <- rep(0, numRegions)
     for(i in 1:numRegions){
       stratum.data <- Nhat.by.sample[as.character(Nhat.by.sample$Region.Label)==
                                      as.character(region.table$Region[i]), ]
@@ -227,16 +228,23 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
 
       if(length(stratum.data$Effort.y) == 1){
         if (options$varflag == 1){
-          vc2[i] <- Ni^2 * (1/stratum.data$n + vars[i]/sbar^2)
+          vc2[i] <- Ni^2 * 1/stratum.data$n
         }else{
-          vc2[i] <- Ni^2 * (1/Ni + vars[i]/sbar^2)
+          vc2[i] <- Ni^2 * 1/Ni
         }
       }else if (options$varflag == 1){
+        # Buckland et al 2001 using n/L
         vc2[i] <- (Ni * Li)^2 * varn(stratum.data$Effort.x,
                                      stratum.data$n, type=options$ervar)/
-                                sum(stratum.data$n)^2 + Ni^2 * vars/sbar^2
+                                sum(stratum.data$n)^2
+
+        if(!options$group){
+          # if we have groups, add in the variance components (when estimating
+          # density/abundance of individuals)
+          vg[i] <- Ni^2 * vars/sbar^2
+        }
       }else{
-        # varflag ==2
+        # Innes et al estimator using N/L
         vc2[i] <- varn(stratum.data$Effort.x/(scale[i] * Li),
                        stratum.data$Nhat/scale[i], type=options$ervar)
       }
@@ -254,6 +262,9 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
     vc2 <- diag(c(vc2, sum(vc2)))
     vc2[1:numRegions, (numRegions + 1)] <- v2
     vc2[(numRegions + 1), 1:numRegions] <- v2
+    if(!options$group & options$varflag==1){
+      vg <- diag(c(vg, sum(vg)))
+    }
   }else if (length(vc2) > 1){
     vc2 <- diag(vc2)
   }else{
@@ -261,6 +272,11 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
   }
 
   vc <- vc1 + vc2
+  # for the Buckland estimator, when we have groups add in the groups
+  # variance component
+  if(!options$group & options$varflag==1){
+    vc <- vc + vg
+  }
 
   # deal with missing values and 0 estimates.
   estimate.table$se <- sqrt(diag(vc))
@@ -298,18 +314,10 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
 
         # add in group size component if we need to
         if(!options$group & options$varflag==1){
-          # remove group size component from encounter rate
-          cvs[2] <- sqrt((cvs[2]*estimate.table$Estimate[i])^2 -
-                     (estimate.table$Estimate[i]^2 *
-                      (sobs$vars[i])/sobs$sbar[i]^2))/
-                     estimate.table$Estimate[i]
           cvs <- c(cvs, sqrt(sobs$vars[i])/sobs$sbar[i])
           df_cvs <- c(df_cvs, sobs$ngroup[i]-1)
         }
-        # NB numerator here is "total CV"^4, so we assume independence,
-        # sum squares, then square again
         estimate.table$df[i] <- estimate.table$cv[i]^4 / sum((cvs^4)/df_cvs)
-#        estimate.table$df[i] <- sum(cvs^2)^2 / sum((cvs^4)/df_cvs)
       }
     }
 
@@ -331,21 +339,12 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
 
         # add in group size component if we need to
         if(!options$group & options$varflag==1){
-          # remove group size component from encounter rate
-          #varcor <- (cvs[2]*estimate.table$Estimate[numRegions+1])^2 -
-          #           sum(estimate.table$Estimate[1:numRegions]^2 *
-          #            (sobs$vars)/sobs$sbar^2)
-          varcor <- diag(vc2)[numRegions+1] -
-                     estimate.table$Estimate[numRegions+1]^2 *
-                     (var(obs$size)/nrow(obs))/mean(obs$size)^2
-
-          cvs[2] <- sqrt(varcor)/estimate.table$Estimate[numRegions+1]
-
-          cvs <- c(cvs, sqrt(var(obs$size)/nrow(obs))/mean(obs$size))
-
-          df_cvs <- c(df_cvs, nrow(obs)-1)
+          cvs <- c(cvs, sqrt(vg[numRegions+1, numRegions+1])/
+                             estimate.table$Estimate[numRegions+1])
+          df_cvs <- c(df_cvs, length(model$fitted)-1)
         }
-        estimate.table$df[numRegions+1] <- sum(cvs^2)^2 / sum((cvs^4)/df_cvs)
+        estimate.table$df[numRegions+1] <- estimate.table$cv[numRegions+1]^4 /
+                                            sum((cvs^4)/df_cvs)
       }
     }
 
