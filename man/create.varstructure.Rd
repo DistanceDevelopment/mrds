@@ -4,7 +4,7 @@
 \alias{create.varstructure}
 \title{Creates structures needed to compute abundance and variance}
 \usage{
-create.varstructure(model, region, sample, obs)
+create.varstructure(model, region, sample, obs, dht.se)
 }
 \arguments{
 \item{model}{fitted ddf object}
@@ -14,6 +14,8 @@ create.varstructure(model, region, sample, obs)
 \item{sample}{sample table}
 
 \item{obs}{table of object #'s and links to sample and region table}
+
+\item{dht.se}{is uncertainty going to be calculated later?}
 }
 \value{
 List with 2 elements: \item{samples }{merged dataframe containing

@@ -503,7 +503,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   }
 
   # Create obs/samples structures
-  vs <- create.varstructure(model, region.table, sample.table, obs.table)
+  vs <- create.varstructure(model, region.table, sample.table, obs.table, se)
   samples <- vs$samples
   obs <- vs$obs
   region.table <- vs$region
@@ -527,7 +527,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   # unclustered popn
   if(!is.null(obs$size)){
     clusters <- tables.dht(TRUE)
-    individuals <- tables.dht(FALSE)
+    individuals <- tables.dht(FALSE )
     Expected.S <- individuals$N$Estimate/clusters$N$Estimate
 
     # This computes the se(E(s)). It essentially uses 3.37 from Ads but in

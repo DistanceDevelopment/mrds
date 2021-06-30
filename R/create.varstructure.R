@@ -20,13 +20,14 @@
 #' @param region region table
 #' @param sample sample table
 #' @param obs table of object #'s and links to sample and region table
+#' @param dht.se is uncertainty going to be calculated later?
 #' @return List with 2 elements: \item{samples }{merged dataframe containing
 #'   region and sample info - one record per sample} \item{obs}{merged
 #'   observation data and links to region and samples}
 #' @note Internal function called by \code{\link{dht}}
 #' @author Jeff Laake
 #' @keywords utility
-create.varstructure <- function(model,region,sample,obs){
+create.varstructure <- function(model, region, sample, obs, dht.se){
 
   # Test to make sure that region labels are unique
   if(length(unique(region$Region.Label))!=length(region$Region.Label)){
@@ -51,7 +52,7 @@ create.varstructure <- function(model,region,sample,obs){
 
   # If some regions have no samples then issue error and stop; also
   # if invalid areas given then issue error and stop
-  if(any(is.na(samples$Sample.Label))){
+  if(dht.se & any(is.na(samples$Sample.Label))){
     stop(paste("Following regions have no samples - ",
         paste(samples$Region.Label[is.na(samples$Sample.Label)],collapse=",")))
   }
