@@ -270,7 +270,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
                                     Nhat.by.sample$Region.Label, sum))
 
     # Create estimate table
-    numRegions <- length(unique(samples$Region.Label))
+    numRegions <- length(unique(region.table$Region.Label))
     if(numRegions > 1){
       estimate.table <- data.frame(
                           Label = c(levels(unique(samples$Region.Label)),
@@ -299,6 +299,15 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     summary.table <- Nhat.by.sample[, c("Region.Label", "Area",
                                         "CoveredArea", "Effort.y")]
     summary.table <- unique(summary.table)
+
+    if(!all(region.table$Region.Label %in% summary.table$Region.Label)){
+      summary.table <- rbind(summary.table,
+                             cbind(region.table[!(region.table$Region.Label %in%
+                                                  summary.table$Region.Label),
+                                                c("Region.Label", "Area")],
+                                   0, 0))
+    }
+
     var.er <- sapply(split(Nhat.by.sample, Nhat.by.sample$Region.Label),
                      function(x) varn(x$Effort.x, x$n, type=options$ervar))
 
@@ -315,9 +324,10 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     summary.table$n <- nobs
     if(group){
       summary.table$k <- tapply(Nhat.by.sample$Sample.Label,
-                                Nhat.by.sample$Region.Label,length)
+                                Nhat.by.sample$Region.Label, length)
+      summary.table$k[is.na(summary.table$CoveredArea)] <- 0
       colnames(summary.table) <- c("Region", "Area", "CoveredArea",
-                                   "Effort", "n","k")
+                                   "Effort", "n", "k")
     }else{
       colnames(summary.table) <- c("Region", "Area", "CoveredArea",
                                    "Effort", "n")

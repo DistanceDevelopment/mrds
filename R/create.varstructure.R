@@ -65,7 +65,6 @@ create.varstructure <- function(model, region, sample, obs, dht.se){
   samples$Label <- paste(samples$Region.Label, samples$Sample.Label, sep="")
   obs$Label <- paste(obs$Region.Label, obs$Sample.Label, sep="")
 
-
   # we only want the following columns from obs:
   #  Label, object, Region.Label, Sample.Label
   # so remove everything else so we don't end up with .x and .ys in the 
@@ -88,21 +87,21 @@ create.varstructure <- function(model, region, sample, obs, dht.se){
   data$Sample.Label.x <- NULL
 
   # Sort regions by label
-  region <- region[order(region$Region.Label),]
+  region <- region[order(region$Region.Label), ]
 
   # Merge with data from model and limit to data appropriate for method
-  data <- merge(data,model$data,by.x="object",by.y="object",sort=FALSE)
+  data <- merge(data, model$data, by.x="object", by.y="object", sort=FALSE)
 
   # observer =1 to avoid problems with merge; this forces abundance 
   #  to always be estimated using observer 1 as the primary
   obs <- 1
-  if(!model$method %in% c("io","io.fi","rem","rem.fi")){
+  if(!model$method %in% c("io", "io.fi", "rem", "rem.fi")){
      if(model$method!="ds"){
-       data <- data[data$observer==obs,]
-       data <- data[data$detected==1,]
+       data <- data[data$observer==obs, ]
+       data <- data[data$detected==1, ]
      }
   }else{
-    data <- data[data$observer==obs,]
+    data <- data[data$observer==obs, ]
   }
 
   # Return vectors and lists for computation
