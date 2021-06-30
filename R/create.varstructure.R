@@ -47,8 +47,8 @@ create.varstructure <- function(model, region, sample, obs, dht.se){
   }
 
   # Merge again but don't use all.y which ignores samples not used
-  samples <- merge(region,sample,by.x="Region.Label",all.x=TRUE)
-  samples <- samples[order(samples$Region.Label,samples$Sample.Label),]
+  samples <- merge(region, sample, by.x="Region.Label", all.x=TRUE)
+  samples <- samples[order(samples$Region.Label, samples$Sample.Label),]
 
   # If some regions have no samples then issue error and stop; also
   # if invalid areas given then issue error and stop
@@ -62,8 +62,9 @@ create.varstructure <- function(model, region, sample, obs, dht.se){
   }
 
   # Create a unique region/sample label in samples and in obs
-  samples$Label <- paste(samples$Region.Label,samples$Sample.Label,sep="")
-  obs$Label <- paste(obs$Region.Label,obs$Sample.Label,sep="")
+  samples$Label <- paste(samples$Region.Label, samples$Sample.Label, sep="")
+  obs$Label <- paste(obs$Region.Label, obs$Sample.Label, sep="")
+
 
   # we only want the following columns from obs:
   #  Label, object, Region.Label, Sample.Label
