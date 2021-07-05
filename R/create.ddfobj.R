@@ -43,8 +43,8 @@ create.ddfobj <- function(model, xmat, meta.data, initial){
   }
 
   if(!ddfobj$type %in% c("gamma", "hn", "hr", "unif", "th1", "th2", "tpn")){
-    stop("Invalid value for detection key function =",ddfobj$type,
-         "  Only hn, hr, gamma, unif, th1, th2 allowed")
+    stop("Invalid value for detection key function =", ddfobj$type,
+         "  Only hn, hr, gamma, unif, th1, th2, tpn allowed")
   }
 
   # Set adjustment function options
@@ -70,9 +70,19 @@ create.ddfobj <- function(model, xmat, meta.data, initial){
       ddfobj$scale <- list(formula="~1")
     }else{
       ddfobj$scale <- list(formula=paste(as.character(modelvalues$formula),
-                                      collapse=""))
+                                         collapse=""))
+      # if we have two-part normal, create the dummy variable for the side
+      # of the apex
+      if(ddfobj$type == "tpn"){
+        if(!grepl("\\.dummy_apex_side", ddfobj$scale[[1]])){
+          ddfobj$scale[[1]] <- paste0(ddfobj$scale[[1]], "+ .dummy_apex_side")
+        }
+        hh <- hist(xmat$distance, plot=FALSE)
+        xmat$.dummy_apex_side <- as.factor(xmat$distance < hh$mids[which.max(hh$count)])
+      }
     }
   }
+
 
   if(!is.null(modelvalues$shape.formula)){
     ddfobj$shape <- list(formula=paste(as.character(modelvalues$shape.formula),

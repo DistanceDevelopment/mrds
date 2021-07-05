@@ -52,7 +52,8 @@ setinitial.ds <- function(ddfobj, width, initial, point, left){
 
     # Set shape parameter values in a very cheesey way...
     if(!is.null(ddfobj$shape)){
-      if(ftype=="tpn"){
+      if(ftype == "tpn"){
+        # two-part normal: use the shape for the "mu" parameter: the apex
         # reasonable estimate for mu is where the peak is in the histogram
         hh <- hist(dmat$distance, plot=FALSE)
         initialvalues$shape <- log(hh$mids[which.max(hh$count)])

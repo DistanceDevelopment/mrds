@@ -22,13 +22,18 @@ print.summary.ds <- function (x,...){
     cat("Distance range         : ", x$left, " - ",x$width,"\n")
   }
   cat("AIC                    : ", x$aic, "\n")
-  cat("\nDetection function:\n",model.description(x),"\n")
+  cat("\nDetection function:\n", model.description(x), "\n")
   cat("\nDetection function parameters", "\n")
   cat("Scale coefficient(s): ", "\n")
   print(x$coeff$key.scale)
 
   if(x$key %in% c("gamma","hr","th1","th2")) {
     cat("\nShape coefficient(s): ", "\n")
+    print(x$coeff$key.shape)
+  }
+
+  if(x$key == "tpn") {
+    cat("\nlog apex: ", "\n")
     print(x$coeff$key.shape)
   }
 

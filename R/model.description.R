@@ -7,7 +7,8 @@ model.description <- function(model){
                 hr   = "Hazard-rate",
                 unif = "Uniform",
                 th1  = "Threshold 1",
-                th2  = "Threshold 2")
+                th2  = "Threshold 2",
+                tpn  = "Two-part normal")
 
   mod.str <- paste(key, "key function")
   if(!is.null(model$adjustment)){
@@ -15,13 +16,13 @@ model.description <- function(model){
                          cos="cosine",
                          herm="Hermite polynomial",
                          poly="simple polynomial")
-    mod.str <- paste(mod.str,"with",adj.series,"adjustment term")
+    mod.str <- paste(mod.str, "with", adj.series, "adjustment term")
 
     adj.order <- model$adjustment$order
     if(length(adj.order)>1){
-      mod.str <- paste(mod.str,"s",sep="")
+      mod.str <- paste(mod.str, "s", sep="")
     }
-    mod.str <- paste(mod.str,"of order",paste(adj.order,collapse=","))
+    mod.str <- paste(mod.str, "of order", paste(adj.order, collapse=", "))
   }
 
   return(mod.str)

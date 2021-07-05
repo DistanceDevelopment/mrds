@@ -34,6 +34,9 @@ setbounds <- function(lowerbounds, upperbounds, initialvalues, ddfobj){
       lowerbounds[1] <- 0
     }else if(ddfobj$type == "gamma"){
       lowerbounds[1] <- -300
+    }else if(ddfobj$type == "tpn"){
+      lowerbounds <- c(0, rep(-Inf, length(initialvalues)-1))
+      upperbounds <- rep(Inf, length(initialvalues))
     }
   }else{
     if(length(lowerbounds)!=length(initialvalues))

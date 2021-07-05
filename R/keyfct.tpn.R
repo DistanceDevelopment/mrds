@@ -1,9 +1,22 @@
 #' Two-part normal key function
 #'
 #' The two-part normal detection function of Becker and Christ (2015). Either
-#' side of an estimated mode in the distance histogram has a half-normal
+#' side of an estimated apex in the distance histogram has a half-normal
 #' distribution, with differing scale parameters. Covariates may be included
 #' but affect both sides of the function.
+#'
+#' Two-part normal models have 2 important parameters:
+#' \itemize{
+#'  \item The apex, which estimates the peak in the detection function (where
+#'  g(x)=1). The log apex is reported in \code{summary} results, so taking the
+#'  exponential of this value should give the peak in the plotted function (see
+#'  examples).
+#'  \item The parameter that controls the difference between the sides
+#'  \code{.dummy_apex_side}, which is automatically added to the formula for a
+#'  two-part normal model. One can add interactions with this variable as
+#'  normal, but don't need to add the main effect as it will be automatically
+#'  added.
+#' }
 #'
 #' @param distance perpendicular distance vector
 #' @param ddfobj meta object containing parameters, design matrices etc
@@ -26,17 +39,24 @@ keyfct.tpn <- function(distance, ddfobj){
   # decide which side each observation lies on
   ind <- distance < mu
 
-  # extract the design matrix for the scale parameter
-  scale.dm <- ddfobj$scale$dm
+
   # if we have just one element (e.g., when integrating) then fill this
   # out to have same # rows as distance
-  if(nrow(scale.dm)==1){
+  if(nrow(ddfobj$scale$dm)==1){
+    scale.dm <- ddfobj$scale$dm
     scale.dm <- scale.dm[rep(1, length(distance)), , drop=FALSE]
+    scale.dm[, which(colnames(scale.dm)==".dummy_apex_sideTRUE")] <- as.numeric(!ind)
+  }else{
+    # extract the design matrix
+    xmat <- ddfobj$xmat
+    xmat$.dummy_apex_side <- !ind
+    scale.dm <- setcov(xmat, ddfobj$scale$formula)
   }
 
   # dummy parameter that gives the other side of the detection function
   # fix the design matrix to have which side each distance is on
-  scale.dm[, which(colnames(scale.dm)=="dummyTRUE")] <- as.numeric(!ind)
+  #scale.dm[, which(colnames(scale.dm)==".dummy_apex_sideTRUE")] <-
+  #  as.numeric(!ind)
 
   # return vector
   ret <- rep(NA, length(distance))
