@@ -33,24 +33,19 @@
 #' @noRd
 keyfct.tpn <- function(distance, ddfobj){
 
-  # get mu first, the centre of the function
-  apex <- exp(ddfobj$shape$parameters)
 
-  # decide which side each observation lies on
-  ind <- distance < apex
+  # decide which side of the apex each observation lies on
+  apex <- exp(ddfobj$shape$parameters)
+  ind <- distance > apex
 
   # if we have just one element (e.g., when integrating) then fill this
   # out to have same # rows as distance
+  xmat <- ddfobj$xmat
   if(nrow(ddfobj$scale$dm)==1){
-    scale.dm <- ddfobj$scale$dm
-    scale.dm <- scale.dm[rep(1, length(distance)), , drop=FALSE]
-    scale.dm[, which(colnames(scale.dm)==".dummy_apex_sideTRUE")] <- as.numeric(!ind)
-  }else{
-    # extract the design matrix
-    xmat <- ddfobj$xmat
-    xmat$.dummy_apex_side <- !ind
-    scale.dm <- setcov(xmat, ddfobj$scale$formula)
+    xmat <- xmat[rep(1, length(distance)), , drop=FALSE]
   }
+  xmat$.dummy_apex_side <- factor(!ind, c(TRUE, FALSE))
+  scale.dm <- setcov(xmat, ddfobj$scale$formula)
 
   # dummy parameter that gives the other side of the detection function
   # fix the design matrix to have which side each distance is on
@@ -60,26 +55,26 @@ keyfct.tpn <- function(distance, ddfobj){
   # return vector
   ret <- rep(NA, length(distance))
 
-  # find values for distances >= apex
+  # find values for distances > apex
   if(sum(ind)>0){
-    # get scale parameters
-    left_scale <- scalevalue(ddfobj$scale$parameters,
-                             scale.dm[ind, , drop=FALSE])
-    # evaluate normal density
-    left_m <- (distance[ind] - apex)
-    left_vals <- exp( -((left_m/ (sqrt(2) * left_scale))^2) )
-    # fill-in the correct values
-    ret[ind] <- left_vals
+    right_scale <- scalevalue(ddfobj$scale$parameters,
+                              scale.dm[ind, , drop=FALSE])
+    right_m <- (distance[ind] - apex)
+    right_vals <- exp( -((right_m/ (sqrt(2) * right_scale))^2) )
+    ret[ind] <- right_vals
   }
 
-  # find values for distances < apex
-  # see above for meaning
+
+  # find values for distances <= apex
   if(sum(!ind)>0){
-    right_scale <- scalevalue(ddfobj$scale$parameters,
-                              scale.dm[!ind, , drop=FALSE])
-    right_m <- (distance[!ind] - apex)
-    right_vals <- exp( -((right_m/ (sqrt(2) * right_scale))^2) )
-    ret[!ind] <- right_vals
+    # get scale parameters
+    left_scale <- scalevalue(ddfobj$scale$parameters,
+                             scale.dm[!ind, , drop=FALSE])
+    # evaluate normal density
+    left_m <- (distance[!ind] - apex)
+    left_vals <- exp( -((left_m/ (sqrt(2) * left_scale))^2) )
+    # fill-in the correct values
+    ret[!ind] <- left_vals
   }
 
   return(ret)

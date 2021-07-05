@@ -78,16 +78,16 @@ create.ddfobj <- function(model, xmat, meta.data, initial){
           ddfobj$scale[[1]] <- paste0(ddfobj$scale[[1]], "+ .dummy_apex_side")
         }
         hh <- hist(xmat$distance, plot=FALSE)
-        xmat$.dummy_apex_side <- factor(xmat$distance < hh$mids[which.max(hh$count)], levels=c(FALSE, TRUE))
+        xmat$.dummy_apex_side <- factor(xmat$distance > hh$mids[which.max(hh$count)], levels=c(TRUE, FALSE))
+#        xmat$.dummy_apex_side <- factor(xmat$distance > hh$mids[which.max(hh$count)])
       }
     }
   }
 
-
   if(!is.null(modelvalues$shape.formula)){
     ddfobj$shape <- list(formula=paste(as.character(modelvalues$shape.formula),
                                        collapse=""))
-  }else if(ddfobj$type %in% c("hr", "gamma", "th1", "th2")){
+  }else if(ddfobj$type %in% c("hr", "gamma", "th1", "th2", "tpn")){
     ddfobj$shape <- list(formula=~1)
   }else{
     ddfobj$shape <- NULL

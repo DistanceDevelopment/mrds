@@ -157,7 +157,9 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
     }
 
     # now integrate for each observation
+    xmatsave <- ddfobj$xmat
     for(i in 1:nrow(x)){
+      ddfobj$xmat <- xmatsave[i, , drop=FALSE]
       res[i] <- integrate(dpdf, lower=x[i, 1], upper=x[i, 2], width=width[i],
                           ddfobj=ddfobj, select=select[i], index=index[i],
                           rel.tol=1e-7, standardize=standardize,
