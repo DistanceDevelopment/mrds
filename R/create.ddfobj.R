@@ -78,7 +78,7 @@ create.ddfobj <- function(model, xmat, meta.data, initial){
           ddfobj$scale[[1]] <- paste0(ddfobj$scale[[1]], "+ .dummy_apex_side")
         }
         hh <- hist(xmat$distance, plot=FALSE)
-        xmat$.dummy_apex_side <- as.factor(xmat$distance < hh$mids[which.max(hh$count)])
+        xmat$.dummy_apex_side <- factor(xmat$distance < hh$mids[which.max(hh$count)], levels=c(FALSE, TRUE))
       }
     }
   }

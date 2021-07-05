@@ -34,11 +34,10 @@
 keyfct.tpn <- function(distance, ddfobj){
 
   # get mu first, the centre of the function
-  mu <- exp(ddfobj$shape$parameters)
+  apex <- exp(ddfobj$shape$parameters)
 
   # decide which side each observation lies on
-  ind <- distance < mu
-
+  ind <- distance < apex
 
   # if we have just one element (e.g., when integrating) then fill this
   # out to have same # rows as distance
@@ -61,24 +60,24 @@ keyfct.tpn <- function(distance, ddfobj){
   # return vector
   ret <- rep(NA, length(distance))
 
-  # find values for distances >= mu
+  # find values for distances >= apex
   if(sum(ind)>0){
     # get scale parameters
     left_scale <- scalevalue(ddfobj$scale$parameters,
                              scale.dm[ind, , drop=FALSE])
     # evaluate normal density
-    left_m <- (distance[ind] - mu)
+    left_m <- (distance[ind] - apex)
     left_vals <- exp( -((left_m/ (sqrt(2) * left_scale))^2) )
     # fill-in the correct values
     ret[ind] <- left_vals
   }
 
-  # find values for distances < mu
+  # find values for distances < apex
   # see above for meaning
   if(sum(!ind)>0){
     right_scale <- scalevalue(ddfobj$scale$parameters,
                               scale.dm[!ind, , drop=FALSE])
-    right_m <- (distance[!ind] - mu)
+    right_m <- (distance[!ind] - apex)
     right_vals <- exp( -((right_m/ (sqrt(2) * right_scale))^2) )
     ret[!ind] <- right_vals
   }
