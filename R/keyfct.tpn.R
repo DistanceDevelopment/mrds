@@ -1,4 +1,9 @@
-#' Two part normal key function
+#' Two-part normal key function
+#'
+#' The two-part normal detection function of Becker and Christ (2015). Either
+#' side of an estimated mode in the distance histogram has a half-normal
+#' distribution, with differing scale parameters. Covariates may be included
+#' but affect both sides of the function.
 #'
 #' @param distance perpendicular distance vector
 #' @param ddfobj meta object containing parameters, design matrices etc
@@ -18,7 +23,6 @@ keyfct.tpn <- function(distance, ddfobj){
   # get mu first, the centre of the function
   mu <- exp(ddfobj$shape$parameters)
 
-
   # decide which side each observation lies on
   ind <- distance < mu
 
@@ -27,7 +31,7 @@ keyfct.tpn <- function(distance, ddfobj){
   # if we have just one element (e.g., when integrating) then fill this
   # out to have same # rows as distance
   if(nrow(scale.dm)==1){
-    scale.dm <- scale.dm[rep(1, length(distance)), ]
+    scale.dm <- scale.dm[rep(1, length(distance)), , drop=FALSE]
   }
 
   # dummy parameter that gives the other side of the detection function
