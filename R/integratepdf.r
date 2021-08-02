@@ -72,25 +72,28 @@ integratepdf <- function(ddfobj, select, width, int.range, standardize=TRUE,
     # want them within the rows we selected to compute for.
     # Know from above that int.range has either nrow(data) rows or
     #  length(index) rows.
-    if(is.null(ddfobj$shape)){
-      newdat <- cbind(ddfobj$scale$dm[index, , drop=FALSE], int.range)
+    if(ddfobj$type=="tpn"){
+      ind <- 1:nrow(ddfobj$shape$dm[index, , drop=FALSE])
     }else{
-      if(ncol(ddfobj$shape$dm)>1){
-        scale_dm <- ddfobj$shape$dm[index, , drop=FALSE]
-        scale_dm[, "(Intercept)"] <- NULL
+      if(is.null(ddfobj$shape)){
+        newdat <- cbind(ddfobj$scale$dm[index, , drop=FALSE], int.range)
       }else{
-        scale_dm <- NULL
+        if(ncol(ddfobj$shape$dm)>1){
+          scale_dm <- ddfobj$shape$dm[index, , drop=FALSE]
+          scale_dm[, "(Intercept)"] <- NULL
+        }else{
+          scale_dm <- NULL
+        }
+        newdat <- cbind(ddfobj$scale$dm[index, , drop=FALSE],
+                        scale_dm, int.range)
       }
-      newdat <- cbind(ddfobj$scale$dm[index, , drop=FALSE],
-                      scale_dm, int.range)
+      u.rows <- mgcv::uniquecombs(newdat)
+      uu.index <- sort(unique(attr(u.rows, "index")))
+      u.index <- attr(u.rows, "index")
+
+      # generate the indices that we want to calculate integrals for
+      ind <- match(uu.index, u.index)
     }
-    u.rows <- mgcv::uniquecombs(newdat)
-    uu.index <- sort(unique(attr(u.rows, "index")))
-    u.index <- attr(u.rows, "index")
-
-    # generate the indices that we want to calculate integrals for
-    ind <- match(uu.index, u.index)
-
     if(length(width)==1){
       width <- rep(width, nrow(int.range))
     }
@@ -98,15 +101,18 @@ integratepdf <- function(ddfobj, select, width, int.range, standardize=TRUE,
       left <- rep(left, nrow(int.range))
     }
 
-
     # calculate the integrals
     ints <- gstdint(int.range[ind, , drop=FALSE], ddfobj=ddfobj,
                     index=index[ind], select=NULL, width=width[ind],
                     standardize=standardize, point=point,
                     stdint=FALSE, left=left[ind], doeachint=doeachint)
 
-    ## now rebuild the integrals and populate the return vector
-    integrals <- ints[attr(u.rows, "index")]
+    if(ddfobj$type=="tpn"){
+      integrals <- ints
+    }else{
+      ## now rebuild the integrals and populate the return vector
+      integrals <- ints[attr(u.rows, "index")]
+    }
   }
   return(integrals)
 }

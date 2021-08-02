@@ -33,10 +33,9 @@
 #' @noRd
 keyfct.tpn <- function(distance, ddfobj){
 
-
   # decide which side of the apex each observation lies on
   apex <- exp(ddfobj$shape$parameters)
-  ind <- distance > apex
+  ind <- distance < apex
 
   # if we have just one element (e.g., when integrating) then fill this
   # out to have same # rows as distance
@@ -44,37 +43,32 @@ keyfct.tpn <- function(distance, ddfobj){
   if(nrow(ddfobj$scale$dm)==1){
     xmat <- xmat[rep(1, length(distance)), , drop=FALSE]
   }
-  xmat$.dummy_apex_side <- factor(!ind, c(TRUE, FALSE))
+  # following code convention from Earl
+  xmat$.dummy_apex_side <- as.numeric(!ind)
   scale.dm <- setcov(xmat, ddfobj$scale$formula)
-
-  # dummy parameter that gives the other side of the detection function
-  # fix the design matrix to have which side each distance is on
-  #scale.dm[, which(colnames(scale.dm)==".dummy_apex_sideTRUE")] <-
-  #  as.numeric(!ind)
 
   # return vector
   ret <- rep(NA, length(distance))
 
   # find values for distances > apex
-  if(sum(ind)>0){
+  if(sum(!ind)>0){
     right_scale <- scalevalue(ddfobj$scale$parameters,
-                              scale.dm[ind, , drop=FALSE])
-    right_m <- (distance[ind] - apex)
+                              scale.dm[!ind, , drop=FALSE])
+    right_m <- (distance[!ind] - apex)
     right_vals <- exp( -((right_m/ (sqrt(2) * right_scale))^2) )
-    ret[ind] <- right_vals
+    ret[!ind] <- right_vals
   }
 
-
   # find values for distances <= apex
-  if(sum(!ind)>0){
+  if(sum(ind)>0){
     # get scale parameters
     left_scale <- scalevalue(ddfobj$scale$parameters,
-                             scale.dm[!ind, , drop=FALSE])
+                             scale.dm[ind, , drop=FALSE])
     # evaluate normal density
-    left_m <- (distance[!ind] - apex)
+    left_m <- (distance[ind] - apex)
     left_vals <- exp( -((left_m/ (sqrt(2) * left_scale))^2) )
     # fill-in the correct values
-    ret[!ind] <- left_vals
+    ret[ind] <- left_vals
   }
 
   return(ret)
