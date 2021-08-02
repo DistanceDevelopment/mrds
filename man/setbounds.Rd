@@ -4,7 +4,7 @@
 \alias{setbounds}
 \title{Set parameter bounds}
 \usage{
-setbounds(lowerbounds, upperbounds, initialvalues, ddfobj)
+setbounds(lowerbounds, upperbounds, initialvalues, ddfobj, width, left)
 }
 \arguments{
 \item{lowerbounds}{vector of lower bounds}
@@ -14,6 +14,10 @@ setbounds(lowerbounds, upperbounds, initialvalues, ddfobj)
 \item{initialvalues}{vector of initial parameter estimates}
 
 \item{ddfobj}{distance detection function object}
+
+\item{width}{truncation distance}
+
+\item{left}{left truncation distance}
 }
 \value{
 \item{lower}{vector of lower bounds} \item{upper}{vector of upper
