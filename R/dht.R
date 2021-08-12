@@ -322,16 +322,11 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     nobs <- as.vector(by(bysample.table$n, bysample.table$Region, sum))
     nobs[is.na(nobs)] <- 0
     summary.table$n <- nobs
-    if(group){
-      summary.table$k <- tapply(Nhat.by.sample$Sample.Label,
-                                Nhat.by.sample$Region.Label, length)
-      summary.table$k[is.na(summary.table$CoveredArea)] <- 0
-      colnames(summary.table) <- c("Region", "Area", "CoveredArea",
-                                   "Effort", "n", "k")
-    }else{
-      colnames(summary.table) <- c("Region", "Area", "CoveredArea",
-                                   "Effort", "n")
-    }
+    summary.table$k <- tapply(Nhat.by.sample$Sample.Label,
+                              Nhat.by.sample$Region.Label, length)
+    summary.table$k[is.na(summary.table$CoveredArea)] <- 0
+    colnames(summary.table) <- c("Region", "Area", "CoveredArea",
+                                 "Effort", "n", "k")
 
     if(numRegions > 1){
       summary.table <- data.frame(Region=c(levels(summary.table$Region),
