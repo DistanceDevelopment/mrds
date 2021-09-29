@@ -163,7 +163,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                   2) + length(model[[2]]$adj.order)
   if(meta.data$binned){
     if((length(breaks)-1) < npars){
-      stop("More parameters to estimate than distance bins")
+      stop("Number of parameters to estimate exceed number of distance bins minus 1")
     }
   }else{
     if(length(unique(data$distance)) < npars){
