@@ -40,7 +40,7 @@ test_that("errors thrown for invalid models",{
                    adj.order = c(2, 3, 4), adj.scale = "width"), data = egdata,
                    method = "ds", meta.data = list(binned=TRUE,
                    breaks=0:4)),
-               "More parameters to estimate than distance bins")
+               "Number of parameters to estimate exceed number of distance bins minus 1")
 
   obs <- data.frame(distance=rep(0, 17), object=1:17, observer=1)
   expect_error(a<-ddf(dsmodel = ~mcds(key = "hr", formula = ~1),
