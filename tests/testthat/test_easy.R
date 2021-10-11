@@ -47,5 +47,12 @@ test_that("errors thrown for invalid models",{
                    data = obs, method = "ds", meta.data = list(width=2)),
                "More parameters to estimate than unique distances")
 
+  # failure to specify breaks when using binned data
+  obs2 <- obs
+  obs2 <- create.bins(obs, c(0,1,2,3,4))
+  expect_error(a<-ddf(dsmodel = ~mcds(key = "hr", formula = ~1),
+                      data = obs2, method = "ds",
+                      meta.data = list(width=4, binned=TRUE)),
+               "breaks must be set in meta.data for binned data")
 })
 
