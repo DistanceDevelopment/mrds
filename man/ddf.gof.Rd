@@ -68,10 +68,6 @@ differences between line and points, since there may be many smaller
 differences that we want to take into account rather than looking for one
 large deviation. Its null hypothesis is the same, but the statistic it uses
 is the sum of the deviations from each of the point to the line.
-}
-\section{Details}{
-
-
 Note that a bootstrap procedure is required for the Kolmogorov-Smirnov test
 to ensure that the p-values from the procedure are correct as the we are
 comparing the cumulative distribution function (CDF) and empirical
@@ -79,8 +75,9 @@ distribution function (EDF) and we have estimated the parameters of the
 detection function. The \code{nboot} parameter controls the number of
 bootstraps to use. Set to \code{0} to avoid computing bootstraps (much
 faster but with no Kolmogorov-Smirnov results, of course).
-}
 
+One can change the precision of printed values by using the \code{\link{print.ddf.gof}} method's `digits` argument.
+}
 \seealso{
 \code{\link{qqplot.ddf}}
 }

@@ -2,6 +2,8 @@ mrds 2.2.6
 ----------
 
 * Individuals summary table for dht now includes k (number of transects)
+* Add effective detection radius (EDR) and its uncertainty to summary output
+* Change default rounding of chi-squared test tables. This can be customized using print(ddf.gof(...), digits=?) for e.g., printing with knitr::kable
 
 mrds 2.2.5
 ----------

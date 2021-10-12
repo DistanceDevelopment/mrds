@@ -4,10 +4,12 @@
 \alias{print.ddf.gof}
 \title{Prints results of goodness of fit tests for detection functions}
 \usage{
-\method{print}{ddf.gof}(x, ...)
+\method{print}{ddf.gof}(x, digits = 3, ...)
 }
 \arguments{
 \item{x}{result of call to \code{\link{ddf.gof}}}
+
+\item{digits}{number of digits to round chi-squared table values to}
 
 \item{\dots}{unused unspecified arguments for generic print}
 }

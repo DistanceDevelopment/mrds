@@ -6,18 +6,21 @@
 #' @method print ddf.gof
 #' @param x result of call to \code{\link{ddf.gof}}
 #' @param \dots unused unspecified arguments for generic print
+#' @param digits number of digits to round chi-squared table values to
 #' @export
 #' @return None
 #' @author Jeff Laake
 #' @seealso \code{\link{ddf.gof}}
 #' @keywords utility
-print.ddf.gof <- function(x,...){
+print.ddf.gof <- function(x, digits=3, ...){
 
-  chitable <- function(observed, expected){
+  chitable <- function(observed, expected, digits){
     x <- rbind(observed, expected, (observed-expected)^2/expected)
     x <- cbind(x, apply(x, 1, sum))
     colnames(x)[dim(x)[2]] <- "Total"
     rownames(x) <- c("Observed", "Expected", "Chisquare")
+    x <- as.data.frame(round(x, digits=digits))
+    x <- format.data.frame(x, scientific=FALSE)
     return(x)
   }
 
@@ -31,11 +34,11 @@ print.ddf.gof <- function(x,...){
       cat("\nDistance sampling component:\n")
     }
 
-    print(chitable(gof$chisquare$chi1$observed,gof$chisquare$chi1$expected))
+    print(chitable(gof$chisquare$chi1$observed, gof$chisquare$chi1$expected, digits))
 
     if(!is.na(gof$chisquare$chi1$p)){
-      cat(paste("\nP = ",format(gof$chisquare$chi1$p,digits=5),
-                " with ",gof$chisquare$chi1$df," degrees of freedom\n",sep=""))
+      cat(paste("\nP = ", format(gof$chisquare$chi1$p, digits=5),
+                " with ", gof$chisquare$chi1$df," degrees of freedom\n",sep=""))
     }else{
       cat("\nNo degrees of freedom for test\n")
     }

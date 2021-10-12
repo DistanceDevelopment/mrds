@@ -25,8 +25,6 @@
 #' large deviation. Its null hypothesis is the same, but the statistic it uses
 #' is the sum of the deviations from each of the point to the line.
 #
-#' @section Details:
-#'
 #' Note that a bootstrap procedure is required for the Kolmogorov-Smirnov test
 #' to ensure that the p-values from the procedure are correct as the we are
 #' comparing the cumulative distribution function (CDF) and empirical
@@ -34,6 +32,8 @@
 #' detection function. The \code{nboot} parameter controls the number of
 #' bootstraps to use. Set to \code{0} to avoid computing bootstraps (much
 #' faster but with no Kolmogorov-Smirnov results, of course).
+#'
+#' One can change the precision of printed values by using the \code{\link{print.ddf.gof}} method's \code{digits} argument.
 #'
 #' @aliases ddf.gof gof.io gof.io.fi gof.trial gof.trial.fi gof.rem gof.rem.fi
 #' @export
@@ -54,8 +54,6 @@
 #' @keywords utility
 ddf.gof <- function(model, breaks=NULL, nc=NULL, qq=TRUE, nboot=100, ks=FALSE,
                     ...){
-  # Functions Used: gof.ds, gof.io, gof.io.fi, gof.trial,
-  #                 gof.trial.fi, qqplot.df
 
   # if we have a Distance object rather than mrds, use that
   if(all(class(model)=="dsmodel")){
