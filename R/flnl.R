@@ -60,13 +60,13 @@ flnl <- function(fpar, ddfobj, misc.options, fitting="all"){
   }
 
   #  compute total negative log-likelihood
-  lnl <- sum(flpt.lnl(fpar, ddfobj, misc.options))
+  nll <- sum(flpt.lnl(fpar, ddfobj, misc.options))
 
   # If iteration results are printed, output
   # log-likelihood and parameter values
   if(misc.options$showit >= 3){
     cat("par = ", fpar,"\n")
-    cat("lt lnl = ", lnl,   "\n")
+    cat("nll = ", nll,   "\n")
   }
-  return(lnl)
+  return(nll)
 }

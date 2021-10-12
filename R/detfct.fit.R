@@ -145,7 +145,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
           if(showit >= 2){
             cat("DEBUG: iteration", paste(iter, metaiter, sep="."),
                 ":\n       Converge   =", lt$converge,
-                "\n       lnl        =", lt$value,
+                "\n       nll        =", lt$value,
                 "\n       parameters =", paste(round(lt$par, 7), collapse=", "),
                 "\n")
           }
@@ -196,7 +196,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
     cat("\nDEBUG: Convergence!",
         "\n       Iteration ", paste(iter, metaiter, sep="."),
         "\n       Converge   =", lt$converge,
-        "\n       lnl        =", lt$value,
+        "\n       nll        =", lt$value,
         "\n       parameters =", paste(round(lt$par, 7), collapse=", "), "\n")
   }
 

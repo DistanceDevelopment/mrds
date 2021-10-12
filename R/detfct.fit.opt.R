@@ -339,7 +339,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     # Print debug information
     if(showit>=2){
       cat("DEBUG: Converge   =", lt$conv, "(", fitting, ")\n",
-          "      lnl        =", lt$value,"\n",
+          "      nll        =", lt$value,"\n",
           "      parameters =", paste(round(lt$par, 7), collapse=", "), "\n")
     }
 
