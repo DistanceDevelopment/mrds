@@ -33,6 +33,11 @@ print.summary.ds <- function (x, ...){
     print(x$coeff$key.shape)
   }
 
+  if(x$key == "tpn") {
+    cat("\nlog apex: ", "\n")
+    print(x$coeff$key.shape)
+  }
+
   if (!is.null(x$coeff$adj.parm)) {
      cat("\nAdjustment term coefficient(s): ", "\n")
      print(x$coeff$adj.parm)

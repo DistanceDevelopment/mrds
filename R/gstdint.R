@@ -134,6 +134,31 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
     }
 
     return(integrals)
+
+  }else if(ddfobj$type=="tpn" & is.null(ddfobj$adjustment) & !doeachint){
+
+    apex <- exp(ddfobj$shape$parameters)
+
+    # left key
+    ddfobj$xmat$.dummy_apex_side <- 0
+    left.scale.dm <- setcov(ddfobj$xmat, ddfobj$scale$formula)
+    left.scale <- scalevalue(ddfobj$scale$parameters, left.scale.dm)
+    # right key
+    ddfobj$xmat$.dummy_apex_side <- 1
+    right.scale.dm <- setcov(ddfobj$xmat, ddfobj$scale$formula)
+    right.scale <- scalevalue(ddfobj$scale$parameters, right.scale.dm)
+
+    int1 <- int2 <- left.scale*0
+
+    for(i in 1:length(int1)){
+      int1[i] <- left.scale[i]*(pnorm(apex, mean=apex, sd=left.scale[i]) -
+                                pnorm(left[i], mean=apex, sd=left.scale[i]))
+      int2[i] <- right.scale[i]*(pnorm(width[i], mean=apex, sd=right.scale[i]) -
+                                 pnorm(apex, mean=apex, sd=right.scale[i]))
+    }
+    int <- int1+int2
+
+    return(sqrt(pi*2)/(width-left)*int)
   }else{
     # loop over the integration ranges, calculating integrals
     res <- rep(NA, nrow(x))
@@ -157,7 +182,9 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
     }
 
     # now integrate for each observation
+    xmatsave <- ddfobj$xmat
     for(i in 1:nrow(x)){
+      ddfobj$xmat <- xmatsave[i, , drop=FALSE]
       res[i] <- integrate(dpdf, lower=x[i, 1], upper=x[i, 2], width=width[i],
                           ddfobj=ddfobj, select=select[i], index=index[i],
                           rel.tol=1e-7, standardize=standardize,

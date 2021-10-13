@@ -7,11 +7,14 @@
 #' @param upperbounds vector of upper bounds
 #' @param initialvalues vector of initial parameter estimates
 #' @param ddfobj distance detection function object
+#' @param width truncation distance
+#' @param left left truncation distance
 #' @return \item{lower}{vector of lower bounds} \item{upper}{vector of upper
 #'   bounds} \item{setlower}{logical indicating whether user set lower bounds}
 #'   \item{setupper}{logical indicating whether user set upper bounds}
 #' @author Jeff Laake
-setbounds <- function(lowerbounds, upperbounds, initialvalues, ddfobj){
+setbounds <- function(lowerbounds, upperbounds, initialvalues, ddfobj, width,
+                      left){
 
   # Set values of bounds and check lengths of any user-specified values
   if(!any(is.na(lowerbounds))){
@@ -34,6 +37,10 @@ setbounds <- function(lowerbounds, upperbounds, initialvalues, ddfobj){
       lowerbounds[1] <- 0
     }else if(ddfobj$type == "gamma"){
       lowerbounds[1] <- -300
+    }else if(ddfobj$type == "tpn"){
+      #lowerbounds <- c(log(left), rep(-Inf, length(initialvalues)-1))
+      #upperbounds <- c(log(width), rep(Inf, length(initialvalues)-1))
+      lowerbounds[1] <- log(left)
     }
   }else{
     if(length(lowerbounds)!=length(initialvalues))
@@ -44,6 +51,9 @@ setbounds <- function(lowerbounds, upperbounds, initialvalues, ddfobj){
     upperbounds <- apply(matrix(c(initialvalues + .5*abs(initialvalues),
                                   initialvalues + 1),
                                   byrow=FALSE, ncol=2), 1, max)
+    if(ddfobj$type == "tpn"){
+      upperbounds[1] <- log(width)
+    }
   }else{
     if(length(upperbounds) != length(initialvalues)){
       stop(paste("Error: incorrect number of values for upperbounds given =",

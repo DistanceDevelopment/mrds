@@ -249,7 +249,7 @@ predict.ds <- function(object, newdata=NULL, compute=FALSE, int.range=NULL,
     # else
     int1 <- integratepdf(ddfobj, select=rep(TRUE, nrow(ddfobj$xmat)),
                          width=width, int.range=int.range, standardize=TRUE,
-                         point=point, left=left, doeachint=TRUE)
+                         point=point, left=left)
 
     # do the switcheroo and pad with NAs where necessary
     if(exists("naind")){

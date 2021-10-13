@@ -47,22 +47,22 @@ mcds <- function(formula=NULL, key=NULL, adj.series=NULL, adj.order=c(NULL),
     }
   }
 
-  key <- match.arg(key,c("hn","hr","unif","gamma","th1","th2"))
-  if(key%in%c("hn","unif")){
+  key <- match.arg(key, c("hn", "hr", "unif", "gamma", "th1", "th2", "tpn"))
+  if(key%in%c("hn", "unif")){
     shape.formula <- NULL
   }
 
   # What to do if we have adjustment terms
   if(!is.null(adj.series)){
-    adj.series <- match.arg(adj.series,c("cos","herm","poly"))
-    adj.scale <- match.arg(adj.scale,c("width","scale"))
+    adj.series <- match.arg(adj.series, c("cos", "herm", "poly"))
+    adj.scale <- match.arg(adj.scale, c("width", "scale"))
     if(key=="unif" ){
       if(adj.scale=="scale"){
         message("Setting adj.scale to width for uniform key\n")
       }
       adj.scale <- "width"
     }
-    adj.check.order(adj.series,adj.order,key)
+    adj.check.order(adj.series, adj.order, key)
   }
 
   return(list(fct           = "mcds",

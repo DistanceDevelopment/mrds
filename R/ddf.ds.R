@@ -171,7 +171,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                      ddfobj$adjustment$parameters)
   if(!is.null(initialvalues)){
     bounds <- setbounds(control$lowerbounds, control$upperbounds,
-                        initialvalues, ddfobj)
+                        initialvalues, ddfobj, meta.data$width, meta.data$left)
   }else{
     bounds <- NULL
   }
