@@ -20,27 +20,27 @@
 flt.var <- function(ddfobj, misc.options){
 
   fpar1 <- getpar(ddfobj)
-  fpar <- fpar1
   parmat <- NULL
 
   #   Compute first partial (numerically) of log(f(y)) for each observation
   #   for each parameter and store in parmat (n by length(fpar))
-  for(i in seq_along(fpar)){
-    deltap <- .0001*fpar1[i]
-    if(deltap==0) deltap <- 0.0001
-    fpar[i] <- fpar1[i]- deltap
-    x1 <- -flpt.lnl(fpar, ddfobj,misc.options)
-    fpar[i] <- fpar1[i]+deltap
-    x2 <- -flpt.lnl(fpar, ddfobj,misc.options)
-    parmat <- cbind(parmat,(x2-x1)/(2*deltap))
+  deltap <- .0001*fpar1
+  for(i in seq_along(fpar1)){
+    fpar <- fpar1
+    if(abs(deltap[i])<0.0001) deltap[i] <- 0.0001
+    fpar[i] <- fpar1[i] - deltap[i]
+    x1 <- -flpt.lnl(fpar, ddfobj, misc.options)
+    fpar[i] <- fpar1[i] + deltap[i]
+    x2 <- -flpt.lnl(fpar, ddfobj, misc.options)
+    parmat <- cbind(parmat, (x2-x1)/(2*deltap[i]))
   }
 
   # Compute varmat using first partial approach (pg 62 of Buckland et al 2002)
-  varmat <- matrix(0,ncol=length(fpar1),nrow=length(fpar1))
+  varmat <- matrix(0, ncol=length(fpar1), nrow=length(fpar1))
 
   for(i in seq_along(fpar1)){
     for(j in seq_along(fpar1)){
-      varmat[i,j] <- sum(parmat[,i]*parmat[,j])
+      varmat[i, j] <- sum(parmat[, i]*parmat[, j])
     }
   }
 
