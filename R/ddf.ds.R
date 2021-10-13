@@ -148,22 +148,14 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
     stop("\nSome values of object field are duplicates. They must be unique.\n")
   }
 
-  # Setup default breaks
-  if(meta.data$binned){
-    breaks <- c(max(0,min(as.numeric(levels(as.factor(xmat$distbegin))))),
-                as.numeric(levels(as.factor(xmat$distend))))
-  }else{
-    breaks <- NULL
-  }
-
   # check we don't have more parameters than data
   npars <- switch(model[[2]]$key,
                   "unif"  = 0,
                   "hn"    = 1,
                   2) + length(model[[2]]$adj.order)
   if(meta.data$binned){
-    if((length(breaks)-1) < npars){
-      stop("More parameters to estimate than distance bins")
+    if((length(meta.data$breaks)-1) < npars){
+      stop("Number of parameters to estimate exceed number of distance bins minus 1")
     }
   }else{
     if(length(unique(data$distance)) < npars){
@@ -186,17 +178,16 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   misc.options<-list(point=meta.data$point, int.range=meta.data$int.range,
                      showit=control$showit,
-                     integral.numeric=control$integral.numeric, breaks=breaks,
-                     maxiter=control$maxiter, refit=control$refit,
-                     nrefits=control$nrefits, parscale=control$parscale,
-                     mono=meta.data$mono, mono.strict=meta.data$mono.strict,
-                     binned=meta.data$binned, width=meta.data$width,
-                     standardize=control$standardize,
-                     mono.points=control$mono.points,
-                     mono.tol=control$mono.tol,
-                     mono.delta=control$mono.delta,
-                     debug=control$debug, nofit=control$nofit,
-                     left=meta.data$left, silent=control$silent
+                     integral.numeric=control$integral.numeric,
+                     breaks=meta.data$breaks, maxiter=control$maxiter,
+                     refit=control$refit, nrefits=control$nrefits,
+                     parscale=control$parscale, mono=meta.data$mono,
+                     mono.strict=meta.data$mono.strict, binned=meta.data$binned,
+                     width=meta.data$width, standardize=control$standardize,
+                     mono.points=control$mono.points, mono.tol=control$mono.tol,
+                     mono.delta=control$mono.delta, debug=control$debug,
+                     nofit=control$nofit, left=meta.data$left,
+                     silent=control$silent
                     )
 
   # debug - print the initial values

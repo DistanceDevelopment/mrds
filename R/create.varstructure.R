@@ -20,13 +20,14 @@
 #' @param region region table
 #' @param sample sample table
 #' @param obs table of object #'s and links to sample and region table
+#' @param dht.se is uncertainty going to be calculated later?
 #' @return List with 2 elements: \item{samples }{merged dataframe containing
 #'   region and sample info - one record per sample} \item{obs}{merged
 #'   observation data and links to region and samples}
 #' @note Internal function called by \code{\link{dht}}
 #' @author Jeff Laake
 #' @keywords utility
-create.varstructure <- function(model,region,sample,obs){
+create.varstructure <- function(model, region, sample, obs, dht.se){
 
   # Test to make sure that region labels are unique
   if(length(unique(region$Region.Label))!=length(region$Region.Label)){
@@ -46,12 +47,12 @@ create.varstructure <- function(model,region,sample,obs){
   }
 
   # Merge again but don't use all.y which ignores samples not used
-  samples <- merge(region,sample,by.x="Region.Label",all.x=TRUE)
-  samples <- samples[order(samples$Region.Label,samples$Sample.Label),]
+  samples <- merge(region, sample, by.x="Region.Label", all.x=TRUE)
+  samples <- samples[order(samples$Region.Label, samples$Sample.Label),]
 
   # If some regions have no samples then issue error and stop; also
   # if invalid areas given then issue error and stop
-  if(any(is.na(samples$Sample.Label))){
+  if(dht.se & any(is.na(samples$Sample.Label))){
     stop(paste("Following regions have no samples - ",
         paste(samples$Region.Label[is.na(samples$Sample.Label)],collapse=",")))
   }
@@ -61,8 +62,8 @@ create.varstructure <- function(model,region,sample,obs){
   }
 
   # Create a unique region/sample label in samples and in obs
-  samples$Label <- paste(samples$Region.Label,samples$Sample.Label,sep="")
-  obs$Label <- paste(obs$Region.Label,obs$Sample.Label,sep="")
+  samples$Label <- paste(samples$Region.Label, samples$Sample.Label, sep="")
+  obs$Label <- paste(obs$Region.Label, obs$Sample.Label, sep="")
 
   # we only want the following columns from obs:
   #  Label, object, Region.Label, Sample.Label
@@ -86,21 +87,21 @@ create.varstructure <- function(model,region,sample,obs){
   data$Sample.Label.x <- NULL
 
   # Sort regions by label
-  region <- region[order(region$Region.Label),]
+  region <- region[order(region$Region.Label), ]
 
   # Merge with data from model and limit to data appropriate for method
-  data <- merge(data,model$data,by.x="object",by.y="object",sort=FALSE)
+  data <- merge(data, model$data, by.x="object", by.y="object", sort=FALSE)
 
   # observer =1 to avoid problems with merge; this forces abundance 
   #  to always be estimated using observer 1 as the primary
   obs <- 1
-  if(!model$method %in% c("io","io.fi","rem","rem.fi")){
+  if(!model$method %in% c("io", "io.fi", "rem", "rem.fi")){
      if(model$method!="ds"){
-       data <- data[data$observer==obs,]
-       data <- data[data$detected==1,]
+       data <- data[data$observer==obs, ]
+       data <- data[data$detected==1, ]
      }
   }else{
-    data <- data[data$observer==obs,]
+    data <- data[data$observer==obs, ]
   }
 
   # Return vectors and lists for computation

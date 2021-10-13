@@ -25,11 +25,6 @@
 #' @author Jeff Laake
 #' @keywords utility
 summary.ds <- function(object, se=TRUE, N=TRUE, ...){
-  # Uses: predict.ds (via predict), DeltaMethod, coef.ds (via coef)
-
-  # at present f(0) code is commented out; need to understand this further
-  #F0=function(model,pdot,...)
-  #{return(1/(pdot*model$meta.data$width))}
 
   model <- object
   avgp <- function(model, pdot, ...){return(pdot)}
@@ -39,19 +34,12 @@ summary.ds <- function(object, se=TRUE, N=TRUE, ...){
   ans <- list()
 
   # was monotonicity enforced?
-  ans$mono<-model$ds$aux$mono
+  ans$mono <- model$ds$aux$mono
   # strict monotonicity?
-  ans$mono.strict<-model$ds$aux$mono.strict
+  ans$mono.strict <- model$ds$aux$mono.strict
 
   # Number of observations
   ans$n <- length(ddfobj$xmat$distance)
-
-  ## Average detection prob for mcds
-  #if(is.null(model$fitted)){
-  #  pdot <- predict(model,esw=FALSE)$fitted
-  #}else{
-  #  pdot <- model$fitted
-  #}
 
   # Set the key function type
   ans$key <- ddfobj$type
@@ -93,7 +81,7 @@ summary.ds <- function(object, se=TRUE, N=TRUE, ...){
 
   # find se of average p and Nhat (in covered area)
   if(se &!is.null(ans$coeff)){
-    se.obj <- calc.se.Np(model,avgp,ans$n, ans$average.p)
+    se.obj <- calc.se.Np(model, avgp, ans$n, ans$average.p)
   }
 
   if(N){
@@ -106,6 +94,9 @@ summary.ds <- function(object, se=TRUE, N=TRUE, ...){
   if(se & !is.null(ans$coeff)){
     ans$average.p.se <- se.obj$average.p.se
   }
+
+  # save transect type
+  ans$transect <- c("line", "point")[model$meta.data$point+1]
 
   # flag if the integration ranges were set
   ans$int.range <- FALSE

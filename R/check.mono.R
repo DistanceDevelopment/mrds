@@ -85,6 +85,11 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
     # make predictions over the data
     ps <- as.vector(detfct(x, ddfobj, width=right.trunc, standardize=TRUE))
 
+    # catrch nasty errors
+    if(any(is.na(ps) | is.nan(ps) | is.infinite(ps))){
+      return(rep(NA, 4))
+    }
+
     ## check for monotonicity
     # weak monotonicity
     # check all evaluations are less than that at the left truncation point
@@ -168,6 +173,9 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
   # apply the check function to all the unique covariate combinations
   mono <- apply(udat, 1, chpply, x=x, strict=strict, ddfobj=ddfobj)
 
+  if(any(is.na(mono))){
+    stop("Detection function values are NA/Nan/infinite!")
+  }
   # roll together for general info
   mono.status <- all(mono)
 

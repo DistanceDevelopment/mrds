@@ -13,21 +13,22 @@
 #' @author Jeff Laake
 #' @seealso \code{\link{summary.ds}}
 #' @keywords utility
-print.summary.ds <- function (x,...){
-  cat("\nSummary for ds object \n")
-  cat("Number of observations : ", x$n,"\n")
+print.summary.ds <- function (x, ...){
+  cat("\nSummary for ds object\n")
+  cat("Number of observations : ", x$n, "\n")
   if(x$int.range){
-    cat("Distance range         : ", x$left, " - ",x$width,"(int.range set)\n")
+    cat("Distance range         : ", x$left, " - ", x$width,
+                                  "(int.range set)\n")
   }else{
-    cat("Distance range         : ", x$left, " - ",x$width,"\n")
+    cat("Distance range         : ", x$left, " - ", x$width, "\n")
   }
   cat("AIC                    : ", x$aic, "\n")
   cat("\nDetection function:\n", model.description(x), "\n")
   cat("\nDetection function parameters", "\n")
-  cat("Scale coefficient(s): ", "\n")
+  cat("Scale coefficient(s):", "\n")
   print(x$coeff$key.scale)
 
-  if(x$key %in% c("gamma","hr","th1","th2")) {
+  if(x$key %in% c("gamma", "hr", "th1", "th2")) {
     cat("\nShape coefficient(s): ", "\n")
     print(x$coeff$key.shape)
   }
@@ -51,10 +52,10 @@ print.summary.ds <- function (x,...){
   }
 
   if(!is.null(x$Nhat)){
-    parameters <- data.frame(Estimate=c(x$average.p,x$Nhat))
+    parameters <- data.frame(Estimate=c(x$average.p, x$Nhat))
     row.names(parameters) <- c("Average p", "N in covered region")
     if(!is.null(x$average.p.se)){
-      parameters$SE <- c(x$average.p.se,x$Nhat.se)
+      parameters$SE <- c(x$average.p.se, x$Nhat.se)
       parameters$CV <- parameters$SE/parameters$Estimate
     }
   }else{
@@ -64,6 +65,15 @@ print.summary.ds <- function (x,...){
       parameters$SE <- c(x$average.p.se)
       parameters$CV <- parameters$SE/parameters$Estimate
     }
+  }
+  # for points include EDR info
+  if(x$transect == "point"){
+    parameters <- rbind(parameters,
+                        "EDR"=c(
+                          sqrt(parameters$Estimate[1]*(x$width-x$left)^2),
+                          parameters$CV[1]/2 *
+                            sqrt(parameters$Estimate[1]*(x$width-x$left)^2),
+                          parameters$CV[1]/2))
   }
 
   print(parameters)

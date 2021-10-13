@@ -239,20 +239,20 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     # which is simply n/Nhat in the covered region
     average.p <- nrow(obs)/sum(Nhat.by.sample$Nhat)
 
-    # Scale up abundances to survey region
-    # note that we don't need to account for left truncation, as
-    # it is taken care of when calculating average detection prob (by setting
-    # detection prob to 0 between 0 and left truncation distance)
     width <- model$meta.data$width * options$convert.units
+    left <- model$meta.data$left * options$convert.units
 
-    Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples, width, point)
+    # Scale up abundances to survey region
+    Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples, width,
+                                        left, point)
     # sort Nhat.by.sample by Region.Label and Sample.Label
     Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
                                            Nhat.by.sample$Sample.Label), ]
     if(point){
-      s.area <- Nhat.by.sample$Effort.x*pi*width^2
+      s.area <- Nhat.by.sample$Effort.x*pi*width^2 -
+                  Nhat.by.sample$Effort.x*pi*left^2
     }else{
-      s.area <- Nhat.by.sample$Effort.x*2*width
+      s.area <- Nhat.by.sample$Effort.x*2*(width-left)
     }
 
     bysample.table <- with(Nhat.by.sample,
@@ -270,7 +270,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
                                     Nhat.by.sample$Region.Label, sum))
 
     # Create estimate table
-    numRegions <- length(unique(samples$Region.Label))
+    numRegions <- length(unique(region.table$Region.Label))
     if(numRegions > 1){
       estimate.table <- data.frame(
                           Label = c(levels(unique(samples$Region.Label)),
@@ -299,6 +299,15 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     summary.table <- Nhat.by.sample[, c("Region.Label", "Area",
                                         "CoveredArea", "Effort.y")]
     summary.table <- unique(summary.table)
+
+    if(!all(region.table$Region.Label %in% summary.table$Region.Label)){
+      summary.table <- rbind(summary.table,
+                             cbind(region.table[!(region.table$Region.Label %in%
+                                                  summary.table$Region.Label),
+                                                c("Region.Label", "Area")],
+                                   0, 0))
+    }
+
     var.er <- sapply(split(Nhat.by.sample, Nhat.by.sample$Region.Label),
                      function(x) varn(x$Effort.x, x$n, type=options$ervar))
 
@@ -313,15 +322,11 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     nobs <- as.vector(by(bysample.table$n, bysample.table$Region, sum))
     nobs[is.na(nobs)] <- 0
     summary.table$n <- nobs
-    if(group){
-      summary.table$k <- tapply(Nhat.by.sample$Sample.Label,
-                                Nhat.by.sample$Region.Label,length)
-      colnames(summary.table) <- c("Region", "Area", "CoveredArea",
-                                   "Effort", "n","k")
-    }else{
-      colnames(summary.table) <- c("Region", "Area", "CoveredArea",
-                                   "Effort", "n")
-    }
+    summary.table$k <- tapply(Nhat.by.sample$Sample.Label,
+                              Nhat.by.sample$Region.Label, length)
+    summary.table$k[is.na(summary.table$CoveredArea)] <- 0
+    colnames(summary.table) <- c("Region", "Area", "CoveredArea",
+                                 "Effort", "n", "k")
 
     if(numRegions > 1){
       summary.table <- data.frame(Region=c(levels(summary.table$Region),
@@ -503,7 +508,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   }
 
   # Create obs/samples structures
-  vs <- create.varstructure(model, region.table, sample.table, obs.table)
+  vs <- create.varstructure(model, region.table, sample.table, obs.table, se)
   samples <- vs$samples
   obs <- vs$obs
   region.table <- vs$region
@@ -527,7 +532,7 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   # unclustered popn
   if(!is.null(obs$size)){
     clusters <- tables.dht(TRUE)
-    individuals <- tables.dht(FALSE)
+    individuals <- tables.dht(FALSE )
     Expected.S <- individuals$N$Estimate/clusters$N$Estimate
 
     # This computes the se(E(s)). It essentially uses 3.37 from Ads but in
