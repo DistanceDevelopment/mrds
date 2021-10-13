@@ -76,7 +76,7 @@ detection function. The \code{nboot} parameter controls the number of
 bootstraps to use. Set to \code{0} to avoid computing bootstraps (much
 faster but with no Kolmogorov-Smirnov results, of course).
 
-One can change the precision of printed values by using the \code{\link{print.ddf.gof}} method's `digits` argument.
+One can change the precision of printed values by using the \code{\link{print.ddf.gof}} method's \code{digits} argument.
 }
 \seealso{
 \code{\link{qqplot.ddf}}

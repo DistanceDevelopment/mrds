@@ -30,7 +30,6 @@
 #' Becker, E. F., & Christ, A. M. (2015). A Unimodal Model for Double Observer
 #' Distance Sampling Surveys. PLOS ONE, 10(8), e0136403.
 #' \doi{10.1371/journal.pone.0136403}
-#' @noRd
 keyfct.tpn <- function(distance, ddfobj){
 
   # decide which side of the apex each observation lies on
