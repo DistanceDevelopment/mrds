@@ -151,10 +151,10 @@ gstdint <- function(x, ddfobj, index=NULL,select=NULL, width,
     int1 <- int2 <- left.scale*0
 
     for(i in 1:length(int1)){
-    int1[i] <- left.scale[i]*(pnorm(apex, mean=apex, sd=left.scale[i]) -
-                              pnorm(left, mean=apex, sd=left.scale[i]))
-    int2[i] <- right.scale[i]*(pnorm(width, mean=apex, sd=right.scale[i]) -
-                               pnorm(apex, mean=apex, sd=right.scale[i]))
+      int1[i] <- left.scale[i]*(pnorm(apex, mean=apex, sd=left.scale[i]) -
+                                pnorm(left[i], mean=apex, sd=left.scale[i]))
+      int2[i] <- right.scale[i]*(pnorm(width[i], mean=apex, sd=right.scale[i]) -
+                                 pnorm(apex, mean=apex, sd=right.scale[i]))
     }
     int <- int1+int2
 
