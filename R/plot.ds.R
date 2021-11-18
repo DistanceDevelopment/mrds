@@ -365,7 +365,7 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
         # now rescale such that area under pdf == area under histogram
         linevalues <- pdf_vals * hist_area
       }else{
-        linevalues <- detfct(xgrid, ddfobj, width=width)
+        linevalues <- detfct(xgrid, ddfobj, width=width, left=left)
       }
     }
 
@@ -378,7 +378,6 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
     ldots <- dots
     ldots$x <- xgrid
     ldots$y <- linevalues
-    #lines(xgrid, linevalues, ...)
     do.call(lines, ldots)
 
     if(showpoints){

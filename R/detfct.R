@@ -108,7 +108,6 @@ distpdf <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
              width=width, standardize=standardize, stdint=stdint))
 }
 
-
 fx <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
                standardize=TRUE, stdint=FALSE, left=0){
   return(detfct(distance, ddfobj, select, index, width, standardize, stdint)/
@@ -120,7 +119,6 @@ fr <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
   return(detfct(distance, ddfobj, select, index, width, standardize, stdint)*
          2*distance/width^2)
 }
-
 
 detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
                    standardize=TRUE, stdint=FALSE, left=0){
@@ -227,7 +225,7 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
     # this cancels in the likelihood, so we don't need it in optimisation
     if(standardize){
       if(key == "gamma"){
-        # for the gammma, use apex.gamma to find the apex first, then eval
+        # for the gamma, use apex.gamma to find the apex first, then eval
         # need to update the scale to be +1 in this apex call
         ddfobj$shape$parameters <- log(exp(ddfobj$shape$parameters)+1)
         zeros <- as.vector(apex.gamma(ddfobj))[1]
