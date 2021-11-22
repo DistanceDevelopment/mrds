@@ -3,26 +3,27 @@ par.tol<-1e-6
 
 context("dht")
 
-test_that("golf tees",{
+data(book.tee.data)
+tee.data<-book.tee.data$book.tee.dataframe[book.tee.data$book.tee.dataframe$observer==1,]
+ds.model <- ddf(dsmodel=~cds(key="hn", formula=~1), data=tee.data, method="ds",
+                meta.data=list(width=4))
 
-  data(book.tee.data)
-  tee.data<-book.tee.data$book.tee.dataframe[book.tee.data$book.tee.dataframe$observer==1,]
-  ds.model <- ddf(dsmodel=~cds(key="hn", formula=~1), data=tee.data, method="ds",
-                  meta.data=list(width=4))
+# same model, but calculating abundance
+# need to supply the region, sample and observation tables
+region <- book.tee.data$book.tee.region
+samples <- book.tee.data$book.tee.samples
+obs <- book.tee.data$book.tee.obs
 
-  # same model, but calculating abundance
-  # need to supply the region, sample and observation tables
-  region <- book.tee.data$book.tee.region
-  samples <- book.tee.data$book.tee.samples
-  obs <- book.tee.data$book.tee.obs
-
+test_that("golf tees", {
 
   # check that errors are thrown when the wrong ER variance is asked for
   expect_error(dht(ds.model, region.table=region,
                    sample.table=samples, obs.table=obs,
                    options=list(ervar="P3")),
                "Encounter rate variance estimator P3 may only be used with point transects, set with options=list(ervar=...)", fixed=TRUE)
+})
 
+test_that("ptdata", {
   # fake up some pt data
   pt.sample <- data.frame(Sample.Label=1, Region.Label=1, Effort=1)
   data(ptdata.single)
@@ -39,3 +40,10 @@ test_that("golf tees",{
 
 })
 
+
+test_that("areas.supplied", {
+  samples$CoveredArea<- samples$Effort * 2 * 4
+  expect_equal(dht(ds.model, region, samples, obs,
+                   options=list(areas.supplied=TRUE)),
+               dht(ds.model, region, samples, obs))
+})

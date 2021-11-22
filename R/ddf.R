@@ -137,7 +137,7 @@
 #' the transect width (and the left truncation point if there is a blindspot
 #' below the aircraft) can potentially change for each observation. The
 #' argument \code{int.range} can also be entered as a matrix with 2 columns
-#' (left and width) and a row for each observation. 
+#' (left and width) and a row for each observation.
 #'
 #' The argument \code{control} is a list that enables various analysis options
 #' to be set.  It is not necessary to set any of these for most analyses.  They
