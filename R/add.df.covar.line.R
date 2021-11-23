@@ -63,7 +63,7 @@
 #' legend(3, 1, c("Average", "sex==0", "sex==1"), lty=1,
 #'        col=c("black", "red", "green"))
 #' }
-add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
+add.df.covar.line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
                               ...){
 
   # if we have a Distance object rather than mrds, use that
@@ -274,3 +274,7 @@ add_df_covar_line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
   # return saved data
   invisible(linedat)
 }
+
+#' @rdname add.df.covar.line
+#' @export
+add_df_covar_line <- add.df.covar.line

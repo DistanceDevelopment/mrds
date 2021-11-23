@@ -5,6 +5,10 @@ mrds 2.2.6
 * Add effective detection radius (EDR) and its uncertainty to summary output
 * Change default rounding of chi-squared test tables. This can be customized using print(ddf.gof(...), digits=?) for e.g., printing with knitr::kable
 * New detection function: two-part normal ("tpn"), useful for aerial surveys in mountainous terrain, see Becker EF, Christ AM (2015) A Unimodal Model for Double Observer Distance Sampling Surveys. PLOS ONE 10(8): e0136403. https://doi.org/10.1371/journal.pone.0136403 and ?"two-part-normal".
+* To improve consistency in functions and arguments in the package, some functions will change from . separation to _. For now both versions exist but will be removed in mrds 2.2.7.
+  - add_df_covar_line -> add.df.covar.line
+  - p_dist_table -> p.dist.table
+
 
 mrds 2.2.5
 ----------

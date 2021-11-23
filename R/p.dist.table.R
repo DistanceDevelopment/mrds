@@ -44,7 +44,7 @@
 #' p_dist_table(result, proportion=TRUE)
 #' }
 # Update Distance::p_dist_table when changing pars here!!
-p_dist_table <- function(object, bins=seq(0, 1, by=0.1), proportion=FALSE){
+p.dist.table <- function(object, bins=seq(0, 1, by=0.1), proportion=FALSE){
 
   # if we have a ds object from Distance
   if("dsmodel" %in%class(object)){
@@ -94,3 +94,7 @@ print.p_dist_table <- function(x, digits=2, ...){
   cat("Range of probabilities: ",
       paste0(signif(attr(x, "p_range"), digits), collapse=" - "), "\n")
 }
+
+#' @rdname p.dist.table
+#' @export
+p_dist_table <- p.dist.table

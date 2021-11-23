@@ -167,8 +167,9 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
         # was this better than the first time
         if(all(class(lt2)!="try-error") ){
-          if(any(class(lt)=="try-error") || (!is.na(lt2$values[length(lt2$values)]) &&
-           (lt2$values[length(lt2$values)] < lt$values[length(lt$values)]))){
+          if(any(class(lt)=="try-error") ||
+             (!is.na(lt2$values[length(lt2$values)]) &&
+             (lt2$values[length(lt2$values)] < lt$values[length(lt$values)]))){
             lt <- lt2
           }
         }
