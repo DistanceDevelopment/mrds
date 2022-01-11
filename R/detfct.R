@@ -192,6 +192,15 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
               th2   = keyfct.th2(distance, key.scale, key.shape),
               tpn   = keyfct.tpn(distance, ddfobj))
 
+  # standardize the gamma pdf
+  if(key == "gamma"){
+    #TODO: fix for variable int.range
+    gamma_std <- integrate(keyfct.gamma, key.scale=key.scale[1],
+                           key.shape=key.shape[1], lower=left,
+                           upper=width)$value
+    g <- g/gamma_std
+  }
+
   # Adjustment functions
   # If we are using adjustment terms.
   if(!is.null(ddfobj$adjustment)){
