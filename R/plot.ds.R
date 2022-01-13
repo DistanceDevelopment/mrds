@@ -317,12 +317,12 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
           # want r g(r) / int r g(r) dr
 
           # this is 2 r g(r)/w^2
-          r_gr <- distpdf(newdat$distance, ddfobj, width=width, point=TRUE,
+          r_gr <- distpdf(newdat$distance, ddfobj, width=width, point=point,
                           standardize=TRUE)
           # this is the value of int [2 r g(r) /w^2] dr
           int_r_gr <- integratepdf(ddfobj, select=selected, width=width,
                                    int.range=int.range, standardize=TRUE,
-                                   point=TRUE)
+                                   point=point)
           # so the pdf values are:
           pdf_vals <- r_gr/int_r_gr
 
@@ -353,12 +353,12 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
         # want r g(r) / int r g(r) dr
 
         # this is 2 r g(r)/w^2
-        r_gr <- distpdf(xgrid, ddfobj, width=width, point=TRUE,
+        r_gr <- distpdf(xgrid, ddfobj, width=width, point=point,
                         standardize=TRUE)
         # this is the value of int [2 r g(r) /w^2] dr
         int_r_gr <- integratepdf(ddfobj, select=TRUE, width=width,
                                  int.range=int.range, standardize=TRUE,
-                                 point=TRUE)[1]
+                                 point=point)[1]
         # so the pdf values are:
         pdf_vals <- r_gr/int_r_gr
 
