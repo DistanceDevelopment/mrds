@@ -5,7 +5,7 @@ mrds 2.2.6
 * Add effective detection radius (EDR) and its uncertainty to summary output
 * Change default rounding of chi-squared test tables. This can be customized using print(ddf.gof(...), digits=?) for e.g., printing with knitr::kable
 * New detection function: two-part normal ("tpn"), useful for aerial surveys in mountainous terrain, see Becker EF, Christ AM (2015) A Unimodal Model for Double Observer Distance Sampling Surveys. PLOS ONE 10(8): e0136403. https://doi.org/10.1371/journal.pone.0136403 and ?"two-part-normal".
-* Variable strip widths are now supported in dht. Users should supply an additional column to the sample data.frame ("CoveredArea") giving the total area covered in the given transect and set options=list(areas.supplied=TRUE). Thanks to Megan Ferguson for providing an example and code.
+* Variable strip widths are now supported in dht. Users should supply an additional column to the sample data.frame ("CoveredArea") giving the total area covered in the given transect and set options=list(areas.supplied=TRUE). Thanks to Megan Ferguson for providing an example, code and feedback.
 
 mrds 2.2.5
 ----------
