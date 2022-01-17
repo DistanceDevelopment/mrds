@@ -275,7 +275,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   }
 
   if(lt$message == "FALSE CONVERGENCE"){
-    warning("Model fitting did not converge. Try different initial values or different model")
+    warning("Model fitting did not converge. Try different initial values or different model\n", immediate.=TRUE)
   }else{
     result$fitted <- predict(result, esw=FALSE)$fitted
     if(control$estimate){

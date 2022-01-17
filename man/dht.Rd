@@ -135,10 +135,12 @@ hectares (100 to convert metres to 100 metres for distance and .1 to convert
 km to 100m units).
 
 The argument \code{options} is a list of \code{variable=value} pairs that
-set options for the analysis. All but one of these has been described so
-far. The remaining variable \code{pdelta} should not need to be changed but
-was included for completeness. It controls the precision of the first
-derivative calculation for the delta method variance.
+set options for the analysis. All but two of these have been described above.
+\code{pdelta} should not need to be changed but was included for
+completeness. It controls the precision of the first derivative calculation
+for the delta method variance. If the option \code{areas.supplied} is
+\code{TRUE} then the covered area is assumed to be supplied in the
+\code{CoveredArea} column of the sample \code{data.frame}.
 }
 \section{Uncertainty}{
 

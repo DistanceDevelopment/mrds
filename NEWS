@@ -8,7 +8,7 @@ mrds 2.2.6
 * To improve consistency in functions and arguments in the package, some functions will change from . separation to _. For now both versions exist but will be removed in mrds 2.2.7.
   - add_df_covar_line -> add.df.covar.line
   - p_dist_table -> p.dist.table
-
+* Variable strip widths are now supported in dht. Users should supply an additional column to the sample data.frame ("CoveredArea") giving the total area covered in the given transect and set options=list(areas.supplied=TRUE). Thanks to Megan Ferguson for providing an example, code and feedback.
 
 mrds 2.2.5
 ----------
