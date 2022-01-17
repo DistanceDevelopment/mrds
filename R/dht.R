@@ -67,10 +67,12 @@
 #' km to 100m units).
 #'
 #' The argument \code{options} is a list of \code{variable=value} pairs that
-#' set options for the analysis. All but one of these has been described so
-#' far. The remaining variable \code{pdelta} should not need to be changed but
-#' was included for completeness. It controls the precision of the first
-#' derivative calculation for the delta method variance.
+#' set options for the analysis. All but two of these have been described above.
+#' \code{pdelta} should not need to be changed but was included for
+#' completeness. It controls the precision of the first derivative calculation
+#' for the delta method variance. If the option \code{areas.supplied} is
+#' \code{TRUE} then the covered area is assumed to be supplied in the
+#' \code{CoveredArea} column of the sample \code{data.frame}.
 #'
 #' @section Uncertainty:
 #' If the argument \code{se=TRUE}, standard errors for density and abundance is
@@ -221,7 +223,7 @@
 #' @keywords utility
 #' @importFrom stats aggregate
 #' @export
-dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
+dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                 se=TRUE, options=list()){
   # Functions Used:  assign.default.values, create.varstructure,
   #                  covered.region.dht, survey.region.dht, dht.se, varn,
@@ -244,22 +246,16 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
 
     # Scale up abundances to survey region
     Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples, width,
-                                        left, point)
+                                        left, point, options$areas.supplied)
     # sort Nhat.by.sample by Region.Label and Sample.Label
     Nhat.by.sample <- Nhat.by.sample[order(Nhat.by.sample$Region.Label,
                                            Nhat.by.sample$Sample.Label), ]
-    if(point){
-      s.area <- Nhat.by.sample$Effort.x*pi*width^2 -
-                  Nhat.by.sample$Effort.x*pi*left^2
-    }else{
-      s.area <- Nhat.by.sample$Effort.x*2*(width-left)
-    }
 
     bysample.table <- with(Nhat.by.sample,
                            data.frame(Region      = Region.Label,
                                       Sample      = Sample.Label,
                                       Effort      = Effort.x,
-                                      Sample.Area = s.area,
+                                      Sample.Area = CoveredArea,
                                       Area        = Area,
                                       n           = n,
                                       Nhat        = Nhat,
@@ -426,10 +422,17 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
 
 ###Start of dht function
 
-  # Code additions by jll 18-Nov-04; the following allows for a subset
-  # statement to be added to create obs.table from model data rather than
-  # creating obs.table separately. This only works if the data contain the
-  # Sample.Label and Region.Label fields.
+  # Assign default values to options
+  options <- assign.default.values(options, pdelta=0.001, varflag=2,
+                                   convert.units=1,
+                                   ervar=ifelse(model$meta.data$point, "P3",
+                                                "R2"),
+                                   areas.supplied=FALSE)
+
+  # jll 18-Nov-04; the following allows for a subset statement to be added to
+  # create obs.table from model data rather than creating obs.table separately.
+  # This only works if the data contain the Sample.Label and Region.Label
+  # fields.
   point <- model$meta.data$point
   objects <- as.numeric(names(model$fitted))
   if(is.null(obs.table)){
@@ -441,10 +444,10 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
     }
     if("Sample.Label" %in% names(data) & "Region.Label" %in% names(data)){
       if(is.null(substitute(subset))){
-         obs.table <- data[ ,c("object", "Sample.Label", "Region.Label")]
+         obs.table <- data[, c("object", "Sample.Label", "Region.Label")]
       }else{
          select <- data[eval(substitute(subset),envir=data), ]
-         obs.table <- select[ ,c("object", "Sample.Label", "Region.Label")]
+         obs.table <- select[, c("object", "Sample.Label", "Region.Label")]
       }
       obs.table <- obs.table[obs.table$object %in% objects, ]
     }else{
@@ -453,8 +456,13 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   }
 
   # Extract relevant fields from Region and Sample tables; jll 4 May 07;
-  region.table <- region.table[ ,c("Region.Label", "Area")]
-  sample.table <- sample.table[ ,c("Region.Label", "Sample.Label", "Effort")]
+  region.table <- region.table[, c("Region.Label", "Area")]
+  if(options$areas.supplied){
+    sample.table <- sample.table[, c("Region.Label", "Sample.Label", "Effort",
+                                     "CoveredArea")]
+  }else{
+    sample.table <- sample.table[, c("Region.Label", "Sample.Label", "Effort")]
+  }
 
   # Make sure input data labels are factors
   region.table$Region.Label <- factor(region.table$Region.Label)
@@ -466,11 +474,6 @@ dht <- function(model,region.table,sample.table, obs.table=NULL, subset=NULL,
   obs.table$Sample.Label <- factor(obs.table$Sample.Label,
                                    levels=levels(sample.table$Sample.Label))
 
-  # Assign default values to options
-  options <- assign.default.values(options, pdelta=0.001, varflag=2,
-                                   convert.units=1,
-                                   ervar=ifelse(model$meta.data$point, "P3",
-                                                "R2"))
 
   # P3 can only be used with points
   if(options$ervar=="P3" & !model$meta.data$point){

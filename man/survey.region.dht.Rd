@@ -4,7 +4,7 @@
 \alias{survey.region.dht}
 \title{Extrapolate Horvitz-Thompson abundance estimates to entire surveyed region}
 \usage{
-survey.region.dht(Nhat.by.sample, samples, width, left, point)
+survey.region.dht(Nhat.by.sample, samples, width, left, point, areas.supplied)
 }
 \arguments{
 \item{Nhat.by.sample}{dataframe of abundance by sample}
@@ -16,6 +16,9 @@ survey.region.dht(Nhat.by.sample, samples, width, left, point)
 \item{left}{left truncation if any}
 
 \item{point}{if TRUE point count otherwise line transect}
+
+\item{areas.supplied}{if \code{TRUE}, covered area is extracted from the
+\code{CoveredArea} column of \code{Nhat.by.sample}}
 }
 \value{
 Revised Nhat.by.sample dataframe containing estimates extrapolated
@@ -28,6 +31,6 @@ Extrapolate Horvitz-Thompson abundance estimates to entire surveyed region
 Internal function called by \code{\link{dht}} and related functions.
 }
 \author{
-Jeff Laake
+Jeff Laake and David L Miller
 }
 \keyword{utility}

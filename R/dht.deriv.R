@@ -17,7 +17,7 @@
 #' @author Jeff Laake
 #' @seealso \code{\link{dht}}, \code{\link{dht.se}}, \code{\link{DeltaMethod}}
 #' @keywords utility
-dht.deriv <- function(par,model,obs,samples,options=list()){
+dht.deriv <- function(par, model, obs, samples, options=list()){
   # Functions Used:  predict, covered.region.dht, survey.region.dht
 
   #  Depending on model method store new parameter values
@@ -38,7 +38,7 @@ dht.deriv <- function(par,model,obs,samples,options=list()){
   # not what I wanted.  You would only not integrate if you didn't want to
   # assume 1/w; otherwise, always want to integrate to get average detection
   # probability
-  pdot <- predict(model,integrate=TRUE,compute=TRUE)
+  pdot <- predict(model, integrate=TRUE, compute=TRUE)
 
   if(!is.null(pdot$fitted)){
     pdot <- pdot$fitted
@@ -48,22 +48,24 @@ dht.deriv <- function(par,model,obs,samples,options=list()){
   # code below would not work if there is a pdot column there already, so remove
   obs$pdot <- NULL
 
-  obs <- merge(obs,data.frame(object=as.numeric(names(model$fitted)),pdot=pdot))
+  obs <- merge(obs, data.frame(object=as.numeric(names(model$fitted)),
+               pdot=pdot))
 
   # Compute covered region abundances by sample depending on value of group
-  Nhat.by.sample <- covered.region.dht(obs,samples,options$group)
+  Nhat.by.sample <- covered.region.dht(obs, samples, options$group)
 
   # Scale up abundances to survey region
   Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,
                                    model$meta.data$width*options$convert.units,
                                    model$meta.data$left*options$convert.units,
-                                   model$meta.data$point)
-  Nhat.by.region <- by(Nhat.by.sample$Nhat,Nhat.by.sample$Region.Label,sum)
+                                   model$meta.data$point,
+                                   options$areas.supplied)
+  Nhat.by.region <- by(Nhat.by.sample$Nhat, Nhat.by.sample$Region.Label, sum)
 
   # Return vector of predicted abundances
 
   if(length(Nhat.by.region)>1){
-    return(c(as.vector(Nhat.by.region),sum(as.vector(Nhat.by.region))))
+    return(c(as.vector(Nhat.by.region), sum(as.vector(Nhat.by.region))))
   }else{
     return(as.vector(Nhat.by.region))
   }
