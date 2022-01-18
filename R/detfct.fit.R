@@ -49,9 +49,6 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
   # whether to silence errors from detfct.fit.optim
   silent <- misc.options$silent
 
-  # How small is small?
-  epsilon <- sqrt(.Machine$double.eps)
-
   # keep a history of how the optimisation is doing
   # stores: convergence status (0=GOOD), lnl, pars
   misc.options$optim.history <- rep(NA, length(getpar(ddfobj))+2)
