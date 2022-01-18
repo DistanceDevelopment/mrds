@@ -175,8 +175,8 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
 
   # for gamma shape parameter must be >1, see Becker and Quang (2009) p 213
   if(key=="gamma"){
-    key.shape <- key.shape+1
-    key.shape[key.shape==1] <- key.shape[key.shape==1]+0.000001
+    key.shape <- key.shape + 1
+    key.shape[key.shape==1] <- key.shape[key.shape==1] + 0.000001
   }
 
   # 19-Jan-06 jll; added proper standardize code to get std integral.
