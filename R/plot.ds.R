@@ -313,7 +313,7 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
           detfct.values[x<int.range[, 1] | x>int.range[, 2]] <- 0
         }
 
-        if(point & pdf){
+        if((point & pdf) | ddfobj$type=="gamma"){
           ## calculate the pdf of distances
           # want r g(r) / int r g(r) dr
 
@@ -345,7 +345,7 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
 
       # goofy workaround -- gamma is 0 at x=0, so add a little to the grid
       #  value so we don't have a weird drop
-      if(ddfobj$type=="gamma"){
+      if(ddfobj$type=="gamma" & left==0){
         xgrid[1] <- xgrid[1]+1e-6
       }
 
