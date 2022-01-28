@@ -48,8 +48,8 @@
 #' plot(result, showpoints=FALSE)
 #'
 #' # add lines for sex one at a time
-#' add_df_covar_line(result, data.frame(sex=0), lty=2)
-#' add_df_covar_line(result, data.frame(sex=1), lty=3)
+#' add.df.covar.line(result, data.frame(sex=0), lty=2)
+#' add.df.covar.line(result, data.frame(sex=1), lty=3)
 #'
 #' # add a legend
 #' legend(3, 1, c("Average", "sex==0", "sex==1"), lty=1:3)
@@ -57,7 +57,7 @@
 #' # alternatively we can add both at once
 #' # fixing line type and varying colour
 #' plot(result, showpoints=FALSE)
-#' add_df_covar_line(result, data.frame(sex=c(0,1)), lty=1,
+#' add.df.covar.line(result, data.frame(sex=c(0,1)), lty=1,
 #'                   col=c("red", "green"))
 #' # add a legend
 #' legend(3, 1, c("Average", "sex==0", "sex==1"), lty=1,
