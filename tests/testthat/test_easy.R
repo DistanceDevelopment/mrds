@@ -15,7 +15,14 @@ test_that("errors thrown for invalid models",{
 
   # half-normal with order 1 hermite adjustment
   expect_error(result.cds<-ddf(dsmodel = ~cds(key = "hn",
-                                              adj.series="herm",adj.order=1),
+                                              adj.series="herm", adj.order=1),
+                               data = egdata, method = "ds",
+                               meta.data = list(width = 4)),
+               "Odd Hermite polynomial adjustment terms selected")
+
+  # half-normal with order 2 hermite adjustment
+  expect_error(result.cds<-ddf(dsmodel = ~cds(key = "hn",
+                                              adj.series="herm", adj.order=2),
                                data = egdata, method = "ds",
                                meta.data = list(width = 4)),
                "Hermite polynomial adjustment terms of order < 4 selected")
