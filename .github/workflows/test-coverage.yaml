@@ -54,8 +54,9 @@ jobs:
       - name: Test coverage
         run: |
           library(covr)
-          cov <- covr::package_coverage(quiet = FALSE, clean = FALSE)
-          covr::codecov(cov, quiet=FALSE)
+          #cov <- covr::package_coverage(quiet = FALSE, clean = FALSE)
+          #covr::codecov(cov, quiet=FALSE)
+          covr::codecov(quiet=FALSE)
           sessionInfo()
         shell: Rscript {0}
 
