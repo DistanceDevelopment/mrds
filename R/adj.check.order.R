@@ -28,6 +28,9 @@ adj.check.order <- function(adj.series, adj.order, key){
     if(any(as.integer(adj.order/2) != (adj.order/2))){
       stop("Odd polynomial adjustment terms selected")
     }
+    if(key != "unif" & any(adj.order < 4)){
+      stop("Polynomial adjustment terms of order < 4 selected")
+    }
 
   }else if(adj.series == "herm"){
     # If hermite, check even and greater than (or equal to) order 4
