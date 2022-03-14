@@ -81,9 +81,9 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
   vname <- "distance"
   dat <- model$data
 
-  # ignore pdf=TRUE with line transect data
+  # ignore pdf=TRUE with line transect data or with gamma df
   if((pdf & !model$meta.data$point) |
-     (pdf & model$ds$aux$ddfobj$type!="gamma")){
+     (pdf & model$ds$aux$ddfobj$type=="gamma")){
     warning("Ignoring pdf=TRUE for line transect data")
     pdf <- FALSE
   }
