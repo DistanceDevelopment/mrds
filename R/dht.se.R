@@ -302,7 +302,7 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
     df <- sapply(df, compute.df, type=options$ervar)
     df[df<1] <- 1
 
-    if(is.na(vc1) || all(vc1==0)){
+    if(any(is.na(vc1)) || all(vc1==0)){
       estimate.table$df <- df
     }else{
       # loop over the strata, calculating the components of the df calc
