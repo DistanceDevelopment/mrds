@@ -22,11 +22,9 @@ Nothing! Just calls \code{stop} if something goes wrong.
 of the correct order.
 }
 \details{
-Only even functions are allowed as adjustment terms. Also Hermite
-polynomials must be of degree at least 4 and Cosine of order at least 3.
-Finally, also checks that order of the terms >1 for half-normal/hazard-rate,
-as per p.47 of Buckland et al (2001). If incorrect terms are supplied then
-an error is throw via \code{stop}.
+Only even functions are allowed as adjustment terms, per p.47 of Buckland et
+al (2001). If incorrect terms are supplied then an error is throw via
+\code{stop}.
 }
 \references{
 S.T.Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake. 1993.
