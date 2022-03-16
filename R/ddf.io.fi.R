@@ -48,6 +48,7 @@
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
 #' @importFrom stats optimHess
+#' @importFrom methods is
 ddf.io.fi <- function(model, data, meta.data=list(), control=list(),
                       call="", method){
   # Functions used: assign.default.values, process.data, create.model.frame

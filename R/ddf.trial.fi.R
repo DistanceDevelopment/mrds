@@ -45,6 +45,7 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
+#' @importFrom methods is
 ddf.trial.fi <- function(model, data, meta.data=list(), control=list(),
                          call="", method){
   #  NOTE: gams are only partially implemented
