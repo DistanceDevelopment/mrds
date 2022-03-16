@@ -571,7 +571,9 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
       }
 
       cov.Nc.Ncs[is.nan(cov.Nc.Ncs)] <- 0
-      cov.Nc.Ncs <- c(cov.Nc.Ncs,sum(cov.Nc.Ncs))
+      if(numRegions > 1){
+        cov.Nc.Ncs <- c(cov.Nc.Ncs, sum(cov.Nc.Ncs))
+      }
       cov.Nc.Ncs <- cov.Nc.Ncs +
                      diag(t(clusters$vc$detection$partial)%*%
                           solvecov(model$hessian)$inv%*%
