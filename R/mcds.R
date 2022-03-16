@@ -29,8 +29,8 @@ mcds <- function(formula=NULL, key=NULL, adj.series=NULL, adj.order=c(NULL),
     stop("Missing formula needed for scale")
   }
 
-  if(class(formula)!="formula"){
-    if(class(try(as.formula(formula)))=="formula"){
+  if(is(formula, "formula")){
+    if(is(try(as.formula(formula)), "formula")){
       formula <- as.formula(formula)
     }else{
       stop("Invalid formula")
@@ -38,8 +38,8 @@ mcds <- function(formula=NULL, key=NULL, adj.series=NULL, adj.order=c(NULL),
   }
 
   if(!is.null(shape.formula)){
-    if(class(shape.formula)!="formula"){
-      if(class(try(as.formula(shape.formula)))=="formula"){
+    if(!is(shape.formula, "formula")){
+      if(is(try(as.formula(shape.formula)), "formula")){
         shape.formula <- as.formula(shape.formula)
       }else{
         stop("Invalid shape.formula")

@@ -55,14 +55,9 @@ ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
   # used in the model fitting.
 
   glm <- function(formula,link="logit"){
-    if(class(formula)!="formula"){
-      if(class(try(as.formula(formula)))!="formula"){
-        stop("Invalid formula")
-      }
-    }else{
-      formula <- paste(as.character(formula),collapse="") 
-    }
-    if(class(link)=="function"){
+    formula <- fixformula(formula)
+
+    if(is(link, "function")){
       link <- substitute(link)
     }
     link <- match.arg(link,c("logit"))
@@ -71,14 +66,9 @@ ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
 
 
   gam <- function(formula,link="logit"){
-    if(class(formula)!="formula"){
-      if(class(try(as.formula(formula)))!="formula"){
-        stop("Invalid formula")
-      }
-    }else{
-      formula <- paste(as.character(formula),collapse="")
-    }
-    if(class(link)=="function"){
+    formula <- fixformula(formula)
+
+    if(is(link, "function")){
       link <- substitute(link)
     }
     link <- match.arg(link,c("logit"))
@@ -107,7 +97,7 @@ ddf.rem.fi<-function(model,data,meta.data=list(),control=list(),call="",method){
   # Assign model values; this uses temporarily defined functions glm and gam
   modpaste <- paste(model)
   modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
-  if(class(modelvalues)=="try-error"){
+  if(inherits(modelvalues, "try-error")){
     stop("Invalid model specification: ",model)
   }
   rm(glm,gam)

@@ -60,14 +60,9 @@ ddf.io.fi <- function(model, data, meta.data=list(), control=list(),
   # These dummy functions are removed after they are used so the real ones can
   # be used in the model fitting.
   glm <- function(formula, link="logit"){
-    if(class(formula)!="formula"){
-      if(class(try(as.formula(formula)))!="formula"){
-        stop("Invalid formula")
-      }
-    }else{
-      formula <- paste(as.character(formula), collapse="")
-    }
-    if(class(link)=="function"){
+    formula <- fixformula(formula)
+
+    if(is(link, "function")){
       link <- substitute(link)
     }
 
@@ -76,15 +71,9 @@ ddf.io.fi <- function(model, data, meta.data=list(), control=list(),
   }
 
   gam <- function(formula, link="logit"){
-    if(class(formula)!="formula"){
-      if(class(try(as.formula(formula)))!="formula"){
-        stop("Invalid formula")
-      }
-    }else{
-      formula <- paste(as.character(formula),collapse="")
-    }
+    formula <- fixformula(formula)
 
-    if(class(link)=="function"){
+    if(is(link, "function")){
       link <- substitute(link)
     }
 
@@ -109,7 +98,7 @@ ddf.io.fi <- function(model, data, meta.data=list(), control=list(),
   # Assign model values; this uses temporarily defined functions glm and gam
   modpaste <- paste(model)
   modelvalues <- try(eval(parse(text=modpaste[2:length(modpaste)])))
-  if(class(modelvalues)=="try-error"){
+  if(inherits(modelvalues, "try-error")){
    stop("Invalid model specification: ",model)
   }
   rm(glm,gam)
@@ -185,7 +174,7 @@ ddf.io.fi <- function(model, data, meta.data=list(), control=list(),
     names(fit)[names(fit)=="convcode"] <- "conv"
     fit$hessian<-details$nhatend
 
-    if(fit$conv!=0 | class(fit)=="try-error"){
+    if(fit$conv!=0 | inherits(fit, "try-error")){
       # first try the old way of just setting the starting values to zero,
       # this seems (with the crabbie data) to converge back to the values in
       # result$mr$coefficients but without having the convergence issues
@@ -204,7 +193,7 @@ ddf.io.fi <- function(model, data, meta.data=list(), control=list(),
       fit$hessian <- details$nhatend
     }
     # if nothing worked...
-    if(fit$conv!=0 | class(fit)=="try-error"){
+    if(fit$conv!=0 | inherits(fit, "try-error")){
       stop("No convergence in ddf.io.fi()")
     }else{
       result$mr$mr$coefficients <- fit$par
