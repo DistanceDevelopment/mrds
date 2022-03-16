@@ -19,6 +19,7 @@ Depends:
 Imports:
     optimx (>= 2013.8.6),
     mgcv,
+    methods,
     numDeriv,
     Rsolnp
 Suggests:
