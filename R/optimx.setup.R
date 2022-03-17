@@ -1,4 +1,5 @@
 #' @importFrom numDeriv grad
+#' @importFrom methods is
 optimx.setup <- function(par, fn, gr=NULL, hess=NULL, lower=-Inf, upper=Inf, 
             method=c("Nelder-Mead","BFGS"), itnmax=NULL, hessian=FALSE,
             control=list(),

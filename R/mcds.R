@@ -22,6 +22,7 @@
 #'   for shape function}
 #' @author Jeff Laake; Dave Miller
 #' @keywords utility
+#' @importFrom methods is
 mcds <- function(formula=NULL, key=NULL, adj.series=NULL, adj.order=c(NULL),
                  adj.scale="width", adj.exp=FALSE, shape.formula=~1){
 

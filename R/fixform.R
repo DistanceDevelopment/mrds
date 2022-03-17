@@ -1,3 +1,4 @@
+#' @importFrom methods is
 # is what we have a formula, make it if you can, else error
 fixformula <- function(formula){
   if(!is(formula, "formula")){
