@@ -546,7 +546,7 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     if(se & options$varflag!=1){
       numRegions <- length(unique(samples$Region.Label))
       if(options$varflag==2){
-        cov.Nc.Ncs <- rep(0,numRegions)
+        cov.Nc.Ncs <- rep(0, numRegions)
         scale <- clusters$summary$Area/clusters$summary$CoveredArea
 
         for(i in 1:numRegions){
