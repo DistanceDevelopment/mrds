@@ -544,8 +544,8 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     # whereas the other formula measure the variance of E(s) within the lines
     # and it goes to zero as p approaches 1.
     if(se & options$varflag!=1){
+      numRegions <- length(unique(samples$Region.Label))
       if(options$varflag==2){
-        numRegions <- length(unique(samples$Region.Label))
         cov.Nc.Ncs <- rep(0,numRegions)
         scale <- clusters$summary$Area/clusters$summary$CoveredArea
 
