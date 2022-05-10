@@ -149,7 +149,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   }
 
   # check we don't have more parameters than data
-  npars <- switch(model[[2]]$key,
+  npars <- switch(eval(model[[2]]$key),
                   "unif"  = 0,
                   "hn"    = 1,
                   2) + length(model[[2]]$adj.order)
