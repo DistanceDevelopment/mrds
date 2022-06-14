@@ -136,14 +136,27 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
       # small initialvalues lead to errors in solnp, so work around that
       initialvalues[initialvalues<1e-2] <- sign(initialvalues[initialvalues<1e-2]) * 1e-2
-      lt <- try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
-                      ineqfun=flnl.constr,
-                      ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
-                      LB=lowerbounds, UB=upperbounds,
-                      ddfobj=ddfobj, misc.options=misc.options,
-                      control=list(trace=as.integer(showit),
-                                   tol=misc.options$mono.tol,
-                                   delta=misc.options$mono.delta)))
+      if(showit==0){
+        lt <- suppressWarnings(
+                try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+                          ineqfun=flnl.constr,
+                          ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                          LB=lowerbounds, UB=upperbounds,
+                          ddfobj=ddfobj, misc.options=misc.options,
+                          control=list(trace=as.integer(showit),
+                                       tol=misc.options$mono.tol,
+                                       delta=misc.options$mono.delta)),
+                    silent=TRUE))
+      }else{
+        lt <- try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+                        ineqfun=flnl.constr,
+                        ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                        LB=lowerbounds, UB=upperbounds,
+                        ddfobj=ddfobj, misc.options=misc.options,
+                        control=list(trace=as.integer(showit),
+                                     tol=misc.options$mono.tol,
+                                     delta=misc.options$mono.delta)))
+      }
 
       if(length(initialvalues)>1){
         # gosolnp doesn't work when there is only 1 parameter
@@ -151,19 +164,35 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         # when it is expecting a matrix. To avoid this bug, don't do the
         # multiple start points in that case (should only be unif+cos(1))
 
-        # in other cases we probably want to explore the this code randomly
-        # generates starting values see ?gosolnp
-        lt2 <- try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
-                           ineqfun=flnl.constr,
-                           ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
-                           LB=lowerbounds, UB=upperbounds,
-                           ddfobj=ddfobj, misc.options=misc.options,
-                           control=list(trace=as.integer(showit),
-                                        tol=misc.options$mono.tol,
-                                        delta=misc.options$mono.delta),
-                           distr = rep(1, length(lowerbounds)),
-                           n.restarts = 2, n.sim = 200,
-                           rseed=as.integer(runif(1)*1e9)))
+        # in other cases we probably want to explore more of the par space
+        # gosolnp generates starting values see ?gosolnp
+        if(showit==0){
+          lt2 <- suppressWarnings(
+                 try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+                             ineqfun=flnl.constr,
+                             ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                             LB=lowerbounds, UB=upperbounds,
+                             ddfobj=ddfobj, misc.options=misc.options,
+                             control=list(trace=as.integer(showit),
+                                          tol=misc.options$mono.tol,
+                                          delta=misc.options$mono.delta),
+                             distr = rep(1, length(lowerbounds)),
+                             n.restarts = 2, n.sim = 200,
+                             rseed=as.integer(runif(1)*1e9)),
+                      silent=TRUE))
+        }else{
+          lt2 <- try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+                             ineqfun=flnl.constr,
+                             ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                             LB=lowerbounds, UB=upperbounds,
+                             ddfobj=ddfobj, misc.options=misc.options,
+                             control=list(trace=as.integer(showit),
+                                          tol=misc.options$mono.tol,
+                                          delta=misc.options$mono.delta),
+                             distr = rep(1, length(lowerbounds)),
+                             n.restarts = 2, n.sim = 200,
+                             rseed=as.integer(runif(1)*1e9)))
+        }
 
         # was this better than the first time
         if(all(class(lt2)!="try-error") ){

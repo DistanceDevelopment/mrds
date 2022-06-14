@@ -2,6 +2,7 @@ mrds 2.2.7
 ----------
 
 * Fix bug in check for # parameters < # data. Thanks to Anne Provencher St-Pierre.
+* No longer display errors caused by solnp/gosolnp when doing constrained optimisation, these can be seen when showit>0 if necessary.
 
 mrds 2.2.6
 ----------
