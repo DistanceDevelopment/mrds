@@ -89,7 +89,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
     lt <- list()
     lt$par <- initialvalues
-    lt$value <- flnl(initialvalues,ddfobj, misc.options)
+    lt$value <- flnl(initialvalues, ddfobj, misc.options)
     lt$hessian <- NULL
     lt$model <- list(scalemodel=misc.options$scalemodel)
     lt$converge <- 0
@@ -158,52 +158,103 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                      delta=misc.options$mono.delta)))
       }
 
-      if(length(initialvalues)>1){
-        # gosolnp doesn't work when there is only 1 parameter
-        # since there is a bug that leaves the optimisation with a vector
-        # when it is expecting a matrix. To avoid this bug, don't do the
-        # multiple start points in that case (should only be unif+cos(1))
+      # we can use the gosolnp() function to explore the parameter space
+      # randomly...
+      if(misc.options$mono.random.start){
+        if(length(initialvalues)>1){
+          # gosolnp doesn't work when there is only 1 parameter
+          # since there is a bug that leaves the optimisation with a vector
+          # when it is expecting a matrix. To avoid this bug, don't do the
+          # multiple start points in that case (should only be unif+cos(1))
 
-        # in other cases we probably want to explore more of the par space
-        # gosolnp generates starting values see ?gosolnp
-        if(showit==0){
-          lt2 <- suppressWarnings(
-                 try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
-                             ineqfun=flnl.constr,
-                             ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
-                             LB=lowerbounds, UB=upperbounds,
-                             ddfobj=ddfobj, misc.options=misc.options,
-                             control=list(trace=as.integer(showit),
-                                          tol=misc.options$mono.tol,
-                                          delta=misc.options$mono.delta),
-                             distr = rep(1, length(lowerbounds)),
-                             n.restarts = 2, n.sim = 200,
-                             rseed=as.integer(runif(1)*1e9)),
-                      silent=TRUE))
-        }else{
-          lt2 <- try(gosolnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
-                             ineqfun=flnl.constr,
-                             ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
-                             LB=lowerbounds, UB=upperbounds,
-                             ddfobj=ddfobj, misc.options=misc.options,
-                             control=list(trace=as.integer(showit),
-                                          tol=misc.options$mono.tol,
-                                          delta=misc.options$mono.delta),
-                             distr = rep(1, length(lowerbounds)),
-                             n.restarts = 2, n.sim = 200,
-                             rseed=as.integer(runif(1)*1e9)))
-        }
-
-        # was this better than the first time
-        if(all(class(lt2)!="try-error") ){
-          if(any(class(lt)=="try-error") ||
-             (!is.na(lt2$values[length(lt2$values)]) &&
-             (lt2$values[length(lt2$values)] < lt$values[length(lt$values)]))){
-            lt <- lt2
+          if(showit==0){
+            lt2 <- suppressWarnings(
+                   try(gosolnp(pars=initialvalues, fun=flnl,
+                               eqfun=NULL, eqB=NULL,
+                               ineqfun=flnl.constr,
+                               ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                               LB=lowerbounds, UB=upperbounds,
+                               ddfobj=ddfobj, misc.options=misc.options,
+                               control=list(trace=as.integer(showit),
+                                            tol=misc.options$mono.tol,
+                                            delta=misc.options$mono.delta),
+                               distr = rep(1, length(lowerbounds)),
+                               n.restarts = 2, n.sim = 200,
+                               rseed=as.integer(runif(1)*1e9)),
+                        silent=TRUE))
+          }else{
+            lt2 <- try(gosolnp(pars=initialvalues, fun=flnl,
+                               eqfun=NULL, eqB=NULL,
+                               ineqfun=flnl.constr,
+                               ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                               LB=lowerbounds, UB=upperbounds,
+                               ddfobj=ddfobj, misc.options=misc.options,
+                               control=list(trace=as.integer(showit),
+                                            tol=misc.options$mono.tol,
+                                            delta=misc.options$mono.delta),
+                               distr = rep(1, length(lowerbounds)),
+                               n.restarts = 2, n.sim = 200,
+                               rseed=as.integer(runif(1)*1e9)))
           }
-        }
-      }
 
+          # was this better than the first time
+          if(all(class(lt2)!="try-error") ){
+            if(any(class(lt)=="try-error") ||
+               (!is.na(lt2$values[length(lt2$values)]) &&
+               (lt2$values[length(lt2$values)] <
+                lt$values[length(lt$values)]))){
+              lt <- lt2
+            }
+          } # end "was it better" check
+        } # end par length check
+      }else{
+        # otherwise we do non-random par space exploration using a grid
+
+        # n.sim=200 for gosolnp, so we want a comparable systematic grid
+        # so we want n.notsim=200= (seq len)^(par dimensions)
+        # => ~~ 200^(1/(par dimensions))
+        # but still need some resolution on the grid, so make the min
+        # sequence be length 4??
+        n.notsim <- max(c(4, ceiling(200^(1/length(lowerbounds)))))
+        # create a sequence in each parameters direction
+        par_grid <- apply(cbind(lowerbounds, upperbounds), 1,
+                          \(x) seq(x[1], x[2], length.out=n.notsim))
+        # trim the extremes
+        par_grid <- par_grid[-c(1, nrow(par_grid)), , drop=FALSE]
+        # then expand out the options
+        par_grid <- as.matrix(expand.grid(as.data.frame(par_grid)))
+        # add in the initialvalues pars too
+        par_grid <- rbind(par_grid, initialvalues)
+
+        # small initialvalues lead to errors in solnp, so work around that
+        par_grid[par_grid<1e-2] <- sign(par_grid[par_grid<1e-2]) * 1e-2
+
+        for(igrid in 1:nrow(par_grid)){
+          if(showit==0){
+            lt <- suppressWarnings(
+                    try(solnp(pars=par_grid[igrid, ], fun=flnl,
+                              eqfun=NULL, eqB=NULL,
+                              ineqfun=flnl.constr,
+                              ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                              LB=lowerbounds, UB=upperbounds,
+                              ddfobj=ddfobj, misc.options=misc.options,
+                              control=list(trace=as.integer(showit),
+                                           tol=misc.options$mono.tol,
+                                           delta=misc.options$mono.delta)),
+                        silent=TRUE))
+          }else{
+            lt <- try(solnp(pars=par_grid[igrid, ], fun=flnl,
+                            eqfun=NULL, eqB=NULL,
+                            ineqfun=flnl.constr,
+                            ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                            LB=lowerbounds, UB=upperbounds,
+                            ddfobj=ddfobj, misc.options=misc.options,
+                            control=list(trace=as.integer(showit),
+                                         tol=misc.options$mono.tol,
+                                         delta=misc.options$mono.delta)))
+          } # end showit status
+        } # end loop over grid
+      } # end random vs. non-random par space exploration
 
       # if that failed then make a dummy object
       if(any(class(lt)=="try-error")){
@@ -373,6 +424,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           "      parameters =", paste(round(lt$par, 7), collapse=", "), "\n")
     }
 
+    if(is.null(lt$value)){
+      lt$value <- NA
+      lt$conv <- 2
+    }
     optim.history <- rbind(optim.history, c(lt$conv, -lt$value, lt$par))
 
     # check whether parameters hit their bounds

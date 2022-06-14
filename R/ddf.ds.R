@@ -105,7 +105,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                                    standardize=TRUE, mono.points=20,
                                    mono.tol=1e-8, mono.delta=1e-7, debug=FALSE,
                                    nofit=FALSE, optimx.method="nlminb",
-                                   optimx.maxit=300, silent=FALSE)
+                                   optimx.maxit=300, silent=FALSE,
+                                   mono.random.start=FALSE)
 
   #  Save current user options and then set design contrasts to treatment style
   save.options <- options()
@@ -187,7 +188,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                      mono.points=control$mono.points, mono.tol=control$mono.tol,
                      mono.delta=control$mono.delta, debug=control$debug,
                      nofit=control$nofit, left=meta.data$left,
-                     silent=control$silent
+                     silent=control$silent,
+                     mono.random.start=control$mono.random.start
                     )
 
   # debug - print the initial values
