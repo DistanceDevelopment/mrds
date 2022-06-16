@@ -64,7 +64,7 @@ print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE, ...){
       S$cv.Expected.S <- S$se.Expected.S/S$Expected.S
       S$cv.Expected.S[S$Expected.S==0] <- 0
     }
-    print(S)
+    print(as.data.frame(S))
   }
   invisible()
 }
