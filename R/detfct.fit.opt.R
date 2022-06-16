@@ -227,23 +227,23 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         par_grid <- rbind(par_grid, initialvalues)
 
         # small initialvalues lead to errors in solnp, so work around that
-        par_grid[par_grid<1e-2] <- sign(par_grid[par_grid<1e-2]) * 1e-2
+        par_grid[abs(par_grid)<1e-2] <- sign(par_grid[abs(par_grid)<1e-2])*1e-2
 
-        for(igrid in 1:nrow(par_grid)){
-          if(showit==0){
-            lt <- suppressWarnings(
-                    try(solnp(pars=par_grid[igrid, ], fun=flnl,
-                              eqfun=NULL, eqB=NULL,
-                              ineqfun=flnl.constr,
-                              ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
-                              LB=lowerbounds, UB=upperbounds,
-                              ddfobj=ddfobj, misc.options=misc.options,
-                              control=list(trace=as.integer(showit),
-                                           tol=misc.options$mono.tol,
-                                           delta=misc.options$mono.delta)),
-                        silent=TRUE))
-          }else{
-            lt <- try(solnp(pars=par_grid[igrid, ], fun=flnl,
+        flnl_wrap <- function(...){
+          e <- try(flnl(...), silent=TRUE)
+          if("try-error" %in% class(e)){
+            return(NA)
+          }
+          e
+        }
+        grid_lnls <- apply(par_grid, 1, flnl_wrap,
+                           ddfobj=ddfobj, misc.options=misc.options)
+        igrid <- which.min(grid_lnls)
+
+        # now run at best value
+        if(showit==0){
+          lt <- suppressWarnings(
+                  try(solnp(pars=par_grid[igrid, ], fun=flnl,
                             eqfun=NULL, eqB=NULL,
                             ineqfun=flnl.constr,
                             ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
@@ -251,9 +251,19 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                             ddfobj=ddfobj, misc.options=misc.options,
                             control=list(trace=as.integer(showit),
                                          tol=misc.options$mono.tol,
-                                         delta=misc.options$mono.delta)))
-          } # end showit status
-        } # end loop over grid
+                                         delta=misc.options$mono.delta)),
+                      silent=TRUE))
+        }else{
+          lt <- try(solnp(pars=par_grid[igrid, ], fun=flnl,
+                          eqfun=NULL, eqB=NULL,
+                          ineqfun=flnl.constr,
+                          ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                          LB=lowerbounds, UB=upperbounds,
+                          ddfobj=ddfobj, misc.options=misc.options,
+                          control=list(trace=as.integer(showit),
+                                       tol=misc.options$mono.tol,
+                                       delta=misc.options$mono.delta)))
+        } # end showit status
       } # end random vs. non-random par space exploration
 
       # if that failed then make a dummy object
