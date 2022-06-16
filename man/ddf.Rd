@@ -203,6 +203,7 @@ infrequently.  The list values include:
   \code{\link{optimx}}}
   \item{\code{optimx.maxit}}{maximum number of iterations to use in the
   optimisation.}
+  \item{\code{mono.random.start}}{By default when monotonicity constraints are enforced, a grid of starting values are tested. Instead random starting values can be used (uniformly distributed between the upper and lower bounds). Set \code{TRUE} for random start, \code{FALSE} (default) uses the grid method}
   \item{\code{silent}}{silences warnings within ds fitting method (helpful
   for running many times without generating many warning/error messages).}}
 

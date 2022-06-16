@@ -36,7 +36,12 @@ of the H-T estimator.
 
 \section{Factor levels}{
 
-By default R will set the base factor level to be the label which comes first alphabetically. Sometimes this can be an issue when that factor level corresponds to a subset of the data with very few observations. This can lead to very large uncertainty estimates (CVs) for model parameters. One way around this is to use \code{\link{relevel}} to set the base level to a level with more observations.
+By default R will set the base factor level to be the label which comes
+first alphabetically. Sometimes this can be an issue when that factor level
+corresponds to a subset of the data with very few observations. This can
+lead to very large uncertainty estimates (CVs) for model parameters. One way
+around this is to use \code{\link{relevel}} to set the base level to a level
+with more observations.
 }
 
 \section{Initial values}{
