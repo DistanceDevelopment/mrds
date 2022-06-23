@@ -31,7 +31,9 @@ rescale_pars <- function(initialvalues, ddfobj){
     ind <- (ind[1]+1):ind[2]
 
     # find the scalings
-    par_scaling[ind] <- apply(ddfobj$scale$dm, 2, sd)/sd(ddfobj$xmat$distance)
+    # previously we did relative scaling to distance but switch to
+    # absolute scaling
+    par_scaling[ind] <- apply(ddfobj$scale$dm, 2, sd)#/sd(ddfobj$xmat$distance)
 
     # ensure that the intercept has scaling 1 & any zero is set back to 1
     par_scaling[abs(par_scaling) < sqrt(.Machine$double.eps)] <- 1
