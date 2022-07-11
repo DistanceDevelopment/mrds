@@ -602,7 +602,7 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
 
     result <- list(clusters    = clusters,
                    individuals = individuals,
-                   Expected.S  = as.vector(Expected.S))
+                   Expected.S  = Expected.S)
   }else{
     individuals <- tables.dht(TRUE)
     if(DensityOnly){
