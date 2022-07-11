@@ -42,7 +42,7 @@ DeltaMethod <- function(par, fct, vcov, delta, ...){
   # respect to each parameter using a central difference formula
   savepar <- par
   value1 <- theta(par)
-  partial <- matrix(0,nrow=length(par),ncol=length(value1))
+  partial <- matrix(0, nrow=length(par), ncol=length(value1))
   for(i in seq_along(par)){
     # Store the original parameters into par and then adjust the
     # ith parameter by adding the proportion based on delta

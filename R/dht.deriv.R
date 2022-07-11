@@ -48,18 +48,21 @@ dht.deriv <- function(par, model, obs, samples, options=list()){
   # code below would not work if there is a pdot column there already, so remove
   obs$pdot <- NULL
 
-  obs <- merge(obs, data.frame(object=as.numeric(names(model$fitted)),
-               pdot=pdot))
+  obs <- merge(obs,
+               data.frame(object = as.numeric(names(model$fitted)),
+                          pdot   = pdot))
 
   # Compute covered region abundances by sample depending on value of group
   Nhat.by.sample <- covered.region.dht(obs, samples, options$group)
 
   # Scale up abundances to survey region
   Nhat.by.sample <- survey.region.dht(Nhat.by.sample, samples,
-                                   model$meta.data$width*options$convert.units,
-                                   model$meta.data$left*options$convert.units,
-                                   model$meta.data$point,
-                                   options$areas.supplied)
+                                      model$meta.data$width *
+                                        options$convert.units,
+                                      model$meta.data$left *
+                                        options$convert.units,
+                                      model$meta.data$point,
+                                      options$areas.supplied)
   Nhat.by.region <- by(Nhat.by.sample$Nhat, Nhat.by.sample$Region.Label, sum)
 
   # Return vector of predicted abundances
