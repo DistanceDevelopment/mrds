@@ -34,6 +34,6 @@ Buckland et al. 2002
 \code{\link{flnl}},\code{\link{flpt.lnl}},\code{\link{ddf.ds}}
 }
 \author{
-Jeff Laake
+Jeff Laake and David L Miller
 }
 \keyword{utility}

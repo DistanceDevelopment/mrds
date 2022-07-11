@@ -13,27 +13,18 @@
 #' @note This is an internal function used by \code{\link{ddf.ds}} to fit
 #'   distance sampling detection functions.  It is not intended for the user to
 #'   invoke this function but it is documented here for completeness.
-#' @author Jeff Laake
+#' @author Jeff Laake and David L Miller
 #' @seealso \code{\link{flnl}},\code{\link{flpt.lnl}},\code{\link{ddf.ds}}
 #' @references Buckland et al. 2002
 #' @keywords utility
 flt.var <- function(ddfobj, misc.options){
 
   fpar1 <- getpar(ddfobj)
-  parmat <- NULL
-
   #   Compute first partial (numerically) of log(f(y)) for each observation
   #   for each parameter and store in parmat (n by length(fpar))
-  deltap <- .0001*fpar1
-  for(i in seq_along(fpar1)){
-    fpar <- fpar1
-    if(abs(deltap[i])<0.0001) deltap[i] <- 0.0001
-    fpar[i] <- fpar1[i] - deltap[i]
-    x1 <- -flpt.lnl(fpar, ddfobj, misc.options)
-    fpar[i] <- fpar1[i] + deltap[i]
-    x2 <- -flpt.lnl(fpar, ddfobj, misc.options)
-    parmat <- cbind(parmat, (x2-x1)/(2*deltap[i]))
-  }
+  nflpt.lnl <- function(...) -flpt.lnl(...)
+  parmat <- numDeriv::jacobian(nflpt.lnl, x=fpar1, ddfobj=ddfobj,
+                               misc.options=misc.options)
 
   # Compute varmat using first partial approach (pg 62 of Buckland et al 2002)
   varmat <- matrix(0, ncol=length(fpar1), nrow=length(fpar1))
