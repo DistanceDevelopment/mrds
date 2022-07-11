@@ -6,8 +6,7 @@
 #'
 #' The delta method (aka propagation of errors is based on Taylor series
 #' approximation - see Seber's book on Estimation of Animal Abundance). It uses
-#' the first derivative of \code{fct} with respect to \code{par} which is
-#' computed in this function numerically using the central-difference formula.
+#' the first derivative of \code{fct} with respect to \code{par}.
 #' It also uses the variance-covariance matrix of the estimated parameters
 #' which is derived in estimating the parameters and is an input argument.
 #'
@@ -31,45 +30,17 @@
 #' @note This is a generic function that can be used in any setting beyond the
 #' \code{mrds} package. However this is an internal function for \code{mrds}
 #' and the user does not need to call it explicitly.
-#' @author Jeff Laake
+#' @author Jeff Laake and David L Miller
 #' @keywords utility
 DeltaMethod <- function(par, fct, vcov, delta, ...){
 
   # Construct theta call to fct
   theta <- function(par) fct(par,...)
 
-  # Numerically compute the first derivative of the estimator with
-  # respect to each parameter using a central difference formula
-  savepar <- par
-  value1 <- theta(par)
-  partial <- matrix(0, nrow=length(par), ncol=length(value1))
-  for(i in seq_along(par)){
-    # Store the original parameters into par and then adjust the
-    # ith parameter by adding the proportion based on delta
-    if(savepar[i]!=0){
-      deltap <- delta*savepar[i]
-    }else{
-      deltap <- delta
-    }
-
-    par <- savepar
-    par[i] <- savepar[i]+deltap
-
-    # With this new value call the function to compute the estimate
-    value1 <- theta(par)
-
-    # Next do the same thing as above except substract off the proportion
-    # delta from the original parameter.
-
-    par <- savepar
-    par[i] <- savepar[i]-deltap
-    value2 <- theta(par)
-
-    # Compute the central difference formula for the first derivative
-    # with respect to the ith parameter
-
-    partial[i,] <- (value1-value2)/(2*deltap)
-  }
+  ## Numerically compute the first derivative of the estimator with
+  ## respect to each parameter
+  partial <- t(numDeriv::jacobian(theta, x=par))
+  # calculate variance matrix for fct
   variance <- t(partial) %*% vcov %*% partial
 
   # return the v-c matrix and the first partial vector(matrix)
