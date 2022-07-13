@@ -35,7 +35,7 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
   width <- misc.options$width
 
   # set "standardize" to FALSE, as this cancels in the likelihood
-  # evaluation. Note that we it has to be the same value (TRUE/FALSE)
+  # evaluation. Note that it has to be the same value (TRUE/FALSE)
   # through all computations (for both detection function and integral)
   # or the below makes no sense
   standardize <- FALSE
@@ -134,11 +134,13 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
     # integral values < 0
     int1 <- -1
     i <- 0
+    doeachint <- FALSE
     while(any(int1 < 0) & (i < 2)){
       if(ddfobj$intercept.only & samelimits){
         int1 <- integratepdf(ddfobj,
                              select=c(TRUE, rep(FALSE, nrow(ddfobj$xmat))),
                              width=width, int.range=int.range,
+                             doeachint=doeachint,
                              point=misc.options$point, standardize=standardize,
                              left=left)
       }else{
@@ -150,6 +152,7 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
 
         int1 <- integratepdf(ddfobj, select=!x$binned, width=right,
                              int.range=intrange[!x$binned, ],
+                             doeachint=doeachint,
                              point=misc.options$point, standardize=standardize,
                              left=left)
       }
