@@ -27,13 +27,12 @@ flt.var <- function(ddfobj, misc.options){
                                misc.options=misc.options)
 
   # Compute varmat using first partial approach (pg 62 of Buckland et al 2002)
-  varmat <- matrix(0, ncol=length(fpar1), nrow=length(fpar1))
+  varmat <- t(parmat) %*% parmat
 
-  for(i in seq_along(fpar1)){
-    for(j in seq_along(fpar1)){
-      varmat[i, j] <- sum(parmat[, i]*parmat[, j])
-    }
-  }
+  # could get the "true" (2nd deriv) hessian using the below
+  #nflpt.lnl <- function(...) sum(flpt.lnl(...))
+  #varmat <- numDeriv::hessian(nflpt.lnl, x=fpar1, ddfobj=ddfobj,
+  #                             misc.options=misc.options)
 
   return(varmat)
 }
