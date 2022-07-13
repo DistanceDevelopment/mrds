@@ -14,7 +14,7 @@ DeltaMethod(par, fct, vcov, delta, ...)
 \item{vcov}{variance-covariance matrix of the parameters}
 
 \item{delta}{proportional change in parameters used to numerically estimate
-first derivative with central-difference formula}
+first derivative with central-difference formula (ignored)}
 
 \item{\dots}{any additional arguments needed by \code{fct}}
 }

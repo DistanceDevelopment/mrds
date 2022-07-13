@@ -20,7 +20,7 @@
 #' @param fct function that constructs estimates from parameters \code{par}
 #' @param vcov variance-covariance matrix of the parameters
 #' @param delta proportional change in parameters used to numerically estimate
-#' first derivative with central-difference formula
+#' first derivative with central-difference formula (ignored)
 #' @param \dots any additional arguments needed by \code{fct}
 #' @export
 #' @return a list with values \item{variance}{estimated variance-covariance
@@ -35,7 +35,7 @@
 DeltaMethod <- function(par, fct, vcov, delta, ...){
 
   # Construct theta call to fct
-  theta <- function(par) fct(par,...)
+  theta <- function(par) fct(par, ...)
 
   ## Numerically compute the first derivative of the estimator with
   ## respect to each parameter
