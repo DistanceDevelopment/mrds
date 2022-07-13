@@ -179,9 +179,6 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
     key.shape[key.shape==1] <- key.shape[key.shape==1] + 0.000001
   }
 
-  # 19-Jan-06 jll; added proper standardize code to get std integral.
-  #  I left standardize code below in case it is needed for adjustment fcts
-
   # evaluate key function
   g <- switch(key,
               hn    = keyfct.hn(distance, key.scale),
@@ -192,7 +189,6 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
               th2   = keyfct.th2(distance, key.scale, key.shape),
               tpn   = keyfct.tpn(distance, ddfobj))
 
-  # Adjustment functions
   # If we are using adjustment terms.
   if(!is.null(ddfobj$adjustment)){
     adj.series <- ddfobj$adjustment$series
