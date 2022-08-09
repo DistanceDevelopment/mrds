@@ -6,6 +6,7 @@ mrds 2.2.7
 * EXPERIMENTAL change to use fixed grid starting values when using monotonicity constraints, set control$mono.random.start=TRUE to get old behaviour
 * Scale covariates absolutely rather than relatively during optimisation.
 * Expected.S element of dht return now a data.frame not a list
+* Fix total encounter rate and its variance in stratified analysis
 
 mrds 2.2.6
 ----------

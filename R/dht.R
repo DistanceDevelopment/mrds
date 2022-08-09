@@ -303,15 +303,10 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                                                 c("Region.Label", "Area")],
                                    0, 0))
     }
-
+    # ER variance for each stratum, total below
     var.er <- sapply(split(Nhat.by.sample, Nhat.by.sample$Region.Label),
                      function(x) varn(x$Effort.x, x$n, type=options$ervar))
 
-    if(numRegions > 1){
-       var.er <- c(var.er, varn(Nhat.by.sample$Effort.x,
-                                Nhat.by.sample$n,
-                                type=options$ervar))
-    }
 
     #  jll 11_11_04; change to set missing values for nobs to 0
     #   - regions with no sightings
@@ -324,6 +319,10 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     colnames(summary.table) <- c("Region", "Area", "CoveredArea",
                                  "Effort", "n", "k")
 
+    # calculate encounter rate
+    er <- summary.table$n/summary.table$Effort
+
+    # get totals of easy stuff
     if(numRegions > 1){
       summary.table <- data.frame(Region=c(levels(summary.table$Region),
                                            "Total"),
@@ -331,7 +330,16 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                                         apply(summary.table[, -1], 2, sum)))
     }
 
-    summary.table$ER <- summary.table$n/summary.table$Effort
+    # get total encounter rate and its variance
+    if(numRegions > 1){
+      er <- c(er, sum(er * summary.table$Area[1:length(er)])/
+                    sum(summary.table$Area[1:length(er)]))
+      total.var.er <- sum(var.er * summary.table$Area[1:length(var.er)]^2)/
+                        sum(summary.table$Area[1:length(var.er)])^2
+      var.er <- c(var.er, total.var.er)
+    }
+
+    summary.table$ER <- er
     summary.table$se.ER <- sqrt(var.er)
     summary.table$cv.ER <- summary.table$se.ER/summary.table$ER
     summary.table$cv.ER[summary.table$ER==0] <- 0
