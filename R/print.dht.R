@@ -17,8 +17,6 @@
 print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE, ...){
 
   print.tables <- function(x, cor, bysample, vcmatrices){
-    cat("\nSummary statistics:\n")
-    print(x$summary)
     if("N" %in% names(x)){
       cat("\nAbundance:\n")
       print(x$N)
@@ -51,8 +49,14 @@ print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE, ...){
 
   # now print
   if(is.null(x$clusters)){
+    # summary statistics
+    cat("\nSummary statistics\n\n")
+    print(x$individuals$summary)
     print.tables(x$individuals, cor, bysample, vcmatrices)
   }else{
+    # summary statistics
+    cat("\nSummary statistics\n\n")
+    print(x$clusters$summary)
     cat("\nSummary for clusters\n")
     print.tables(x$clusters, cor, bysample, vcmatrices)
     cat("\nSummary for individuals\n")
