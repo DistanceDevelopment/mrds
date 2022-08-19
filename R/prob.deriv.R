@@ -45,7 +45,7 @@ prob.deriv <- function(par,model,parfct,observer=NULL,fittedmodel=NULL){
     pred.at0 <- predict(model,newdat)
   }else{
     if(!is.null(fittedmodel)){
-      if(class(fittedmodel)[1]!="rem"){
+      if(!inherits(fittedmodel, "rem")){
         newdat <- model$data[model$data$observer==1&model$data$detected==1,]
       }else{
         newdat <- model$data

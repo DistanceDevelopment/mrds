@@ -6,7 +6,7 @@
 #' @param lnl.last last value of the log likelihood
 #' @param par.last last value of the parameters
 parse.optimx <- function(lt, lnl.last, par.last){
-  if(any(class(lt)=="try-error") || any(is.na(lt[, 1:attr(lt,"npar")]))){
+  if(inherits(lt, "try-error") || any(is.na(lt[, 1:attr(lt,"npar")]))){
     lt <- list()
     lt$conv <- 9
     lt$value <- lnl.last

@@ -63,7 +63,7 @@ qqplot.ddf <- function(model, plot=TRUE, nboot=100, ks=FALSE, ...){
   }
 
   # don't do KS if the model is not "ds"
-  if(!("ds" %in% class(model)) & ks){
+  if(!inherits(model, "ds") & ks){
     warning("Can't calculate Kolmogorov-Smirnov p-value for non-\"ds\" models, only calculating Cramer-von Mises")
     ks <- FALSE
   }
@@ -92,13 +92,13 @@ get_edf_cdf <- function(model){
     }
   }
 
-  if("ds" %in% class(model)){
+  if(inherits(model, "ds")){
     cdfvalues <- sort(cdf.ds(model)$fitted)
-  }else if("io" %in% class(model) |
-           "trial" %in% class(model) |
-           "rem" %in% class(model) ){
+  }else if(inherits(model, "io") |
+           inherits(model, "trial") |
+           inherits(model, "rem") ){
     cdfvalues <- sort(cdf.ds(model$ds)$fitted)
-  }else if("io.fi" %in% class(model)){
+  }else if(inherits(model, "io.fi")){
     data <- model$data
     data <- data[data$object %in% as.numeric(names(model$fitted)), ]
     n <- length(data$distance)/2
@@ -117,7 +117,7 @@ get_edf_cdf <- function(model){
       cdfvalues <- cdfvalues/predict.io.fi(model, integrate=TRUE)$fitted
     }
     cdfvalues <- sort(cdfvalues)
-  }else if("trial.fi" %in% class(model)){
+  }else if(inherits(model, "trial.fi")){
     data <- model$data
     data <- data[data$observer==1&data$object %in%
                    as.numeric(names(model$fitted)), ]
@@ -139,7 +139,7 @@ get_edf_cdf <- function(model){
                                               integrate=TRUE)$fitted
     }
     cdfvalues <- sort(cdfvalues)
-  }else if("rem.fi" %in% class(model)){
+  }else if(inherits(model, "rem.fi")){
     data <- model$data
     data <- data[data$object %in% as.numeric(names(model$fitted)),]
     n <- length(data$distance)/2

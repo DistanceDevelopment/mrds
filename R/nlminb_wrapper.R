@@ -72,7 +72,7 @@ nlminb_wrapper <- function(par, ll, ugr=NULL, lower=NULL, upper=NULL,
                                         control=mcontrol, scale=scale,
                                         ddfobj=ddfobj, ...),
                                  silent=TRUE))[1]
-  if(class(ans)[1] != "try-error"){
+  if(!inherits(ans, "try-error")){
     ans$convcode <- ans$convergence
     # Translate output to common format and names
     ans$value <- ans$objective

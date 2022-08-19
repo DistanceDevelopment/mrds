@@ -186,7 +186,7 @@ sample_ddf <- function(ds.object){
                     with(ds.object, eval(ddf.call)))))
 
     # did that model work?
-    if(all(class(ddf.fitted) == "try-error") ||
+    if(inherits(ddf.fitted, "try-error") ||
        any(is.na(ddf.fitted$hessian))){
       # forget everything and start again
       n.samps <- 0

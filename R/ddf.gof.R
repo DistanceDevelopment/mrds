@@ -56,7 +56,7 @@ ddf.gof <- function(model, breaks=NULL, nc=NULL, qq=TRUE, nboot=100, ks=FALSE,
                     ...){
 
   # if we have a Distance object rather than mrds, use that
-  if(all(class(model)=="dsmodel")){
+  if(inherits(model, "dsmodel")){
     model <- model$ddf
   }
 

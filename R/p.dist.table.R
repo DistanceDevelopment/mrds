@@ -47,7 +47,7 @@
 p.dist.table <- function(object, bins=seq(0, 1, by=0.1), proportion=FALSE){
 
   # if we have a ds object from Distance
-  if("dsmodel" %in%class(object)){
+  if(inherits(object, "dsmodel")){
     object <- object$ddf
   }
 

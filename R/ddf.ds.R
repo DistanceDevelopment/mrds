@@ -236,7 +236,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
     result$hessian <- try(flt.var(result$ds$aux$ddfobj, misc.options))
     # Uses formula in Buckland et al or it doesn't match DISTANCE output
     # unless the result is singular
-    if("try-error" %in% class(result$hessian)){
+    if(inherits(result$hessian, "try-error")){
       # the hessian returned from solnp() is not what we want, warn about
       # that and don't return it
       if(misc.options$mono){
@@ -246,7 +246,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
         result$hessian <- lt$hessian
       }
     }else if(length(lt$par)>1){
-      if("try-error" %in% class(try(solve(result$hessian), silent=TRUE))){
+      if(inherits(try(solve(result$hessian), silent=TRUE), "try-error")){
         warning("First partial hessian is singular; using second-partial hessian\n")
         result$hessian <- lt$hessian
       }

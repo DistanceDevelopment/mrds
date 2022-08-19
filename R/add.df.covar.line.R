@@ -67,7 +67,7 @@ add.df.covar.line <- function(ddf, data, ndist=250, pdf=FALSE, breaks="Sturges",
                               ...){
 
   # if we have a Distance object rather than mrds, use that
-  if(all(class(ddf)=="dsmodel")){
+  if(is(ddf, "dsmodel")){
     df <- ddf$ddf
   }else{
     df <- ddf

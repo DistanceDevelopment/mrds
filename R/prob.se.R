@@ -42,7 +42,7 @@ prob.se <- function(model, fct, vcov, observer=NULL, fittedmodel=NULL){
      newdat$offsetvalue <- 0
      pred.at0 <- predict(model, newdat)
   }else if(!is.null(fittedmodel)){
-    if(class(fittedmodel)[1]!="rem"){
+    if(!inherits(fittedmodel, "rem")){
       newdat <- model$data[model$data$observer==1&model$data$detected==1, ]
     }else{
       newdat <- model$data

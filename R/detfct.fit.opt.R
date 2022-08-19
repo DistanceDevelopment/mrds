@@ -198,8 +198,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           }
 
           # was this better than the first time
-          if(all(class(lt2)!="try-error") ){
-            if(any(class(lt)=="try-error") ||
+          if(inherits(lt2, "try-error")){
+            if(inherits(lt, "try-error") ||
                (!is.na(lt2$values[length(lt2$values)]) &&
                (lt2$values[length(lt2$values)] <
                 lt$values[length(lt$values)]))){
@@ -231,7 +231,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
         flnl_wrap <- function(...){
           e <- try(flnl(...), silent=TRUE)
-          if("try-error" %in% class(e)){
+          if(inherits(e, "try-error")){
             return(NA)
           }
           e
@@ -267,7 +267,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       } # end random vs. non-random par space exploration
 
       # if that failed then make a dummy object
-      if(any(class(lt)=="try-error")){
+      if(inherits(lt, "try-error")){
         lt <- list()
         lt$conv <- 9
         lt$value <- lnl.last
@@ -308,7 +308,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                         upper=upperbounds, ddfobj=ddfobj, fitting=fitting,
                         misc.options=misc.options), silent=TRUE)
         opt.method <- opt.method[opt.method != "SANN"]
-        if(class(lt)!="try-error"){
+        if(!inherits(lt, "try-error")){
           initialvalues <- lt$par
         }
       }
@@ -345,7 +345,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         opt.method <- opt.method[opt.method != "nlminb"]
 
         # get new initialvalues
-        if(any(class(lt)=="try-error") || any(is.na(lt[,1:attr(lt,"npar")]))){
+        if(inherits(lt, "try-error") || any(is.na(lt[,1:attr(lt,"npar")]))){
           if(showit >= 2){
             cat("DEBUG: Optimisation failed, ignoring and carrying on...\n")
           }
@@ -393,7 +393,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                          ddfobj=ddfobj, fitting=fitting,
                          misc.options=misc.options), silent=TRUE)
 
-        if(any(class(lt)=="try-error") || any(is.na(lt[, 1:attr(lt,"npar")]))){
+        if(inherits(lt, "try-error") || any(is.na(lt[, 1:attr(lt,"npar")]))){
           if(showit >= 2){
             cat("DEBUG: Optimisation failed, ignoring and carrying on...\n")
           }

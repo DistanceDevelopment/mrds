@@ -18,7 +18,7 @@ predict.trial.fi <- function(object, newdata=NULL,compute=FALSE, int.range=NULL,
     left <- model$meta.data$left
     formula <- paste("~",as.character(model$mr$formula)[3],collapse="")
 
-    if (class(model$mr)[1]=="gam"){
+    if (inherits(model$mr, "gam")){
       integral.numeric <- TRUE
     }else{
       integral.numeric <- is.linear.logistic(newdata,formula,

@@ -127,7 +127,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
         metaiter <- metaiter + 1
 
         # report failure
-        if(all(class(lt)=="try-error")){
+        if(inherits(lt, "try-error")){
           if(showit>=2){
             cat("DEBUG: iteration", iter, ", fitting", fitting, "failed.\n")
           }
