@@ -198,7 +198,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           }
 
           # was this better than the first time
-          if(inherits(lt2, "try-error")){
+          if(!inherits(lt2, "try-error")){
             if(inherits(lt, "try-error") ||
                (!is.na(lt2$values[length(lt2$values)]) &&
                (lt2$values[length(lt2$values)] <
