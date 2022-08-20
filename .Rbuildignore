@@ -9,3 +9,4 @@ LICENSE
 ^CRAN-RELEASE$
 ^codecov\.yml$
 .github/
+cran-comments.md
