@@ -10,3 +10,4 @@ LICENSE
 ^codecov\.yml$
 .github/
 cran-comments.md
+^CRAN-SUBMISSION$
