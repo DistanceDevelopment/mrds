@@ -33,27 +33,33 @@
 #'  otherwise just plots
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
-plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
-                        showlines,maintitle,ylim,return.lines=FALSE,
-                        angle=-45,density=20,col="black",jitter=NULL,
-                        xlab="Distance",ylab="Detection probability",
-                        subtitle=TRUE,...){
+plot_uncond <- function(model, obs, xmat, gxvalues, nc, finebr, breaks,
+                        showpoints, showlines, maintitle, ylim,
+                        return.lines=FALSE, angle=-45, density=20, col="black",
+                        jitter=NULL, xlab="Distance",
+                        ylab="Detection probability", subtitle=TRUE, ...){
 
   #  Functions Used: average.line
 
   if(obs<=2){
     n <- length(xmat$distance[xmat$observer == obs&xmat$detected==1])
-    selmat <- xmat[xmat$observer== obs,]
+    selmat <- xmat[xmat$observer== obs, ]
     det.detected <- xmat$detected[xmat$observer== obs]==1
   }else if(obs==3){
     n <- length(xmat$distance[xmat$observer==1])
-    selmat <- xmat[xmat$observer==1,]
+    selmat <- xmat[xmat$observer==1, ]
     det.detected<- selmat$observer==1
   }else{
     n <- length(xmat$distance[xmat$observer==1 & xmat$timesdetected==2])
-    selmat <- xmat[xmat$observer==1,]
+    selmat <- xmat[xmat$observer==1, ]
     det.detected <- selmat$timesdetected==2
   }
+
+  # only use distances within breaks
+  inside_breaks <- selmat$distance >= min(breaks) &
+                   selmat$distance <= max(breaks)
+  selmat <- selmat[inside_breaks, ]
+  gxvalues <- gxvalues[inside_breaks]
 
   hist.obj <- hist(selmat$distance[det.detected], breaks=breaks, plot=FALSE)
 
@@ -61,8 +67,8 @@ plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
     expected.counts <- (breaks[2:(nc+1)]-breaks[1:nc])*
                          (model$Nhat/breaks[nc+1])
   }else{
-    expected.counts <- -apply(matrix(c(breaks[2:(nc+1)]^2,breaks[1:nc]^2),
-                                     ncol=2,nrow=nc),
+    expected.counts <- -apply(matrix(c(breaks[2:(nc+1)]^2, breaks[1:nc]^2),
+                                     ncol=2, nrow=nc),
                               1,diff)*(model$Nhat/breaks[nc+1]^2)
   }
 
@@ -71,10 +77,10 @@ plot_uncond <- function(model,obs,xmat,gxvalues,nc,finebr,breaks,showpoints,
   freq <- hist.obj$density
   hist.obj$equidist <- FALSE
 
-  line <- average.line(finebr,obs,model)
+  line <- average.line(finebr, obs, model)
   linevalues <- line$values
   xgrid <- line$xgrid
-  ylim <- c(0,max(ylim,hist.obj$density))
+  ylim <- c(0, max(ylim, hist.obj$density))
 
   histline(hist.obj$density, breaks=breaks, lineonly=FALSE, xlab=xlab,
            ylab=ylab, ylim=ylim, angle=angle, density=density, col=col,

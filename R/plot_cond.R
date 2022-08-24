@@ -32,10 +32,10 @@
 #' @return NULL
 #' @author Jeff Laake, Jon Bishop, David Borchers
 #' @keywords plot
-plot_cond <- function(obs,xmat,gxvalues,model,nc,breaks,finebr,showpoints,
-                      showlines,maintitle,ylim,angle=-45,density=20,col="black",
-                      jitter=NULL,xlab="Distance",ylab="Detection probability",
-                      subtitle=TRUE,...){
+plot_cond <- function(obs, xmat, gxvalues, model, nc, breaks, finebr,
+                      showpoints, showlines, maintitle, ylim, angle=-45,
+                      density=20, col="black", jitter=NULL, xlab="Distance",
+                      ylab="Detection probability", subtitle=TRUE, ...){
 
   # build and plot the histogram
   selection <- xmat$detected[xmat$observer!=obs]==1
@@ -55,23 +55,26 @@ plot_cond <- function(obs,xmat,gxvalues,model,nc,breaks,finebr,showpoints,
   mhist$equidist <- FALSE
   mhist$intensities <- mhist$density
   histline(mhist$density, breaks=breaks, lineonly=FALSE, xlab=xlab, ylab=ylab,
-           ylim=ylim, angle=angle, density=density, col=col,
-           det.plot=TRUE, ...)
+           ylim=ylim, angle=angle, density=density, col=col, det.plot=TRUE,
+           ...)
 
   # plot the detection function
   if(showlines){
-    line <- average.line.cond(finebr,obs,model)
+    line <- average.line.cond(finebr, obs, model)
     linevalues <- line$values
     xgrid <- line$xgrid
-    lines(xgrid,linevalues,...)
+    lines(xgrid, linevalues, ...)
   }
 
   # plot points
   if(showpoints){
     ifelse(is.null(jitter),
-           jitter.p<-1,
-           jitter.p<-rnorm(length(gxvalues),1,jitter))
-    points(selmat$distance,gxvalues*jitter.p,...)
+           jitter.p <- 1,
+           jitter.p <- rnorm(length(gxvalues),1,jitter))
+    gxvalues <- gxvalues[xmat$observer==obs & xmat$distance >= min(breaks)
+                         &
+                         xmat$observer==obs & xmat$distance <= max(breaks)]
+    points(selmat$distance, gxvalues*jitter.p, ...)
   }
 
   # add the usual titles as subtitles if that's what the user asked for
