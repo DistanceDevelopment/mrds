@@ -35,7 +35,7 @@ fitted detection function model object with the following list
   breaks: breaks in distance for defined fixed bins for analysis \item
   maxiter: maximum iterations used \item refit: if TRUE, detection function
   will be fitted more than once if parameters are at a boundary or when
-  convergence is not achieved \item nrefits: number of refittings \item
+  convergence is not achieved \item nrefits: number of refittings
   \item mono: if TRUE, monotonicity will be enforced \item
   mono.strict: if TRUE, then strict monotonicity is enforced; otherwise weak
   \item width: radius of point count or half-width of strip \item
