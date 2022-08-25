@@ -1,3 +1,8 @@
+mrds 2.2.8
+----------
+
+* Fix bug where plotting rem.fi models when truncation was used would lead to an error being thrown. (#58)
+
 mrds 2.2.7
 ----------
 
