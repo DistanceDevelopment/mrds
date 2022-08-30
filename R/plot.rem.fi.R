@@ -114,7 +114,9 @@ plot.rem.fi <- function(x, which=1:3, breaks=NULL, nc=NULL, maintitle="",
   data <- process.data(model$data, model$meta.data)$xmat
   data$offsetvalue <- 0
   if(is.element(3, which)){
-    gxvalues <- p1[xmat$detected[xmat$observer==2]==1]
+    gxvalues <- p1[xmat$detected[xmat$observer==2] == 1 &
+                   xmat$distance[xmat$observer==2] >= left &
+                   xmat$distance[xmat$observer==2] <= width]
     plot_cond(1, data, gxvalues, model, nc, breaks,
               finebr=(width/divisions)*(0:divisions), showpoints, showlines,
               maintitle, ylim, angle=angle, density=density, col=col,

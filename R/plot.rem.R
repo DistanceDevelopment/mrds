@@ -51,7 +51,7 @@
 #' @author Jeff Laake, Jon Bishop, David Borchers, David L Miller
 #' @keywords plot
 plot.rem <- function(x, which=1:3, breaks=NULL, nc=NULL, maintitle="",
-                     showlines=TRUE,  showpoints=TRUE, ylim=c(0, 1), angle=NULL,
+                     showlines=TRUE, showpoints=TRUE, ylim=c(0, 1), angle=NULL,
                      density=NULL, col="lightgrey", jitter=NULL, divisions=25,
                      pages=0,
                      xlab="Distance", ylab="Detection probability",

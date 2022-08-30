@@ -8,7 +8,7 @@
 #' @param obs observer code
 #' @param xmat processed data
 #' @param gxvalues detection function values for each observation
-#' @param model   fitted model from \code{ddf}
+#' @param model fitted model from \code{ddf}
 #' @param nc number of equal-width bins for histogram
 #' @param breaks user define breakpoints
 #' @param finebr fine break values over which line is averaged
@@ -40,6 +40,14 @@ plot_cond <- function(obs, xmat, gxvalues, model, nc, breaks, finebr,
   # build and plot the histogram
   selection <- xmat$detected[xmat$observer!=obs]==1
   selmat <- (xmat[xmat$observer==obs,])[selection,]
+
+  # only use distances within breaks
+  inside_breaks <- selmat$distance >= min(breaks) &
+                   selmat$distance <= max(breaks)
+  selmat <- selmat[inside_breaks, ]
+  gxvalues <- gxvalues[inside_breaks]
+
+
   shist <- hist(xmat$distance[xmat$observer!= obs & xmat$detected==1],
                 breaks=breaks, plot = FALSE)
   mhist <- hist(xmat$distance[xmat$timesdetected== 2 & xmat$observer==obs],
@@ -71,9 +79,6 @@ plot_cond <- function(obs, xmat, gxvalues, model, nc, breaks, finebr,
     ifelse(is.null(jitter),
            jitter.p <- 1,
            jitter.p <- rnorm(length(gxvalues),1,jitter))
-    gxvalues <- gxvalues[xmat$observer==obs & xmat$distance >= min(breaks)
-                         &
-                         xmat$observer==obs & xmat$distance <= max(breaks)]
     points(selmat$distance, gxvalues*jitter.p, ...)
   }
 
