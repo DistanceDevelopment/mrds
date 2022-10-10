@@ -16,7 +16,6 @@ getRefPoints<- function(no_d, int.range){
   # note this currently doesn't work with multiple integration ranges
   # i.e. when int.range is a matrix w. > 1 row. This should have been caught
   # and an error throw before now though.
-
   xlat <- (int.range[2]-int.range[1])/(no_d^1.5)
   ref_points <- double(no_d)
   for(i in 1:no_d){
