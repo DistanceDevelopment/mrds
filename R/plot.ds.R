@@ -270,12 +270,13 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
     # Detection function/pdf values for points to be plotted
     if(point & pdf){
       point_vals <- distpdf(xmat$distance, ddfobj, width=width, point=point,
-                                standardize=TRUE)/
+                                standardize=TRUE, left=left)/
                     integratepdf(ddfobj, select=selected, width=width,
                                  int.range=int.range, standardize=TRUE,
-                                 point=point)
+                                 point=point, left=left)
     }else{
-      point_vals <- detfct(xmat$distance, ddfobj, select=selected, width=width)
+      point_vals <- detfct(xmat$distance, ddfobj, select=selected, width=width,
+                           left=left)
     }
 
     # set y labels, limits and tick marks (det.plot) depending on if we
