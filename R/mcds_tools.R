@@ -15,26 +15,21 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
                                 fileext=".txt")
   #command.file.name <- gsub("/","\\\\",command.file.name)
   file.create(command.file.name)
-  
-  # HEADER section
-  
-  # specify the location of output files
-#  cat("out.txt", file=command.file.name, "\n", append=TRUE)
-#  cat("log.txt", file=command.file.name, "\n", append=TRUE)
-#  cat("stat.txt", file=command.file.name, "\n", append=TRUE)
-#  cat("plot.txt", file=command.file.name, "\n", append=TRUE)
 
-  cat(paste(directory,"/out.txt",sep=""), file=command.file.name, "\n", 
+  # HEADER section
+
+  # specify the location of output files
+  cat(paste(directory,"/out.txt",sep=""), file=command.file.name, "\n",
       append=TRUE)
-  cat(paste(directory,"/log.txt",sep=""), file=command.file.name, "\n", 
+  cat(paste(directory,"/log.txt",sep=""), file=command.file.name, "\n",
       append=TRUE)
-  cat(paste(directory,"/stat.txt",sep=""), file=command.file.name, 
+  cat(paste(directory,"/stat.txt",sep=""), file=command.file.name,
       "\n", append=TRUE)
-  cat(paste(directory,"/plot.txt",sep=""), file=command.file.name, 
+  cat(paste(directory,"/plot.txt",sep=""), file=command.file.name,
       "\n", append=TRUE)
   cat("None", file=command.file.name, "\n", append=TRUE)
   cat("None", file=command.file.name, "\n", append=TRUE)
-  
+
   # removing irrelevant data
   # combine data from multiple observers
   data <- data[data$detected==1,]
@@ -52,14 +47,14 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
       }
     }
   }
-  
+
   # create a vector of required fields
   req_fields <- c("SMP_LABEL","SMP_EFFORT","DISTANCE")
-  
+
   # change the distance column name to upper case
   colnames(data)[grep("^distance$",tolower(colnames(data)))] <- "DISTANCE"
-  
-  # find which field will be used for the effort and change the name 
+
+  # find which field will be used for the effort and change the name
   # to match field name in mcds
   if(TRUE %in% grepl("SMP_EFFORT",toupper(colnames(data)))){
     colnames(data)[grep("^SMP_EFFORT",toupper(colnames(data)))] <- "SMP_EFFORT"
@@ -71,7 +66,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   }else{
     data$SMP_EFFORT <- rep(1,nrow(data))
   }
-  
+
   # find if SMP_LABEL is a field; if not, add it
   if(TRUE %in% grepl("^SMP_LABEL",toupper(colnames(data)))){
     colnames(data)[grep("^SMP_LABEL",toupper(colnames(data)))] <- "SMP_LABEL"
@@ -80,7 +75,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   }else{
     data$SMP_LABEL <- rep(1,nrow(data))
   }
-  
+
   # check if other defined fields are columns in the dataset; if they are add
   # them to the list of fields to keep in the dataset
   if(TRUE %in% grepl("^STR_LABEL$",toupper(colnames(data)))){
@@ -102,7 +97,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
     colnames(data)[grep("^size$",tolower(colnames(data)))] <- "SIZE"
     req_fields <- append(req_fields,"SIZE")
   }
-  
+
   # specifying covariates in the model
   if(identical(all.vars(dsmodel),character(0)) == FALSE){
     covar_pres <- TRUE
@@ -135,7 +130,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   }else{
     covar_pres <- FALSE
   }
-  
+
   # remove all non-essential columns from the dataset
   data <- data[req_fields]
 
@@ -145,7 +140,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   data.file.name <- paste(directory,"/data.txt",sep="")
   #data.file.name <- gsub("/","\\\\",data.file.name)
   file.create(data.file.name)
-  write.table(data, file=data.file.name, col.names=FALSE, 
+  write.table(data, file=data.file.name, col.names=FALSE,
               row.names=FALSE, sep="\t")
 
   # OPTION section
@@ -153,24 +148,24 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   cat("OPTIONS;", file=command.file.name, "\n", append=TRUE)
   # specify the type of transect and its width and units
   if(meta.data$point == TRUE){
-    cat(paste("DISTANCE=RADIAL /UNITS='Meters' /WIDTH=", 
-        meta.data$width, ";", sep=""), file=command.file.name, "\n", 
+    cat(paste("DISTANCE=RADIAL /UNITS='Meters' /WIDTH=",
+        meta.data$width, ";", sep=""), file=command.file.name, "\n",
         append=TRUE)
     cat("TYPE=POINT;", file=command.file.name, "\n", append=TRUE)
   }else{
-    cat(paste("DISTANCE=PERP /UNITS='Meters' /WIDTH=", 
-        meta.data$width, ";", sep=""), file=command.file.name, "\n", 
+    cat(paste("DISTANCE=PERP /UNITS='Meters' /WIDTH=",
+        meta.data$width, ";", sep=""), file=command.file.name, "\n",
         append=TRUE)
     cat("TYPE=LINE;", file=command.file.name, "\n", append=TRUE)
   }
-  
+
   # define whether there are clusters
   if(cluster == TRUE){
     cat("OBJECT=CLUSTER;", file=command.file.name, "\n", append=TRUE)
   }else{
     cat("OBJECT=SINGLE;", file=command.file.name, "\n", append=TRUE)
   }
-  
+
   # managing the output options
   if(is.null(control$debug) == FALSE){
     if(control$debug == TRUE){
@@ -180,25 +175,25 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   if(is.null(control$showit) == FALSE){
     output_info_levels <- c("SUMMARY","RESULTS","SELECTION","ALL")
     specified_output_level <- output_info_levels[control$showit+1]
-    cat(paste("PRINT=", specified_output_level, ";", sep=""), 
+    cat(paste("PRINT=", specified_output_level, ";", sep=""),
         file=command.file.name, "\n", append=TRUE)
   }
-  
+
   # the user will specify the adjustment term selection
-  cat("SELECTION=SPECIFY;", file=command.file.name, "\n", 
+  cat("SELECTION=SPECIFY;", file=command.file.name, "\n",
       append=TRUE)
   cat("END;", file=command.file.name, "\n", append=TRUE)
-  
+
   # DATA section
-  
-  cat("DATA /STRUCTURE=FLAT;", file=command.file.name, "\n", 
+
+  cat("DATA /STRUCTURE=FLAT;", file=command.file.name, "\n",
       append=TRUE)
-  
+
   # change all fields to upper case and combine to one string
   fields_comb <- paste(toupper(colnames(data)), collapse=",")
-  cat(paste("FIELDS=", fields_comb, ";", sep=""), 
+  cat(paste("FIELDS=", fields_comb, ";", sep=""),
       file=command.file.name, "\n", append=TRUE)
-  
+
   # specifying which fields are factor covariates
   if(covar_pres == TRUE){
     factor_fields <- c()
@@ -208,31 +203,31 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
         # if the covariate is a factor, specify its name, levels, and level labels
         factor_fields <- append(factor_fields,colnames(data)[i])
         labels <- paste(levels(data[,i]), collapse=",")
-        cat(paste("FACTOR /NAME=", toupper(colnames(data)[i]), 
-                  " /LEVELS=", length(levels(data[,i])), " /LABELS=", 
-                  labels, sep=""), file=command.file.name, "\n", 
+        cat(paste("FACTOR /NAME=", toupper(colnames(data)[i]),
+                  " /LEVELS=", length(levels(data[,i])), " /LABELS=",
+                  labels, sep=""), file=command.file.name, "\n",
             append=TRUE)
       }
     }
   }
-  
+
   # input the absolute path to the data file
   data.file.name2 <- gsub("/", "\\\\", data.file.name)
   cat(paste("INFILE=", data.file.name2, " /NOECHO;", sep=""),
       file=command.file.name, "\n", append=TRUE)
   cat("END;", file=command.file.name, "\n", append=TRUE)
-  
+
   # ESTIMATE section
-  
+
   cat("ESTIMATE;", file=command.file.name, "\n", append=TRUE)
-  
+
   # we are only interested in the estimates for detection probability
   cat("DETECTION ALL;", file=command.file.name, "\n", append=TRUE)
-  
+
   # a messy way of accessing the model parameters
   mod_paste <- paste(dsmodel)
   mod_vals <- try(eval(parse(text=mod_paste[2:length(mod_paste)])))
-  
+
   # specify the key function
   cat("ESTIMATOR /KEY=", file=command.file.name, append=TRUE)
   if(mod_vals$key == "hn"){
@@ -244,7 +239,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   }else{
     cat("NEXPON", file=command.file.name, append=TRUE)
   }
-  
+
   # check if adjustment terms are used
   if(is.null(mod_vals$adj.series) == FALSE){
     adj_pres <- TRUE
@@ -256,7 +251,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
     }else if(mod_vals$adj.series == "poly"){
       cat(" /ADJUST=POLY", file=command.file.name, append=TRUE)
     }
-    
+
     # specify the order of adjustment terms
     if(!is.null(mod_vals$adj.order)){
       cat(paste(" /ORDER=", paste(mod_vals$adj.order,collapse=","),sep=""),
@@ -269,18 +264,18 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
     }else{
       cat(" /ADJSTD=SIGMA", file=command.file.name, append=TRUE)
     }
-    
+
     # specify the number of adjustment parameters
-    cat(paste(" /NAP=", length(mod_vals$adj.order), sep=""), 
+    cat(paste(" /NAP=", length(mod_vals$adj.order), sep=""),
         file=command.file.name, append=TRUE)
   }
-  
+
   # specify which fields are covariates
   if(covar_pres == TRUE){
-    cat(paste(" /COVARIATES=", paste(covar_fields,collapse=","), sep=""), 
+    cat(paste(" /COVARIATES=", paste(covar_fields,collapse=","), sep=""),
         file=command.file.name, append=TRUE)
   }
-  
+
   # allowing for initial values for the parameters
   inits <- c()
   if(is.null(control$initial) == FALSE){
@@ -320,23 +315,23 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
       }
     }
     # paste all the initial values together
-    cat(paste(" /START=", paste(inits,collapse=","), sep=""), 
+    cat(paste(" /START=", paste(inits,collapse=","), sep=""),
         file=command.file.name, append=TRUE)
   }
-  
+
   # defining upper and lower bounds for parameters
   if(is.null(control$lowerbounds) == FALSE){
-    cat(paste(" /LOWER=", paste(control$lowerbounds,collapse=","), sep=""), 
+    cat(paste(" /LOWER=", paste(control$lowerbounds,collapse=","), sep=""),
         file=command.file.name, append=TRUE)
   }
   if(is.null(control$upperbounds) == FALSE){
-    cat(paste(" /UPPER=", paste(control$upperbounds,collapse=","), sep=""), 
+    cat(paste(" /UPPER=", paste(control$upperbounds,collapse=","), sep=""),
         file=command.file.name, append=TRUE)
   }
-  
+
   # ending the ESTIMATOR line
   cat(";", file=command.file.name, "\n", append=TRUE)
-  
+
   # specifying monotonicity constraint
   if(is.null(meta.data$mono.strict)){
     meta.data$mono.strict <- FALSE
@@ -344,7 +339,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   if(is.null(meta.data$mono)){
     meta.data$mono <- FALSE
   }
-  
+
   if(meta.data$mono.strict == TRUE){
     cat("MONOTONE=STRICT;", file=command.file.name, "\n", append=TRUE)
   }else if(meta.data$mono == TRUE){
@@ -352,9 +347,9 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   }else{
     cat("MONOTONE=NONE;", file=command.file.name, "\n", append=TRUE)
   }
-  
+
   # specifying the truncation distance
-  cat(paste("DISTANCE /WIDTH=",meta.data$width,sep=""), 
+  cat(paste("DISTANCE /WIDTH=",meta.data$width,sep=""),
       file=command.file.name, append=TRUE)
   # dealing with grouped data
   if(is.null(meta.data$binned) == FALSE){
@@ -363,10 +358,10 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
                 sep=""), file=command.file.name, append=TRUE)
     }
   }
-  
+
   # specifying left trunction distance, if included in the input
   if(is.null(meta.data$left) == FALSE){
-    cat(paste(" /LEFT=", meta.data$left, sep=""), 
+    cat(paste(" /LEFT=", meta.data$left, sep=""),
         file=command.file.name, append=TRUE)
   }
   cat(";", file=command.file.name, "\n", append=TRUE)
@@ -378,7 +373,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   return(ret)
 }
 
-mcds_results_and_refit <- function(statsfile, model_list){
+mcds_results_and_refit <- function(statsfile, model_list, debug=FALSE){
 
   stats <- read.table(statsfile, row.names=NULL)
   colnames(stats) <- c("Stratum", "Sample", "Estimator", "Module", "Statistic",
@@ -416,8 +411,10 @@ mcds_results_and_refit <- function(statsfile, model_list){
 
   # get the adjustments off the end
   if(!is.null(mod_vals$adj.order)){
-    model_list$control$initial$adjustment <- starting_values[(length(starting_values)-length(mod_vals$adj.order)+1):length(starting_values)]
-    starting_values <- starting_values[-((length(starting_values)-length(mod_vals$adj.order)+1):length(starting_values))]
+    ind <- (length(starting_values)-length(mod_vals$adj.order)+1):
+            length(starting_values)
+    model_list$control$initial$adjustment <- starting_values[ind]
+    starting_values <- starting_values[-ind]
   }
 
   if(length(starting_values) >0){
@@ -432,5 +429,56 @@ mcds_results_and_refit <- function(statsfile, model_list){
                method = model_list$method,
                meta.data = model_list$meta.data,
                control = model_list$control)
+
+  if(debug){
+    message(paste0("MCDS.exe log likehood: ", refit$lnl))
+    message(paste0("MCDS.exe pars: ", paste(refit$par, collapse=", ")))
+  }
+
   return(refit)
+}
+
+download_MCDS_dot_exe <- function(url="http://distancesampling.org/R/MCDS.exe"){
+
+  message("Downloading MCDS.exe...")
+  success <- download.file(url, paste0(system.file(package="mrds"),"/MCDS.exe"))
+
+  if(success==0){
+    message("Downloaded!")
+  }else{
+    stop("Download and installation not successful!")
+  }
+}
+
+run_MCDS <- function(dsmodel, mrmodel, data, method, meta.data, control){
+
+  # create the test file
+  test_file <- create_command_file(dsmodel, mrmodel, data, method,
+                                   meta.data, control)
+
+  # run MCDS.exe
+  path_to_MCDS_dot_exe <- system.file("MCDS.exe", package="mrds")
+  path_to_MCDS_dot_exe <- "~/current/mrds/inst/MCDS.exe"
+
+  MCDS_args <- paste("0,", test_file$command.file.name)
+  if(Sys.info()[['sysname']]!="Windows"){
+    if(Sys.which("wine")==""){
+      stop("wine is needed to run MCDS.exe on non-Windows platforms. See documentation for details.")
+    }else{
+      w <- system2("wine", paste(path_to_MCDS_dot_exe, MCDS_args))
+    }
+  }else{
+    w <- system2(path_to_MCDS_dot_exe, MCDS_args)
+  }
+
+
+  model_list <- list(dsmodel=dsmodel, mrmodel=mrmodel, data=golftees,
+                     method=method, meta.data=meta.data, control=control)
+
+  if(is.null(control$showit)){
+    control$showit <- FALSE
+  }
+  mm <- mcds_results_and_refit(test_file$stats.file.name, model_list,
+                               debug=control$showit)
+
 }
