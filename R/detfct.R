@@ -199,7 +199,7 @@ detfct <- function(distance, ddfobj, select=NULL, index=NULL, width=NULL,
 
     # Find out if we are scaling by width or by key scale
     if(adj.scale == "width"){
-      scaling <- width-left
+      scaling <- width
     }else{
       scaling <- key.scale
     }

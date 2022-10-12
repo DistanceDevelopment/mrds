@@ -38,12 +38,12 @@
 #'   \code{\link{plot.ds}},\code{\link{gof.ds}}
 #' @references Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
 #'   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
-#'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
+#'   Buckland, D.R. Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #'
 #' Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
 #'   function. In: Advanced Distance Sampling, eds. S.T. Buckland,
-#'   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
+#'   D.R. Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
 #'   Oxford University Press.
 #' @keywords Statistical Models
 #' @examples
@@ -103,7 +103,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                                    initial=NA, lowerbounds=NA, upperbounds=NA,
                                    limit=TRUE, parscale=TRUE, maxiter=12,
                                    standardize=TRUE, mono.points=20,
-                                   mono.tol=1e-8, mono.delta=1e-7, debug=FALSE,
+                                   mono.tol=1e-6, mono.delta=1e-7,
+                                   mono.outer.iter=200, debug=FALSE,
                                    nofit=FALSE, optimx.method="nlminb",
                                    optimx.maxit=300, silent=FALSE,
                                    mono.random.start=FALSE)
@@ -189,7 +190,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                      mono.delta=control$mono.delta, debug=control$debug,
                      nofit=control$nofit, left=meta.data$left,
                      silent=control$silent,
-                     mono.random.start=control$mono.random.start
+                     mono.random.start=control$mono.random.start,
+                     mono.outer.iter=control$mono.outer.iter
                     )
 
   # debug - print the initial values

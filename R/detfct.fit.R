@@ -191,11 +191,19 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
   }
 
   if(showit >= 1){
-    cat("\nDEBUG: Convergence!",
-        "\n       Iteration ", paste(iter, metaiter, sep="."),
-        "\n       Converge   =", lt$converge,
-        "\n       nll        =", lt$value,
-        "\n       parameters =", paste(round(lt$par, 7), collapse=", "), "\n")
+    if(is.null(ddfobj$adjustment) & ddfobj$type=="unif"){
+      cat("\nDEBUG: Convergence!",
+          "\n       Iteration ", paste(iter, metaiter, sep="."),
+          "\n       Converge   =", lt$converge,
+          "\n       nll        =", lt$value,
+          "\n")
+    }else{
+      cat("\nDEBUG: Convergence!",
+          "\n       Iteration ", paste(iter, metaiter, sep="."),
+          "\n       Converge   =", lt$converge,
+          "\n       nll        =", lt$value,
+          "\n       parameters =", paste(round(lt$par, 7), collapse=", "), "\n")
+    }
   }
 
   # get rid of the first (dummy) line of the optimisation history
