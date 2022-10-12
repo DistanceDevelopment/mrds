@@ -43,6 +43,8 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
   # Compute log-likelihood for any binned data
   lnl <- rep(0, nrow(x))
   if(any(x$binned)){
+    # we only need evaluate the likelihood at unique bin-covariate combinations
+
     # Get bins and create unique set of bins/covariates and indices
     # (int.index) in that set
     bins <- as.matrix(x[x$binned, c("distbegin", "distend")])
@@ -52,13 +54,12 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
     uniquevals <- !duplicated(allbins)
     uniquebins <- bins[uniquevals, , drop=FALSE]
 
-    int.index <- match(allbins,
-                       apply(cbind(bins,
-                              z[x$binned,,drop=FALSE])[uniquevals,,drop=FALSE],
-                              1, paste, collapse=""))
+    int.index <- match(allbins, allbins[uniquevals])
 
+    # which were those observations?
     which.obs <- x$binned
     which.obs[!uniquevals] <- FALSE
+    # evaluate those observations only!
     int.bin <- integratepdf(ddfobj, select=which.obs, width=width,
                             int.range=uniquebins,
                             standardize=standardize, point=misc.options$point,
@@ -95,10 +96,7 @@ flpt.lnl <- function(fpar, ddfobj, misc.options){
       uniquevals <- !duplicated(allbins)
       uniquebins <- bins[uniquevals, , drop=FALSE]
 
-      int.index <- match(allbins,
-                         apply(cbind(bins,
-                               z[x$binned,,drop=FALSE])[uniquevals,,drop=FALSE],
-                               1, paste, collapse=""))
+      int.index <- match(allbins, allbins[uniquevals])
 
       which.obs <- x$binned
       which.obs[!uniquevals] <- FALSE
