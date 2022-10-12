@@ -162,7 +162,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       }
 
       # only do something more complicated if we didn't converge above!
-      if(lt$convergence!=0){
+      if(inherits(lt, "try-error") || lt$convergence!=0){
         # we can use the gosolnp() function to explore the parameter space
         # randomly...
         if(misc.options$mono.random.start){
