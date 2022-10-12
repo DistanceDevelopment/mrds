@@ -145,7 +145,9 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                           ddfobj=ddfobj, misc.options=misc.options,
                           control=list(trace=as.integer(showit),
                                        tol=misc.options$mono.tol,
-                                       delta=misc.options$mono.delta)),
+                                       delta=misc.options$mono.delta,
+                                       outer.iter=misc.options$mono.outer.iter)
+                         ),
                     silent=TRUE))
       }else{
         lt <- try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
@@ -155,7 +157,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                         ddfobj=ddfobj, misc.options=misc.options,
                         control=list(trace=as.integer(showit),
                                      tol=misc.options$mono.tol,
-                                     delta=misc.options$mono.delta)))
+                                     delta=misc.options$mono.delta,
+                                     outer.iter=misc.options$mono.outer.iter)))
       }
 
       # only do something more complicated if we didn't converge above!
@@ -179,7 +182,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                  ddfobj=ddfobj, misc.options=misc.options,
                                  control=list(trace=as.integer(showit),
                                               tol=misc.options$mono.tol,
-                                              delta=misc.options$mono.delta),
+                                              delta=misc.options$mono.delta,
+                                              outer.iter=misc.options$mono.outer.iter),
                                  distr = rep(1, length(lowerbounds)),
                                  n.restarts = 2, n.sim = 200,
                                  rseed=as.integer(runif(1)*1e9)),
@@ -193,7 +197,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                  ddfobj=ddfobj, misc.options=misc.options,
                                  control=list(trace=as.integer(showit),
                                               tol=misc.options$mono.tol,
-                                              delta=misc.options$mono.delta),
+                                              delta=misc.options$mono.delta,
+                                              outer.iter=misc.options$mono.outer.iter),
                                  distr = rep(1, length(lowerbounds)),
                                  n.restarts = 2, n.sim = 200,
                                  rseed=as.integer(runif(1)*1e9)))
@@ -253,7 +258,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                               ddfobj=ddfobj, misc.options=misc.options,
                               control=list(trace=as.integer(showit),
                                            tol=misc.options$mono.tol,
-                                           delta=misc.options$mono.delta)),
+                                           delta=misc.options$mono.delta,
+                                           outer.iter=misc.options$mono.outer.iter)),
                         silent=TRUE))
           }else{
             lt <- try(solnp(pars=par_grid[igrid, ], fun=flnl,
@@ -264,7 +270,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                             ddfobj=ddfobj, misc.options=misc.options,
                             control=list(trace=as.integer(showit),
                                          tol=misc.options$mono.tol,
-                                         delta=misc.options$mono.delta)))
+                                         delta=misc.options$mono.delta,
+                                         outer.iter=misc.options$mono.outer.iter)))
           } # end showit status
         } # end random vs. non-random par space exploration
       } # end if solnp didn't converge the first time
