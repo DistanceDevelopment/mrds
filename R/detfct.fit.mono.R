@@ -12,18 +12,14 @@ getRefPoints<- function(no_d, int.range){
 
   # previous versions just used width and assumed that left truncation
   # was at zero, now using int.range to tell us the interval
+  # going back to just using width to be consistent with Distance for Windows
+  # see https://github.com/DistanceDevelopment/Distance/issues/135
 
-  # note this currently doesn't work with multiple integration ranges
-  # i.e. when int.range is a matrix w. > 1 row. This should have been caught
-  # and an error throw before now though.
-
-  xlat <- (int.range[2]-int.range[1])/(no_d^1.5)
+  xlat <- (int.range[2])/(no_d^1.5)
   ref_points <- double(no_d)
   for(i in 1:no_d){
     ref_points[i] <- (i^1.5) * xlat
   }
-
-  ref_points <- ref_points+int.range[1]
 
   return(ref_points)
 }

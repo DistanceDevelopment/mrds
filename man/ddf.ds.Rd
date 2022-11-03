@@ -72,12 +72,12 @@ print(ddf.gof(result))
 \references{
 Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
-  Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
+  Buckland, D.R. Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
   Thomas. Oxford University Press.
 
 Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
   function. In: Advanced Distance Sampling, eds. S.T. Buckland,
-  D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
+  D.R. Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
   Oxford University Press.
 }
 \seealso{
