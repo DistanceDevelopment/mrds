@@ -1,8 +1,29 @@
 
+#' Run MCDS.exe as a backend for mrds
+#'
+#' Rather than use the R code provided in `mrds`, one can also use the binary
+#' of MCDS.exe, to reproduce the results given by Distance for Windows. There is
+#' no guarantee that one approach is "better" than the other, but `mrds` will
+#' select the model with the better likelihood and provide answers to this.
+#'
+#' @aliases MCDS
+#' @rdname mcds-dot-exe
+#'
+#' @section Running MCDS.exe on non-Windows platforms:
+#' One can still use MCDS.exe even if you are not running a Windows computer. To
+#' do this one will need to install `wine` a Windows emulator. It is important
+#' to get a copy of `wine` which can run 32-bit programs. On macOS, this can be
+#' achieved using the `homebrew` package management system and installing the
+#' `wine-stable` package. You may need to change the `control$winebin` to be
+#' `wine` or `wine64`, depending on your system's setup.
+#' @author David L Miller and Joanna McArthur
+
+
+
+
 # a function to take the input as required for the ddf function in mrds and
 # create a command file for the mcds engine, which will perform an equivalent
 # analysis.
-
 # the input for this function is the same as the input for ddf
 # written by Joanna McArthur
 create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
@@ -438,13 +459,27 @@ mcds_results_and_refit <- function(statsfile, model_list, debug=FALSE){
   return(refit)
 }
 
-download_MCDS_dot_exe <- function(url="http://distancesampling.org/R/MCDS.exe"){
+#' Install the MCDS.exe binary from the web
+#'
+#' This function will download the `MCDS.exe` binary from the distance sampling
+#' website and install it.
+#'
+#' If you already have a copy of `MCDS.exe` on your computer you can move it to
+#' the correct directory manually. You can find where this is by running the
+#' following: `system.file(package="mrds")`.
+#'
+#' @return Nothing, just downloads and installs the binary.
+#' @export
+download_MCDS_dot_exe <- function(){
+
+  url <- "http://distancesampling.org/R/"
 
   message("Downloading MCDS.exe...")
   success <- download.file(url, paste0(system.file(package="mrds"),"/MCDS.exe"))
 
   if(success==0){
-    message("Downloaded!")
+    message(paste0("MCDS.exe installed at ",
+            system.file(package="mrds"), "/MCDS.exe"))
   }else{
     stop("Download and installation not successful!")
   }
@@ -456,21 +491,30 @@ run_MCDS <- function(dsmodel, mrmodel, data, method, meta.data, control){
   test_file <- create_command_file(dsmodel, mrmodel, data, method,
                                    meta.data, control)
 
-  # run MCDS.exe
+  # find MCDS.exe
   path_to_MCDS_dot_exe <- system.file("MCDS.exe", package="mrds")
-  path_to_MCDS_dot_exe <- "~/current/mrds/inst/MCDS.exe"
+  #path_to_MCDS_dot_exe <- "~/current/mrds/inst/MCDS.exe"
 
+  # what are the arguments?
   MCDS_args <- paste("0,", test_file$command.file.name)
+
+  # actually run MCDS.exe (use wine if necessary)
   if(Sys.info()[['sysname']]!="Windows"){
     if(Sys.which("wine")==""){
       stop("wine is needed to run MCDS.exe on non-Windows platforms. See documentation for details.")
     }else{
-      w <- system2("wine", paste(path_to_MCDS_dot_exe, MCDS_args))
+      w <- system2("wine64", paste(path_to_MCDS_dot_exe, MCDS_args))#,
+#                   stdout=control$showit>0, stderr=control$showit>0)
+      # only provide the output from MCDS.exe when we have showit>0
     }
   }else{
-    w <- system2(path_to_MCDS_dot_exe, MCDS_args)
+    w <- system2(path_to_MCDS_dot_exe, MCDS_args,
+                 stdout=control$showit>0, stderr=control$showit>0)
   }
 
+  if(w>0){
+    stop("Running MCDS.exe failed!")
+  }
 
   model_list <- list(dsmodel=dsmodel, mrmodel=mrmodel, data=golftees,
                      method=method, meta.data=meta.data, control=control)
