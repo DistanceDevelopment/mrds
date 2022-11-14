@@ -19,7 +19,7 @@
 #' function tries to work out what to do, but likely doesn't handle all corner
 #' cases. Currently this is untested on Mac M1 systems, please get in touch if
 #' you are trying this.
-#' @author David L Miller and Joanna McArthur
+#' @author David L Miller and Jonah McArthur
 
 
 
@@ -28,7 +28,7 @@
 # create a command file for the mcds engine, which will perform an equivalent
 # analysis.
 # the input for this function is the same as the input for ddf
-# written by Joanna McArthur
+# written by Jonah McArthur
 create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
                                 method, meta.data, control) {
   # create a temporary directory

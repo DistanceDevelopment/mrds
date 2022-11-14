@@ -26,10 +26,13 @@ One can still use MCDS.exe even if you are not running a Windows computer. To
 do this one will need to install `wine` a Windows emulator. It is important
 to get a copy of `wine` which can run 32-bit programs. On macOS, this can be
 achieved using the `homebrew` package management system and installing the
-`wine-stable` package. You may need to change the `control$winebin` to be
-`wine` or `wine64`, depending on your system's setup.
+`wine-crossover` package. You may need to change the `control$winebin` to be
+`wine`, `wine64` or `wine32on64`, depending on your system's setup. This
+function tries to work out what to do, but likely doesn't handle all corner
+cases. Currently this is untested on Mac M1 systems, please get in touch if
+you are trying this.
 }
 
 \author{
-David L Miller and Joanna McArthur
+David L Miller and Jonah McArthur
 }
