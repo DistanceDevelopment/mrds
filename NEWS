@@ -8,6 +8,7 @@ mrds 2.2.8
 * Fix bug in adjustment term fitting where width scaling was defined as right minus left truncation, rather than just the right truncation value (Distance #133)
 * Use (0,width) as the interval for monotonicity checks, rather than (left, width) as this was causing issues and is not consistent with Distance for Windows (Distance #135)
 * Expose mono.outer.iter option to control number of outer iterations used to fit a monotonic model. Default 200.
+* Make dht output tables consistent. Now always refers to Region in the display (rather than Region in summary and Label in N/D tables). Note this is only a display change so won't break code which looks to extract these values based on column names from the dht object. 
 
 mrds 2.2.7
 ----------
