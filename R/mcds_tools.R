@@ -14,8 +14,11 @@
 #' do this one will need to install `wine` a Windows emulator. It is important
 #' to get a copy of `wine` which can run 32-bit programs. On macOS, this can be
 #' achieved using the `homebrew` package management system and installing the
-#' `wine-stable` package. You may need to change the `control$winebin` to be
-#' `wine` or `wine64`, depending on your system's setup.
+#' `wine-crossover` package. You may need to change the `control$winebin` to be
+#' `wine`, `wine64` or `wine32on64`, depending on your system's setup. This
+#' function tries to work out what to do, but likely doesn't handle all corner
+#' cases. Currently this is untested on Mac M1 systems, please get in touch if
+#' you are trying this.
 #' @author David L Miller and Joanna McArthur
 
 
@@ -500,13 +503,26 @@ run_MCDS <- function(dsmodel, mrmodel, data, method, meta.data, control){
 
   # actually run MCDS.exe (use wine if necessary)
   if(Sys.info()[['sysname']]!="Windows"){
-    if(Sys.which("wine")==""){
-      stop("wine is needed to run MCDS.exe on non-Windows platforms. See documentation for details.")
-    }else{
-      w <- system2("wine64", paste(path_to_MCDS_dot_exe, MCDS_args))#,
-#                   stdout=control$showit>0, stderr=control$showit>0)
-      # only provide the output from MCDS.exe when we have showit>0
+    # macOS specific
+    if(Sys.info()[['sysname']]=="Darwin"){
+      osx_version <- as.numeric_version(system("sw_vers -productVersion",
+                                               intern = TRUE))
+      if(!is.null(control$winebin)){
+        winebin <- control$winebin
+      }else if(osx_version>as.numeric_version(10.15)){
+        # Catalina or after removed the 32-bit support, so use wine32on64
+        winebin <- "wine32on64"
+      }else{
+        # prior to Catalina, use wine
+        winebin <- "wine"
+      }
     }
+    if(Sys.which(winebin)==""){
+      stop("wine is needed to run MCDS.exe on non-Windows platforms. See documentation for details.")
+    }
+    w <- system2(winebin, paste(path_to_MCDS_dot_exe, MCDS_args),
+                 stdout=control$showit>0, stderr=control$showit>0)
+    # only provide the output from MCDS.exe when we have showit>0
   }else{
     w <- system2(path_to_MCDS_dot_exe, MCDS_args,
                  stdout=control$showit>0, stderr=control$showit>0)
