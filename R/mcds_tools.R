@@ -1,26 +1,35 @@
-
 #' Run MCDS.exe as a backend for mrds
 #'
 #' Rather than use the R code provided in `mrds`, one can also use the binary
-#' of MCDS.exe, to reproduce the results given by Distance for Windows. There is
-#' no guarantee that one approach is "better" than the other, but `mrds` will
-#' select the model with the better likelihood and provide answers to this.
+#' of `MCDS.exe`, to reproduce the results given by Distance for Windows. There
+#' is no guarantee that one approach is "better" than the other, but `mrds`
+#' will select the model with the better likelihood and provide answers to
+#' this.
 #'
 #' @aliases MCDS
 #' @rdname mcds-dot-exe
 #'
+#' @section Obtaining MCDS.exe:
+#' The function `download_MCDS_dot_exe` can be used to download `MCDS.exe` from
+#' the distance sampling website. If you are running a non-Windows operating
+#' system, you can follow the instructions below to have `MCDS.exe` be run
+#' using `wine`.
+#'
 #' @section Running MCDS.exe on non-Windows platforms:
 #' One can still use MCDS.exe even if you are not running a Windows computer. To
 #' do this one will need to install `wine` a Windows emulator. It is important
-#' to get a copy of `wine` which can run 32-bit programs. On macOS, this can be
-#' achieved using the `homebrew` package management system and installing the
-#' `wine-crossover` package. You may need to change the `control$winebin` to be
-#' `wine`, `wine64` or `wine32on64`, depending on your system's setup. This
-#' function tries to work out what to do, but likely doesn't handle all corner
-#' cases. Currently this is untested on Mac M1 systems, please get in touch if
-#' you are trying this.
+#' to get a copy of `wine` which can run 32-bit programs.
+#'
+#' On Linux, one needs to install a `wine` that includes 32 bit support. On
+#' Debian, that can be provided by the package `wine32`.
+#'
+#' On macOS, this can be achieved using the `homebrew` package management
+#' system and installing the `wine-crossover` package. You may need to change
+#' the `control$winebin` to be `wine`, `wine64` or `wine32on64`, depending on
+#' your system's setup. This function tries to work out what to do, but likely
+#' doesn't handle all corner cases. Currently this is untested on Mac M1
+#' systems, please get in touch if you are trying this.
 #' @author David L Miller and Jonah McArthur
-
 
 
 
@@ -264,6 +273,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
     cat("NEXPON", file=command.file.name, append=TRUE)
   }
 
+    adj_pres <- FALSE
   # check if adjustment terms are used
   if(is.null(mod_vals$adj.series) == FALSE){
     adj_pres <- TRUE
@@ -315,32 +325,32 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
             access_covar <- paste("control$initial$scale$",
                                   colnames(data)[index],"[",j,"]",sep="")
             # evaluate the text in order to access the initial value
-            inits <- append(inits,eval(parse(text=access_covar)))
+#            inits <- append(inits,eval(parse(text=access_covar)))
           }
           # the first level has to be last in MCDS
           access_covar <- paste("control$initial$scale$",
                                 colnames(data)[index],"[1]",sep="")
-          inits <- append(inits,eval(parse(text=access_covar)))
+#          inits <- append(inits,eval(parse(text=access_covar)))
         }else{
           access_covar <- paste("control$initial$scale$",
                                 colnames(data)[index],sep="")
-          inits <- append(inits,eval(parse(text=access_covar)))
+#          inits <- append(inits,eval(parse(text=access_covar)))
         }
       }
     }
     # add in shape parameter if hazard-rate used
     if(mod_vals$key == "hr"){
-      inits <- append(inits,control$initial$shape)
+#      inits <- append(inits,control$initial$shape)
     }
     # add in adjustment initial values
     if(adj_pres){
       for(i in 1:length(mod_vals$adj.order)){
-        inits <- append(inits,control$initial$adjustment[i])
+#        inits <- append(inits,control$initial$adjustment[i])
       }
     }
     # paste all the initial values together
-    cat(paste(" /START=", paste(inits,collapse=","), sep=""),
-        file=command.file.name, append=TRUE)
+#    cat(paste(" /START=", paste(inits,collapse=","), sep=""),
+#        file=command.file.name, append=TRUE)
   }
 
   # defining upper and lower bounds for parameters
@@ -390,6 +400,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   }
   cat(";", file=command.file.name, "\n", append=TRUE)
   cat("END;", file=command.file.name, append=TRUE)
+  cat("\n", file=command.file.name, append=TRUE)
 
   ret <- list(command.file.name=command.file.name,
               stats.file.name = paste0(directory, "/stat.txt"))
@@ -496,13 +507,14 @@ run_MCDS <- function(dsmodel, mrmodel, data, method, meta.data, control){
 
   # find MCDS.exe
   path_to_MCDS_dot_exe <- system.file("MCDS.exe", package="mrds")
-  #path_to_MCDS_dot_exe <- "~/current/mrds/inst/MCDS.exe"
-
-  # what are the arguments?
-  MCDS_args <- paste("0,", test_file$command.file.name)
 
   # actually run MCDS.exe (use wine if necessary)
   if(Sys.info()[['sysname']]!="Windows"){
+    if(!is.null(control$winebin)){
+      winebin <- control$winebin
+    }else{
+      winebin <- "wine"
+    }
     # macOS specific
     if(Sys.info()[['sysname']]=="Darwin"){
       osx_version <- as.numeric_version(system("sw_vers -productVersion",
@@ -512,25 +524,25 @@ run_MCDS <- function(dsmodel, mrmodel, data, method, meta.data, control){
       }else if(osx_version>as.numeric_version(10.15)){
         # Catalina or after removed the 32-bit support, so use wine32on64
         winebin <- "wine32on64"
-      }else{
-        # prior to Catalina, use wine
-        winebin <- "wine"
       }
     }
     if(Sys.which(winebin)==""){
       stop("wine is needed to run MCDS.exe on non-Windows platforms. See documentation for details.")
     }
-    w <- system2(winebin, paste(path_to_MCDS_dot_exe, MCDS_args),
-                 stdout=control$showit>0, stderr=control$showit>0)
+    wine_call <- paste0(winebin, " MCDS.exe 0, ", test_file$command.file.name)
     # only provide the output from MCDS.exe when we have showit>0
+    w <- system(wine_call, intern=TRUE,
+                ignore.stdout=control$showit>0, ignore.stderr=control$showit>0)
+
   }else{
-    w <- system2(path_to_MCDS_dot_exe, MCDS_args,
-                 stdout=control$showit>0, stderr=control$showit>0)
+    w <- system(paste0(path_to_MCDS_dot_exe,
+                " 0, ", test_file$command.file.name), intern=TRUE,
+                stdout=control$showit>0, stderr=control$showit>0)
   }
 
-  if(w>0){
-    stop("Running MCDS.exe failed!")
-  }
+  #if(w>0){
+  #  stop("Running MCDS.exe failed!")
+  #}
 
   model_list <- list(dsmodel=dsmodel, mrmodel=mrmodel, data=golftees,
                      method=method, meta.data=meta.data, control=control)

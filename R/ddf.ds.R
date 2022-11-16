@@ -207,9 +207,27 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   if(is.null(initialvalues)) misc.options$nofit <- TRUE
 
+  # run MCDS.exe if it's there
+  if(system.file("MCDS.exe", package="mrds")!=""){
+    lt_mcds <- try(run_MCDS(dsmodel, mrmodel, data, method, meta.data, control),
+                   silent=TRUE)
+    if(inherits(lt_mcds, "try-error")){
+      lt_mcds <- list(value=1e-10)
+    }
+  }
 
   # Actually do the optimisation
   lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
+
+
+  # which was the better lnl?
+  if(lt_mcds$value > lt$value){
+    if(misc.options$showit>=1){
+      cat("DEBUG: MCDS lnl =", round(lt_mcds$value, 7),
+          "       mrds lnl =", round(lt$value, 7),"\n")
+    }
+    lt <- lt_mcds
+  }
 
   # check that hazard models have a reasonable scale parameter
   if(ddfobj$type=="hr" && lt$par[1] < sqrt(.Machine$double.eps)){
