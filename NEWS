@@ -2,11 +2,14 @@ mrds 2.2.8
 ----------
 
 * Fix bug where plotting rem.fi models when truncation was used would lead to an error being thrown. (#58)
+* Fix bugs when a uniform is fitted with no adjustments (#59)
 * Fix bug in plotting when left truncation was used and points didn't match detection function line (Distance #134)
 * Fix bug in debug reporting when uniform only models are used (Distance #136)
 * Fix bug in adjustment term fitting where width scaling was defined as right minus left truncation, rather than just the right truncation value (Distance #133)
 * Use (0,width) as the interval for monotonicity checks, rather than (left, width) as this was causing issues and is not consistent with Distance for Windows (Distance #135)
 * Expose mono.outer.iter option to control number of outer iterations used to fit a monotonic model. Default 200.
+* Make dht output tables consistent. Now always refers to Region in the display (rather than Region in summary and Label in N/D tables). Note this is only a display change so won't break code which looks to extract these values based on column names from the dht object which is unchanged.
+* Fixed bug leading to erroneous zero totals in individuals N/D tables when there were no sightings in one or more strata. Bug was apparent when the data were sightings of clusters and the varflag 1 option (er_method = 1 in Distance ds function) was selected in the dht function.
 
 mrds 2.2.7
 ----------
