@@ -210,21 +210,21 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   # run MCDS.exe if it's there
   if(!control$skipwine && system.file("MCDS.exe", package="mrds")!=""){
-    lt_mcds <- try(run_MCDS(dsmodel, mrmodel, data, method, meta.data, control),
+    lt_mcds <- try(run_MCDS(model, data, method, meta.data, control),
                    silent=control$showit>0)
     # if something went wrong just return a very small lnl
     if(inherits(lt_mcds, "try-error")){
-      lt_mcds <- list(value=1e-10)
+      lt_mcds <- list(lnl=1e-10)
     }
   }else{
-    lt_mcds <- list(value=1e-10)
+    lt_mcds <- list(lnl=1e-10)
   }
 
   # Actually do the optimisation
   lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
 
   # which was the better lnl?
-  if(lt_mcds$value > lt$value){
+  if(lt_mcds$lnl > lt$value){
     if(misc.options$showit>=1){
       cat("DEBUG: MCDS lnl =", round(lt_mcds$value, 7),
           "       mrds lnl =", round(lt$value, 7),"\n")

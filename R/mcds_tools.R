@@ -56,7 +56,7 @@
 # analysis.
 # the input for this function is the same as the input for ddf
 # written by Jonah McArthur
-create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
+create_command_file <- function(dsmodel=call(), data,
                                 method, meta.data, control) {
   # create a temporary directory
   directory <- tempdir()
@@ -523,13 +523,13 @@ download_MCDS_dot_exe <- function(){
   }
 }
 
-run_MCDS <- function(dsmodel, mrmodel, data, method, meta.data, control){
+run_MCDS <- function(dsmodel, data, method, meta.data, control){
 
   if(control$showit>0){
     message("Running MCDS.exe...")
   }
   # create the test file
-  test_file <- create_command_file(dsmodel, mrmodel, data, method,
+  test_file <- create_command_file(dsmodel, data, method,
                                    meta.data, control)
   if(control$showit>0){
     message(paste("Command file written to", test_file$command.file.name))
@@ -575,7 +575,7 @@ run_MCDS <- function(dsmodel, mrmodel, data, method, meta.data, control){
   # little extra parameter here to avoid infinite recursion when
   # we run ddf in mcds_results_and_refit
   control$skipwine <- TRUE
-  model_list <- list(dsmodel=dsmodel, mrmodel=mrmodel, data=golftees,
+  model_list <- list(dsmodel=dsmodel, data=data,
                      method=method, meta.data=meta.data, control=control)
 
   # refit the model

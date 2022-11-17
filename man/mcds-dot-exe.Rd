@@ -5,14 +5,7 @@
 \alias{MCDS}
 \title{Run MCDS.exe as a backend for mrds}
 \usage{
-create_command_file(
-  dsmodel = call(),
-  mrmodel = call(),
-  data,
-  method,
-  meta.data,
-  control
-)
+create_command_file(dsmodel = call(), data, method, meta.data, control)
 }
 \description{
 Rather than use the R code provided in `mrds`, one can also use the binary
