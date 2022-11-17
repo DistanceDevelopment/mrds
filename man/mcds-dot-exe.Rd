@@ -16,21 +16,48 @@ create_command_file(
 }
 \description{
 Rather than use the R code provided in `mrds`, one can also use the binary
-of MCDS.exe, to reproduce the results given by Distance for Windows. There is
-no guarantee that one approach is "better" than the other, but `mrds` will
-select the model with the better likelihood and provide answers to this.
+of `MCDS.exe`, to reproduce the results given by Distance for Windows. There
+is no guarantee that one approach is "better" than the other, but `mrds`
+will select the model with the better likelihood and provide answers to
+this.
 }
+\details{
+If you are running a non-Windows operating system, you can follow the
+instructions below to have `MCDS.exe` be run using `wine`.
+}
+\section{Obtaining MCDS.exe}{
+
+The function `download_MCDS_dot_exe` can be used to download `MCDS.exe` from
+the distance sampling website. The MCDS binary will be installed to your
+local R library, in the `inst/` directory of the `mrds` directory. You can
+also copy the `MCDS.exe` from your local Distance for Windows installation
+if you prefer.
+}
+
 \section{Running MCDS.exe on non-Windows platforms}{
 
 One can still use MCDS.exe even if you are not running a Windows computer. To
 do this one will need to install `wine` a Windows emulator. It is important
-to get a copy of `wine` which can run 32-bit programs. On macOS, this can be
-achieved using the `homebrew` package management system and installing the
-`wine-crossover` package. You may need to change the `control$winebin` to be
-`wine`, `wine64` or `wine32on64`, depending on your system's setup. This
-function tries to work out what to do, but likely doesn't handle all corner
-cases. Currently this is untested on Mac M1 systems, please get in touch if
-you are trying this.
+to get a copy of `wine` which can run 32-bit programs.
+
+On Linux, one needs to install a `wine` that includes 32 bit support. On
+Debian, that can be provided by the package `wine32`.
+
+On macOS, this can be achieved using the `homebrew` package management
+system and installing the `wine-crossover` package. You may need to change
+the `control$winebin` to be `wine`, `wine64` or `wine32on64`, depending on
+your system's setup. This function tries to work out what to do, but likely
+doesn't handle all corner cases. Currently this is untested on Mac M1
+systems, please get in touch if you are trying this.
+}
+
+\section{NA}{
+
+The function `download_MCDS_dot_exe` can be used to download `MCDS.exe` from
+the distance sampling website. The MCDS binary will be installed to your
+local R library, in the `inst/` directory of the `mrds` directory. You can
+also copy the `MCDS.exe` from your local Distance for Windows installation
+if you prefer.
 }
 
 \author{

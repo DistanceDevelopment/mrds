@@ -6,14 +6,18 @@
 #' will select the model with the better likelihood and provide answers to
 #' this.
 #'
+#' If you are running a non-Windows operating system, you can follow the
+#' instructions below to have `MCDS.exe` be run using `wine`.
+#'
 #' @aliases MCDS
 #' @rdname mcds-dot-exe
 #'
 #' @section Obtaining MCDS.exe:
 #' The function `download_MCDS_dot_exe` can be used to download `MCDS.exe` from
-#' the distance sampling website. If you are running a non-Windows operating
-#' system, you can follow the instructions below to have `MCDS.exe` be run
-#' using `wine`.
+#' the distance sampling website. The MCDS binary will be installed to your
+#' local R library, in the `inst/` directory of the `mrds` directory. You can
+#' also copy the `MCDS.exe` from your local Distance for Windows installation
+#' if you prefer.
 #'
 #' @section Running MCDS.exe on non-Windows platforms:
 #' One can still use MCDS.exe even if you are not running a Windows computer. To
@@ -29,6 +33,13 @@
 #' your system's setup. This function tries to work out what to do, but likely
 #' doesn't handle all corner cases. Currently this is untested on Mac M1
 #' systems, please get in touch if you are trying this.
+#'
+#' @section: Stopping using MCDS.exe
+#' Once this feature is enabled (see below) using `ddf` will always run both
+#' its built-in R optimizer and `MCDS.exe`. To disable this behaviour remove
+#' the `MCDS.exe` binary file. You can find it by running the following in R:
+#' `system.file("MCDS.exe", package="mrds")`.
+#'
 #' @author David L Miller and Jonah McArthur
 
 
