@@ -19,10 +19,22 @@ print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE, ...){
   print.tables <- function(x, cor, bysample, vcmatrices){
     if("N" %in% names(x)){
       cat("\nAbundance:\n")
-      print(x$N)
+      # Change Label to Region for output purposes only (won't break dependent packages or code!)
+      xN <- x$N
+      index <- which(names(x$N) == "Label")
+      if(length(index) > 0){
+        names(xN)[index] <- "Region"
+      }
+      print(xN)
     }
     cat("\nDensity:\n")
-    print(x$D)
+    # Change Label to Region for output purposes only (won't break dependent packages or code!)
+    xD <- x$D
+    index <- which(names(x$D) == "Label")
+    if(length(index) > 0){
+      names(xD)[index] <- "Region"
+    }
+    print(xD)
     if(vcmatrices){
       cat("\nAbundance variance-covariance matrix component from estimating detection function\n" )
       print(x$vc$detection$variance)
