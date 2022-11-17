@@ -569,7 +569,7 @@ run_MCDS <- function(dsmodel, data, method, meta.data, control){
     # on Windows just execute the MCDS binary
     w <- system(paste0(path_to_MCDS_dot_exe,
                 " 0, ", test_file$command.file.name), intern=TRUE,
-                stdout=control$showit>0, stderr=control$showit>0)
+                ignore.stdout=control$showit>0, ignore.stderr=control$showit>0)
   }
 
   # little extra parameter here to avoid infinite recursion when
