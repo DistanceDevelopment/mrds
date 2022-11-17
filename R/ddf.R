@@ -180,7 +180,10 @@
 #'   \item{\code{mono.outer.iter}}{Number of outer iterations to be used by
 #'   \code{solnp} when fitting a monotonic model. Default 200.}
 #'   \item{\code{silent}}{silences warnings within ds fitting method (helpful
-#'   for running many times without generating many warning/error messages).}}
+#'   for running many times without generating many warning/error messages).}
+#'   \item{\code{winebin}}{Location of the \code{wine} binary used to run
+#'   \code{MCDS.exe}. See \link{mcds-dot-exe} for more information.}
+#' }
 #'
 #' Examples of distance sampling analyses are available at
 #' \url{http://examples.distancesampling.org/}.

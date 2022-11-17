@@ -23,7 +23,7 @@ this.
 }
 \details{
 If you are running a non-Windows operating system, you can follow the
-instructions below to have `MCDS.exe` be run using `wine`.
+instructions below to have `MCDS.exe` run using `wine`.
 }
 \section{Obtaining MCDS.exe}{
 
@@ -38,7 +38,14 @@ if you prefer.
 
 One can still use MCDS.exe even if you are not running a Windows computer. To
 do this one will need to install `wine` a Windows emulator. It is important
-to get a copy of `wine` which can run 32-bit programs.
+to use a version of `wine` which can run 32-bit programs.
+
+The package will attempt to work out which `wine` binary to use (and detect
+if it is installed), but this doesn't always work. In this case, the
+location of the `wine` binary can be specified in the `control` `list`
+provided to `ddf` using the `winebin` element. For example, if `wine` is
+installed at `/usr/bin/local/wine` you can set `control$winebin` to that
+location to use that binary.
 
 On Linux, one needs to install a `wine` that includes 32 bit support. On
 Debian, that can be provided by the package `wine32`.
@@ -46,9 +53,11 @@ Debian, that can be provided by the package `wine32`.
 On macOS, this can be achieved using the `homebrew` package management
 system and installing the `wine-crossover` package. You may need to change
 the `control$winebin` to be `wine`, `wine64` or `wine32on64`, depending on
-your system's setup. This function tries to work out what to do, but likely
+your system's setup. This package tries to work out what to do, but likely
 doesn't handle all corner cases. Currently this is untested on Mac M1
-systems, please get in touch if you are trying this.
+systems, please get in touch if you are trying this. It seems like this does
+not currently work on post-Catalina versions of macOS, though this will
+hopefully be fixed in future versions of `wine`.
 }
 
 \section{NA}{
