@@ -263,6 +263,7 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
     vc2[1:numRegions, (numRegions + 1)] <- v2
     vc2[(numRegions + 1), 1:numRegions] <- v2
     if(!options$group & options$varflag==1){
+      vg[is.nan(vg)] <- 0
       vg <- diag(c(vg, sum(vg)))
     }
   }else if (length(vc2) > 1){
@@ -360,10 +361,13 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
 
   # deal with missing values and divide by 0 issues
   estimate.table$df[is.nan(estimate.table$df)] <- 0
+  estimate.table$df[is.na(estimate.table$df)] <- 0
   estimate.table$lcl  <-  estimate.table$Estimate/cvalue
   estimate.table$lcl[is.nan(estimate.table$lcl)] <- 0
+  estimate.table$lcl[is.na(estimate.table$lcl)] <- 0
   estimate.table$ucl  <-  estimate.table$Estimate * cvalue
   estimate.table$ucl[is.nan(estimate.table$ucl)] <- 0
+  estimate.table$ucl[is.na(estimate.table$ucl)] <- 0
   estimate.table$k  <-  NULL
 
   return(list(estimate.table = estimate.table,

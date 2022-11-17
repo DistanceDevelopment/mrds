@@ -599,6 +599,7 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                                Expected.S    = as.vector(Expected.S),
                                se.Expected.S = as.vector(se.Expected.S))
     }else{
+      Expected.S[is.nan(Expected.S)] <- 0
       Expected.S <- data.frame(Region     = clusters$N$Label,
                                Expected.S = as.vector(Expected.S))
     }
