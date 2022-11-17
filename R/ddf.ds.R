@@ -107,7 +107,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                                    mono.outer.iter=200, debug=FALSE,
                                    nofit=FALSE, optimx.method="nlminb",
                                    optimx.maxit=300, silent=FALSE,
-                                   mono.random.start=FALSE)
+                                   mono.random.start=FALSE,
+                                   skipwine=FALSE)
 
   #  Save current user options and then set design contrasts to treatment style
   save.options <- options()
@@ -208,17 +209,19 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   if(is.null(initialvalues)) misc.options$nofit <- TRUE
 
   # run MCDS.exe if it's there
-  if(system.file("MCDS.exe", package="mrds")!=""){
+  if(!control$skipwine && system.file("MCDS.exe", package="mrds")!=""){
     lt_mcds <- try(run_MCDS(dsmodel, mrmodel, data, method, meta.data, control),
-                   silent=TRUE)
+                   silent=control$showit>0)
+    # if something went wrong just return a very small lnl
     if(inherits(lt_mcds, "try-error")){
       lt_mcds <- list(value=1e-10)
     }
+  }else{
+    lt_mcds <- list(value=1e-10)
   }
 
   # Actually do the optimisation
   lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
-
 
   # which was the better lnl?
   if(lt_mcds$value > lt$value){

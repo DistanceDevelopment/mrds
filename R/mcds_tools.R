@@ -80,6 +80,14 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
       "\n", append=TRUE)
   cat(paste(directory,"/plot.txt",sep=""), file=command.file.name,
       "\n", append=TRUE)
+  #cat(paste("out.txt",sep=""), file=command.file.name, "\n",
+  #    append=TRUE)
+  #cat(paste("log.txt",sep=""), file=command.file.name, "\n",
+  #    append=TRUE)
+  #cat(paste("stat.txt",sep=""), file=command.file.name,
+  #    "\n", append=TRUE)
+  #cat(paste("plot.txt",sep=""), file=command.file.name,
+  #    "\n", append=TRUE)
   cat("None", file=command.file.name, "\n", append=TRUE)
   cat("None", file=command.file.name, "\n", append=TRUE)
 
@@ -188,10 +196,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   data <- data[req_fields]
 
   # create data file to pass to mcds
-#  data.file.name <- tempfile(pattern="data", tmpdir=directory,
-#                             fileext=".txt")
-  data.file.name <- paste(directory,"/data.txt",sep="")
-  #data.file.name <- gsub("/","\\\\",data.file.name)
+  data.file.name <- paste(directory, "/data.txt", sep="")
   file.create(data.file.name)
   write.table(data, file=data.file.name, col.names=FALSE,
               row.names=FALSE, sep="\t")
@@ -374,14 +379,14 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   }
 
   # defining upper and lower bounds for parameters
-  if(is.null(control$lowerbounds) == FALSE){
-    cat(paste(" /LOWER=", paste(control$lowerbounds,collapse=","), sep=""),
-        file=command.file.name, append=TRUE)
-  }
-  if(is.null(control$upperbounds) == FALSE){
-    cat(paste(" /UPPER=", paste(control$upperbounds,collapse=","), sep=""),
-        file=command.file.name, append=TRUE)
-  }
+  #if(!is.null(control$lowerbounds)){
+  #  cat(paste(" /LOWER=", paste(control$lowerbounds,collapse=","), sep=""),
+  #      file=command.file.name, append=TRUE)
+  #}
+  #if(!is.null(control$upperbounds)){
+  #  cat(paste(" /UPPER=", paste(control$upperbounds,collapse=","), sep=""),
+  #      file=command.file.name, append=TRUE)
+  #}
 
   # ending the ESTIMATOR line
   cat(";", file=command.file.name, "\n", append=TRUE)
@@ -423,7 +428,7 @@ create_command_file <- function(dsmodel=call(), mrmodel=call(), data,
   cat("\n", file=command.file.name, append=TRUE)
 
   ret <- list(command.file.name=command.file.name,
-              stats.file.name = paste0(directory, "/stat.txt"))
+              stats.file.name = paste(directory,"/stat.txt",sep=""))
 
   return(ret)
 }
@@ -486,8 +491,9 @@ mcds_results_and_refit <- function(statsfile, model_list, debug=FALSE){
                control = model_list$control)
 
   if(debug){
-    message(paste0("MCDS.exe log likehood: ", refit$lnl))
-    message(paste0("MCDS.exe pars: ", paste(refit$par, collapse=", ")))
+    message(paste0("MCDS.exe log likehood: ", round(refit$lnl,7)))
+    message(paste0("MCDS.exe pars: ",
+                   paste(round(refit$par, 7), collapse=", ")))
   }
 
   return(refit)
@@ -521,9 +527,16 @@ download_MCDS_dot_exe <- function(){
 
 run_MCDS <- function(dsmodel, mrmodel, data, method, meta.data, control){
 
+  if(control$showit>0){
+    message("Running MCDS.exe...")
+  }
   # create the test file
   test_file <- create_command_file(dsmodel, mrmodel, data, method,
                                    meta.data, control)
+  if(control$showit>0){
+    message(paste("Command file written to", test_file$command.file.name))
+    message(paste("Stats file written to", test_file$stats.file.name))
+  }
 
   # find MCDS.exe
   path_to_MCDS_dot_exe <- system.file("MCDS.exe", package="mrds")
@@ -549,28 +562,27 @@ run_MCDS <- function(dsmodel, mrmodel, data, method, meta.data, control){
     if(Sys.which(winebin)==""){
       stop("wine is needed to run MCDS.exe on non-Windows platforms. See documentation for details.")
     }
-    wine_call <- paste0(winebin, " MCDS.exe 0, ", test_file$command.file.name)
+    wine_call <- paste(winebin, path_to_MCDS_dot_exe, "0,", test_file$command.file.name)
     # only provide the output from MCDS.exe when we have showit>0
     w <- system(wine_call, intern=TRUE,
                 ignore.stdout=control$showit>0, ignore.stderr=control$showit>0)
 
   }else{
+    # on Windows just execute the MCDS binary
     w <- system(paste0(path_to_MCDS_dot_exe,
                 " 0, ", test_file$command.file.name), intern=TRUE,
                 stdout=control$showit>0, stderr=control$showit>0)
   }
 
-  #if(w>0){
-  #  stop("Running MCDS.exe failed!")
-  #}
-
+  # little extra parameter here to avoid infinite recursion when
+  # we run ddf in mcds_results_and_refit
+  control$skipwine <- TRUE
   model_list <- list(dsmodel=dsmodel, mrmodel=mrmodel, data=golftees,
                      method=method, meta.data=meta.data, control=control)
 
-  if(is.null(control$showit)){
-    control$showit <- FALSE
-  }
+  # refit the model
   mm <- mcds_results_and_refit(test_file$stats.file.name, model_list,
-                               debug=control$showit)
+                               debug=control$showit>0)
 
+  return(mm)
 }
