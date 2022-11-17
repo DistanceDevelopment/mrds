@@ -55,9 +55,7 @@ system and installing the `wine-crossover` package. You may need to change
 the `control$winebin` to be `wine`, `wine64` or `wine32on64`, depending on
 your system's setup. This package tries to work out what to do, but likely
 doesn't handle all corner cases. Currently this is untested on Mac M1
-systems, please get in touch if you are trying this. It seems like this does
-not currently work on post-Catalina versions of macOS, though this will
-hopefully be fixed in future versions of `wine`.
+systems, please get in touch if you are trying this.
 }
 
 \section{NA}{
