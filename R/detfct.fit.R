@@ -191,7 +191,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
   }
 
   # calculate hessian if it didn't work during optimisation
-  if(!misc.options$mono | is.na(lt$hessian)){
+  if(!misc.options$mono & (is.null(lt$hessian) || is.na(lt$hessian))){
     lt$hessian <- numDeriv::hessian(flnl, lt$par, ddfobj=ddfobj,
                                     misc.options=misc.options)
   }
