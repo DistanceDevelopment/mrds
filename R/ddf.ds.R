@@ -108,7 +108,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                                    nofit=FALSE, optimx.method="nlminb",
                                    optimx.maxit=300, silent=FALSE,
                                    mono.random.start=FALSE,
-                                   skipwine=FALSE)
+                                   skipMCDS=FALSE)
 
   #  Save current user options and then set design contrasts to treatment style
   save.options <- options()
@@ -209,7 +209,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   if(is.null(initialvalues)) misc.options$nofit <- TRUE
 
   # run MCDS.exe if it's there
-  if(!control$skipwine && system.file("MCDS.exe", package="mrds")!=""){
+  if(!control$skipMCDS && system.file("MCDS.exe", package="mrds")!=""){
     lt_mcds <- try(run_MCDS(model, data, method, meta.data, control),
                    silent=control$showit>0)
     # if something went wrong just return a very small lnl
