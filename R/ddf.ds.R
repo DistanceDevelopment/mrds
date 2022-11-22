@@ -220,26 +220,28 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                    silent=control$showit>0)
     # if something went wrong just return a very small lnl
     if(inherits(lt_mcds, "try-error")){
-      lt_mcds <- list(lnl=1e-10)
+      lt_mcds <- list(lnl=-1e10)
     }
   }else{
-    lt_mcds <- list(lnl=1e-10)
+    lt_mcds <- list(lnl=-1e10)
   }
+  lt_mcds$value <- lt_mcds$lnl
 
   # do the optimisation in R
   if(!control$skipR){
     lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
   }else{
-    lt <- list(lnl=1e-10)
+    lt <- list(value=-1e10)
   }
 
   # which was the better lnl?
   if(lt_mcds$lnl > lt$value){
-    if(misc.options$showit>=1){
+    if(control$showit>=1){
       cat("DEBUG: MCDS lnl =", round(lt_mcds$value, 7),
           "       mrds lnl =", round(lt$value, 7),"\n")
     }
-    lt <- lt_mcds
+    lt <- lt_mcds$ds
+    lt$message <- "MODEL FITTED BY MCDS.EXE"
   }
 
   # check that hazard models have a reasonable scale parameter

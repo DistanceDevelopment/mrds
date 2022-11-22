@@ -579,6 +579,7 @@ run_MCDS <- function(dsmodel, data, method, meta.data, control){
   # little extra parameter here to avoid infinite recursion when
   # we run ddf in mcds_results_and_refit
   control$skipMCDS <- TRUE
+  control$skipR <- FALSE
   model_list <- list(dsmodel=dsmodel, data=data,
                      method=method, meta.data=meta.data, control=control)
 

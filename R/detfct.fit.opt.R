@@ -95,7 +95,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     lt$converge <- 0
     lt$message <- "MAYBE CONVERGENCE?"
 
-    lt$aux <- c(optim.options,bounds, misc.options)
+    lt$aux <- c(optim.options, bounds, misc.options)
     ddfobj <- assign.par(ddfobj, lt$par)
     lt$aux$ddfobj <- ddfobj
 
