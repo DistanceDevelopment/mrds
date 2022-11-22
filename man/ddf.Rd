@@ -212,6 +212,8 @@ infrequently.  The list values include:
   \code{solnp} when fitting a monotonic model. Default 200.}
   \item{\code{silent}}{silences warnings within ds fitting method (helpful
   for running many times without generating many warning/error messages).}
+  \item{\code{skipMCDS}}{should the analysis should be run using
+  \code{MCDS.exe}? See \code{\link{mcds-dot-exe}} for more information.}
   \item{\code{winebin}}{Location of the \code{wine} binary used to run
   \code{MCDS.exe}. See \link{mcds-dot-exe} for more information.}
 }
