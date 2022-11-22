@@ -108,7 +108,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                                    nofit=FALSE, optimx.method="nlminb",
                                    optimx.maxit=300, silent=FALSE,
                                    mono.random.start=FALSE,
-                                   skipMCDS=FALSE)
+                                   skipMCDS=FALSE,
+                                   skipR=FALSE)
 
   #  Save current user options and then set design contrasts to treatment style
   save.options <- options()
@@ -208,6 +209,11 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   if(is.null(initialvalues)) misc.options$nofit <- TRUE
 
+  # don't try to optimize using nothing
+  if(control$skipMCDS & control$skipR){
+    stop("You can't skip both R and MCDS.exe optimizers!")
+  }
+
   # run MCDS.exe if it's there
   if(!control$skipMCDS && system.file("MCDS.exe", package="mrds")!=""){
     lt_mcds <- try(run_MCDS(model, data, method, meta.data, control),
@@ -220,8 +226,12 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
     lt_mcds <- list(lnl=1e-10)
   }
 
-  # Actually do the optimisation
-  lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
+  # do the optimisation in R
+  if(!control$skipR){
+    lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
+  }else{
+    lt <- list(lnl=1e-10)
+  }
 
   # which was the better lnl?
   if(lt_mcds$lnl > lt$value){

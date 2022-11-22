@@ -4,7 +4,11 @@
 #' of `MCDS.exe`, to reproduce the results given by Distance for Windows. There
 #' is no guarantee that one approach is "better" than the other, but `mrds`
 #' will select the model with the better likelihood and provide answers to
-#' this.
+#' this. By default (once `MCDS.exe` is available) both `MCDS.exe` and R will
+#' be used to obtain detection function parameter estimates. One can skip using
+#' `MCDS.exe` by setting `control=list(skipMCDS=TRUE)` and one can skip using
+#' R (using `MCDS.exe` only) using `control=list(skipR=TRUE)`. For obvious
+#' reasons, you can't do both.
 #'
 #' If you are running a non-Windows operating system, you can follow the
 #' instructions below to have `MCDS.exe` run using `wine`.
