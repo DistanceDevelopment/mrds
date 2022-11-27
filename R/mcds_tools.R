@@ -159,6 +159,8 @@ create_command_file <- function(dsmodel=call(), data,
     cluster <- TRUE
     colnames(data)[grep("^size$",tolower(colnames(data)))] <- "SIZE"
     req_fields <- append(req_fields,"SIZE")
+  }else{
+    cluster <- FALSE
   }
 
   # specifying covariates in the model
