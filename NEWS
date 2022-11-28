@@ -1,3 +1,8 @@
+mrds 2.2.9
+----------
+
+* Support for using MCDS.exe from Distance for Windows to run analyses. You can now download MCDS.exe using mrds::download_MCDS_dot_exe run analyses using this engine, rather (or in tandem with) the usual R optimizers provided in mrds. ddf will pick the best (by likelihood) and return that. See ?"mcds-dot-exe" for more details.
+
 mrds 2.2.8
 ----------
 
