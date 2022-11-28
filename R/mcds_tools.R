@@ -569,13 +569,13 @@ run_MCDS <- function(dsmodel, data, method, meta.data, control){
     wine_call <- paste(winebin, path_to_MCDS_dot_exe, "0,", test_file$command.file.name)
     # only provide the output from MCDS.exe when we have showit>0
     w <- system(wine_call, intern=TRUE,
-                ignore.stdout=control$showit>0, ignore.stderr=control$showit>0)
+                ignore.stdout=control$showit<1, ignore.stderr=control$showit<1)
 
   }else{
     # on Windows just execute the MCDS binary
     w <- system(paste0(path_to_MCDS_dot_exe,
                 " 0, ", test_file$command.file.name), intern=TRUE,
-                ignore.stdout=control$showit>0, ignore.stderr=control$showit>0)
+                ignore.stdout=control$showit<1, ignore.stderr=control$showit<1)
   }
 
   # little extra parameter here to avoid infinite recursion when
