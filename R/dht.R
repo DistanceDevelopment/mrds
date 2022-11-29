@@ -160,6 +160,7 @@
 #' total}
 #' \item{D}{\code{data.frame} of estimates of density for each region and total}
 #' \item{average.p}{average detection probability estimate}
+#' \item{average.p.se}{standard error of average detection probability estimate}
 #' \item{cormat}{correlation matrix of regional abundance/density estimates and
 #' total (if more than one region)}
 #' \item{vc}{list of 3: total variance-covariance matrix, detection function
@@ -240,6 +241,7 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     # Mod 18-Aug-05 jll; added computation of avergage detection probability
     # which is simply n/Nhat in the covered region
     average.p <- nrow(obs)/sum(Nhat.by.sample$Nhat)
+    average.p.se <- as.vector(summary(model)$average.p.se)
 
     width <- model$meta.data$width * options$convert.units
     left <- model$meta.data$left * options$convert.units
@@ -415,7 +417,8 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
       cormat[is.nan(cormat)] <- 0
       result <- list(bysample=bysample.table, summary = summary.table,
                      N=result$estimate.table, D=D.estimate.table,
-                     average.p=average.p, cormat = cormat,
+                     average.p=average.p, average.p.se=average.p.se,
+                     cormat = cormat,
                      vc=list(total     = result$vc,
                              detection = result$vc1,
                              er        = result$vc2),
@@ -423,6 +426,7 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     }else{
       result <- list(bysample=bysample.table, summary=summary.table,
                      N=estimate.table, D=D.estimate.table, average.p=average.p,
+                     average.p.se=average.p.se,
                      Nhat.by.sample=Nhat.by.sample)
     }
     return(result)
@@ -551,7 +555,7 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     # cov replacement term for 3.38. This uses line to line variability
     # whereas the other formula measure the variance of E(s) within the lines
     # and it goes to zero as p approaches 1.
-    if(se & options$varflag!=1){
+    if(se){
       numRegions <- length(unique(samples$Region.Label))
       if(options$varflag==2){
         cov.Nc.Ncs <- rep(0, numRegions)
@@ -624,6 +628,15 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
   # save enounter rate variance information
   attr(result, "ER_var") <- c(options$ervar, options$varflag==2,
                               options$varflag==0)
+
+  # calculate variance components
+  attr(result, "variance_components") <- list(
+    individuals = dht_variance_contributions(result$individuals,
+                                             result$Expected.S,
+                                             options$varflag==2),
+    clusters = dht_variance_contributions(result$cluster,
+                                             result$Expected.S,
+                                             options$varflag==2))
 
   class(result) <- "dht"
   return(result)

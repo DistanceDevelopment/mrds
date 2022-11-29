@@ -65,12 +65,16 @@ print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE, ...){
     cat("\nSummary statistics\n\n")
     print(x$individuals$summary)
     print.tables(x$individuals, cor, bysample, vcmatrices)
+    cat("\nVariance contributions\n")
+    print(attr(x, "variance_components")$individuals)
   }else{
     # summary statistics
     cat("\nSummary statistics\n\n")
     print(x$clusters$summary)
     cat("\nSummary for clusters\n")
     print.tables(x$clusters, cor, bysample, vcmatrices)
+    cat("\nVariance contributions\n")
+    print(attr(x, "variance_components")$clusters)
     cat("\nSummary for individuals\n")
     print.tables(x$individuals, cor, bysample, vcmatrices)
     cat("\nExpected cluster size\n")
@@ -81,6 +85,9 @@ print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE, ...){
       S$cv.Expected.S[S$Expected.S==0] <- 0
     }
     print(as.data.frame(S))
+    cat("\nVariance contributions\n")
+    print(attr(x, "variance_components")$individuals)
   }
+
   invisible()
 }
