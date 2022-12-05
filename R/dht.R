@@ -421,7 +421,8 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                      cormat = cormat,
                      vc=list(total     = result$vc,
                              detection = result$vc1,
-                             er        = result$vc2),
+                             er        = result$vc2,
+                             group     = result$vg),
                      Nhat.by.sample=Nhat.by.sample)
     }else{
       result <- list(bysample=bysample.table, summary=summary.table,
@@ -599,9 +600,19 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
       se.Expected.S[se.Expected.S<=0 | is.nan(se.Expected.S)] <- 0
       se.Expected.S <- as.vector(Expected.S)*sqrt(se.Expected.S)
 
+      Observed.S <- as.vector(by(obs$size, obs$Region.Label, mean))
+      Observed.S <- c(Observed.S, mean(obs$size))
+
       Expected.S <- data.frame(Region        = clusters$N$Label,
                                Expected.S    = as.vector(Expected.S),
-                               se.Expected.S = as.vector(se.Expected.S))
+                               se.Expected.S = as.vector(se.Expected.S),
+                               cv.Expected.S = as.vector(se.Expected.S)/
+                                               as.vector(Expected.S),
+                               Observed.S    = Observed.S,
+                               se.Observed.S = sqrt(diag(individuals$vc$group)),
+                               cv.Observed.S = sqrt(diag(individuals$vc$group))/
+                                               Observed.S)
+      Expected.S$cv.Expected.S[Expected.S$Expected.S==0] <- 0
     }else{
       Expected.S[is.nan(Expected.S)] <- 0
       Expected.S <- data.frame(Region     = clusters$N$Label,

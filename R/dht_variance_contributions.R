@@ -9,7 +9,7 @@ dht_variance_contributions <- function(res, groups, innes){
 
   # if we're not doing Innes then we need to include group size
   if(!innes & !is.null(groups$se.Expected.S)){
-    CV_cont$Groups <- groups$se.Expected.S/groups$Expected.S
+    CV_cont$Clusters <- groups$cv.Observed.S
   }
 
   # get the total

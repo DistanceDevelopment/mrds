@@ -215,7 +215,7 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
     # jll 11/11/04 - changes made in following code using
     # Effort.x (effort per line) rather than previous errant code
     # that used Effort.y (effort per region)
-    if(!options$group) vg <- rep(0, numRegions)
+    vg <- rep(0, numRegions)
     for(i in 1:numRegions){
       stratum.data <- Nhat.by.sample[as.character(Nhat.by.sample$Region.Label)==
                                      as.character(region.table$Region[i]), ]
@@ -238,15 +238,15 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
                                      stratum.data$n, type=options$ervar)/
                                 sum(stratum.data$n)^2
 
-        if(!options$group){
-          # if we have groups, add in the variance components (when estimating
-          # density/abundance of individuals)
-          vg[i] <- Ni^2 * vars/sbar^2
-        }
       }else{
         # Innes et al estimator using N/L
         vc2[i] <- varn(stratum.data$Effort.x/(scale[i] * Li),
                        stratum.data$Nhat/scale[i], type=options$ervar)
+      }
+      if(!options$group){
+        # if we have groups, add in the variance components (when estimating
+        # density/abundance of individuals)
+        vg[i] <- vars/sbar^2
       }
     }
   }
@@ -262,10 +262,10 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
     vc2 <- diag(c(vc2, sum(vc2)))
     vc2[1:numRegions, (numRegions + 1)] <- v2
     vc2[(numRegions + 1), 1:numRegions] <- v2
-    if(!options$group & options$varflag==1){
+    #if(!options$group & options$varflag==1){
       vg[is.nan(vg)] <- 0
       vg <- diag(c(vg, sum(vg)))
-    }
+    #}
   }else if (length(vc2) > 1){
     vc2 <- diag(vc2)
   }else{
@@ -276,7 +276,7 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
   # for the Buckland estimator, when we have groups add in the groups
   # variance component
   if(!options$group & options$varflag==1){
-    vc <- vc + vg
+    vc <- vc + Ni^2 * vg
   }
 
   # deal with missing values and 0 estimates.
@@ -373,5 +373,6 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
   return(list(estimate.table = estimate.table,
               vc             = vc,
               vc1            = vc1.list,
-              vc2            = vc2 ))
+              vc2            = vc2,
+              vg             = vg))
 }
