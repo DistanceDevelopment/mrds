@@ -66,22 +66,36 @@ create_command_file <- function(dsmodel=call(), data,
   directory <- tempdir()
 
   # create command file
-  command.file.name <- tempfile(pattern="cmdtmp", tmpdir=directory,
+  command.file.name <- tempfile(pattern="cmdtmp", 
+                                tmpdir=directory,
                                 fileext=".txt")
   #command.file.name <- gsub("/","\\\\",command.file.name)
   file.create(command.file.name)
 
   # HEADER section
+  
+  out.file <- tempfile(pattern="out", 
+                       tmpdir=directory,
+                       fileext=".txt")
+  
+  log.file <- tempfile(pattern="log", 
+                       tmpdir=directory,
+                       fileext=".txt")
+  
+  stat.file <- tempfile(pattern="stat", 
+                        tmpdir=directory,
+                        fileext=".txt")
+  
+  plot.file <- tempfile(pattern="plot", 
+                        tmpdir=directory,
+                        fileext=".txt")
 
   # specify the location of output files
-  cat(paste(directory,"/out.txt",sep=""), file=command.file.name, "\n",
-      append=TRUE)
-  cat(paste(directory,"/log.txt",sep=""), file=command.file.name, "\n",
-      append=TRUE)
-  cat(paste(directory,"/stat.txt",sep=""), file=command.file.name,
-      "\n", append=TRUE)
-  cat(paste(directory,"/plot.txt",sep=""), file=command.file.name,
-      "\n", append=TRUE)
+  cat(out.file, file=command.file.name, "\n", append=TRUE)
+  cat(log.file, file=command.file.name, "\n", append=TRUE)
+  cat(stat.file, file=command.file.name, "\n", append=TRUE)
+  cat(plot.file, file=command.file.name, "\n", append=TRUE)
+  
   #cat(paste("out.txt",sep=""), file=command.file.name, "\n",
   #    append=TRUE)
   #cat(paste("log.txt",sep=""), file=command.file.name, "\n",
@@ -200,7 +214,9 @@ create_command_file <- function(dsmodel=call(), data,
   data <- data[req_fields]
 
   # create data file to pass to mcds
-  data.file.name <- paste(directory, "/data.txt", sep="")
+  data.file.name <- tempfile(pattern="data",
+                             tmpdir=directory,
+                             fileext=".txt")
   file.create(data.file.name)
   write.table(data, file=data.file.name, col.names=FALSE,
               row.names=FALSE, sep="\t")
@@ -274,8 +290,8 @@ create_command_file <- function(dsmodel=call(), data,
   }
 
   # input the absolute path to the data file
-  data.file.name2 <- gsub("/", "\\\\", data.file.name)
-  cat(paste("INFILE=", data.file.name2, " /NOECHO;", sep=""),
+  #data.file.name2 <- gsub("/", "\\\\", data.file.name)
+  cat(paste("INFILE=", data.file.name, " /NOECHO;", sep=""),
       file=command.file.name, "\n", append=TRUE)
   cat("END;", file=command.file.name, "\n", append=TRUE)
 
@@ -432,7 +448,7 @@ create_command_file <- function(dsmodel=call(), data,
   cat("\n", file=command.file.name, append=TRUE)
 
   ret <- list(command.file.name=command.file.name,
-              stats.file.name = paste(directory,"/stat.txt",sep=""))
+              stats.file.name = stat.file)
 
   return(ret)
 }

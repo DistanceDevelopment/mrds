@@ -210,8 +210,10 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   if(is.null(initialvalues)) misc.options$nofit <- TRUE
 
   # don't try to optimize using nothing
-  if(control$skipMCDS & control$skipR){
-    stop("You can't skip both R and MCDS.exe optimizers!")
+  if(control$skipMCDS && control$skipR){
+    stop("You can't skip both R and MCDS.exe optimizers!", call. = FALSE)
+  }else if(control$skipR && system.file("MCDS.exe", package="mrds") == ""){
+    stop("You have chosen to skip R but the MCDS.exe optimizer cannot be found!", call. = FALSE)
   }
 
   # run MCDS.exe if it's there
