@@ -260,7 +260,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   # if there was no convergence, return the fitting object incase it's useful
   # it won't be of the correct class or have the correct elements
-  if(lt$converge!=0 & misc.options$debug){
+  if(lt$converge!=0 && misc.options$debug){
     warning("No convergence, not calculating Hessian, predicted values, abundance\nReturned object is for debugging ONLY!")
     options(save.options)
     return(result)
