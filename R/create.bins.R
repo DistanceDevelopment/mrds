@@ -12,24 +12,21 @@
 #' @export
 create.bins <- function(data, cutpoints){
 
-  # lazy typist
-  cp <- cutpoints
-
   # remove distances outside bins
-  in.cp.ind <- data$distance>=cp[1] & data$distance<=cp[length(cp)]
+  in.cp.ind <- data$distance >= cutpoints[1] & data$distance<= cutpoints[length(cutpoints)]
   if(!all(in.cp.ind)){
     warning("Some distances were outside bins and have been removed.")
   }
   data <- data[in.cp.ind, , drop=FALSE]
 
   # use cut() to create bins
-  chopped <- as.character(cut(data$distance, breaks=cp, include.lowest=TRUE))
-
-  # use cut() to create bins
-  chopped <- cut(data$distance, breaks=cp, include.lowest=TRUE, labels = FALSE)
+  chopped <- cut(data$distance, 
+                 breaks=cutpoints, 
+                 include.lowest=TRUE, 
+                 labels = FALSE)
   
-  distbegin <- cp[1:(length(cp)-1)]
-  distend <- cp[2:length(cp)]
+  distbegin <- cutpoints[1:(length(cutpoints)-1)]
+  distend <- cutpoints[2:length(cutpoints)]
   
   # put all that together and make a data.frame
   data <- cbind(data,
