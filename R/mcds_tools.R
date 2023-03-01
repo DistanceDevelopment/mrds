@@ -532,10 +532,10 @@ mcds_results_and_refit <- function(statsfile, model_list, debug=FALSE){
 #' @export
 download_MCDS_dot_exe <- function(){
 
-  url <- "http://distancesampling.org/R/"
+  url <- "http://distancesampling.org/R/MCDS.exe"
 
   message("Downloading MCDS.exe...")
-  success <- download.file(url, paste0(system.file(package="mrds"),"/MCDS.exe"))
+  success <- download.file(url, paste0(system.file(package="mrds"),"/MCDS.exe"), mode = "wb")
 
   if(success==0){
     message(paste0("MCDS.exe installed at ",
