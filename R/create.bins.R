@@ -25,11 +25,17 @@ create.bins <- function(data, cutpoints){
   # use cut() to create bins
   chopped <- as.character(cut(data$distance, breaks=cp, include.lowest=TRUE))
 
+  # use cut() to create bins
+  chopped <- cut(data$distance, breaks=cp, include.lowest=TRUE, labels = FALSE)
+  
+  distbegin <- cp[1:(length(cp)-1)]
+  distend <- cp[2:length(cp)]
+  
   # put all that together and make a data.frame
   data <- cbind(data,
                 # process to get bin beginnings/endings
-                distbegin = as.numeric(sub(".(\\d+\\.*\\d*),.+", "\\1", chopped)),
-                distend = as.numeric(sub(".+,(\\d+\\.*\\d*).", "\\1", chopped)))
+                distbegin = distbegin[chopped],
+                distend = distend[chopped])
   data <- data.frame(data)
 
   return(data)
