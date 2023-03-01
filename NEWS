@@ -2,6 +2,7 @@ mrds 2.2.9
 ----------
 
 * fix bug where the (true, 2nd derivative) hessian was not calculated during optimisation. This then lead to weird errors later (summary doesn't work etc). Hessians are now calculated in this case. Thanks to Anne Provencher St-Pierre for reporting the issue
+* fix bug with using binned data via cutpoints for prediction (#73)
 
 
 mrds 2.2.8
