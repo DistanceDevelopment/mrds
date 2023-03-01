@@ -71,3 +71,14 @@ test_that("covar df, NA in noncovar data",{
   pp <- predict(dd_h, newdata=nd)
   expect_equal(pp$fitted, c(unname(fitted(dd_h)[1:2])))
 })
+
+test_that("create.bins cuts data correctly - called from predict",{
+  # Testing fix for issue #73
+  data(book.tee.data)
+  tee.data <- subset(book.tee.data$book.tee.dataframe, observer==1)
+  tee.data$distance <- 1000*tee.data$distance
+  cutpoints = c(0,250,500,750,1000, 1500, 2000, 3000, 4000)
+  dat.mrds <- create.bins(tee.data, cutpoints = cutpoints)
+  expect_false(any(is.na(dat.mrds$distbegin)))
+  expect_false(any(is.na(dat.mrds$distend)))
+})
