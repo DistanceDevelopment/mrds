@@ -15,7 +15,6 @@
 #' \code{solvecov} code was taken from package \code{fpc}: Christian Hennig
 #' @export
 solvecov <- function (m, cmax = 1e+10){
-  options(show.error.messages = FALSE)
   covinv <- try(solve(m))
   if(inherits(covinv, "try-error")){
     coll <- FALSE
@@ -37,7 +36,6 @@ solvecov <- function (m, cmax = 1e+10){
     }
     covinv <- cove$vectors %*% covewi %*% t(cove$vectors)
   }
-  options(show.error.messages = TRUE)
   out <- list(inv = covinv, coll = coll)
   return(out)
 }
