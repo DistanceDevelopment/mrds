@@ -243,7 +243,9 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
           "       mrds lnl =", round(lt$value, 7),"\n")
     }
     lt <- lt_mcds$ds
-    lt$message <- "MODEL FITTED BY MCDS.EXE"
+    lt$optimise <- "MCDS.exe"
+  }else{
+    lt$optimise <- paste0("mrds (", control$optimx.method, ")")
   }
 
   # check that hazard models have a reasonable scale parameter
@@ -321,6 +323,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
       result$Nhat <- NCovered(result, group=TRUE)
     }
   }
+  # Store optimiser
+  result$optimise <- lt$optimise
 
   # Restore user options
   options(save.options)
