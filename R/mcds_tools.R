@@ -6,8 +6,8 @@
 #' will select the model with the better likelihood and provide answers to
 #' this. By default (once `MCDS.exe` is available) both `MCDS.exe` and R will
 #' be used to obtain detection function parameter estimates. One can skip using
-#' `MCDS.exe` by setting `control=list(skipMCDS=TRUE)` and one can skip using
-#' R (using `MCDS.exe` only) using `control=list(skipR=TRUE)`. For obvious
+#' `MCDS.exe` by setting \code{control=list(skipMCDS=TRUE)} and one can skip using
+#' R (using `MCDS.exe` only) using \code{control=list(skipR=TRUE)}. For obvious
 #' reasons, you can't do both.
 #'
 #' If you are running a non-Windows operating system, you can follow the
@@ -17,11 +17,14 @@
 #' @rdname mcds-dot-exe
 #'
 #' @section Obtaining MCDS.exe:
-#' The function `download_MCDS_dot_exe` can be used to download `MCDS.exe` from
-#' the distance sampling website. The MCDS binary will be installed to your
-#' local R library, in the `inst/` directory of the `mrds` directory. You can
-#' also copy the `MCDS.exe` from your local Distance for Windows installation
-#' if you prefer.
+#' The following code can be used to download `MCDS.exe` from the distance 
+#' sampling website:
+#' \code{download.file("http://distancesampling.org/R/MCDS.exe", paste0(system.file(package="mrds"),"/MCDS.exe"), mode = "wb")}
+#' The MCDS binary will be installed to the main directory of your your local R 
+#' mrds library. Alternatively, you can copy the `MCDS.exe` from your local 
+#' Distance for Windows installation if you prefer. The location of your local 
+#' mrds library main directory can be found by running the following in R:
+#' \code{system.file("MCDS.exe", package="mrds")}.
 #'
 #' @section Running MCDS.exe on non-Windows platforms:
 #' One can still use MCDS.exe even if you are not running a Windows computer. To
@@ -40,7 +43,7 @@
 #'
 #' On macOS, this can be achieved using the `homebrew` package management
 #' system and installing the `wine-crossover` package. You may need to change
-#' the `control$winebin` to be `wine`, `wine64` or `wine32on64`, depending on
+#' the \code{control$winebin} to be `wine`, `wine64` or `wine32on64`, depending on
 #' your system's setup. This package tries to work out what to do, but likely
 #' doesn't handle all corner cases. Currently this is untested on Mac M1
 #' systems, please get in touch if you are trying this.
@@ -49,7 +52,7 @@
 #' Once this feature is enabled (see below) using `ddf` will always run both
 #' its built-in R optimizer and `MCDS.exe`. To disable this behaviour remove
 #' the `MCDS.exe` binary file. You can find it by running the following in R:
-#' `system.file("MCDS.exe", package="mrds")`.
+#' \code{system.file("MCDS.exe", package="mrds")}.
 #'
 #' @author David L Miller and Jonah McArthur
 
