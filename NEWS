@@ -1,7 +1,12 @@
 mrds 2.2.9
 ----------
 
-* Support for using MCDS.exe from Distance for Windows to run analyses. You can now download MCDS.exe using mrds::download_MCDS_dot_exe run analyses using this engine, rather (or in tandem with) the usual R optimizers provided in mrds. ddf will pick the best (by likelihood) and return that. See ?"mcds-dot-exe" for more details.
+New Features
+
+* Users can now download the fortran MCDS.exe optimiser used in Distance for Windows and fit single observer models with both the optimisers in R via mrds and also MCDS.exe. For some datasets the optimisation with MCDS.exe is superior (giving a better likelihood) than the optimiser in R used with mrds. See ?"mcds-dot-exe" for more details.
+
+Bug Fixes
+
 * fix bug where the (true, 2nd derivative) hessian was not calculated during optimisation. This then lead to weird errors later (summary doesn't work etc). Hessians are now calculated in this case. Thanks to Anne Provencher St-Pierre for reporting the issue
 
 
