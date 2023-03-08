@@ -519,32 +519,6 @@ mcds_results_and_refit <- function(statsfile, model_list, debug=FALSE){
   return(refit)
 }
 
-#' Install the MCDS.exe binary from the web
-#'
-#' This function will download the `MCDS.exe` binary from the distance sampling
-#' website and install it.
-#'
-#' If you already have a copy of `MCDS.exe` on your computer you can move it to
-#' the correct directory manually. You can find where this is by running the
-#' following: `system.file(package="mrds")`.
-#'
-#' @return Nothing, just downloads and installs the binary.
-#' @export
-download_MCDS_dot_exe <- function(){
-
-  url <- "http://distancesampling.org/R/MCDS.exe"
-
-  message("Downloading MCDS.exe...")
-  success <- download.file(url, paste0(system.file(package="mrds"),"/MCDS.exe"), mode = "wb")
-
-  if(success==0){
-    message(paste0("MCDS.exe installed at ",
-            system.file(package="mrds"), "/MCDS.exe"))
-  }else{
-    stop("Download and installation not successful!")
-  }
-}
-
 run_MCDS <- function(dsmodel, data, method, meta.data, control){
 
   if(control$showit>0){
