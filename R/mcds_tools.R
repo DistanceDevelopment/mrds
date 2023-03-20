@@ -222,7 +222,7 @@ create_command_file <- function(dsmodel=call(), data,
                              fileext=".txt")
   file.create(data.file.name)
   write.table(data, file=data.file.name, col.names=FALSE,
-              row.names=FALSE, sep="\t")
+              row.names=FALSE, sep="\t", quote = FALSE)
 
   # OPTION section
 
@@ -286,7 +286,7 @@ create_command_file <- function(dsmodel=call(), data,
         labels <- paste(levels(data[,i]), collapse=",")
         cat(paste("FACTOR /NAME=", toupper(colnames(data)[i]),
                   " /LEVELS=", length(levels(data[,i])), " /LABELS=",
-                  labels, sep=""), file=command.file.name, "\n",
+                  labels, ";", sep=""), file=command.file.name, "\n",
             append=TRUE)
       }
     }
