@@ -188,8 +188,8 @@ create_command_file <- function(dsmodel=call(), data,
     # creating a list of the fields for each covariate
     covar_fields <- rep("",length(covars))
     for(i in 1:length(covars)){
-      # identifying the field name for each covariate
-      index <- grep(covars[i],tolower(colnames(data)))
+      # identifying the field name for each covariate (making them case insensetive?)
+      index <- which(tolower(covars[i]) == tolower(colnames(data)))
       covar_fields[i] <- colnames(data)[index]
     }
     # the required fields cannot be covariates in the model, with the exception of size
