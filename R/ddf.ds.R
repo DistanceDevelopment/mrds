@@ -220,12 +220,12 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   if(!control$skipMCDS && system.file("MCDS.exe", package="mrds")!=""){
     lt_mcds <- try(run_MCDS(model, data, method, meta.data, control),
                    silent=control$showit>0)
-    # if something went wrong just return a very small lnl
+    # if something went wrong just return a very large lnl
     if(inherits(lt_mcds, "try-error")){
-      lt_mcds <- list(lnl=-1e10)
+      lt_mcds <- list(lnl=1e100)
     }
   }else{
-    lt_mcds <- list(lnl=-1e10)
+    lt_mcds <- list(lnl=1e100)
   }
   lt_mcds$value <- lt_mcds$lnl
 
@@ -233,11 +233,11 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   if(!control$skipR){
     lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
   }else{
-    lt <- list(value=-1e10)
+    lt <- list(value=1e100)
   }
 
   # which was the better lnl?
-  if(lt_mcds$lnl > lt$value){
+  if(abs(lt_mcds$lnl) < abs(lt$value)){
     if(control$showit>=1){
       cat("DEBUG: MCDS lnl =", round(lt_mcds$value, 7),
           "       mrds lnl =", round(lt$value, 7),"\n")
