@@ -13,8 +13,8 @@
 #' If you are running a non-Windows operating system, you can follow the
 #' instructions below to have `MCDS.exe` run using `wine`.
 #'
-#' @aliases MCDS
-#' @rdname mcds-dot-exe
+#' @aliases MCDS mcds_dot_exe
+#' @rdname mcds_dot_exe
 #'
 #' @section Obtaining MCDS.exe:
 #' The following code can be used to download `MCDS.exe` from the distance 
@@ -566,10 +566,14 @@ run_MCDS <- function(dsmodel, data, method, meta.data, control){
 
   }else{
     # on Windows just execute the MCDS binary
-    w <- system(paste0(path_to_MCDS_dot_exe,
+    w <- tryCatch(system(paste0(path_to_MCDS_dot_exe,
                 " 0, ", test_file$command.file.name), intern=TRUE,
                 ignore.stdout=control$showit<1, ignore.stderr=control$showit<1)
+             , error = function(e) e)
   }
+  
+  # Check if MCDS.exe was successful
+  #finish.status <- 
 
   # little extra parameter here to avoid infinite recursion when
   # we run ddf in mcds_results_and_refit
@@ -583,4 +587,12 @@ run_MCDS <- function(dsmodel, data, method, meta.data, control){
                                debug=control$showit>0)
 
   return(mm)
+}
+
+MCDS_clean_up <- function(cmd.file, stats.file){
+  # Removes all files and folders after running MCDS.exe
+  # Remove cmd.file
+  # Remove stats.file
+  # If containing folder now empty remove it
+  
 }

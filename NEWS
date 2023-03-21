@@ -3,7 +3,7 @@ mrds 2.2.9
 
 New Features
 
-* Users can now download the fortran MCDS.exe optimiser used in Distance for Windows and fit single observer models with both the optimisers in R via mrds and also MCDS.exe. For some datasets the optimisation with MCDS.exe is superior (giving a better likelihood) than the optimiser in R used with mrds. See ?"mcds-dot-exe" for more details.
+* Users can now download the fortran MCDS.exe optimiser used in Distance for Windows and fit single observer models with both the optimisers in R via mrds and also MCDS.exe. For some datasets the optimisation with MCDS.exe is superior (giving a better likelihood) than the optimiser in R used with mrds. See ?MCDS for more details.
 
 Bug Fixes
 

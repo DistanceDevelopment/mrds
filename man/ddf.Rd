@@ -213,11 +213,11 @@ infrequently.  The list values include:
   \item{\code{silent}}{silences warnings within ds fitting method (helpful
   for running many times without generating many warning/error messages).}
   \item{\code{skipR}}{should the analysis using R be skipped? This will run
-  \code{MCDS.exe} only. See \code{\link{mcds-dot-exe}} for more information.}
+  \code{MCDS.exe} only. See \code{\link{mcds_dot_exe}} for more information.}
   \item{\code{skipMCDS}}{should the analysis using \code{MCDS.exe} be
-  skipped ? See \code{\link{mcds-dot-exe}} for more information.}
+  skipped ? See \code{\link{mcds_dot_exe}} for more information.}
   \item{\code{winebin}}{Location of the \code{wine} binary used to run
-  \code{MCDS.exe}. See \link{mcds-dot-exe} for more information.}
+  \code{MCDS.exe}. See \link{mcds_dot_exe} for more information.}
 }
 
 Examples of distance sampling analyses are available at

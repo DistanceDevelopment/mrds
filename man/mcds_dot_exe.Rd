@@ -3,6 +3,7 @@
 \name{create_command_file}
 \alias{create_command_file}
 \alias{MCDS}
+\alias{mcds_dot_exe}
 \title{Run MCDS.exe as a backend for mrds}
 \usage{
 create_command_file(dsmodel = call(), data, method, meta.data, control)
