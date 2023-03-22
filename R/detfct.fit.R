@@ -191,7 +191,7 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
   }
 
   # calculate hessian if it didn't work during optimisation
-  if(!misc.options$mono & (is.null(lt$hessian) || is.na(lt$hessian))){
+  if(!misc.options$mono & (is.null(lt$hessian) || any(is.na(lt$hessian)))){
     # However, don't want to do this for uniform with no adjustments
     if(lt$aux$ddfobj$type == "unif" && is.null(lt$aux$ddfobj$adjustment)){
       # Do nothing - no hessian as nothing being estimated
