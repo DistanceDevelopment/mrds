@@ -64,6 +64,7 @@
 # the input for this function is the same as the input for ddf
 # written by Jonah McArthur
 create_command_file <- function(dsmodel=call(), data,
+create.command.file <- function(dsmodel=call(), data,
                                 method, meta.data, control) {
   # create a temporary directory
   directory <- tempdir()
@@ -456,7 +457,9 @@ create_command_file <- function(dsmodel=call(), data,
   return(ret)
 }
 
-mcds_results_and_refit <- function(statsfile, model_list, debug=FALSE){
+
+#' @importFrom utils read.table write.table
+mcds.results.and.refit <- function(statsfile, model_list, debug=FALSE){
 
   stats <- read.table(statsfile, row.names=NULL)
   colnames(stats) <- c("Stratum", "Sample", "Estimator", "Module", "Statistic",
@@ -522,13 +525,13 @@ mcds_results_and_refit <- function(statsfile, model_list, debug=FALSE){
   return(refit)
 }
 
-run_MCDS <- function(dsmodel, data, method, meta.data, control){
+run.MCDS <- function(dsmodel, data, method, meta.data, control){
 
   if(control$showit>0){
     message("Running MCDS.exe...")
   }
   # create the test file
-  test_file <- create_command_file(dsmodel, data, method,
+  test_file <- create.command.file(dsmodel, data, method,
                                    meta.data, control)
   if(control$showit>0){
     message(paste("Command file written to", test_file$command.file.name))
@@ -576,14 +579,14 @@ run_MCDS <- function(dsmodel, data, method, meta.data, control){
   #finish.status <- 
 
   # little extra parameter here to avoid infinite recursion when
-  # we run ddf in mcds_results_and_refit
+  # we run ddf in mcds.results.and.refit
   control$skipMCDS <- TRUE
   control$skipR <- FALSE
   model_list <- list(dsmodel=dsmodel, data=data,
                      method=method, meta.data=meta.data, control=control)
 
   # refit the model
-  mm <- mcds_results_and_refit(test_file$stats.file.name, model_list,
+  mm <- mcds.results.and.refit(test_file$stats.file.name, model_list,
                                debug=control$showit>0)
 
   return(mm)

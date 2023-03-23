@@ -218,7 +218,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   # run MCDS.exe if it's there
   if(!control$skipMCDS && system.file("MCDS.exe", package="mrds")!=""){
-    lt_mcds <- try(run_MCDS(model, data, method, meta.data, control),
+    lt_mcds <- try(run.MCDS(model, data, method, meta.data, control),
                    silent=control$showit>0)
     # if something went wrong just return a very large lnl
     if(inherits(lt_mcds, "try-error")){
