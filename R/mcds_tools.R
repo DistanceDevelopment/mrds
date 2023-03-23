@@ -14,6 +14,7 @@
 #' instructions below to have `MCDS.exe` run using `wine`.
 #'
 #' @aliases MCDS mcds_dot_exe
+#' @name MCDS.exe
 #' @rdname mcds_dot_exe
 #'
 #' @section Obtaining MCDS.exe:
@@ -48,22 +49,24 @@
 #' doesn't handle all corner cases. Currently this is untested on Mac M1
 #' systems, please get in touch if you are trying this.
 #'
-#' @section: Stopping using MCDS.exe
+#' @section Stopping using MCDS.exe:
 #' Once this feature is enabled (see below) using `ddf` will always run both
 #' its built-in R optimizer and `MCDS.exe`. To disable this behaviour remove
 #' the `MCDS.exe` binary file. You can find it by running the following in R:
 #' \code{system.file("MCDS.exe", package="mrds")}.
 #'
 #' @author David L Miller and Jonah McArthur
+NULL
 
 
-
+#' @title create.command.file
 # a function to take the input as required for the ddf function in mrds and
 # create a command file for the mcds engine, which will perform an equivalent
 # analysis.
-# the input for this function is the same as the input for ddf
-# written by Jonah McArthur
-create_command_file <- function(dsmodel=call(), data,
+#' @inheritParams ddf
+#' @rdname create.command.file
+#' @author Jonah McArthur
+#' @importFrom utils write.table
 create.command.file <- function(dsmodel=call(), data,
                                 method, meta.data, control) {
   # create a temporary directory
@@ -592,7 +595,7 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
   return(mm)
 }
 
-MCDS_clean_up <- function(cmd.file, stats.file){
+MCDS.clean.up <- function(cmd.file, stats.file){
   # Removes all files and folders after running MCDS.exe
   # Remove cmd.file
   # Remove stats.file
