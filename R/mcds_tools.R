@@ -105,8 +105,7 @@ create.command.file <- function(dsmodel=call(), data,
   # extract reformatted data
   data <- data.info$data
   # extract information about covariates 
-  covar_pres <- data.info$covar.pres
-  covar_fields <- data.info$covar.fields
+  covar.fields <- data.info$covar.fields
   cluster <- data.info$cluster
   
   # HEADER section
@@ -177,13 +176,13 @@ create.command.file <- function(dsmodel=call(), data,
   }
 
   # specifying which fields are factor covariates
-  if(covar_pres == TRUE){
-    factor_fields <- c()
+  if(length(covar.fields) > 0){
+    factor.fields <- c()
     for(i in 1:length(colnames(data))){
       # for each covariate, check if it is a factor
-      if(is.factor(data[,i]) && (TRUE %in% grepl(colnames(data)[i],covar_fields))){
+      if(is.factor(data[,i]) && (TRUE %in% grepl(colnames(data)[i],covar.fields))){
         # if the covariate is a factor, specify its name, levels, and level labels
-        factor_fields <- append(factor_fields,colnames(data)[i])
+        factor.fields <- append(factor.fields,colnames(data)[i])
         labels <- paste(levels(data[,i]), collapse=",")
         cat(paste("FACTOR /NAME=", toupper(colnames(data)[i]),
                   " /LEVELS=", length(levels(data[,i])), " /LABELS=",
@@ -206,54 +205,54 @@ create.command.file <- function(dsmodel=call(), data,
 
   # a messy way of accessing the model parameters
   mod_paste <- paste(dsmodel)
-  mod_vals <- try(eval(parse(text=mod_paste[2:length(mod_paste)])))
+  mod.vals <- try(eval(parse(text=mod_paste[2:length(mod_paste)])))
 
   # specify the key function
   cat("ESTIMATOR /KEY=", file=command.file.name, append=TRUE)
-  if(mod_vals$key == "hn"){
+  if(mod.vals$key == "hn"){
     cat("HNORMAL", file=command.file.name, append=TRUE)
-  }else if(mod_vals$key == "hr"){
+  }else if(mod.vals$key == "hr"){
     cat("HAZARD", file=command.file.name, append=TRUE)
-  }else if(mod_vals$key == "unif"){
+  }else if(mod.vals$key == "unif"){
     cat("UNIFORM", file=command.file.name, append=TRUE)
   }else{
     cat("NEXPON", file=command.file.name, append=TRUE)
   }
 
-    adj_pres <- FALSE
+    adj.pres <- FALSE
   # check if adjustment terms are used
-  if(is.null(mod_vals$adj.series) == FALSE){
-    adj_pres <- TRUE
+  if(is.null(mod.vals$adj.series) == FALSE){
+    adj.pres <- TRUE
     # specify the type of adjustment term
-    if(mod_vals$adj.series == "cos"){
+    if(mod.vals$adj.series == "cos"){
       cat(" /ADJUST=COSINE", file=command.file.name, append=TRUE)
-    }else if(mod_vals$adj.series == "herm"){
+    }else if(mod.vals$adj.series == "herm"){
       cat(" /ADJUST=HERMITE", file=command.file.name, append=TRUE)
-    }else if(mod_vals$adj.series == "poly"){
+    }else if(mod.vals$adj.series == "poly"){
       cat(" /ADJUST=POLY", file=command.file.name, append=TRUE)
     }
 
     # specify the order of adjustment terms
-    if(!is.null(mod_vals$adj.order)){
-      cat(paste(" /ORDER=", paste(mod_vals$adj.order,collapse=","),sep=""),
+    if(!is.null(mod.vals$adj.order)){
+      cat(paste(" /ORDER=", paste(mod.vals$adj.order,collapse=","),sep=""),
           file=command.file.name, append=TRUE)
     }
 
     # specify the scaling of adjustment parameters
-    if(mod_vals$adj.scale == "width"){
+    if(mod.vals$adj.scale == "width"){
       cat(" /ADJSTD=W", file=command.file.name, append=TRUE)
     }else{
       cat(" /ADJSTD=SIGMA", file=command.file.name, append=TRUE)
     }
 
     # specify the number of adjustment parameters
-    cat(paste(" /NAP=", length(mod_vals$adj.order), sep=""),
+    cat(paste(" /NAP=", length(mod.vals$adj.order), sep=""),
         file=command.file.name, append=TRUE)
   }
 
   # specify which fields are covariates
-  if(covar_pres == TRUE){
-    cat(paste(" /COVARIATES=", paste(covar_fields,collapse=","), sep=""),
+  if(length(covar.fields) > 0){
+    cat(paste(" /COVARIATES=", paste(covar.fields,collapse=","), sep=""),
         file=command.file.name, append=TRUE)
   }
 
@@ -261,37 +260,37 @@ create.command.file <- function(dsmodel=call(), data,
   inits <- c()
   if(is.null(control$initial) == FALSE){
     # go through covariates in order, if they are present
-    if(covar_pres == TRUE){
-      for(i in 1:length(covars)){
+    if(length(covar.fields) > 0){
+      for(i in seq(along = covar.fields)){
         # find the index of the covariate field
-        index <- grep(toupper(covar_fields[i]),toupper(colnames(data)))
+        index <- grep(toupper(covar.fields[i]),toupper(colnames(data)))
         # if the covariate is a factor, initial values must be given for each level
-        if(TRUE %in% grepl(covar_fields[i],factor_fields)){
+        if(TRUE %in% grepl(covar.fields[i],factor.fields)){
           for(j in 2:length(levels(data[,index]))){
             # create the text for the parameter that must be accessed
-            access_covar <- paste("control$initial$scale$",
+            access.covar <- paste("control$initial$scale$",
                                   colnames(data)[index],"[",j,"]",sep="")
             # evaluate the text in order to access the initial value
-#            inits <- append(inits,eval(parse(text=access_covar)))
+#            inits <- append(inits,eval(parse(text=access.covar)))
           }
           # the first level has to be last in MCDS
-          access_covar <- paste("control$initial$scale$",
+          access.covar <- paste("control$initial$scale$",
                                 colnames(data)[index],"[1]",sep="")
-#          inits <- append(inits,eval(parse(text=access_covar)))
+#          inits <- append(inits,eval(parse(text=access.covar)))
         }else{
-          access_covar <- paste("control$initial$scale$",
+          access.covar <- paste("control$initial$scale$",
                                 colnames(data)[index],sep="")
-#          inits <- append(inits,eval(parse(text=access_covar)))
+#          inits <- append(inits,eval(parse(text=access.covar)))
         }
       }
     }
     # add in shape parameter if hazard-rate used
-    if(mod_vals$key == "hr"){
+    if(mod.vals$key == "hr"){
 #      inits <- append(inits,control$initial$shape)
     }
     # add in adjustment initial values
-    if(adj_pres){
-      for(i in 1:length(mod_vals$adj.order)){
+    if(adj.pres){
+      for(i in 1:length(mod.vals$adj.order)){
 #        inits <- append(inits,control$initial$adjustment[i])
       }
     }
@@ -357,7 +356,7 @@ create.command.file <- function(dsmodel=call(), data,
 
 
 #' @importFrom utils read.table write.table
-mcds.results.and.refit <- function(statsfile, model_list, debug=FALSE){
+mcds.results.and.refit <- function(statsfile, model.list, debug=FALSE){
 
   stats <- read.table(statsfile, row.names=NULL)
   colnames(stats) <- c("Stratum", "Sample", "Estimator", "Module", "Statistic",
@@ -378,41 +377,40 @@ mcds.results.and.refit <- function(statsfile, model_list, debug=FALSE){
                                        ")")
   stats <- stats[, c("Name", "Value")]
 
-  starting_values <- stats$Value
+  starting.values <- stats$Value
 
+  model.list$control$initial <- list()
+  mod.paste <- paste(model.list$dsmodel)
+  mod.vals <- try(eval(parse(text=mod.paste[2:length(mod.paste)])))
 
-  model_list$control$initial <- list()
-  mod_paste <- paste(model_list$dsmodel)
-  mod_vals <- try(eval(parse(text=mod_paste[2:length(mod_paste)])))
-
-  if(mod_vals$key == "hr"){
-    model_list$control$initial$shape <- log(starting_values[2])
-    starting_values <- starting_values[-2]
+  if(mod.vals$key == "hr"){
+    model.list$control$initial$shape <- log(starting.values[2])
+    starting.values <- starting.values[-2]
   }
   # MCDS.exe exponentiates the scale par, undo that
-  model_list$control$initial$scale <- log(starting_values[1])
-  starting_values <- starting_values[-1]
+  model.list$control$initial$scale <- log(starting.values[1])
+  starting.values <- starting.values[-1]
 
   # get the adjustments off the end
-  if(!is.null(mod_vals$adj.order)){
-    ind <- (length(starting_values)-length(mod_vals$adj.order)+1):
-            length(starting_values)
-    model_list$control$initial$adjustment <- starting_values[ind]
-    starting_values <- starting_values[-ind]
+  if(!is.null(mod.vals$adj.order)){
+    ind <- (length(starting.values)-length(mod.vals$adj.order)+1):
+            length(starting.values)
+    model.list$control$initial$adjustment <- starting.values[ind]
+    starting.values <- starting.values[-ind]
   }
 
-  if(length(starting_values) >0){
-    model_list$control$initial$scale <- c(model_list$control$initial$scale,
-                                          starting_values)
+  if(length(starting.values) >0){
+    model.list$control$initial$scale <- c(model.list$control$initial$scale,
+                                          starting.values)
   }
 
-  model_list$control$nofit <- TRUE
+  model.list$control$nofit <- TRUE
 
-  refit <- ddf(dsmodel = model_list$dsmodel, mrmodel=NULL,
-               data = model_list$data,
-               method = model_list$method,
-               meta.data = model_list$meta.data,
-               control = model_list$control)
+  refit <- ddf(dsmodel = model.list$dsmodel, mrmodel=NULL,
+               data = model.list$data,
+               method = model.list$method,
+               meta.data = model.list$meta.data,
+               control = model.list$control)
 
   if(debug){
     message(paste0("MCDS.exe log likehood: ", round(refit$lnl,7)))
@@ -429,15 +427,15 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
     message("Running MCDS.exe...")
   }
   # create the test file
-  test_file <- create.command.file(dsmodel, data, method,
+  test.file <- create.command.file(dsmodel, data, method,
                                    meta.data, control)
   if(control$showit>0){
-    message(paste("Command file written to", test_file$command.file.name))
-    message(paste("Stats file written to", test_file$stats.file.name))
+    message(paste("Command file written to", test.file$command.file.name))
+    message(paste("Stats file written to", test.file$stats.file.name))
   }
 
   # find MCDS.exe
-  path_to_MCDS_dot_exe <- system.file("MCDS.exe", package="mrds")
+  path.to.MCDS.dot.exe <- system.file("MCDS.exe", package="mrds")
 
   # actually run MCDS.exe (use wine if necessary)
   if(Sys.info()[['sysname']]!="Windows"){
@@ -448,11 +446,11 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
     }
     # macOS specific
     if(Sys.info()[['sysname']]=="Darwin"){
-      osx_version <- as.numeric_version(system("sw_vers -productVersion",
+      osx.version <- as.numeric.version(system("sw_vers -productVersion",
                                                intern = TRUE))
       if(!is.null(control$winebin)){
         winebin <- control$winebin
-      }else if(osx_version>as.numeric_version(10.15)){
+      }else if(osx.version>as.numeric.version(10.15)){
         # Catalina or after removed the 32-bit support, so use wine32on64
         winebin <- "wine32on64"
       }
@@ -460,15 +458,15 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
     if(Sys.which(winebin)==""){
       stop("wine is needed to run MCDS.exe on non-Windows platforms. See documentation for details.")
     }
-    wine_call <- paste(winebin, path_to_MCDS_dot_exe, "0,", test_file$command.file.name)
+    wine.call <- paste(winebin, path.to.MCDS.dot.exe, "0,", test.file$command.file.name)
     # only provide the output from MCDS.exe when we have showit>0
-    w <- system(wine_call, intern=TRUE,
+    w <- system(wine.call, intern=TRUE,
                 ignore.stdout=control$showit<1, ignore.stderr=control$showit<1)
 
   }else{
     # on Windows just execute the MCDS binary
-    w <- tryCatch(system(paste0(path_to_MCDS_dot_exe,
-                " 0, ", test_file$command.file.name), intern=TRUE,
+    w <- tryCatch(system(paste0(path.to.MCDS.dot.exe,
+                " 0, ", test.file$command.file.name), intern=TRUE,
                 ignore.stdout=control$showit<1, ignore.stderr=control$showit<1)
              , error = function(e) e)
   }
@@ -480,24 +478,17 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
   # we run ddf in mcds.results.and.refit
   control$skipMCDS <- TRUE
   control$skipR <- FALSE
-  model_list <- list(dsmodel=dsmodel, data=data,
+  model.list <- list(dsmodel=dsmodel, data=data,
                      method=method, meta.data=meta.data, control=control)
 
   # refit the model
-  mm <- mcds.results.and.refit(test_file$stats.file.name, model_list,
+  mm <- mcds.results.and.refit(test.file$stats.file.name, model.list,
                                debug=control$showit>0)
 
   return(mm)
 }
 
-MCDS.clean.up <- function(cmd.file, stats.file){
-  # Removes all files and folders after running MCDS.exe
-  # Remove cmd.file
-  # Remove stats.file
-  # If containing folder now empty remove it
-  
-}
-
+#' @importFrom utils write.table
 create.data.file <- function(data, dsmodel, data.file){
 
   # create a vector of required fields
