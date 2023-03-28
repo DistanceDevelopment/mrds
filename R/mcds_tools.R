@@ -164,9 +164,9 @@ create.command.file <- function(dsmodel=call(), data,
   cat("DATA /STRUCTURE=FLAT;", file=command.file.name, "\n",
       append=TRUE)
 
-  # change all fields to upper case and combine to one string
-  fields_comb <- paste(toupper(colnames(data)), collapse=",")
-  cat(paste("FIELDS=", fields_comb, ";", sep=""),
+  # combine data field names into single character value
+  fields.comb <- paste(names(data), collapse = ",")
+  cat(paste("FIELDS=", fields.comb, ";", sep=""),
       file=command.file.name, "\n", append=TRUE)
   
   # If clusters and cluster is a cov in the model
