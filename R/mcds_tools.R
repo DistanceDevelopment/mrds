@@ -493,24 +493,7 @@ MCDS.clean.up <- function(cmd.file, stats.file){
 }
 
 create.data.file <- function(data, dsmodel, data.file){
-  # removing irrelevant data
-  # combine data from multiple observers
-  data <- data[data$detected==1,]
-  if(TRUE %in% grepl("^object$",tolower(colnames(data)))){
-    # in case the object column isn't named 'object', to remove case sensitivity
-    obj_col <- grep("^object$",tolower(colnames(data)))
-    colnames(data)[obj_col] <- "object"
-    # identifying all objects and taking the first data point for each
-    obj_nums <- unique(data$object)
-    for(i in 1:length(obj_nums)){
-      entries <- grep(TRUE,data$object==i)
-      if(length(entries)>1){
-        remove <- entries[-1]
-        data <- data[-remove,]
-      }
-    }
-  }
-  
+
   # create a vector of required fields
   req_fields <- c("SMP_LABEL","SMP_EFFORT","DISTANCE")
   
