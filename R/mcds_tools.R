@@ -169,6 +169,12 @@ create.command.file <- function(dsmodel=call(), data,
   fields_comb <- paste(toupper(colnames(data)), collapse=",")
   cat(paste("FIELDS=", fields_comb, ";", sep=""),
       file=command.file.name, "\n", append=TRUE)
+  
+  # If clusters and cluster is a cov in the model
+  if(cluster && "Cluster Size" %in% covar.fields){
+    cat(paste("SizeC=Cluster Size;", sep=""),
+        file=command.file.name, "\n", append=TRUE)
+  }
 
   # specifying which fields are factor covariates
   if(covar_pres == TRUE){
@@ -539,6 +545,10 @@ create.data.file <- function(data, dsmodel, data.file){
     req_fields <- append(req_fields,"STR_AREA")
   }
   if(TRUE %in% grepl("^size$",tolower(colnames(data)))){
+  if("size" %in% names(data)){
+    index <- which(names(data) == "size")
+    names(data)[index] <- "Cluster Size"
+    data.cols <- c(data.cols, "Cluster Size")
     cluster <- TRUE
     colnames(data)[grep("^size$",tolower(colnames(data)))] <- "SIZE"
     req_fields <- append(req_fields,"SIZE")
@@ -574,6 +584,10 @@ create.data.file <- function(data, dsmodel, data.file){
     # if SIZE is a covariate, add it back to the list of covariates
     if(size_cov == TRUE){
       covar_fields <- append(covar_fields,"SIZE")
+    # Cluster Size must be named "Cluster Size"
+    if("size" %in% covar.fields){
+      index <- which(covar.fields == "size")
+      covar.fields[index] <- "Cluster Size"
     }
   }else{
     covar_pres <- FALSE
