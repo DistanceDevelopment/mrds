@@ -76,10 +76,9 @@ create.command.file <- function(dsmodel=call(), data,
   command.file.name <- tempfile(pattern="cmdtmp", 
                                 tmpdir=directory,
                                 fileext=".txt")
-  #command.file.name <- gsub("/","\\\\",command.file.name)
   file.create(command.file.name)
 
-  # HEADER section
+  
   
   out.file <- tempfile(pattern="out", 
                        tmpdir=directory,
@@ -96,140 +95,32 @@ create.command.file <- function(dsmodel=call(), data,
   plot.file <- tempfile(pattern="plot", 
                         tmpdir=directory,
                         fileext=".txt")
+  
+  data.file <- tempfile(pattern="data",
+                             tmpdir=directory,
+                             fileext=".txt")
 
+  # Create Data File
+  data.info <- create.data.file(data, dsmodel, data.file)
+  # extract reformatted data
+  data <- data.info$data
+  # extract information about covariates 
+  covar_pres <- data.info$covar.pres
+  covar_fields <- data.info$covar.fields
+  cluster <- data.info$cluster
+  
+  # HEADER section
+  # ~~~~~~~~~~~~~~
   # specify the location of output files
   cat(out.file, file=command.file.name, "\n", append=TRUE)
   cat(log.file, file=command.file.name, "\n", append=TRUE)
   cat(stat.file, file=command.file.name, "\n", append=TRUE)
   cat(plot.file, file=command.file.name, "\n", append=TRUE)
+  cat("None", file=command.file.name, "\n", append=TRUE)
+  cat("None", file=command.file.name, "\n", append=TRUE)
   
-  #cat(paste("out.txt",sep=""), file=command.file.name, "\n",
-  #    append=TRUE)
-  #cat(paste("log.txt",sep=""), file=command.file.name, "\n",
-  #    append=TRUE)
-  #cat(paste("stat.txt",sep=""), file=command.file.name,
-  #    "\n", append=TRUE)
-  #cat(paste("plot.txt",sep=""), file=command.file.name,
-  #    "\n", append=TRUE)
-  cat("None", file=command.file.name, "\n", append=TRUE)
-  cat("None", file=command.file.name, "\n", append=TRUE)
-
-  # removing irrelevant data
-  # combine data from multiple observers
-  data <- data[data$detected==1,]
-  if(TRUE %in% grepl("^object$",tolower(colnames(data)))){
-    # in case the object column isn't named 'object', to remove case sensitivity
-    obj_col <- grep("^object$",tolower(colnames(data)))
-    colnames(data)[obj_col] <- "object"
-    # identifying all objects and taking the first data point for each
-    obj_nums <- unique(data$object)
-    for(i in 1:length(obj_nums)){
-      entries <- grep(TRUE,data$object==i)
-      if(length(entries)>1){
-        remove <- entries[-1]
-        data <- data[-remove,]
-      }
-    }
-  }
-
-  # create a vector of required fields
-  req_fields <- c("SMP_LABEL","SMP_EFFORT","DISTANCE")
-
-  # change the distance column name to upper case
-  colnames(data)[grep("^distance$",tolower(colnames(data)))] <- "DISTANCE"
-
-  # find which field will be used for the effort and change the name
-  # to match field name in mcds
-  if(TRUE %in% grepl("SMP_EFFORT",toupper(colnames(data)))){
-    colnames(data)[grep("^SMP_EFFORT",toupper(colnames(data)))] <- "SMP_EFFORT"
-  }else if(TRUE %in% grepl("^effort$",tolower(colnames(data)))){
-    colnames(data)[grep("^effort$",tolower(colnames(data)))] <- "SMP_EFFORT"
-  }else if(TRUE %in% grepl("^Search.time$",colnames(data))){
-    # !this may be a bit too specific to the example data in Distance
-    colnames(data)[grep("^Search.time$",colnames(data))] <- "SMP_EFFORT"
-  }else{
-    data$SMP_EFFORT <- rep(1,nrow(data))
-  }
-
-  # find if SMP_LABEL is a field; if not, add it
-  if(TRUE %in% grepl("^SMP_LABEL",toupper(colnames(data)))){
-    colnames(data)[grep("^SMP_LABEL",toupper(colnames(data)))] <- "SMP_LABEL"
-  }else if(TRUE %in% grepl("^sample.label$",tolower(colnames(data)))){
-    colnames(data)[grep("^sample.label$",tolower(colnames(data)))] <- "SMP_LABEL"
-  }else{
-    data$SMP_LABEL <- rep(1,nrow(data))
-  }
-
-  # check if other defined fields are columns in the dataset; if they are add
-  # them to the list of fields to keep in the dataset
-  if(TRUE %in% grepl("^STR_LABEL$",toupper(colnames(data)))){
-    colnames(data)[grep("^STR_LABEL$",toupper(colnames(data)))] <- "STR_LABEL"
-    req_fields <- append(req_fields,"STR_LABEL")
-  }else if(TRUE %in% grepl("^region.label$",tolower(colnames(data)))){
-    colnames(data)[grep("^region.label$",tolower(colnames(data)))] <- "STR_LABEL"
-    req_fields <- append(req_fields,"STR_LABEL")
-  }
-  if(TRUE %in% grepl("^STR_AREA$",toupper(colnames(data)))){
-    colnames(data)[grep("^STR_AREA$",toupper(colnames(data)))] <- "STR_AREA"
-    req_fields <- append(req_fields,"STR_AREA")
-  }else if(TRUE %in% grepl("^area$",tolower(colnames(data)))){
-    colnames(data)[grep("^area$",tolower(colnames(data)))] <- "STR_AREA"
-    req_fields <- append(req_fields,"STR_AREA")
-  }
-  if(TRUE %in% grepl("^size$",tolower(colnames(data)))){
-    cluster <- TRUE
-    colnames(data)[grep("^size$",tolower(colnames(data)))] <- "SIZE"
-    req_fields <- append(req_fields,"SIZE")
-  }else{
-    cluster <- FALSE
-  }
-
-  # specifying covariates in the model
-  if(identical(all.vars(dsmodel),character(0)) == FALSE){
-    covar_pres <- TRUE
-    # extracting the list of covariates
-    covars <- all.vars(dsmodel)
-    # creating a list of the fields for each covariate
-    covar_fields <- rep("",length(covars))
-    for(i in 1:length(covars)){
-      # identifying the field name for each covariate (making them case insensetive?)
-      index <- which(tolower(covars[i]) == tolower(colnames(data)))
-      covar_fields[i] <- colnames(data)[index]
-    }
-    # the required fields cannot be covariates in the model, with the exception of size
-    if(length(intersect(tolower(req_fields),tolower(covar_fields))) > 0){
-      if(TRUE %in% grepl("size",tolower(covar_fields))){
-        # specify whether SIZE is a covariate
-        size_cov <- TRUE
-      }
-      # remove any required fields from the list of covariates
-      covar_fields <- covar_fields[! covar_fields %in% intersect(req_fields,covar_fields)]
-    }else{
-      size_cov <- FALSE
-    }
-    # add covariates to the fields that are kept for analysis
-    req_fields <- c(req_fields,covar_fields)
-    # if SIZE is a covariate, add it back to the list of covariates
-    if(size_cov == TRUE){
-      covar_fields <- append(covar_fields,"SIZE")
-    }
-  }else{
-    covar_pres <- FALSE
-  }
-
-  # remove all non-essential columns from the dataset
-  data <- data[req_fields]
-
-  # create data file to pass to mcds
-  data.file.name <- tempfile(pattern="data",
-                             tmpdir=directory,
-                             fileext=".txt")
-  file.create(data.file.name)
-  write.table(data, file=data.file.name, col.names=FALSE,
-              row.names=FALSE, sep="\t", quote = FALSE)
-
   # OPTION section
-
+  # ~~~~~~~~~~~~~~
   cat("OPTIONS;", file=command.file.name, "\n", append=TRUE)
   # specify the type of transect and its width and units
   if(meta.data$point == TRUE){
@@ -270,7 +161,7 @@ create.command.file <- function(dsmodel=call(), data,
   cat("END;", file=command.file.name, "\n", append=TRUE)
 
   # DATA section
-
+  # ~~~~~~~~~~~~~~
   cat("DATA /STRUCTURE=FLAT;", file=command.file.name, "\n",
       append=TRUE)
 
@@ -297,15 +188,13 @@ create.command.file <- function(dsmodel=call(), data,
   }
 
   # input the absolute path to the data file
-  #data.file.name2 <- gsub("/", "\\\\", data.file.name)
-  cat(paste("INFILE=", data.file.name, " /NOECHO;", sep=""),
+  cat(paste("INFILE=", data.file, " /NOECHO;", sep=""),
       file=command.file.name, "\n", append=TRUE)
   cat("END;", file=command.file.name, "\n", append=TRUE)
 
   # ESTIMATE section
-
+  # ~~~~~~~~~~~~~~~~
   cat("ESTIMATE;", file=command.file.name, "\n", append=TRUE)
-
   # we are only interested in the estimates for detection probability
   cat("DETECTION ALL;", file=command.file.name, "\n", append=TRUE)
 
@@ -601,4 +490,126 @@ MCDS.clean.up <- function(cmd.file, stats.file){
   # Remove stats.file
   # If containing folder now empty remove it
   
+}
+
+create.data.file <- function(data, dsmodel, data.file){
+  # removing irrelevant data
+  # combine data from multiple observers
+  data <- data[data$detected==1,]
+  if(TRUE %in% grepl("^object$",tolower(colnames(data)))){
+    # in case the object column isn't named 'object', to remove case sensitivity
+    obj_col <- grep("^object$",tolower(colnames(data)))
+    colnames(data)[obj_col] <- "object"
+    # identifying all objects and taking the first data point for each
+    obj_nums <- unique(data$object)
+    for(i in 1:length(obj_nums)){
+      entries <- grep(TRUE,data$object==i)
+      if(length(entries)>1){
+        remove <- entries[-1]
+        data <- data[-remove,]
+      }
+    }
+  }
+  
+  # create a vector of required fields
+  req_fields <- c("SMP_LABEL","SMP_EFFORT","DISTANCE")
+  
+  # change the distance column name to upper case
+  colnames(data)[grep("^distance$",tolower(colnames(data)))] <- "DISTANCE"
+  
+  # find which field will be used for the effort and change the name
+  # to match field name in mcds
+  if(TRUE %in% grepl("SMP_EFFORT",toupper(colnames(data)))){
+    colnames(data)[grep("^SMP_EFFORT",toupper(colnames(data)))] <- "SMP_EFFORT"
+  }else if(TRUE %in% grepl("^effort$",tolower(colnames(data)))){
+    colnames(data)[grep("^effort$",tolower(colnames(data)))] <- "SMP_EFFORT"
+  }else if(TRUE %in% grepl("^Search.time$",colnames(data))){
+    # !this may be a bit too specific to the example data in Distance
+    colnames(data)[grep("^Search.time$",colnames(data))] <- "SMP_EFFORT"
+  }else{
+    data$SMP_EFFORT <- rep(1,nrow(data))
+  }
+  
+  # find if SMP_LABEL is a field; if not, add it
+  if(TRUE %in% grepl("^SMP_LABEL",toupper(colnames(data)))){
+    colnames(data)[grep("^SMP_LABEL",toupper(colnames(data)))] <- "SMP_LABEL"
+  }else if(TRUE %in% grepl("^sample.label$",tolower(colnames(data)))){
+    colnames(data)[grep("^sample.label$",tolower(colnames(data)))] <- "SMP_LABEL"
+  }else{
+    data$SMP_LABEL <- rep(1,nrow(data))
+  }
+  
+  # check if other defined fields are columns in the dataset; if they are add
+  # them to the list of fields to keep in the dataset
+  if(TRUE %in% grepl("^STR_LABEL$",toupper(colnames(data)))){
+    colnames(data)[grep("^STR_LABEL$",toupper(colnames(data)))] <- "STR_LABEL"
+    req_fields <- append(req_fields,"STR_LABEL")
+  }else if(TRUE %in% grepl("^region.label$",tolower(colnames(data)))){
+    colnames(data)[grep("^region.label$",tolower(colnames(data)))] <- "STR_LABEL"
+    req_fields <- append(req_fields,"STR_LABEL")
+  }
+  if(TRUE %in% grepl("^STR_AREA$",toupper(colnames(data)))){
+    colnames(data)[grep("^STR_AREA$",toupper(colnames(data)))] <- "STR_AREA"
+    req_fields <- append(req_fields,"STR_AREA")
+  }else if(TRUE %in% grepl("^area$",tolower(colnames(data)))){
+    colnames(data)[grep("^area$",tolower(colnames(data)))] <- "STR_AREA"
+    req_fields <- append(req_fields,"STR_AREA")
+  }
+  if(TRUE %in% grepl("^size$",tolower(colnames(data)))){
+    cluster <- TRUE
+    colnames(data)[grep("^size$",tolower(colnames(data)))] <- "SIZE"
+    req_fields <- append(req_fields,"SIZE")
+  }else{
+    cluster <- FALSE
+  }
+  
+  # specifying covariates in the model
+  if(identical(all.vars(dsmodel),character(0)) == FALSE){
+    covar_pres <- TRUE
+    # extracting the list of covariates
+    covars <- all.vars(dsmodel)
+    # creating a list of the fields for each covariate
+    covar_fields <- rep("",length(covars))
+    for(i in 1:length(covars)){
+      # identifying the field name for each covariate (making them case insensetive?)
+      index <- which(tolower(covars[i]) == tolower(colnames(data)))
+      covar_fields[i] <- colnames(data)[index]
+    }
+    # the required fields cannot be covariates in the model, with the exception of size
+    if(length(intersect(tolower(req_fields),tolower(covar_fields))) > 0){
+      if(TRUE %in% grepl("size",tolower(covar_fields))){
+        # specify whether SIZE is a covariate
+        size_cov <- TRUE
+      }
+      # remove any required fields from the list of covariates
+      covar_fields <- covar_fields[! covar_fields %in% intersect(req_fields,covar_fields)]
+    }else{
+      size_cov <- FALSE
+    }
+    # add covariates to the fields that are kept for analysis
+    req_fields <- c(req_fields,covar_fields)
+    # if SIZE is a covariate, add it back to the list of covariates
+    if(size_cov == TRUE){
+      covar_fields <- append(covar_fields,"SIZE")
+    }
+  }else{
+    covar_pres <- FALSE
+    covar_fields <- NULL
+  }
+  
+  # remove all non-essential columns from the dataset
+  data <- data[req_fields]
+  
+  # create data file to pass to mcds
+  
+  file.create(data.file)
+  write.table(data, file=data.file, col.names=FALSE,
+              row.names=FALSE, sep="\t", quote = FALSE)
+  
+  # return reformatted dataframe and the information about covariates
+  output <- list(data = data, 
+                 covar.pres = covar_pres, 
+                 covar.fields = covar_fields,
+                 cluster = cluster)
+  return(output)
 }
