@@ -491,102 +491,69 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
 #' @importFrom utils write.table
 create.data.file <- function(data, dsmodel, data.file){
 
-  # create a vector of required fields
-  req_fields <- c("SMP_LABEL","SMP_EFFORT","DISTANCE")
+  # Rename columns to those expected by MCDS.exe
+  data.cols <- c("SMP_LABEL", "SMP_EFFORT", "DISTANCE")
   
-  # change the distance column name to upper case
-  colnames(data)[grep("^distance$",tolower(colnames(data)))] <- "DISTANCE"
-  
-  # find which field will be used for the effort and change the name
-  # to match field name in mcds
-  if(TRUE %in% grepl("SMP_EFFORT",toupper(colnames(data)))){
-    colnames(data)[grep("^SMP_EFFORT",toupper(colnames(data)))] <- "SMP_EFFORT"
-  }else if(TRUE %in% grepl("^effort$",tolower(colnames(data)))){
-    colnames(data)[grep("^effort$",tolower(colnames(data)))] <- "SMP_EFFORT"
-  }else if(TRUE %in% grepl("^Search.time$",colnames(data))){
-    # !this may be a bit too specific to the example data in Distance
-    colnames(data)[grep("^Search.time$",colnames(data))] <- "SMP_EFFORT"
+  # SMP_LABEL (sample label)
+  if("Sample.Label" %in% names(data)){
+    index <- which(names(data) == "Sample.Label")
+    names(data)[index] <- "SMP_LABEL"
   }else{
-    data$SMP_EFFORT <- rep(1,nrow(data))
+    data$SMP_LABEL <- rep(1, nrow(data))
   }
   
-  # find if SMP_LABEL is a field; if not, add it
-  if(TRUE %in% grepl("^SMP_LABEL",toupper(colnames(data)))){
-    colnames(data)[grep("^SMP_LABEL",toupper(colnames(data)))] <- "SMP_LABEL"
-  }else if(TRUE %in% grepl("^sample.label$",tolower(colnames(data)))){
-    colnames(data)[grep("^sample.label$",tolower(colnames(data)))] <- "SMP_LABEL"
+  # SMP_EFFORT (sample effort)
+  if("Effort" %in% names(data)){
+    index <- which(names(data) == "Effort")
+    names(data)[index] <- "SMP_EFFORT"
   }else{
-    data$SMP_LABEL <- rep(1,nrow(data))
+    data$SMP_EFFORT <- rep(1, nrow(data))
   }
   
-  # check if other defined fields are columns in the dataset; if they are add
-  # them to the list of fields to keep in the dataset
-  if(TRUE %in% grepl("^STR_LABEL$",toupper(colnames(data)))){
-    colnames(data)[grep("^STR_LABEL$",toupper(colnames(data)))] <- "STR_LABEL"
-    req_fields <- append(req_fields,"STR_LABEL")
-  }else if(TRUE %in% grepl("^region.label$",tolower(colnames(data)))){
-    colnames(data)[grep("^region.label$",tolower(colnames(data)))] <- "STR_LABEL"
-    req_fields <- append(req_fields,"STR_LABEL")
+  # DISTANCE
+  index <- which(names(data) == "distance")
+  names(data)[index] <- "DISTANCE"
+
+  # STR_LABEL (stratum label)
+  if("Region.Label" %in% names(data)){
+    # Replicate rather than rename in case it is included as a covariate
+    data$STR_LABEL <- data$Region.Label
+    data.cols <- c(data.cols, "STR_LABEL")
   }
-  if(TRUE %in% grepl("^STR_AREA$",toupper(colnames(data)))){
-    colnames(data)[grep("^STR_AREA$",toupper(colnames(data)))] <- "STR_AREA"
-    req_fields <- append(req_fields,"STR_AREA")
-  }else if(TRUE %in% grepl("^area$",tolower(colnames(data)))){
-    colnames(data)[grep("^area$",tolower(colnames(data)))] <- "STR_AREA"
-    req_fields <- append(req_fields,"STR_AREA")
+  
+  # STR_AREA (stratum area)
+  if("Area" %in% names(data)){
+    index <- which(names(data) == "Area")
+    names(data)[index] <- "STR_AREA"
+    data.cols <- c(data.cols, "STR_AREA")
   }
-  if(TRUE %in% grepl("^size$",tolower(colnames(data)))){
+
+  # Check if there are cluster sizes
   if("size" %in% names(data)){
     index <- which(names(data) == "size")
     names(data)[index] <- "Cluster Size"
     data.cols <- c(data.cols, "Cluster Size")
     cluster <- TRUE
-    colnames(data)[grep("^size$",tolower(colnames(data)))] <- "SIZE"
-    req_fields <- append(req_fields,"SIZE")
   }else{
     cluster <- FALSE
   }
   
-  # specifying covariates in the model
-  if(identical(all.vars(dsmodel),character(0)) == FALSE){
-    covar_pres <- TRUE
-    # extracting the list of covariates
-    covars <- all.vars(dsmodel)
-    # creating a list of the fields for each covariate
-    covar_fields <- rep("",length(covars))
-    for(i in 1:length(covars)){
-      # identifying the field name for each covariate (making them case insensetive?)
-      index <- which(tolower(covars[i]) == tolower(colnames(data)))
-      covar_fields[i] <- colnames(data)[index]
-    }
-    # the required fields cannot be covariates in the model, with the exception of size
-    if(length(intersect(tolower(req_fields),tolower(covar_fields))) > 0){
-      if(TRUE %in% grepl("size",tolower(covar_fields))){
-        # specify whether SIZE is a covariate
-        size_cov <- TRUE
-      }
-      # remove any required fields from the list of covariates
-      covar_fields <- covar_fields[! covar_fields %in% intersect(req_fields,covar_fields)]
-    }else{
-      size_cov <- FALSE
-    }
-    # add covariates to the fields that are kept for analysis
-    req_fields <- c(req_fields,covar_fields)
-    # if SIZE is a covariate, add it back to the list of covariates
-    if(size_cov == TRUE){
-      covar_fields <- append(covar_fields,"SIZE")
+  # Check if there are any covariates in the model
+  if(length(all.vars(dsmodel)) > 0){
+    # Get model covariates
+    covar.fields <- all.vars(dsmodel)
     # Cluster Size must be named "Cluster Size"
     if("size" %in% covar.fields){
       index <- which(covar.fields == "size")
       covar.fields[index] <- "Cluster Size"
     }
+    data.cols <- c(data.cols, covar.fields)
   }else{
-    covar_pres <- FALSE
-    covar_fields <- NULL
+    covar.fields <- NULL
   }
   
   # remove all non-essential columns from the dataset
-  data <- data[req_fields]
+  data <- data[,data.cols]
   
   # create data file to pass to mcds
   
@@ -596,8 +563,7 @@ create.data.file <- function(data, dsmodel, data.file){
   
   # return reformatted dataframe and the information about covariates
   output <- list(data = data, 
-                 covar.pres = covar_pres, 
-                 covar.fields = covar_fields,
+                 covar.fields = covar.fields,
                  cluster = cluster)
   return(output)
 }
