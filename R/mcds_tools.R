@@ -359,39 +359,36 @@ create.command.file <- function(dsmodel=call(), data,
 mcds.results.and.refit <- function(statsfile, model.list, debug=FALSE){
 
   stats <- read.table(statsfile, row.names=NULL)
+  # Name columns
   colnames(stats) <- c("Stratum", "Sample", "Estimator", "Module", "Statistic",
                        "Value", "CV", "Lcl", "Ucl", "Df")
 
-  # based on the cuniform tablets, we need
-  # module 2
-  # statistics:
-  #   9 -- log likelihood
-  #   101+ -- parameter estimates
+  # Extract only parameters relating to the detection function (Module 2)
+  stats <- stats[stats$Module == 2,]
+  # Extract the log likelihood value (statistic 9)
+  ll <- stats[stats$Statistic == 9,]$Value
+  # Extract the estimated values of each parameter (statistics 100+)
+  starting.values <- stats$Value[stats$Statistic > 100]
 
-  stats <- subset(stats, Module==2)
-  ll <- subset(stats, Statistic==9)
-  stats <- subset(stats, Statistic>100)
-  stats$Name <- ""
-  stats$Name[stats$Statistic>100] <- paste0("A(",
-                                       stats$Statistic[stats$Statistic>100]-100,
-                                       ")")
-  stats <- stats[, c("Name", "Value")]
-
-  starting.values <- stats$Value
-
+  # Put estimates into model as initial values
   model.list$control$initial <- list()
   mod.paste <- paste(model.list$dsmodel)
   mod.vals <- try(eval(parse(text=mod.paste[2:length(mod.paste)])))
-
-  if(mod.vals$key == "hr"){
-    model.list$control$initial$shape <- log(starting.values[2])
-    starting.values <- starting.values[-2]
+  
+  # As long as it's not a uniform there will be a scale parameter
+  if(!mod.vals$key == "unif"){
+    # Log scale value as mrds works on log scale for and MCDS works on natural scale for the scale parameter
+    model.list$control$initial$scale <- log(starting.values[1])
+    starting.values <- starting.values[-1]  
   }
-  # MCDS.exe exponentiates the scale par, undo that
-  model.list$control$initial$scale <- log(starting.values[1])
-  starting.values <- starting.values[-1]
 
-  # get the adjustments off the end
+  # If it's a hazard rate extract the shape parameter (now the 1st element)
+  if(mod.vals$key == "hr"){
+    model.list$control$initial$shape <- log(starting.values[1])
+    starting.values <- starting.values[-1]
+  }
+
+  # Adjustment parameters come at the end
   if(!is.null(mod.vals$adj.order)){
     ind <- (length(starting.values)-length(mod.vals$adj.order)+1):
             length(starting.values)
@@ -399,23 +396,25 @@ mcds.results.and.refit <- function(statsfile, model.list, debug=FALSE){
     starting.values <- starting.values[-ind]
   }
 
+  # Any thing else must be covariate parameters associated with the scale parameter
   if(length(starting.values) >0){
-    model.list$control$initial$scale <- c(model.list$control$initial$scale,
-                                          starting.values)
+    model.list$control$initial$scale <- c(model.list$control$initial$scale, starting.values)
   }
 
+  # We are not refitting just using mrds to make the model with the parameter estimates from MCDS
   model.list$control$nofit <- TRUE
-
   refit <- ddf(dsmodel = model.list$dsmodel, mrmodel=NULL,
                data = model.list$data,
                method = model.list$method,
                meta.data = model.list$meta.data,
                control = model.list$control)
 
+  # For debugging
   if(debug){
-    message(paste0("MCDS.exe log likehood: ", round(refit$lnl,7)))
-    message(paste0("MCDS.exe pars: ",
-                   paste(round(refit$par, 7), collapse=", ")))
+    message(paste0("MCDS.exe log likehood: ", round(ll,7)))
+    message(paste0("MCDS.exe pars: ", paste(round(stats$Value[stats$Statistic > 100],7), collapse=", ")))
+    message(paste0("mrds refitted log likehood: ", round(refit$lnl,7)))
+    message(paste0("mrds refitted pars: ", paste(round(refit$par, 7), collapse=", ")))
   }
 
   return(refit)
