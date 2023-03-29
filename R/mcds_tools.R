@@ -5,10 +5,9 @@
 #' is no guarantee that one approach is "better" than the other, but `mrds`
 #' will select the model with the better likelihood and provide answers to
 #' this. By default (once `MCDS.exe` is available) both `MCDS.exe` and R will
-#' be used to obtain detection function parameter estimates. One can skip using
-#' `MCDS.exe` by setting \code{control=list(skipMCDS=TRUE)} and one can skip using
-#' R (using `MCDS.exe` only) using \code{control=list(skipR=TRUE)}. For obvious
-#' reasons, you can't do both.
+#' be used to obtain detection function parameter estimates. To select only
+#' to use the `MCDS.exe` optimizer set \code{control=list(optimizer='MCDS')} 
+#' or only use the R optimizer set \code{control=list(optimizer='R')}.
 #'
 #' If you are running a non-Windows operating system, you can follow the
 #' instructions below to have `MCDS.exe` run using `wine`.
@@ -475,8 +474,7 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
 
   # little extra parameter here to avoid infinite recursion when
   # we run ddf in mcds.results.and.refit
-  control$skipMCDS <- TRUE
-  control$skipR <- FALSE
+  control$optimizer <- "R"
   model.list <- list(dsmodel=dsmodel, data=data,
                      method=method, meta.data=meta.data, control=control)
 

@@ -108,8 +108,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                                    nofit=FALSE, optimx.method="nlminb",
                                    optimx.maxit=300, silent=FALSE,
                                    mono.random.start=FALSE,
-                                   skipMCDS=FALSE,
-                                   skipR=FALSE)
+                                   optimizer = "both")
 
   #  Save current user options and then set design contrasts to treatment style
   save.options <- options()
@@ -209,15 +208,13 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   if(is.null(initialvalues)) misc.options$nofit <- TRUE
 
-  # don't try to optimize using nothing
-  if(control$skipMCDS && control$skipR){
-    stop("You can't skip both R and MCDS.exe optimizers!", call. = FALSE)
-  }else if(control$skipR && system.file("MCDS.exe", package="mrds") == ""){
-    stop("You have chosen to skip R but the MCDS.exe optimizer cannot be found!", call. = FALSE)
+  # Trying to use MCDS.exe but it's not there
+  if(control$optimizer == "MCDS" && system.file("MCDS.exe", package="mrds") == ""){
+    stop("You have chosen to use the MCDS.exe optimizer but it cannot be found!", call. = FALSE)
   }
 
   # run MCDS.exe if it's there
-  if(!control$skipMCDS && system.file("MCDS.exe", package="mrds")!=""){
+  if(control$optimizer %in% c("MCDS","both") && system.file("MCDS.exe", package="mrds")!=""){
     lt_mcds <- try(run.MCDS(model, xmat, method, meta.data, control),
                    silent=control$showit>0)
     # if something went wrong just return a very large lnl
@@ -230,7 +227,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
   lt_mcds$value <- lt_mcds$lnl
 
   # do the optimisation in R
-  if(!control$skipR){
+  if(control$optimizer %in% c("R","both")){
     lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
   }else{
     lt <- list(value=1e100)
