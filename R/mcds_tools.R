@@ -173,21 +173,37 @@ create.command.file <- function(dsmodel=call(), data,
     cat(paste("SizeC=Cluster Size;", sep=""),
         file=command.file.name, "\n", append=TRUE)
   }
-
-  # specifying which fields are factor covariates
-  if(length(covar.fields) > 0){
-    factor.fields <- c()
-    for(i in 1:length(colnames(data))){
-      # for each covariate, check if it is a factor
-      if(is.factor(data[,i]) && (TRUE %in% grepl(colnames(data)[i],covar.fields))){
-        # if the covariate is a factor, specify its name, levels, and level labels
-        factor.fields <- append(factor.fields,colnames(data)[i])
-        labels <- paste(levels(data[,i]), collapse=",")
-        cat(paste("FACTOR /NAME=", toupper(colnames(data)[i]),
-                  " /LEVELS=", length(levels(data[,i])), " /LABELS=",
-                  labels, ";", sep=""), file=command.file.name, "\n",
-            append=TRUE)
-      }
+  
+  # Access the model parameters
+  mod_paste <- paste(dsmodel)
+  mod.vals <- try(eval(parse(text=mod_paste[2:length(mod_paste)])))
+  
+  # Get a list of the factor variables in the model formula
+  factor.vars <- rownames(attr(terms(mod.vals$formula),"factors"))
+  # Process to retain only the variable names
+  for(i in seq(along = factor.vars)){
+    # Find first bracket
+    start <- gregexpr("\\(", factor.vars[i])[[1]][1] + 1
+    # Find second bracket
+    end <- gregexpr("\\)", factor.vars[i])[[1]][1] -1
+    # Retain part within brackets
+    factor.vars[i] <- substr(factor.vars[i], start, end)
+  }
+  
+  # Add factor information
+  factor.fields <- NULL
+  for(i in seq(along = covar.fields)){
+    # If either the data format is factor OR it is specified in formula as factor
+    if(is.factor(data[[covar.fields[i]]]) || covar.fields[i] %in% factor.vars){
+      factor.fields <- c(factor.fields, covar.fields[i])
+      # Column in data may not be a factor field may only have been specified in formula
+      labels <- levels(as.factor(data[[covar.fields[i]]]))
+      # Write to command file
+      cat(paste("FACTOR /NAME=", toupper(covar.fields[i]),
+                " /LEVELS=", length(labels), " /LABELS=",
+                paste(labels, collapse = ", "), ";", sep=""), file=command.file.name, "\n",
+          append=TRUE)
+      
     }
   }
 
@@ -201,10 +217,6 @@ create.command.file <- function(dsmodel=call(), data,
   cat("ESTIMATE;", file=command.file.name, "\n", append=TRUE)
   # we are only interested in the estimates for detection probability
   cat("DETECTION ALL;", file=command.file.name, "\n", append=TRUE)
-
-  # a messy way of accessing the model parameters
-  mod_paste <- paste(dsmodel)
-  mod.vals <- try(eval(parse(text=mod_paste[2:length(mod_paste)])))
 
   # specify the key function
   cat("ESTIMATOR /KEY=", file=command.file.name, append=TRUE)
