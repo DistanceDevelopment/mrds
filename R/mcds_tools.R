@@ -198,6 +198,10 @@ create.command.file <- function(dsmodel=call(), data,
       factor.fields <- c(factor.fields, covar.fields[i])
       # Column in data may not be a factor field may only have been specified in formula
       labels <- levels(as.factor(data[[covar.fields[i]]]))
+      # Reorder the labels - in R the baseline comes first but in MCDS the baseline comes last
+      if(length(labels) > 1){
+        labels <- c(labels[2:length(labels)], labels[1])
+      }
       # Write to command file
       cat(paste("FACTOR /NAME=", toupper(covar.fields[i]),
                 " /LEVELS=", length(labels), " /LABELS=",
