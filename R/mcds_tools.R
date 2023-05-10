@@ -193,8 +193,8 @@ create.command.file <- function(dsmodel=call(), data,
   # Add factor information
   factor.fields <- NULL
   for(i in seq(along = covar.fields)){
-    # If either the data format is factor OR it is specified in formula as factor
-    if(is.factor(data[[covar.fields[i]]]) || covar.fields[i] %in% factor.vars){
+    # If either the data format is factor OR it is specified in formula as factor OR it is a character
+    if(is.factor(data[[covar.fields[i]]]) || covar.fields[i] %in% factor.vars || is.character(data[[covar.fields[i]]])){
       factor.fields <- c(factor.fields, covar.fields[i])
       # Column in data may not be a factor field may only have been specified in formula
       labels <- levels(as.factor(data[[covar.fields[i]]]))
