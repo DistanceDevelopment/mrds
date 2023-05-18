@@ -364,7 +364,8 @@ create.command.file <- function(dsmodel=call(), data,
   cat("\n", file=command.file.name, append=TRUE)
 
   ret <- list(command.file.name=command.file.name,
-              stats.file.name = stat.file)
+              stats.file.name = stat.file,
+              log.file.name = log.file)
 
   return(ret)
 }
@@ -450,7 +451,7 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
 
   # find MCDS.exe
   path.to.MCDS.dot.exe <- system.file("MCDS.exe", package="mrds")
-
+  
   # actually run MCDS.exe (use wine if necessary)
   if(Sys.info()[['sysname']]!="Windows"){
     if(!is.null(control$winebin)){
@@ -479,14 +480,34 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
 
   }else{
     # on Windows just execute the MCDS binary
-    w <- tryCatch(system(paste0(path.to.MCDS.dot.exe,
+    w <- suppressWarnings(try(system(paste0(path.to.MCDS.dot.exe,
                 " 0, ", test.file$command.file.name), intern=TRUE,
-                ignore.stdout=control$showit<1, ignore.stderr=control$showit<1)
-             , error = function(e) e)
+                ignore.stdout=control$showit<1, ignore.stderr=control$showit<1, show.output.on.console = FALSE)
+             , silent = TRUE))
   }
   
   # Check if MCDS.exe was successful
-  #finish.status <- 
+  finish.status <- attr(w, "status")
+  
+  # Read in the log file
+  log.file <- readLines(test.file$log.file.name)
+  
+  # Check for warnings or errors
+  warn.index <- grep("[Ww]arning", log.file)
+  err.index <- grep("[Ee]rror", log.file)
+  
+  # If the finish.status is not 1 and there are no warnings or errors
+  if(finish.status != 1 && length(warn.index) == 0 && length(err.index) ==0){
+    warning(paste("Finish status indicates warnings / error but none were found in the log file. Finish status = ", finish.status, sep = ""), call. = FALSE, immediate. = TRUE)
+  }
+  # Display warnings from log file
+  for(i in seq(along = warn.index)){
+    message(log.file[warn.index[i]], appendLF = TRUE)
+  }
+  # Display errors from log file
+  for(i in seq(along = err.index)){
+    message(log.file[err.index[i]], appendLF = TRUE)
+  }
 
   # little extra parameter here to avoid infinite recursion when
   # we run ddf in mcds.results.and.refit
