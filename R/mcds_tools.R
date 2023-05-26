@@ -272,46 +272,32 @@ create.command.file <- function(dsmodel=call(), data,
   }
 
   # allowing for initial values for the parameters
-  inits <- c()
-  if(is.null(control$initial) == FALSE){
-    # go through covariates in order, if they are present
-    if(length(covar.fields) > 0){
-      for(i in seq(along = covar.fields)){
-        # find the index of the covariate field
-        index <- grep(toupper(covar.fields[i]),toupper(colnames(data)))
-        # if the covariate is a factor, initial values must be given for each level
-        if(TRUE %in% grepl(covar.fields[i],factor.fields)){
-          for(j in 2:length(levels(data[,index]))){
-            # create the text for the parameter that must be accessed
-            access.covar <- paste("control$initial$scale$",
-                                  colnames(data)[index],"[",j,"]",sep="")
-            # evaluate the text in order to access the initial value
-#            inits <- append(inits,eval(parse(text=access.covar)))
-          }
-          # the first level has to be last in MCDS
-          access.covar <- paste("control$initial$scale$",
-                                colnames(data)[index],"[1]",sep="")
-#          inits <- append(inits,eval(parse(text=access.covar)))
-        }else{
-          access.covar <- paste("control$initial$scale$",
-                                colnames(data)[index],sep="")
-#          inits <- append(inits,eval(parse(text=access.covar)))
-        }
-      }
+  if(!is.null(control$initial)){
+    inits <- numeric()
+    if(!mod.vals$key == "unif"){
+      # first start value is the exp intercept scale param
+      inits[1] <- exp(control$initial$scale[1])
     }
-    # add in shape parameter if hazard-rate used
     if(mod.vals$key == "hr"){
-#      inits <- append(inits,control$initial$shape)
+      # second start value is the exp shape param
+      inits[2] <- exp(control$initial$shape[1])
     }
-    # add in adjustment initial values
-    if(adj.pres){
-      for(i in 1:length(mod.vals$adj.order)){
-#        inits <- append(inits,control$initial$adjustment[i])
+    # Next are any covariates
+    if(length(covar.fields) > 0){
+      cov.inits <- control$initial$scale[-1]
+      # Check if any are factors
+      if(!is.null(factor.fields)){
+        #Sort out ordering and may need to change scale intercept!
       }
+      inits <- c(inits, cov.inits)
+    }
+    # If there are any adjustments
+    if(!is.null(control$initial$adjustment)){
+      inits <- c(inits, control$initial$adjustment)
     }
     # paste all the initial values together
-#    cat(paste(" /START=", paste(inits,collapse=","), sep=""),
-#        file=command.file.name, append=TRUE)
+    cat(paste(" /START=", paste(inits,collapse=","), sep=""),
+        file=command.file.name, append=TRUE)
   }
 
   # defining upper and lower bounds for parameters
