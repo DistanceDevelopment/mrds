@@ -552,7 +552,6 @@ create.data.file <- function(data, dsmodel, data.file){
   if("size" %in% names(data)){
     index <- which(names(data) == "size")
     names(data)[index] <- "Cluster Size"
-    data.cols <- c(data.cols, "Cluster Size")
     cluster <- TRUE
   }else{
     cluster <- FALSE
