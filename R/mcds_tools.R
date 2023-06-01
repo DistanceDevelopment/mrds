@@ -272,7 +272,7 @@ create.command.file <- function(dsmodel=call(), data,
   }
 
   # allowing for initial values for the parameters
-  if(!is.null(control$initial)){
+  if(!(length(control$initial) == 1 && is.na(control$initial))){
     inits <- numeric()
     if(!mod.vals$key == "unif"){
       # first start value is the exp intercept scale param
