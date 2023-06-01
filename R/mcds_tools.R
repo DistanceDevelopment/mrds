@@ -488,7 +488,9 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
   }
   # Display warnings from log file
   for(i in seq(along = warn.index)){
-    message(log.file[warn.index[i]], appendLF = TRUE)
+    ignore.warning <- any(grepl("Cannot estimate encounter rate variance empirically as there is only one sample.", log.file[warn.index[i]]),
+                           grepl("When cluster size is a covariate, variance of the cluster size, density of individuals, and abundance estimates can only be obtained via the bootstrap.", log.file[warn.index[i]]))
+    if(!ignore.warning) message(log.file[warn.index[i]], appendLF = TRUE)
   }
   # Display errors from log file
   for(i in seq(along = err.index)){
