@@ -220,7 +220,7 @@ create.command.file <- function(dsmodel=call(), data,
   # ~~~~~~~~~~~~~~~~
   cat("ESTIMATE;", file=command.file.name, "\n", append=TRUE)
   # we are only interested in the estimates for detection probability
-  cat("DETECTION ALL;", file=command.file.name, "\n", append=TRUE)
+  cat("DETECTION=ALL;", file=command.file.name, "\n", append=TRUE)
 
   # specify the key function
   cat("ESTIMATOR /KEY=", file=command.file.name, append=TRUE)
