@@ -221,6 +221,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
     if(inherits(lt_mcds, "try-error")){
       lt_mcds <- list(lnl=1e100)
     }
+    
   }else{
     lt_mcds <- list(lnl=1e100)
   }
@@ -240,6 +241,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
           "       mrds lnl =", round(lt$value, 7),"\n")
     }
     lt <- lt_mcds$ds
+    lt$hessian <- lt_mcds$hessian
     lt$optimise <- "MCDS.exe"
   }else{
     lt$optimise <- paste0("mrds (", control$optimx.method, ")")
@@ -276,15 +278,38 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
       # the hessian returned from solnp() is not what we want, warn about
       # that and don't return it
       if(misc.options$mono){
-        warning("First partial hessian calculation failed with monotonicity enforced, no hessian\n")
+        if(control$optimizer == "R"){
+          warning("First partial hessian calculation failed with monotonicity enforced, no hessian\n", immediate. = TRUE, call. = FALSE)
+          result$hessian <- NULL
+        }
       }else{
-        warning("First partial hessian calculation failed; using second-partial hessian\n")
-        result$hessian <- lt$hessian
+        if(is.null(lt$hessian)){
+          # Avoid duplicate warnings
+          if(control$optimizer == "R"){
+            warning("First partial hessian calculation failed and second-partial hessian is NULL, no hessian\n", immediate. = TRUE, call. = FALSE)
+          }
+          result$hessian <- lt$hessian
+        }else{
+          if(control$optimizer == "R"){
+            warning("First partial hessian calculation failed; using second-partial hessian\n", immediate. = TRUE, call. = FALSE)
+          }
+          result$hessian <- lt$hessian
+        }
       }
     }else if(length(lt$par)>1){
       if(inherits(try(solve(result$hessian), silent=TRUE), "try-error")){
-        warning("First partial hessian is singular; using second-partial hessian\n")
-        result$hessian <- lt$hessian
+        if(is.null(lt$hessian)){
+          # Avoid duplicate warnings
+          if(control$optimizer == "R"){
+            warning("First partial hessian is singular and second-partial hessian is NULL, no hessian\n", immediate. = TRUE, call. = FALSE)
+          }
+          result$hessian <- lt$hessian
+        }else{
+          if(control$optimizer == "R"){
+            warning("First partial hessian is singular; using second-partial hessian\n", immediate. = TRUE, call. = FALSE)
+          }
+          result$hessian <- lt$hessian
+        }
       }
     }
   }
