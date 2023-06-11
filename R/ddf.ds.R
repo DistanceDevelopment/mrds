@@ -112,6 +112,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   #  Save current user options and then set design contrasts to treatment style
   save.options <- options()
+  on.exit(options(save.options))
   options(contrasts=c("contr.treatment","contr.poly"))
 
   # Process data
@@ -234,6 +235,12 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
     lt <- list(value=1e100)
   }
 
+  # check there is a valid lnl for at least one of the models
+  # (only check if it is not in refit mode)
+  if(control$optimizer %in% c("MCDS","both") && lt_mcds$lnl == 1e100 && lt$value == 1e100){
+    stop("Model fitting failed", call. = FALSE)
+  }
+    
   # which was the better lnl?
   if(abs(lt_mcds$lnl) < abs(lt$value)){
     if(control$showit>=1){

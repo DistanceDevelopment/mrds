@@ -484,7 +484,7 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
   
   # If the finish.status is not 1 and there are no warnings or errors
   if(finish.status != 1 && length(warn.index) == 0 && length(err.index) ==0){
-    warning(paste("Finish status indicates warnings / error but none were found in the log file. Finish status = ", finish.status, sep = ""), call. = FALSE, immediate. = TRUE)
+    warning(paste("MCDS finish status indicates warnings / error but none were found in the log file. Finish status = ", finish.status, sep = ""), call. = FALSE, immediate. = TRUE)
   }
   # Display warnings from log file
   for(i in seq(along = warn.index)){
@@ -503,9 +503,9 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
   model.list <- list(dsmodel=dsmodel, data=data,
                      method=method, meta.data=meta.data, control=control)
 
-  # refit the model
-  mm <- mcds.results.and.refit(test.file$stats.file.name, model.list,
-                               debug=control$showit>0)
+  # try to refit the model
+  mm <- try(mcds.results.and.refit(test.file$stats.file.name, model.list,
+                               debug=control$showit>0), silent = TRUE)
 
   return(mm)
 }
