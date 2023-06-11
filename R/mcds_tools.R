@@ -447,11 +447,11 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
     }
     # macOS specific
     if(Sys.info()[['sysname']]=="Darwin"){
-      osx.version <- as.numeric.version(system("sw_vers -productVersion",
+      osx.version <- as.numeric_version(system("sw_vers -productVersion",
                                                intern = TRUE))
       if(!is.null(control$winebin)){
         winebin <- control$winebin
-      }else if(osx.version>as.numeric.version(10.15)){
+      }else if(osx.version>as.numeric_version(10.15)){
         # Catalina or after removed the 32-bit support, so use wine32on64
         winebin <- "wine32on64"
       }
