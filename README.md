@@ -1,8 +1,7 @@
 mrds - Mark-Recapture Distance Sampling
 =======================================
 
-
-[![Build Status](https://travis-ci.org/DistanceDevelopment/mrds.svg?branch=master)](https://travis-ci.org/DistanceDevelopment/mrds)
+[![Build Status](https://app.travis-ci.com/DistanceDevelopment/mrds.svg?branch=master)](https://app.travis-ci.com/DistanceDevelopment/mrds)
 [![CRAN (RStudio Mirror) Downloads](http://cranlogs.r-pkg.org/badges/mrds)](https://www.r-pkg.org/pkg/mrds)
 [![CRAN Version](http://www.r-pkg.org/badges/version/mrds)](https://cran.r-project.org/package=mrds)
 [![Codecov test coverage](https://codecov.io/gh/DistanceDevelopment/mrds/branch/master/graph/badge.svg)](https://app.codecov.io/gh/DistanceDevelopment/mrds?branch=master)
