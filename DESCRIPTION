@@ -26,7 +26,8 @@ Suggests:
     testthat,
     covr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    bookdown
 VignetteBuilder: knitr
 RoxygenNote: 7.2.3
 Encoding: UTF-8
