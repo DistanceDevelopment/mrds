@@ -468,15 +468,16 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
     }
     wine.call <- paste(winebin, path.to.MCDS.dot.exe, "0,", test.file$command.file.name)
     # only provide the output from MCDS.exe when we have showit>0
-    w <- system(wine.call, intern=TRUE,
-                ignore.stdout=control$showit<1, ignore.stderr=control$showit<1)
+    w <- suppressWarnings(try(system(wine.call, intern=TRUE,
+                ignore.stdout=control$showit<1, ignore.stderr=control$showit<1, show.output.on.console = FALSE)
+                , silent = TRUE))
 
   }else{
     # on Windows just execute the MCDS binary
     w <- suppressWarnings(try(system(paste0(path.to.MCDS.dot.exe,
                 " 0, ", test.file$command.file.name), intern=TRUE,
                 ignore.stdout=control$showit<1, ignore.stderr=control$showit<1, show.output.on.console = FALSE)
-             , silent = TRUE))
+                , silent = TRUE))
   }
   
   # Check if MCDS.exe was successful
