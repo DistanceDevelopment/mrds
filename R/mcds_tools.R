@@ -211,8 +211,15 @@ create.command.file <- function(dsmodel=call(), data,
     }
   }
 
+  # Data file may need adapted depending on platform
+  if(Sys.info()[['sysname']]=="Darwin"){
+    plat.specific.data.file <- gsub("/", "\\", data.file)
+  }else{
+    plat.specific.data.file <- data.file
+  }
+  
   # input the absolute path to the data file
-  cat(paste("INFILE=", data.file, " /NOECHO;", sep=""),
+  cat(paste("INFILE=", plat.specific.data.file, " /NOECHO;", sep=""),
       file=command.file.name, "\n", append=TRUE)
   cat("END;", file=command.file.name, "\n", append=TRUE)
 
