@@ -108,7 +108,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                                    nofit=FALSE, optimx.method="nlminb",
                                    optimx.maxit=300, silent=FALSE,
                                    mono.random.start=FALSE,
-                                   optimizer = "both")
+                                   optimizer = "both", 
+                                   winebin = NULL)
 
   #  Save current user options and then set design contrasts to treatment style
   save.options <- options()
