@@ -213,7 +213,7 @@ create.command.file <- function(dsmodel=call(), data,
 
   # Data file may need adapted depending on platform
   if(Sys.info()[['sysname']]=="Darwin"){
-    plat.specific.data.file <- gsub("/", "\\", data.file)
+    plat.specific.data.file <- gsub("/", "\\\\", data.file)
   }else{
     plat.specific.data.file <- data.file
   }
