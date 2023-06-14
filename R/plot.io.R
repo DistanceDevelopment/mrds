@@ -131,7 +131,7 @@ plot.io <- function(x, which=1:6, breaks=NULL, nc=NULL,  maintitle="",
   }
 
   # do the plotting layout
-  oask <- plot.layout(which,pages)
+  oask <- plot_layout(which,pages)
   on.exit(devAskNewPage(oask))
 
   # loop over the unconditional plots

@@ -81,7 +81,7 @@ plot.trial <- function(x, which=1:2, breaks=NULL, nc=NULL, maintitle="",
   }
 
   # do the plotting layout
-  oask <- plot.layout(which,pages)
+  oask <- plot_layout(which,pages)
   on.exit(devAskNewPage(oask))
 
   # Uncond detection fct for observer 1

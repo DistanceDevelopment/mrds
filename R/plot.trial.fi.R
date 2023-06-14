@@ -87,7 +87,7 @@ plot.trial.fi <- function(x, which=1:2, breaks=NULL, nc=NULL, maintitle="",
   }
 
   # do the plotting layout
-  oask <- plot.layout(which,pages)
+  oask <- plot_layout(which,pages)
   on.exit(devAskNewPage(oask))
 
   # Plot primary unconditional detection function
