@@ -11,7 +11,7 @@ ddf(
   method = "ds",
   meta.data = list(),
   control = list(),
-  ...
+  call = NULL
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ ddf(
 
 \item{control}{list containing settings controlling model fitting}
 
-\item{...}{to permit the addition of arguments for the S3 generic variations}
+\item{call}{not implemented for top level ddf function, this is set by ddf as it is passed to the other ddf generics.}
 }
 \value{
 model object of class=(method, "ddf")

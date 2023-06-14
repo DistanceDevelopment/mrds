@@ -202,7 +202,7 @@
 #' @param method analysis method
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
-#' @param ... to permit the addition of arguments for the S3 generic variations
+#' @param call not implemented for top level ddf function, this is set by ddf as it is passed to the other ddf generics. 
 #' @return model object of class=(method, "ddf")
 #' @export
 #' @author Jeff Laake
@@ -291,7 +291,7 @@
 #'
 #' }
 ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
-                meta.data=list(), control=list(), ...){
+                meta.data=list(), control=list(), call = NULL){
   # Functions Used: ddf.ds, ddf.io, ddf.trial, ddf.io.fi, ddf.trial.fi,
   #                 ddf.rem, ddf.rem.fi
 

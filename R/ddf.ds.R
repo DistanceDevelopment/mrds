@@ -67,9 +67,8 @@
 #' }
 
 ddf.ds <-function(dsmodel, mrmodel = NULL,
-                  data, meta.data=list(), 
-                  control=list(), call,
-                  method="ds"){
+                  data, method="ds", meta.data=list(), 
+                  control=list(), call){
   
   # Name changes to match generics
   model <- dsmodel

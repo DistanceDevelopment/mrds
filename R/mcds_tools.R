@@ -27,26 +27,27 @@
 #' \code{system.file("MCDS.exe", package="mrds")}.
 #'
 #' @section Running MCDS.exe on non-Windows platforms:
-#' One can still use MCDS.exe even if you are not running a Windows computer. To
+#' This has been tentatively tested on a mac but should currently be 
+#' considered largely experimental.
+#' 
+#' One can still use MCDS.exe even if you are running a mac computer. To
 #' do this one will need to install `wine` a Windows emulator. It is important
 #' to use a version of `wine` which can run 32-bit programs.
 #'
 #' The package will attempt to work out which `wine` binary to use (and detect
 #' if it is installed), but this doesn't always work. In this case, the
 #' location of the `wine` binary can be specified in the `control` `list`
-#' provided to `ddf` using the `winebin` element. For example, if `wine` is
-#' installed at `/usr/bin/local/wine` you can set `control$winebin` to that
+#' provided to `ddf` using the `winebin` element or supply the `winebin` 
+#' argument to the `ds` function. For example, if `wine` is installed at 
+#' `/usr/bin/local/wine` you can set `control$winebin` to that
 #' location to use that binary.
-#'
-#' On Linux, one needs to install a `wine` that includes 32 bit support. On
-#' Debian, that can be provided by the package `wine32`.
 #'
 #' On macOS, this can be achieved using the `homebrew` package management
 #' system and installing the `wine-crossover` package. You may need to change
-#' the \code{control$winebin} to be `wine`, `wine64` or `wine32on64`, depending on
-#' your system's setup. This package tries to work out what to do, but likely
-#' doesn't handle all corner cases. Currently this is untested on Mac M1
-#' systems, please get in touch if you are trying this.
+#' the \code{control$winebin} to be `wine`, `wine64` or `wine32on64`, 
+#' depending on your system's setup. This package tries to work out what to 
+#' do, but likely doesn't handle all corner cases. Currently this is untested 
+#' on Mac M1 systems.
 #'
 #' @section Stopping using MCDS.exe:
 #' Once this feature is enabled (see below) using `ddf` will always run both

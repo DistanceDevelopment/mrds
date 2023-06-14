@@ -8,10 +8,10 @@
   dsmodel,
   mrmodel = NULL,
   data,
+  method = "ds",
   meta.data = list(),
   control = list(),
-  call,
-  method = "ds"
+  call
 )
 }
 \arguments{
@@ -21,15 +21,15 @@
 
 \item{data}{\code{data.frame}; see \code{\link{ddf}} for details}
 
+\item{method}{analysis method; only needed if this function called from
+\code{ddf.io} or \code{ddf.trial}}
+
 \item{meta.data}{\code{list} containing settings controlling data structure}
 
 \item{control}{\code{list} containing settings controlling model fitting}
 
 \item{call}{original function call if this function not called directly from
 \code{ddf} (e.g., called via \code{ddf.io})}
-
-\item{method}{analysis method; only needed if this function called from
-\code{ddf.io} or \code{ddf.trial}}
 }
 \value{
 result: a \code{ds} model object

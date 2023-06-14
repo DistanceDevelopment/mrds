@@ -48,8 +48,8 @@
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
 #' @importFrom methods is
-ddf.rem.fi<-function(dsmodel=NULL, mrmodel, data,
-                     meta.data=list(), control=list(), call="",method){
+ddf.rem.fi<-function(dsmodel=NULL, mrmodel, data, method,
+                     meta.data=list(), control=list(), call=""){
   #  NOTE: gams are only partially implemented
 
   # Name changes to match generics
