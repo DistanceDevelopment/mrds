@@ -76,15 +76,18 @@ ddf.trial <- function(dsmodel,mrmodel,data,meta.data=list(),control=list(),
   class(result) <- c("trial","ddf")
 
   # Fit the conditional detection functions using ddf.trial.fi
-  result$mr <- ddf.trial.fi(model=mrmodel,data,meta.data,control,
-                            call,method="trial")
+  result$mr <- ddf.trial.fi(mrmodel=mrmodel,data=data,
+                            meta.data=meta.data,control=control,
+                            call=call,method="trial")
 
   #  Fit the unconditional detection functions using ddf.ds
   #  5/24/05 - jll add call to process.data for unique.data because it
   #  didn't handle truncation correctly - error reported by Sharon Hedley
   unique.data <- data[data$observer==1 & data$detected==1,]
   unique.data <- process.data(unique.data, meta.data,check=FALSE)$xmat
-  result$ds <- ddf.ds(model=dsmodel, unique.data, meta.data, control, call)
+  result$ds <- ddf.ds(dsmodel=dsmodel, data=unique.data, 
+                      meta.data=meta.data, control=control, 
+                      call=call)
 
   # stop if ds model didn't converge
   if(is.null(result$ds$Nhat)){

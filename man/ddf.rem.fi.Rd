@@ -4,10 +4,20 @@
 \alias{ddf.rem.fi}
 \title{Mark-Recapture Distance Sampling (MRDS) Removal - FI}
 \usage{
-\method{ddf}{rem.fi}(model, data, meta.data = list(), control = list(), call = "", method)
+\method{ddf}{rem.fi}(
+  dsmodel = NULL,
+  mrmodel,
+  data,
+  meta.data = list(),
+  control = list(),
+  call = "",
+  method
+)
 }
 \arguments{
-\item{model}{mark-recapture model specification}
+\item{dsmodel}{not used}
+
+\item{mrmodel}{mark-recapture model specification}
 
 \item{data}{analysis dataframe}
 

@@ -18,7 +18,8 @@
 #'
 #' @export
 #' @method ddf ds
-#' @param model model list with key function and scale formula if any
+#' @param dsmodel model list with key function and scale formula if any
+#' @param mrmodel not used
 #' @param data \code{data.frame}; see \code{\link{ddf}} for details
 #' @param meta.data \code{list} containing settings controlling data structure
 #' @param control \code{list} containing settings controlling model fitting
@@ -64,8 +65,14 @@
 #'           se=TRUE))
 #' print(ddf.gof(result))
 #' }
-ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
+
+ddf.ds <-function(dsmodel, mrmodel = NULL,
+                  data, meta.data=list(), 
+                  control=list(), call,
                   method="ds"){
+  
+  # Name changes to match generics
+  model <- dsmodel
   #   Code structure for optimization with optim
   #
   # ddf.ds --> detfct.fit --> detfct.fit.opt --> optimx or solnp --> flnl

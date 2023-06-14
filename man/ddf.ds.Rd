@@ -4,10 +4,20 @@
 \alias{ddf.ds}
 \title{CDS/MCDS Distance Detection Function Fitting}
 \usage{
-\method{ddf}{ds}(model, data, meta.data = list(), control = list(), call, method = "ds")
+\method{ddf}{ds}(
+  dsmodel,
+  mrmodel = NULL,
+  data,
+  meta.data = list(),
+  control = list(),
+  call,
+  method = "ds"
+)
 }
 \arguments{
-\item{model}{model list with key function and scale formula if any}
+\item{dsmodel}{model list with key function and scale formula if any}
+
+\item{mrmodel}{not used}
 
 \item{data}{\code{data.frame}; see \code{\link{ddf}} for details}
 

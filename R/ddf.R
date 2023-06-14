@@ -202,6 +202,7 @@
 #' @param method analysis method
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
+#' @param ... to permit the addition of arguments for the S3 generic variations
 #' @return model object of class=(method, "ddf")
 #' @export
 #' @author Jeff Laake
@@ -290,7 +291,7 @@
 #'
 #' }
 ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
-                meta.data=list(), control=list()){
+                meta.data=list(), control=list(), ...){
   # Functions Used: ddf.ds, ddf.io, ddf.trial, ddf.io.fi, ddf.trial.fi,
   #                 ddf.rem, ddf.rem.fi
 
@@ -321,24 +322,24 @@ ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
 
   # call method specific fitting function
   result <- switch(method,
-                   ds=ddf.ds(model=dsmodel,data,meta.data=meta.data,
+                   ds=ddf.ds(dsmodel=dsmodel,data=data,meta.data=meta.data,
                              control=control,call=match.call()),
                    io=ddf.io(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
                              meta.data=meta.data,control=control,
                              call=match.call()),
-                   io.fi=ddf.io.fi(model=mrmodel,data,meta.data=meta.data,
+                   io.fi=ddf.io.fi(mrmodel=mrmodel,data=data,meta.data=meta.data,
                                    control=control,call=match.call(),
                                    method=method),
                    trial=ddf.trial(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
                                    meta.data=meta.data,control=control,
                                    call=match.call()),
-                   trial.fi=ddf.trial.fi(model=mrmodel,data=data,
+                   trial.fi=ddf.trial.fi(mrmodel=mrmodel,data=data,
                                          meta.data=meta.data,control=control,
                                          call=match.call(),method="trial.fi"),
-                   rem=ddf.rem(dsmodel=dsmodel,mrmodel=mrmodel,data,
+                   rem=ddf.rem(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
                                meta.data=meta.data,control=control,
                                call=match.call()),
-                   rem.fi=ddf.rem.fi(model=mrmodel,data,meta.data=meta.data,
+                   rem.fi=ddf.rem.fi(mrmodel=mrmodel,data=data,meta.data=meta.data,
                                      control=control,call=match.call(),
                                      method="rem.fi"))
 

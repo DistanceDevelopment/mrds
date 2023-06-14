@@ -10,7 +10,8 @@ ddf(
   data,
   method = "ds",
   meta.data = list(),
-  control = list()
+  control = list(),
+  ...
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ ddf(
 \item{meta.data}{list containing settings controlling data structure}
 
 \item{control}{list containing settings controlling model fitting}
+
+\item{...}{to permit the addition of arguments for the S3 generic variations}
 }
 \value{
 model object of class=(method, "ddf")

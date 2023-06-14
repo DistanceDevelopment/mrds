@@ -32,6 +32,7 @@
 #' @param mrmodel mark-recapture model specification; model list with formula
 #'   and link
 #' @param data analysis dataframe
+#' @param method not used
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -44,8 +45,8 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.rem<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
-
+ddf.rem<-function(dsmodel,mrmodel,data,method = NULL,
+                  meta.data=list(),control=list(),call=""){
 
   # Test to make sure that observer not used in mrmodel
   if(length(grep("observer",mrmodel))!=0){
@@ -76,8 +77,9 @@ ddf.rem<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   class(result) <- c("rem","ddf")
 
   #  Fit the conditional detection functions using ddf.rem.fi
-  result$mr <- ddf.rem.fi(model=mrmodel, data, meta.data, control, call,
-                          method="rem")
+  result$mr <- ddf.rem.fi(mrmodel=mrmodel, data=data, 
+                          meta.data=meta.data, control=control, 
+                          call=call,method="rem")
 
   #  Fit the unconditional detection functions using ddf.ds
   #  5/24/05 - jll add call to process.data for unique.data because it
@@ -89,7 +91,9 @@ ddf.rem<-function(dsmodel,mrmodel,data,meta.data=list(),control=list(),call=""){
   unique.data <- rbind(unique.data,obs2[obs1$detected==0,])
   unique.data$observer <- 1
   unique.data  <-  process.data(unique.data, meta.data,check=FALSE)$xmat
-  result$ds <- ddf.ds(model=dsmodel,unique.data,meta.data,control,call)
+  result$ds <- ddf.ds(dsmodel=dsmodel,data=unique.data,
+                      meta.data=meta.data,control=control,
+                      call=call)
 
   # stop if ds model didn't converge
   if(is.null(result$ds$Nhat)){
