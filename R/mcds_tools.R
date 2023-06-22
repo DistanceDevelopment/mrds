@@ -511,6 +511,12 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
   for(i in seq(along = err.index)){
     message(log.file[err.index[i]], appendLF = TRUE)
   }
+  # If there are any errors return a value of try-error
+  if(length(err.index) > 0){
+    ret.val <- list()
+    class(ret.val) <- "try-error"
+    return(ret.val)
+  }
 
   # little extra parameter here to avoid infinite recursion when
   # we run ddf in mcds.results.and.refit
