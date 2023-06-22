@@ -357,9 +357,12 @@ create.command.file <- function(dsmodel=call(), data,
   cat("END;", file=command.file.name, append=TRUE)
   cat("\n", file=command.file.name, append=TRUE)
 
-  ret <- list(command.file.name=command.file.name,
+  ret <- list(command.file.name = command.file.name,
               stats.file.name = stat.file,
-              log.file.name = log.file)
+              log.file.name = log.file,
+              out.file.name = out.file,
+              data.file.name = data.file,
+              plot.file.name = plot.file)
 
   return(ret)
 }
@@ -438,6 +441,9 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
   # create the test file
   test.file <- create.command.file(dsmodel, data, method,
                                    meta.data, control)
+  # When exiting the function tidy up any files that may have been created
+  on.exit(tidy.tmp.files(unlist(test.file)))
+  
   if(control$showit>0){
     message(paste("Command file written to", test.file$command.file.name))
     message(paste("Stats file written to", test.file$stats.file.name))
@@ -517,6 +523,14 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
                                debug=control$showit>0), silent = TRUE)
 
   return(mm)
+}
+
+# Tidy up temporary files
+tidy.tmp.files <- function(files = character()){
+  # Try to remove each of the files
+  for(i in seq(along = files)){
+    try(file.remove(files[i]))
+  }
 }
 
 #' @importFrom utils write.table
