@@ -535,7 +535,8 @@ run.MCDS <- function(dsmodel, data, method, meta.data, control){
 tidy.tmp.files <- function(files = character()){
   # Try to remove each of the files
   for(i in seq(along = files)){
-    try(file.remove(files[i]), silent = TRUE)
+    # Quietly try and remove files that were created
+    tmp <- suppressWarnings(try(file.remove(files[i]), silent = TRUE))
   }
 }
 
