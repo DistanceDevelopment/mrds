@@ -82,3 +82,13 @@ test_that("create.bins cuts data correctly - called from predict",{
   expect_false(any(is.na(dat.mrds$distbegin)))
   expect_false(any(is.na(dat.mrds$distend)))
 })
+
+test_that("Predict for hr model with covariates when se.fit = TRUE",{
+  # Testing fix for issue #84
+  dat <- data.frame(distance=abs(rnorm(100)), x=rnorm(100))
+  hrcov <- Distance::ds(dat, formula=~x, key="hr")
+  nd <- data.frame(distance = 0.25, x=0.5)
+  tmp <- predict(hrcov, nd, se.fit=TRUE)
+  expect_equal(length(tmp), 2)
+})
+

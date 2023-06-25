@@ -8,6 +8,7 @@ New Features
 Bug Fixes
 
 * fix bug where the (true, 2nd derivative) hessian was not calculated during optimisation. This then lead to weird errors later (summary doesn't work etc). Hessians are now calculated in this case. Thanks to Anne Provencher St-Pierre for reporting the issue
+* Fix prediction bug (Issue #84) where predicting for hazard rate model with covariates and se.fit= TRUE. Note there may be issues when predicting in this instance for binned data - check results are as expected.
 
 
 mrds 2.2.8
