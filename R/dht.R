@@ -583,7 +583,7 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
         if(numRegions > 1){
           cov.Nc.Ncs <- c(cov.Nc.Ncs, sum(cov.Nc.Ncs))
         }
-        if(model$ds$aux$ddfobj$type == "unif" && is.null(model$ds$aux$ddfobj$adjustment)){
+        if(model$method == "ds" && model$ds$aux$ddfobj$type == "unif" && is.null(model$ds$aux$ddfobj$adjustment)){
           # if fitting a uniform with no adjustments the covariance is 0
           cov.Nc.Ncs <- 0
         }else{
