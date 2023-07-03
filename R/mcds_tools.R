@@ -169,11 +169,12 @@ create.command.file <- function(dsmodel=call(), data,
   cat(paste("FIELDS=", fields.comb, ";", sep=""),
       file=command.file.name, "\n", append=TRUE)
   
+  # Don't tell MCDS about clusters
   # If clusters and cluster is a cov in the model
-  if(cluster && "Cluster Size" %in% covar.fields){
-    cat(paste("SizeC=Cluster Size;", sep=""),
-        file=command.file.name, "\n", append=TRUE)
-  }
+  # if(cluster && "SIZE" %in% covar.fields){
+  #   cat(paste("SizeC=SIZE;", sep=""),
+  #       file=command.file.name, "\n", append=TRUE)
+  # }
   
   # Access the model parameters
   mod_paste <- paste(dsmodel)
@@ -581,24 +582,21 @@ create.data.file <- function(data, dsmodel, data.file){
   }
   
   # Check if there are cluster sizes
-  if("size" %in% names(data)){
-    index <- which(names(data) == "size")
-    names(data)[index] <- "Cluster Size"
-    data.cols <- c(data.cols, "Cluster Size")
-    cluster <- TRUE
-  }else{
-    cluster <- FALSE
-  }
+  # Let's not tell MCDS about clusters - not needed for detection function fitting
+  cluster <- FALSE
+  # if("size" %in% names(data)){
+  #   index <- which(names(data) == "size")
+  #   names(data)[index] <- "SIZE"
+  #   data.cols <- c(data.cols, "SIZE")
+  #   cluster <- TRUE
+  # }else{
+  #   cluster <- FALSE
+  # }
   
   # Check if there are any covariates in the model
   if(length(all.vars(dsmodel)) > 0){
     # Get model covariates
     covar.fields <- all.vars(dsmodel)
-    # Cluster Size must be named "Cluster Size"
-    if("size" %in% covar.fields){
-      index <- which(covar.fields == "size")
-      covar.fields[index] <- "Cluster Size"
-    }
     data.cols <- c(data.cols, covar.fields)
   }else{
     covar.fields <- NULL
@@ -607,7 +605,15 @@ create.data.file <- function(data, dsmodel, data.file){
   # remove all non-essential columns from the dataset
   data <- data[,data.cols]
   
-  # create data file to pass to mcds
+  # Cluster Size must be named "SIZE" - but we do not want it to know about clusters so name "CS" instead
+  if("size" %in% names(data)){
+    index <- which(names(data) == "size")
+    names(data)[index] <- "CS"
+  }
+  if("size" %in% covar.fields){
+    index <- which(covar.fields == "size")
+    covar.fields[index] <- "CS"
+  }
   
   # create data file to pass to mcds
   file.create(data.file)
