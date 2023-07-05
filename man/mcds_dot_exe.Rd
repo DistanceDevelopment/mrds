@@ -16,6 +16,8 @@ to use the `MCDS.exe` optimizer set \code{control=list(optimizer='MCDS')}
 or only use the R optimizer set \code{control=list(optimizer='R')}.
 }
 \details{
+Please see our examples pages for further information: https://examples.distancesampling.org/
+
 If you are running a non-Windows operating system, you can follow the
 instructions below to have `MCDS.exe` run using `wine`.
 }
