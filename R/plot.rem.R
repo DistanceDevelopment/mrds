@@ -97,7 +97,7 @@ plot.rem <- function(x, which=1:3, breaks=NULL, nc=NULL, maintitle="",
   }
 
   # do the plotting layout
-  oask <- plot.layout(which,pages)
+  oask <- plot_layout(which,pages)
   on.exit(devAskNewPage(oask))
 
   # Plot primary unconditional detection function

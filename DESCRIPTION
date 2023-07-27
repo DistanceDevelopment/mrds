@@ -5,13 +5,13 @@ Title: Mark-Recapture Distance Sampling
 LazyLoad: yes
 Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers
     <dlb@st-and.ac.uk>, Len Thomas <len.thomas@st-and.ac.uk>, David
-    Miller <dave@ninepointeightone.net> and Jon Bishop
+    Miller <dave@ninepointeightone.net>, Jon Bishop and Jonah McArthur
 Description: Animal abundance estimation via conventional, multiple covariate
     and mark-recapture distance sampling (CDS/MCDS/MRDS). Detection function
     fitting is performed via maximum likelihood. Also included are diagnostics
     and plotting for fitted detection functions. Abundance estimation is via a
     Horvitz-Thompson-like estimator.
-Version: 2.2.8.9004
+Version: 2.2.9
 URL: https://github.com/DistanceDevelopment/mrds/
 BugReports: https://github.com/DistanceDevelopment/mrds/issues
 Depends:
@@ -26,7 +26,8 @@ Suggests:
     testthat,
     covr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    bookdown
 VignetteBuilder: knitr
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Encoding: UTF-8

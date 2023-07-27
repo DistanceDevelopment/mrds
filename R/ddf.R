@@ -180,7 +180,15 @@
 #'   \item{\code{mono.outer.iter}}{Number of outer iterations to be used by
 #'   \code{solnp} when fitting a monotonic model. Default 200.}
 #'   \item{\code{silent}}{silences warnings within ds fitting method (helpful
-#'   for running many times without generating many warning/error messages).}}
+#'   for running many times without generating many warning/error messages).}
+#'   \item{\code{optimizer}}{By default this is set to 'both'. In this case 
+#'   the R optimizer will be used and if present the MCDS optimizer will also 
+#'   be used. The result with the best likelihood value will be selected. To 
+#'   run only a specified optimizer set this value to either 'R' or 'MCDS'. 
+#'   See \code{\link{mcds_dot_exe}} for more information.}
+#'   \item{\code{winebin}}{Location of the \code{wine} binary used to run
+#'   \code{MCDS.exe}. See \link{mcds_dot_exe} for more information.}
+#' }
 #'
 #' Examples of distance sampling analyses are available at
 #' \url{http://examples.distancesampling.org/}.
@@ -194,6 +202,7 @@
 #' @param method analysis method
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
+#' @param call not implemented for top level ddf function, this is set by ddf as it is passed to the other ddf generics. 
 #' @return model object of class=(method, "ddf")
 #' @export
 #' @author Jeff Laake
@@ -282,7 +291,7 @@
 #'
 #' }
 ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
-                meta.data=list(), control=list()){
+                meta.data=list(), control=list(), call = NULL){
   # Functions Used: ddf.ds, ddf.io, ddf.trial, ddf.io.fi, ddf.trial.fi,
   #                 ddf.rem, ddf.rem.fi
 
@@ -313,24 +322,24 @@ ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
 
   # call method specific fitting function
   result <- switch(method,
-                   ds=ddf.ds(model=dsmodel,data,meta.data=meta.data,
+                   ds=ddf.ds(dsmodel=dsmodel,data=data,meta.data=meta.data,
                              control=control,call=match.call()),
                    io=ddf.io(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
                              meta.data=meta.data,control=control,
                              call=match.call()),
-                   io.fi=ddf.io.fi(model=mrmodel,data,meta.data=meta.data,
+                   io.fi=ddf.io.fi(mrmodel=mrmodel,data=data,meta.data=meta.data,
                                    control=control,call=match.call(),
                                    method=method),
                    trial=ddf.trial(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
                                    meta.data=meta.data,control=control,
                                    call=match.call()),
-                   trial.fi=ddf.trial.fi(model=mrmodel,data=data,
+                   trial.fi=ddf.trial.fi(mrmodel=mrmodel,data=data,
                                          meta.data=meta.data,control=control,
                                          call=match.call(),method="trial.fi"),
-                   rem=ddf.rem(dsmodel=dsmodel,mrmodel=mrmodel,data,
+                   rem=ddf.rem(dsmodel=dsmodel,mrmodel=mrmodel,data=data,
                                meta.data=meta.data,control=control,
                                call=match.call()),
-                   rem.fi=ddf.rem.fi(model=mrmodel,data,meta.data=meta.data,
+                   rem.fi=ddf.rem.fi(mrmodel=mrmodel,data=data,meta.data=meta.data,
                                      control=control,call=match.call(),
                                      method="rem.fi"))
 

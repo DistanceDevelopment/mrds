@@ -4,7 +4,6 @@
 #' \code{\link{optimx}}.
 #'
 #' @import optimx
-#' @inheritParams optimx::nlminb
 #'
 #' @param par starting parameters
 #' @param ll log likelihood function

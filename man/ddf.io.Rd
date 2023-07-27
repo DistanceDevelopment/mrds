@@ -4,7 +4,15 @@
 \alias{ddf.io}
 \title{Mark-Recapture Distance Sampling (MRDS) IO - PI}
 \usage{
-\method{ddf}{io}(dsmodel, mrmodel, data, meta.data = list(), control = list(), call = "")
+\method{ddf}{io}(
+  dsmodel,
+  mrmodel,
+  data,
+  method = NULL,
+  meta.data = list(),
+  control = list(),
+  call = ""
+)
 }
 \arguments{
 \item{dsmodel}{distance sampling model specification; model list with key
@@ -14,6 +22,8 @@ function and scale formula if any}
 and link}
 
 \item{data}{analysis dataframe}
+
+\item{method}{not used}
 
 \item{meta.data}{list containing settings controlling data structure}
 

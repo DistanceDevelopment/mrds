@@ -27,7 +27,8 @@
 #'
 #' @export
 #' @method ddf trial.fi
-#' @param model mark-recapture model specification
+#' @param dsmodel not used
+#' @param mrmodel mark-recapture model specification
 #' @param data analysis dataframe
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
@@ -46,10 +47,14 @@
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
 #' @importFrom methods is
-ddf.trial.fi <- function(model, data, meta.data=list(), control=list(),
-                         call="", method){
+ddf.trial.fi <- function(dsmodel=NULL, mrmodel, data, method,
+                         meta.data=list(), control=list(),
+                         call=""){
   #  NOTE: gams are only partially implemented
 
+  # Name changes to match generics
+  model <- mrmodel
+  
   # The following are dummy glm and gam functions that are defined here to
   # provide the list of arguments for use in the real glm/gam functions. These
   # dummy functions are removed after they are used so the real ones can be

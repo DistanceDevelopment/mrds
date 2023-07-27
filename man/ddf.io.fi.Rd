@@ -4,21 +4,31 @@
 \alias{ddf.io.fi}
 \title{Mark-Recapture Distance Sampling (MRDS) IO - FI}
 \usage{
-\method{ddf}{io.fi}(model, data, meta.data = list(), control = list(), call = "", method)
+\method{ddf}{io.fi}(
+  dsmodel = NULL,
+  mrmodel,
+  data,
+  method,
+  meta.data = list(),
+  control = list(),
+  call = ""
+)
 }
 \arguments{
-\item{model}{mark-recapture model specification}
+\item{dsmodel}{not used}
+
+\item{mrmodel}{mark-recapture model specification}
 
 \item{data}{analysis dataframe}
+
+\item{method}{analysis method; only needed if this function called from
+\code{ddf.io}}
 
 \item{meta.data}{list containing settings controlling data structure}
 
 \item{control}{list containing settings controlling model fitting}
 
 \item{call}{original function call used to call \code{ddf}}
-
-\item{method}{analysis method; only needed if this function called from
-\code{ddf.io}}
 }
 \value{
 result: an io.fi model object

@@ -4,6 +4,7 @@ par.tol<-1e-6
 context("dht")
 
 data(book.tee.data)
+egdata <- book.tee.data$book.tee.dataframe
 tee.data<-book.tee.data$book.tee.dataframe[book.tee.data$book.tee.dataframe$observer==1,]
 ds.model <- ddf(dsmodel=~cds(key="hn", formula=~1), data=tee.data, method="ds",
                 meta.data=list(width=4))
@@ -46,4 +47,33 @@ test_that("areas.supplied", {
   expect_equal(dht(ds.model, region, samples, obs,
                    options=list(areas.supplied=TRUE)),
                dht(ds.model, region, samples, obs))
+})
+
+
+test_that("dht with various opts after unif fixes", {
+  
+  # fit an independent observer model with point independence
+  result.io <- ddf(dsmodel=~cds(key = "hn"), mrmodel=~glm(~distance),
+                   data=egdata, method="io", meta.data=list(width=4))
+  
+  dht.result.io <- dht(result.io, 
+                    region.table = region,
+                    sample.table = samples,
+                    obs.table = obs,
+                    se = TRUE)
+  
+  expect_true(inherits(dht.result.io, "dht"))
+  
+  # fit an independent observer model with full independence
+  result.io.fi <- ddf(mrmodel=~glm(~distance), data=egdata, method="io.fi",
+                      meta.data=list(width = 4))
+  
+  dht.result.io.fi <- dht(result.io, 
+                    region.table = region,
+                    sample.table = samples,
+                    obs.table = obs,
+                    se = TRUE)
+  
+  expect_true(inherits(dht.result.io.fi, "dht"))
+  
 })

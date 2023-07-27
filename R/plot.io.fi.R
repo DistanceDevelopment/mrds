@@ -124,7 +124,7 @@ plot.io.fi <- function(x, which=1:6, breaks=NULL, nc=NULL, maintitle="",
                  p2[xmat$detected[xmat$observer==1]==1])
 
   # do the plotting layout
-  oask <- plot.layout(which,pages)
+  oask <- plot_layout(which,pages)
   on.exit(devAskNewPage(oask))
 
   # guide to which

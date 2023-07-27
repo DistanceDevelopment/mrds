@@ -23,6 +23,7 @@ print.summary.ds <- function (x, ...){
     cat("Distance range         : ", x$left, " - ", x$width, "\n")
   }
   cat("AIC                    : ", x$aic, "\n")
+  cat("Optimisation           : ", x$optimise, "\n")
   cat("\nDetection function:\n", model.description(x), "\n")
   cat("\nDetection function parameters", "\n")
   cat("Scale coefficient(s):", "\n")

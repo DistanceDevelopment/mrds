@@ -222,8 +222,8 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
         max.plots <- 1
       }
 
-      # use plot.layout to get the layout
-      dd <- plot.layout(seq_len(max.plots), pages=1)
+      # use plot_layout to get the layout
+      dd <- plot_layout(seq_len(max.plots), pages=1)
 
       # make the plots
       d <- suppressMessages(apply(plot.sample, 1, chpply, x=x, ddfobj=ddfobj,

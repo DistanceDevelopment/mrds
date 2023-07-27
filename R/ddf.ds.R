@@ -18,7 +18,8 @@
 #'
 #' @export
 #' @method ddf ds
-#' @param model model list with key function and scale formula if any
+#' @param dsmodel model list with key function and scale formula if any
+#' @param mrmodel not used
 #' @param data \code{data.frame}; see \code{\link{ddf}} for details
 #' @param meta.data \code{list} containing settings controlling data structure
 #' @param control \code{list} containing settings controlling model fitting
@@ -64,8 +65,13 @@
 #'           se=TRUE))
 #' print(ddf.gof(result))
 #' }
-ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
-                  method="ds"){
+
+ddf.ds <-function(dsmodel, mrmodel = NULL,
+                  data, method="ds", meta.data=list(), 
+                  control=list(), call){
+  
+  # Name changes to match generics
+  model <- dsmodel
   #   Code structure for optimization with optim
   #
   # ddf.ds --> detfct.fit --> detfct.fit.opt --> optimx or solnp --> flnl
@@ -107,10 +113,13 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
                                    mono.outer.iter=200, debug=FALSE,
                                    nofit=FALSE, optimx.method="nlminb",
                                    optimx.maxit=300, silent=FALSE,
-                                   mono.random.start=FALSE)
+                                   mono.random.start=FALSE,
+                                   optimizer = "both", 
+                                   winebin = NULL)
 
   #  Save current user options and then set design contrasts to treatment style
   save.options <- options()
+  on.exit(options(save.options))
   options(contrasts=c("contr.treatment","contr.poly"))
 
   # Process data
@@ -207,9 +216,50 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   if(is.null(initialvalues)) misc.options$nofit <- TRUE
 
+  # Trying to use MCDS.exe but it's not there
+  if(control$optimizer == "MCDS" && system.file("MCDS.exe", package="mrds") == ""){
+    stop("You have chosen to use the MCDS.exe optimizer but it cannot be found!", call. = FALSE)
+  }
 
-  # Actually do the optimisation
-  lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
+  # run MCDS.exe if it's there
+  if(control$optimizer %in% c("MCDS","both") && system.file("MCDS.exe", package="mrds")!=""){
+    lt_mcds <- try(run.MCDS(model, xmat, method, meta.data, control),
+                   silent=control$showit>0)
+    # if something went wrong just return a very large lnl
+    if(inherits(lt_mcds, "try-error")){
+      lt_mcds <- list(lnl=1e100)
+    }
+    
+  }else{
+    lt_mcds <- list(lnl=1e100)
+  }
+  lt_mcds$value <- lt_mcds$lnl
+
+  # do the optimisation in R
+  if(control$optimizer %in% c("R","both")){
+    lt <- detfct.fit(ddfobj, optim.options, bounds, misc.options)
+  }else{
+    lt <- list(value=1e100)
+  }
+
+  # check there is a valid lnl for at least one of the models
+  # (only check if it is not in refit mode)
+  if(control$optimizer %in% c("MCDS","both") && lt_mcds$lnl == 1e100 && lt$value == 1e100){
+    stop("Model fitting failed", call. = FALSE)
+  }
+    
+  # which was the better lnl?
+  if(abs(lt_mcds$lnl) < abs(lt$value)){
+    if(control$showit>=1){
+      cat("DEBUG: MCDS lnl =", round(lt_mcds$value, 7),
+          "       mrds lnl =", round(lt$value, 7),"\n")
+    }
+    lt <- lt_mcds$ds
+    lt$hessian <- lt_mcds$hessian
+    lt$optimise <- "MCDS.exe"
+  }else{
+    lt$optimise <- paste0("mrds (", control$optimx.method, ")")
+  }
 
   # check that hazard models have a reasonable scale parameter
   if(ddfobj$type=="hr" && lt$par[1] < sqrt(.Machine$double.eps)){
@@ -225,7 +275,7 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
 
   # if there was no convergence, return the fitting object incase it's useful
   # it won't be of the correct class or have the correct elements
-  if(lt$converge!=0 & misc.options$debug){
+  if(lt$converge!=0 && misc.options$debug){
     warning("No convergence, not calculating Hessian, predicted values, abundance\nReturned object is for debugging ONLY!")
     options(save.options)
     return(result)
@@ -242,15 +292,38 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
       # the hessian returned from solnp() is not what we want, warn about
       # that and don't return it
       if(misc.options$mono){
-        warning("First partial hessian calculation failed with monotonicity enforced, no hessian\n")
+        if(control$optimizer == "R"){
+          warning("First partial hessian calculation failed with monotonicity enforced, no hessian\n", immediate. = TRUE, call. = FALSE)
+          result$hessian <- NULL
+        }
       }else{
-        warning("First partial hessian calculation failed; using second-partial hessian\n")
-        result$hessian <- lt$hessian
+        if(is.null(lt$hessian)){
+          # Avoid duplicate warnings
+          if(control$optimizer == "R"){
+            warning("First partial hessian calculation failed and second-partial hessian is NULL, no hessian\n", immediate. = TRUE, call. = FALSE)
+          }
+          result$hessian <- lt$hessian
+        }else{
+          if(control$optimizer == "R"){
+            warning("First partial hessian calculation failed; using second-partial hessian\n", immediate. = TRUE, call. = FALSE)
+          }
+          result$hessian <- lt$hessian
+        }
       }
     }else if(length(lt$par)>1){
       if(inherits(try(solve(result$hessian), silent=TRUE), "try-error")){
-        warning("First partial hessian is singular; using second-partial hessian\n")
-        result$hessian <- lt$hessian
+        if(is.null(lt$hessian)){
+          # Avoid duplicate warnings
+          if(control$optimizer == "R"){
+            warning("First partial hessian is singular and second-partial hessian is NULL, no hessian\n", immediate. = TRUE, call. = FALSE)
+          }
+          result$hessian <- lt$hessian
+        }else{
+          if(control$optimizer == "R"){
+            warning("First partial hessian is singular; using second-partial hessian\n", immediate. = TRUE, call. = FALSE)
+          }
+          result$hessian <- lt$hessian
+        }
       }
     }
   }
@@ -286,6 +359,8 @@ ddf.ds <-function(model, data, meta.data=list(), control=list(), call,
       result$Nhat <- NCovered(result, group=TRUE)
     }
   }
+  # Store optimiser
+  result$optimise <- lt$optimise
 
   # Restore user options
   options(save.options)

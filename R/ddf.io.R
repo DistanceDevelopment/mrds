@@ -32,6 +32,7 @@
 #' @param mrmodel mark-recapture model specification; model list with formula
 #'   and link
 #' @param data analysis dataframe
+#' @param method not used
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
 #' @param call original function call used to call \code{ddf}
@@ -46,7 +47,8 @@
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
 #'   Thomas. Oxford University Press.
 #' @keywords Statistical Models
-ddf.io <- function(dsmodel, mrmodel, data, meta.data=list(), control=list(),
+ddf.io <- function(dsmodel, mrmodel, data, method = NULL,
+                   meta.data=list(), control=list(),
                    call=""){
 
   # Save current user options and then set design contrasts to treatment style
@@ -73,12 +75,15 @@ ddf.io <- function(dsmodel, mrmodel, data, meta.data=list(), control=list(),
   class(result) <- c("io", "ddf")
 
   # Fit the conditional detection functions using ddf.io.fi
-  result$mr <- ddf.io.fi(model=mrmodel,data,meta.data,control,call,method="io")
+  result$mr <- ddf.io.fi(mrmodel=mrmodel,data=data,
+                         meta.data=meta.data,control=control,
+                         call=call,method="io")
 
   # Fit the unconditional detection functions using ddf.ds
   unique.data <- data[data$observer==1,]
   unique.data$detected <- 1
-  result$ds <- ddf.ds(model=dsmodel, unique.data, meta.data, control, call)
+  result$ds <- ddf.ds(dsmodel=dsmodel, data=unique.data, 
+                      meta.data=meta.data, control=control, call=call)
   # use the ds meta data (as this has correct mono values)
   result$meta.data <- result$ds$meta.data
   if(is.null(result$ds$Nhat)){
