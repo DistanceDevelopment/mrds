@@ -4,21 +4,31 @@
 \alias{ddf.trial.fi}
 \title{Mark-Recapture Analysis of Trial Configuration - FI}
 \usage{
-\method{ddf}{trial.fi}(model, data, meta.data = list(), control = list(), call = "", method)
+\method{ddf}{trial.fi}(
+  dsmodel = NULL,
+  mrmodel,
+  data,
+  method,
+  meta.data = list(),
+  control = list(),
+  call = ""
+)
 }
 \arguments{
-\item{model}{mark-recapture model specification}
+\item{dsmodel}{not used}
+
+\item{mrmodel}{mark-recapture model specification}
 
 \item{data}{analysis dataframe}
+
+\item{method}{analysis method; only needed if this function called from
+\code{ddf.trial}}
 
 \item{meta.data}{list containing settings controlling data structure}
 
 \item{control}{list containing settings controlling model fitting}
 
 \item{call}{original function call used to call \code{ddf}}
-
-\item{method}{analysis method; only needed if this function called from
-\code{ddf.trial}}
 }
 \value{
 result: a trial.fi model object

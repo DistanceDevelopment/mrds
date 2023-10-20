@@ -10,7 +10,8 @@ ddf(
   data,
   method = "ds",
   meta.data = list(),
-  control = list()
+  control = list(),
+  call = NULL
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ ddf(
 \item{meta.data}{list containing settings controlling data structure}
 
 \item{control}{list containing settings controlling model fitting}
+
+\item{call}{not implemented for top level ddf function, this is set by ddf as it is passed to the other ddf generics.}
 }
 \value{
 model object of class=(method, "ddf")
@@ -211,7 +214,15 @@ infrequently.  The list values include:
   \item{\code{mono.outer.iter}}{Number of outer iterations to be used by
   \code{solnp} when fitting a monotonic model. Default 200.}
   \item{\code{silent}}{silences warnings within ds fitting method (helpful
-  for running many times without generating many warning/error messages).}}
+  for running many times without generating many warning/error messages).}
+  \item{\code{optimizer}}{By default this is set to 'both'. In this case 
+  the R optimizer will be used and if present the MCDS optimizer will also 
+  be used. The result with the best likelihood value will be selected. To 
+  run only a specified optimizer set this value to either 'R' or 'MCDS'. 
+  See \code{\link{mcds_dot_exe}} for more information.}
+  \item{\code{winebin}}{Location of the \code{wine} binary used to run
+  \code{MCDS.exe}. See \link{mcds_dot_exe} for more information.}
+}
 
 Examples of distance sampling analyses are available at
 \url{http://examples.distancesampling.org/}.

@@ -30,7 +30,8 @@
 #'
 #' @export
 #' @method ddf io.fi
-#' @param model mark-recapture model specification
+#' @param dsmodel not used
+#' @param mrmodel mark-recapture model specification
 #' @param data analysis dataframe
 #' @param meta.data list containing settings controlling data structure
 #' @param control list containing settings controlling model fitting
@@ -49,8 +50,13 @@
 #' @keywords Statistical Models
 #' @importFrom stats optimHess
 #' @importFrom methods is
-ddf.io.fi <- function(model, data, meta.data=list(), control=list(),
-                      call="", method){
+#' 
+ddf.io.fi <- function(dsmodel = NULL, mrmodel, data, 
+                      method, meta.data=list(), control=list(),
+                      call=""){
+  
+  #Rename arguments to match generic ddf
+  model <- mrmodel
   # Functions used: assign.default.values, process.data, create.model.frame
   #                 ioglm, predict(predict.io.fi), NCovered (NCovered.io.fi)
 

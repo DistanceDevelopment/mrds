@@ -72,6 +72,9 @@ summary.ds <- function(object, se=TRUE, N=TRUE, ...){
 
   # AIC
   ans$aic <- model$criterion
+  
+  # Optimisation
+  ans$optimise <- model$optimise
 
   # Truncation distances, left and right
   ans$width <- model$meta.data$width

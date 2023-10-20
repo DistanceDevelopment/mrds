@@ -1,8 +1,16 @@
 mrds 2.2.9
 ----------
 
-* fix bug where the (true, 2nd derivative) hessian was not calculated during optimisation. This then lead to weird errors later (summary doesn't work etc). Hessians are now calculated in this case. Thanks to Anne Provencher St-Pierre for reporting the issue
+New Features
 
+* Users can now download the fortran MCDS.exe optimiser used in Distance for Windows and fit single observer models with both the optimisers in R via mrds and also MCDS.exe. For some datasets the optimisation with MCDS.exe is superior (giving a better likelihood) than the optimiser in R used with mrds. See ?MCDS for more details.
+
+Bug Fixes
+
+* fix bug where the (true, 2nd derivative) hessian was not calculated during optimisation. This then lead to weird errors later (summary doesn't work etc). Hessians are now calculated in this case. Thanks to Anne Provencher St-Pierre for reporting the issue
+* Fix prediction bug (Issue #84) where predicting for hazard rate model with covariates and se.fit= TRUE. Note there may be issues when predicting in this instance for binned data - check results are as expected.
+* Fix bug when a uniform model was fitted with no adjustments. This caused an error when looking for the hessian. It also required that the covariance set to 0 when estimating the cluster size standard errors (Issue #79).
+* fix bug with using binned data via cutpoints for prediction (#73)
 
 mrds 2.2.8
 ----------

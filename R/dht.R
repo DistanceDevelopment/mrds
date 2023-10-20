@@ -522,13 +522,13 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     region.table <- merge(region.table, Effort.by.region, by="Region.Label")
     region.table$Effort <- NULL
   }
-
+  
   # Create obs/samples structures
   vs <- create.varstructure(model, region.table, sample.table, obs.table, se)
   samples <- vs$samples
   obs <- vs$obs
   region.table <- vs$region
-
+  
   # handle subset feature when labels are also in data
   if(!is.null(obs$Region.Label.x)){
     obs$Region.Label <- obs$Region.Label.x
@@ -538,11 +538,11 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     obs$Region.Label.y <- NULL
     obs$Sample.Label.y <- NULL
   }
-
+  
   # Merge with fitted values
   pdot <- model$fitted
   obs <- merge(obs, data.frame(object=objects, pdot=pdot))
-
+  
   # If clustered population create tables for clusters and individuals and
   # an expected S table otherwise just tables for individuals in an
   # unclustered popn
@@ -550,13 +550,13 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     clusters <- tables.dht(TRUE)
     individuals <- tables.dht(FALSE )
     Expected.S <- individuals$N$Estimate/clusters$N$Estimate
-
+    
     # This computes the se(E(s)). It essentially uses 3.37 from Ads but in
     # place of using 3.25, 3.34 and 3.38, it uses 3.27, 3.35 and an equivalent
     # cov replacement term for 3.38. This uses line to line variability
     # whereas the other formula measure the variance of E(s) within the lines
     # and it goes to zero as p approaches 1.
-    if(se){
+    if(se){ #***merge conflict, previous code: if(se & options$varflag!=1){
       numRegions <- length(unique(samples$Region.Label))
       if(options$varflag==2){
         cov.Nc.Ncs <- rep(0, numRegions)
@@ -565,32 +565,38 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
         for(i in 1:numRegions){
           c.stratum.data <- clusters$Nhat.by.sample[
               as.character(clusters$Nhat.by.sample$Region.Label) ==
-              as.character(region.table$Region.Label[i]), ]
-
-          i.stratum.data <- individuals$Nhat.by.sample[
+                as.character(region.table$Region.Label[i]), ]
+            
+            i.stratum.data <- individuals$Nhat.by.sample[
               as.character(individuals$Nhat.by.sample$Region.Label) ==
-              as.character(region.table$Region.Label[i]), ]
-
-          Li <- sum(c.stratum.data$Effort.x)
-          cov.Nc.Ncs[i] <- covn(c.stratum.data$Effort.x/(scale[i]*Li),
-                                c.stratum.data$Nhat/scale[i],
-                                i.stratum.data$Nhat/scale[i],
-                                options$ervar)
+                as.character(region.table$Region.Label[i]), ]
+            
+            Li <- sum(c.stratum.data$Effort.x)
+            cov.Nc.Ncs[i] <- covn(c.stratum.data$Effort.x/(scale[i]*Li),
+                                  c.stratum.data$Nhat/scale[i],
+                                  i.stratum.data$Nhat/scale[i],
+                                  options$ervar)
+          }
+        }else{
+          cov.Nc.Ncs <- as.vector(by(obs$size*(1 - obs$pdot)/obs$pdot^2,
+                                     obs$Region.Label, sum))
+          cov.Nc.Ncs[is.na(cov.Nc.Ncs)] <- 0
         }
-      }else{
-        cov.Nc.Ncs <- as.vector(by(obs$size*(1 - obs$pdot)/obs$pdot^2,
-                                   obs$Region.Label, sum))
-        cov.Nc.Ncs[is.na(cov.Nc.Ncs)] <- 0
-      }
-
       cov.Nc.Ncs[is.nan(cov.Nc.Ncs)] <- 0
       if(numRegions > 1){
         cov.Nc.Ncs <- c(cov.Nc.Ncs, sum(cov.Nc.Ncs))
       }
-      cov.Nc.Ncs <- cov.Nc.Ncs +
-                     diag(t(clusters$vc$detection$partial)%*%
-                          solvecov(model$hessian)$inv%*%
-                          individuals$vc$detection$partial)
+      
+      # Fix for uniform detection function no adjustments
+      if(model$method == "ds" && model$ds$aux$ddfobj$type == "unif" && is.null(model$ds$aux$ddfobj$adjustment)){
+          # if fitting a uniform with no adjustments the covariance is 0
+          cov.Nc.Ncs <- 0
+        }else{
+          cov.Nc.Ncs <- cov.Nc.Ncs +
+            diag(t(clusters$vc$detection$partial)%*%
+                   solvecov(model$hessian)$inv%*%
+                   individuals$vc$detection$partial)
+        }
       se.Expected.S <- as.vector(clusters$N$cv)^2 +
                         as.vector(individuals$N$cv)^2 -
                         2*cov.Nc.Ncs/
@@ -600,9 +606,13 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
       se.Expected.S[se.Expected.S<=0 | is.nan(se.Expected.S)] <- 0
       se.Expected.S <- as.vector(Expected.S)*sqrt(se.Expected.S)
 
+      #***merge conflict
+      # I think this is new!
       Observed.S <- as.vector(by(obs$size, obs$Region.Label, mean))
       Observed.S <- c(Observed.S, mean(obs$size))
 
+      #***merge conflict
+      # This is an expanded table
       Expected.S <- data.frame(Region        = clusters$N$Label,
                                Expected.S    = as.vector(Expected.S),
                                se.Expected.S = as.vector(se.Expected.S),
@@ -612,7 +622,13 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                                se.Observed.S = sqrt(diag(individuals$vc$group)),
                                cv.Observed.S = sqrt(diag(individuals$vc$group))/
                                                Observed.S)
+      #***merge conflict
+      # This is new!
       Expected.S$cv.Expected.S[Expected.S$Expected.S==0] <- 0
+      # Old table
+      # Expected.S <- data.frame(Region        = clusters$N$Label,
+      #                        Expected.S    = as.vector(Expected.S),
+      #                         se.Expected.S = as.vector(se.Expected.S))
     }else{
       Expected.S[is.nan(Expected.S)] <- 0
       Expected.S <- data.frame(Region     = clusters$N$Label,
