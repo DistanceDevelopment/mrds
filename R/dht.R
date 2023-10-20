@@ -160,6 +160,7 @@
 #' total}
 #' \item{D}{\code{data.frame} of estimates of density for each region and total}
 #' \item{average.p}{average detection probability estimate}
+#' \item{average.p.se}{standard error of average detection probability estimate}
 #' \item{cormat}{correlation matrix of regional abundance/density estimates and
 #' total (if more than one region)}
 #' \item{vc}{list of 3: total variance-covariance matrix, detection function
@@ -240,6 +241,7 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     # Mod 18-Aug-05 jll; added computation of avergage detection probability
     # which is simply n/Nhat in the covered region
     average.p <- nrow(obs)/sum(Nhat.by.sample$Nhat)
+    average.p.se <- as.vector(summary(model)$average.p.se)
 
     width <- model$meta.data$width * options$convert.units
     left <- model$meta.data$left * options$convert.units
@@ -415,14 +417,17 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
       cormat[is.nan(cormat)] <- 0
       result <- list(bysample=bysample.table, summary = summary.table,
                      N=result$estimate.table, D=D.estimate.table,
-                     average.p=average.p, cormat = cormat,
+                     average.p=average.p, average.p.se=average.p.se,
+                     cormat = cormat,
                      vc=list(total     = result$vc,
                              detection = result$vc1,
-                             er        = result$vc2),
+                             er        = result$vc2,
+                             group     = result$vg),
                      Nhat.by.sample=Nhat.by.sample)
     }else{
       result <- list(bysample=bysample.table, summary=summary.table,
                      N=estimate.table, D=D.estimate.table, average.p=average.p,
+                     average.p.se=average.p.se,
                      Nhat.by.sample=Nhat.by.sample)
     }
     return(result)
@@ -551,15 +556,14 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     # cov replacement term for 3.38. This uses line to line variability
     # whereas the other formula measure the variance of E(s) within the lines
     # and it goes to zero as p approaches 1.
-    if(se & options$varflag!=1){
-      
-        numRegions <- length(unique(samples$Region.Label))
-        if(options$varflag==2){
-          cov.Nc.Ncs <- rep(0, numRegions)
-          scale <- clusters$summary$Area/clusters$summary$CoveredArea
-          
-          for(i in 1:numRegions){
-            c.stratum.data <- clusters$Nhat.by.sample[
+    if(se){ #***merge conflict, previous code: if(se & options$varflag!=1){
+      numRegions <- length(unique(samples$Region.Label))
+      if(options$varflag==2){
+        cov.Nc.Ncs <- rep(0, numRegions)
+        scale <- clusters$summary$Area/clusters$summary$CoveredArea
+
+        for(i in 1:numRegions){
+          c.stratum.data <- clusters$Nhat.by.sample[
               as.character(clusters$Nhat.by.sample$Region.Label) ==
                 as.character(region.table$Region.Label[i]), ]
             
@@ -578,12 +582,13 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                                      obs$Region.Label, sum))
           cov.Nc.Ncs[is.na(cov.Nc.Ncs)] <- 0
         }
-        
-        cov.Nc.Ncs[is.nan(cov.Nc.Ncs)] <- 0
-        if(numRegions > 1){
-          cov.Nc.Ncs <- c(cov.Nc.Ncs, sum(cov.Nc.Ncs))
-        }
-        if(model$method == "ds" && model$ds$aux$ddfobj$type == "unif" && is.null(model$ds$aux$ddfobj$adjustment)){
+      cov.Nc.Ncs[is.nan(cov.Nc.Ncs)] <- 0
+      if(numRegions > 1){
+        cov.Nc.Ncs <- c(cov.Nc.Ncs, sum(cov.Nc.Ncs))
+      }
+      
+      # Fix for uniform detection function no adjustments
+      if(model$method == "ds" && model$ds$aux$ddfobj$type == "unif" && is.null(model$ds$aux$ddfobj$adjustment)){
           # if fitting a uniform with no adjustments the covariance is 0
           cov.Nc.Ncs <- 0
         }else{
@@ -592,18 +597,38 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                    solvecov(model$hessian)$inv%*%
                    individuals$vc$detection$partial)
         }
-        se.Expected.S <- as.vector(clusters$N$cv)^2 +
-          as.vector(individuals$N$cv)^2 -
-          2*cov.Nc.Ncs/
-          (as.vector(individuals$N$Estimate)*
-             as.vector(clusters$N$Estimate))
-        Expected.S[is.nan(Expected.S)] <- 0
-        se.Expected.S[se.Expected.S<=0 | is.nan(se.Expected.S)] <- 0
-        se.Expected.S <- as.vector(Expected.S)*sqrt(se.Expected.S)
-        
-        Expected.S <- data.frame(Region        = clusters$N$Label,
-                                 Expected.S    = as.vector(Expected.S),
-                                 se.Expected.S = as.vector(se.Expected.S))
+      se.Expected.S <- as.vector(clusters$N$cv)^2 +
+                        as.vector(individuals$N$cv)^2 -
+                        2*cov.Nc.Ncs/
+                         (as.vector(individuals$N$Estimate)*
+                          as.vector(clusters$N$Estimate))
+      Expected.S[is.nan(Expected.S)] <- 0
+      se.Expected.S[se.Expected.S<=0 | is.nan(se.Expected.S)] <- 0
+      se.Expected.S <- as.vector(Expected.S)*sqrt(se.Expected.S)
+
+      #***merge conflict
+      # I think this is new!
+      Observed.S <- as.vector(by(obs$size, obs$Region.Label, mean))
+      Observed.S <- c(Observed.S, mean(obs$size))
+
+      #***merge conflict
+      # This is an expanded table
+      Expected.S <- data.frame(Region        = clusters$N$Label,
+                               Expected.S    = as.vector(Expected.S),
+                               se.Expected.S = as.vector(se.Expected.S),
+                               cv.Expected.S = as.vector(se.Expected.S)/
+                                               as.vector(Expected.S),
+                               Observed.S    = Observed.S,
+                               se.Observed.S = sqrt(diag(individuals$vc$group)),
+                               cv.Observed.S = sqrt(diag(individuals$vc$group))/
+                                               Observed.S)
+      #***merge conflict
+      # This is new!
+      Expected.S$cv.Expected.S[Expected.S$Expected.S==0] <- 0
+      # Old table
+      # Expected.S <- data.frame(Region        = clusters$N$Label,
+      #                        Expected.S    = as.vector(Expected.S),
+      #                         se.Expected.S = as.vector(se.Expected.S))
     }else{
       Expected.S[is.nan(Expected.S)] <- 0
       Expected.S <- data.frame(Region     = clusters$N$Label,
@@ -630,6 +655,15 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
   # save enounter rate variance information
   attr(result, "ER_var") <- c(options$ervar, options$varflag==2,
                               options$varflag==0)
+
+  # calculate variance components
+  attr(result, "variance_components") <- list(
+    individuals = dht_variance_contributions(result$individuals,
+                                             result$Expected.S,
+                                             options$varflag==2),
+    clusters = dht_variance_contributions(result$cluster,
+                                             result$Expected.S,
+                                             options$varflag==2))
 
   class(result) <- "dht"
   return(result)

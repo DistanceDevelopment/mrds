@@ -58,6 +58,7 @@ total}
 total}
 \item{D}{\code{data.frame} of estimates of density for each region and total}
 \item{average.p}{average detection probability estimate}
+\item{average.p.se}{standard error of average detection probability estimate}
 \item{cormat}{correlation matrix of regional abundance/density estimates and
 total (if more than one region)}
 \item{vc}{list of 3: total variance-covariance matrix, detection function

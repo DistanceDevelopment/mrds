@@ -8,13 +8,17 @@
 #' @param cor if TRUE outputs correlation matrix of estimates
 #' @param bysample if TRUE, prints results for each sample
 #' @param vcmatrices if TRUE, prints variance-covariance matrices
+#' @param clusters if TRUE, prints the abundance and density of clusters, as
+#' well as individuals
+#' @param cluster.summary if TRUE prints the expected and observed group sizes
 #' @param \dots unspecified and unused arguments for S3 consistency
 #' @export
 #' @return None
 #' @author Jeff Laake
 #' @seealso \code{\link{dht}}
 #' @keywords utility
-print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE, ...){
+print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE,
+                      clusters=FALSE, cluster.summary=FALSE, ...){
 
   print.tables <- function(x, cor, bysample, vcmatrices){
     if("N" %in% names(x)){
@@ -65,22 +69,31 @@ print.dht <- function(x, cor=FALSE, bysample=FALSE, vcmatrices=FALSE, ...){
     cat("\nSummary statistics\n\n")
     print(x$individuals$summary)
     print.tables(x$individuals, cor, bysample, vcmatrices)
+    cat("\nVariance contributions\n")
+    print(attr(x, "variance_components")$individuals)
   }else{
     # summary statistics
     cat("\nSummary statistics\n\n")
     print(x$clusters$summary)
-    cat("\nSummary for clusters\n")
-    print.tables(x$clusters, cor, bysample, vcmatrices)
+
+    if(clusters){
+      cat("\nSummary for clusters\n")
+      print.tables(x$clusters, cor, bysample, vcmatrices)
+      cat("\nVariance contributions\n")
+      print(attr(x, "variance_components")$clusters)
+    }
+
     cat("\nSummary for individuals\n")
     print.tables(x$individuals, cor, bysample, vcmatrices)
-    cat("\nExpected cluster size\n")
-    #Added CV as an output LJT 14/10/09
-    S <- x$Expected.S
-    if(!is.null(S$se.Expected.S)){
-      S$cv.Expected.S <- S$se.Expected.S/S$Expected.S
-      S$cv.Expected.S[S$Expected.S==0] <- 0
+
+    if(cluster.summary){
+      cat("\nCluster size summary\n")
+      print(as.data.frame(x$Expected.S))
     }
-    print(as.data.frame(S))
+
+    cat("\nVariance contributions\n")
+    print(attr(x, "variance_components")$individuals)
   }
+
   invisible()
 }
