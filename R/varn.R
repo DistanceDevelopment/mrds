@@ -33,7 +33,7 @@
 #' Default value is \code{"R2"}, shown in Fewster et al. (2009) to have good
 #' performance for completely random designs for lines. For systematic parallel
 #' line transect designs, Fewster et al. recommend \code{"O2"}. For point
-#' transects the default is \code{"P3"} (but \code{"P2"} is also available).
+#' transects the default is \code{"P2"} (but \code{"P3"} is also available).
 #'
 #' For the systematic estimators, pairs are assigned in the order they are
 #' given in the \code{lengths} and \code{groups} vectors.
