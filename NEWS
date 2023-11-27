@@ -1,3 +1,15 @@
+mrds 2.3.0
+----------
+
+New Features
+
+* The 'P2' estimator is now the default for estimating the encouter rate variance for point transect surveys.
+
+Bug Fixes
+
+* Re-formatted the format section of the documentation for the book.tee.data
+* 
+
 mrds 2.2.9
 ----------
 

@@ -190,9 +190,10 @@ For options \code{1} and \code{2}, it is then possible to choose one of the
 estimator forms given in Fewster et al (2009) for line transects:
 \code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"},
 \code{"O1"}, \code{"O2"} or \code{"O3"} by specifying the \code{ervar=}
-option (default \code{"R2"}). For points estimator \code{"P3"} is the only
-option. See \code{\link{varn}} and Fewster et al (2009) for further details
-on these estimators.
+option (default \code{"R2"}). For points, either the \code{"P2"} or 
+\code{"P3"} estimator can be selected (>=mrds 2.3.0 default \code{"P2"},
+<= mrds 2.2.9 default \code{"P3"}). See \code{\link{varn}} and Fewster 
+et al (2009) for further details on these estimators.
 }
 
 \section{\code{dht} options}{
@@ -209,7 +210,7 @@ on these estimators.
  length (Default: \code{1})}
  \item{\code{ervar}}{encounter rate variance type (see "Uncertainty" and
  \code{type} argument of \code{\link{varn}}). (Default: \code{"R2"} for
- lines and \code{"P3"} for points)}
+ lines and \code{"P2"} for points)}
 }
 }
 

@@ -20,9 +20,15 @@ test_that("golf tees", {
   # check that errors are thrown when the wrong ER variance is asked for
   expect_error(dht(ds.model, region.table=region,
                    sample.table=samples, obs.table=obs,
+                   options=list(ervar="P2")),
+               "Encounter rate variance estimator P2 / P3 may only be used with point transects, set with options=list(ervar=...)", fixed=TRUE)
+  
+  expect_error(dht(ds.model, region.table=region,
+                   sample.table=samples, obs.table=obs,
                    options=list(ervar="P3")),
-               "Encounter rate variance estimator P3 may only be used with point transects, set with options=list(ervar=...)", fixed=TRUE)
+               "Encounter rate variance estimator P2 / P3 may only be used with point transects, set with options=list(ervar=...)", fixed=TRUE)
 })
+
 
 test_that("ptdata", {
   # fake up some pt data
@@ -37,7 +43,7 @@ test_that("ptdata", {
 
   expect_warning(dht(model, region.table=pt.region, sample.table=pt.sample,
                      obs.table=pt.obs, options=list(ervar="O1")),
-                 "Point transect encounter rate variance can only use estimators P2 or P3, switching to P3.", fixed=TRUE)
+                 "Point transect encounter rate variance can only use estimators P2 or P3, switching to P2.", fixed=TRUE)
 
 })
 

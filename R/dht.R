@@ -121,9 +121,10 @@
 #' estimator forms given in Fewster et al (2009) for line transects:
 #' \code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"},
 #' \code{"O1"}, \code{"O2"} or \code{"O3"} by specifying the \code{ervar=}
-#' option (default \code{"R2"}). For points estimator \code{"P3"} is the only
-#' option. See \code{\link{varn}} and Fewster et al (2009) for further details
-#' on these estimators.
+#' option (default \code{"R2"}). For points, either the \code{"P2"} or 
+#' \code{"P3"} estimator can be selected (>=mrds 2.3.0 default \code{"P2"},
+#' <= mrds 2.2.9 default \code{"P3"}). See \code{\link{varn}} and Fewster 
+#' et al (2009) for further details on these estimators.
 #'
 #' @param model ddf model object
 #' @param region.table \code{data.frame} of region records. Two columns:
@@ -182,7 +183,7 @@
 #'  length (Default: \code{1})}
 #'  \item{\code{ervar}}{encounter rate variance type (see "Uncertainty" and
 #'  \code{type} argument of \code{\link{varn}}). (Default: \code{"R2"} for
-#'  lines and \code{"P3"} for points)}
+#'  lines and \code{"P2"} for points)}
 #'}
 #'
 #' @author Jeff Laake, David L Miller
@@ -433,7 +434,7 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
   # Assign default values to options
   options <- assign.default.values(options, pdelta=0.001, varflag=2,
                                    convert.units=1,
-                                   ervar=ifelse(model$meta.data$point, "P3",
+                                   ervar=ifelse(model$meta.data$point, "P2",
                                                 "R2"),
                                    areas.supplied=FALSE)
 
@@ -483,16 +484,16 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                                    levels=levels(sample.table$Sample.Label))
 
 
-  # P3 can only be used with points
-  if(options$ervar=="P3" & !model$meta.data$point){
-    stop("Encounter rate variance estimator P3 may only be used with point transects, set with options=list(ervar=...)")
+  # P2 and P3 can only be used with points
+  if((options$ervar=="P3" || options$ervar=="P2") && !model$meta.data$point){
+    stop("Encounter rate variance estimator P2 / P3 may only be used with point transects, set with options=list(ervar=...)")
   }
 
-  # switch to the P3 estimator if using points
+  # switch to the P2 estimator if using points
   if(model$meta.data$point){
     if(!(options$ervar %in% c("P2", "P3"))){
-      warning("Point transect encounter rate variance can only use estimators P2 or P3, switching to P3.")
-      options$ervar <- "P3"
+      warning("Point transect encounter rate variance can only use estimators P2 or P3, switching to P2.")
+      options$ervar <- "P2"
     }
   }
 
