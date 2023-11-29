@@ -181,10 +181,13 @@
 #'   \code{solnp} when fitting a monotonic model. Default 200.}
 #'   \item{\code{silent}}{silences warnings within ds fitting method (helpful
 #'   for running many times without generating many warning/error messages).}
-#'   \item{\code{optimizer}}{By default this is set to 'both'. In this case 
-#'   the R optimizer will be used and if present the MCDS optimizer will also 
-#'   be used. The result with the best likelihood value will be selected. To 
-#'   run only a specified optimizer set this value to either 'R' or 'MCDS'. 
+#'   \item{\code{optimizer}}{By default this is set to 'both' for single 
+#'   observer analyses and 'R' for double observer analyses. For single 
+#'   observer analyses where optimizer = 'both', the R optimizer will be used 
+#'   and if present the MCDS optimizer will also be used. The result with the 
+#'   best likelihood value will be selected. To run only a specified optimizer 
+#'   set this value to either 'R' or 'MCDS'. The MCDS optimizer cannot currently
+#'   be used for detection function fitting with double observer analyses.  
 #'   See \code{\link{mcds_dot_exe}} for more information.}
 #'   \item{\code{winebin}}{Location of the \code{wine} binary used to run
 #'   \code{MCDS.exe}. See \link{mcds_dot_exe} for more information.}
@@ -317,6 +320,16 @@ ddf <- function(dsmodel=call(), mrmodel=call(),data, method="ds",
   if(method != "ds"){
     if(missing(mrmodel)){
       stop("For method=",method,", mrmodel must be specified")
+    }
+  }
+  if(method %in% c("io","trial","rem")){
+    # Do not use the MCDS.exe optimiser
+    if(is.null(control$optimizer)){
+      # If the user has not specified quietly change to use only R optimizer
+      control$optimizer <- "R"
+    }else if(control$optimizer == "MCDS"){
+      warning("The MCDS optimizer cannot currently be used with double observer analyses, the R opitimizer will be used instead.", call. = FALSE, immediate. = TRUE)
+      control$optimizer <- "R"
     }
   }
 
