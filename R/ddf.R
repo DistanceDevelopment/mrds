@@ -156,10 +156,16 @@
 #'   \item{\code{refit}}{if TRUE the algorithm will attempt multiple
 #'   optimizations at different starting values if it doesn't converge}
 #'   \item{\code{nrefits}}{number of refitting attempts}
-#'   \item{\code{initial}}{a named list of starting values for the parameters
-#'   (e.g. \code{$scale}, \code{$shape}, \code{$adjustment})}
-#'   \item{\code{lowerbounds}}{a vector of lowerbounds for the parameters}
-#'   \item{\code{upperbounds}}{a vector of upperbounds for the parameters}
+#'   \item{\code{initial}}{a named list of starting values for the dsmodel
+#'   parameters (e.g. \code{$scale}, \code{$shape}, \code{$adjustment})}
+#'   \item{\code{lowerbounds}}{a vector of lowerbounds for the dsmodel 
+#'   parameters in the order the ds parameters will appear in the par 
+#'   element of the ddf object, i.e. \code{fit.ddf$par} where \code{fit.ddf} 
+#'   is a fitted ddf model.}
+#'   \item{\code{upperbounds}}{a vector of upperbounds for the dsmodel 
+#'   parameters in the order the ds parameters will appear in the par 
+#'   element of the ddf object, i.e. \code{fit.ddf$par} where \code{fit.ddf} 
+#'   is a fitted ddf model.}
 #'   \item{\code{limit}}{if TRUE restrict analysis to observations with
 #'   \code{detected}=1}
 #'   \item{\code{debug}}{ if TRUE, if fitting fails, return an object with

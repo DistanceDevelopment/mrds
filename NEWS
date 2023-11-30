@@ -3,12 +3,13 @@ mrds 2.3.0
 
 New Features
 
-* The 'P2' estimator is now the default for estimating the encouter rate variance for point transect surveys.
+* The 'P2' estimator is now the default for estimating the encouter rate variance for point transect surveys. (Issue #65)
 
 Bug Fixes
 
-* Re-formatted the format section of the documentation for the book.tee.data
-* Ensure that the MCDS optimizer is not used for double observer models as this was generating errors.
+* Re-formatted the format section of the documentation for the book.tee.data (Issue #91)
+* Ensure that the MCDS optimizer is not used for double observer models as this was generating errors. (Issue #89)
+* Improved the documentation on initial values, lower and upper bounds. (Issue #90)
 
 mrds 2.2.9
 ----------
