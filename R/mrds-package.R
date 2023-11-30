@@ -1161,10 +1161,10 @@ NULL
 #'
 #'
 #' @section Initial values:
-#' Initial (or starting) values can be set via the \code{initial} element of
-#' the \code{control} list. \code{initial} is a list itself with elements
-#' \code{scale}, \code{shape} and \code{adjustment}, corresponding to the
-#' associated parameters. If a model has covariates then the \code{scale} or
+#' Initial (or starting) values for the dsmodel can be set via the \code{initial} 
+#' element of the \code{control} list. \code{initial} is a list itself with 
+#' elements \code{scale}, \code{shape} and \code{adjustment}, corresponding to 
+#' the associated parameters. If a model has covariates then the \code{scale} or
 #' \code{shape} elements will be vectors with parameter initial values in the
 #' same order as they are specific in the model formula (using \code{showit} is
 #' a good check they are in the correct order). Adjustment starting values are
@@ -1180,21 +1180,20 @@ NULL
 #' parameter (or intercept in a covariate model) on the exponential scale, so
 #' one must \code{log} this before supplying it to \code{ddf}.
 #'
-#'
 #' @section Bounds:
-#' One can change the upper and lower bounds for the parameters. These specify
-#' the largest and smallest values individual parameters can be. By placing
-#' these constraints on the parameters, it is possible to "temper" the
+#' One can change the upper and lower bounds for the dsmodel parameters. These 
+#' specify the largest and smallest values individual parameters can be. By 
+#' placing these constraints on the parameters, it is possible to "temper" the
 #' optimisation problem, making fitting possible.
 #'
 #' Again, one uses the \code{control} list, the elements \code{upperbounds} and
 #' \code{lowerbounds}. In this case, each of \code{upperbounds} and
 #' \code{lowerbounds} are vectors, which one can think of as each of the
-#' vectors \code{scale}, \code{shape} and \code{adjustment} from the "Initial
+#' vectors \code{shape}, \code{scale} and \code{adjustment} from the "Initial
 #' values" section above, concatenated in that order. If one does not occur
 #' (e.g. no shape parameter) then it is simple omitted from the vector.
 #'
-#' @name mrds-opt
+#' @name mrds_opt
 #' @docType methods
 #' @author David L. Miller <dave@@ninepointeightone.net>
 NULL
