@@ -203,7 +203,7 @@
 #' \url{http://examples.distancesampling.org/}.
 #'
 #' Hints and tips on fitting (particularly optimisation issues) are on the
-#' \code{\link{mrds-opt}} manual page.
+#' \code{\link{mrds_opt}} manual page.
 #'
 #' @param dsmodel distance sampling model specification
 #' @param mrmodel mark-recapture model specification
@@ -218,7 +218,7 @@
 #' @seealso \code{\link{ddf.ds}}, \code{\link{ddf.io}},
 #' \code{\link{ddf.io.fi}}, \code{\link{ddf.trial}},
 #' \code{\link{ddf.trial.fi}}, \code{\link{ddf.rem}}, \code{\link{ddf.rem.fi}},
-#' \code{\link{mrds-opt}}
+#' \code{\link{mrds_opt}}
 #' @references Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
 #'   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
 #'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.

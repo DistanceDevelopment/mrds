@@ -237,7 +237,7 @@ Examples of distance sampling analyses are available at
 \url{http://examples.distancesampling.org/}.
 
 Hints and tips on fitting (particularly optimisation issues) are on the
-\code{\link{mrds-opt}} manual page.
+\code{\link{mrds_opt}} manual page.
 }
 \examples{
 # load data
@@ -325,7 +325,7 @@ Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
 \code{\link{ddf.ds}}, \code{\link{ddf.io}},
 \code{\link{ddf.io.fi}}, \code{\link{ddf.trial}},
 \code{\link{ddf.trial.fi}}, \code{\link{ddf.rem}}, \code{\link{ddf.rem.fi}},
-\code{\link{mrds-opt}}
+\code{\link{mrds_opt}}
 }
 \author{
 Jeff Laake
