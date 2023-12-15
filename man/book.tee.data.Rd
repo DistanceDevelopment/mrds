@@ -8,32 +8,39 @@
 A list of 4 dataframes, with the list elements named: book.tee.dataframe,
   book.tee.region, book.tee.samples and book.tee.obs. 
   
-  \describe{\strong{book.tee.dataframe} is the distance sampling data 
+  \strong{book.tee.dataframe} is the distance sampling data 
   dataframe. Used in the call to fit the detection function in \code{ddf}.
   Contains the following columns:
+  
+  \describe{
   \item{object}{numeric object id}\item{observer}{factor representing observer
   1 or 2}\item{detected}{numeric 1 if the animal was detected 0 otherwise}
   \item{distance}{numeric value for the distance the animal was detected}
   \item{size}{numeric value for the group size}\item{sex}{numeric value for
   sex of animal}\item{exposure}{numeric value for exposure level 0 or 1}}
   
-  \describe{\strong{book.tee.region}: is the region table dataframe. Used to
+  \strong{book.tee.region}: is the region table dataframe. Used to
   supply the strata areas to the \code{dht} function. Contains the following
   columns:
+  
+  \describe{
   \item{Region.Label}{factor giving the strata labels}
   \item{Area}{numeric value giving the strata areas}}
   
-  \describe{\strong{book.tee.samples} is the samples table dataframe to match 
+  \strong{book.tee.samples} is the samples table dataframe to match 
   the transect ids to the region ids and supply the effort. Used in the 
   \code{dht} function. Contains the following columns:
+  
+  \describe{
   \item{Sample.Label}{numeric giving the sample / transect labels}
   \item{Region.Label}{factor giving the strata labels}
   \item{Effort}{numeric value giving the sample / transect lengths}}
   
-
-  \describe{\strong{book.tee.obs} is the observations table dataframe to match
+  \strong{book.tee.obs} is the observations table dataframe to match
   the object ids in the distance data to the transect labels. Used in the 
   \code{dht} function. Contains the following columns:
+
+  \describe{
   \item{object}{numeric value object id}
   \item{Region.Label}{factor giving the strata labels}
   \item{Sample.Label}{numeric giving the sample / transect labels}}
