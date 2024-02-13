@@ -52,9 +52,11 @@
 #' on Mac M1 systems.
 #'
 #' @section Stopping using MCDS.exe:
-#' Once this feature is enabled (see below) using `ddf` will always run both
-#' its built-in R optimizer and `MCDS.exe`. To disable this behaviour remove
-#' the `MCDS.exe` binary file. You can find it by running the following in R:
+#' Once this feature is enabled, using `ddf` will by default run both
+#' its built-in R optimizer and `MCDS.exe`. To disable this behaviour, specify which 
+#' you wish to use with via the \code{optimizer=} option described above.  Alternatively,
+#' if you wish to permanently stop using MCDS.exe, remove
+#' the `MCDS.exe` binary file. You can find which folder it is in by running the following in R:
 #' \code{system.file("MCDS.exe", package="mrds")}.
 #'
 #' @author David L Miller and Jonah McArthur
