@@ -1,0 +1,37 @@
+url: ~
+template:
+  bootstrap: 5
+  bslib:
+    bg: "#fcfaf2"
+    fg: "#14059e"
+    primary: "#0542a3"
+    base_font: {google: "Roboto"}
+
+reference:
+
+navbar:
+  bg: primary
+  structure:
+    right: [twitter, github]
+  components:
+    twitter:
+      icon: fa-twitter
+      href: https://twitter.com/distancesamp
+      aria-label: Twitter
+  left:
+    - text: Function reference
+      href: reference/index.html
+    - text: Articles
+      menu:
+        - text: Point and full independence
+          href: articles/mrds-golftees.html
+    - text: News
+      href: news/index.html
+
+footer:
+  structure:
+    right: donate
+    left: built_with
+  components:
+    donate: "If you wish to donate to development and maintenance"
+

@@ -1,0 +1,330 @@
+---
+title: "Double platform analysis"
+description: |
+  Estimating g(0) comparing full and point independence models
+author:
+  - name: Len Thomas
+    url: http://distancesampling.org
+    affiliation: CREEM, Univ of St Andrews
+    affiliation_url: https://creem.st-andrews.ac.uk
+date: "`r format(Sys.time(), '%B %Y')`"
+output: 
+  bookdown::html_document2:
+    number_sections: false
+    toc: true
+    toc_depth: 2
+    base_format: rmarkdown::html_vignette
+pkgdown:
+  as_is: true    
+bibliography: golftees.bib
+csl: apa.csl
+vignette: >
+  %\VignetteIndexEntry{Incorporating covariates in the detection function}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(eval=TRUE, echo=TRUE, message=FALSE, warnings=FALSE)
+```
+
+This example looks at mark-recapture distance sampling (MRDS) models. The first part of this exercise involves analysis of a survey of a known number of golf tees. This is intended mainly to familiarise you with the double-platform data structure and analysis features in the R function `mrds` [@Laake-mrds]. 
+
+To help understand the terminology using in MRDS and the output produced by `mrds`, there is a guide available [at this link](Interpreting MRDS output.pdf) called *Interpreting MRDS output: making sense of all the numbers*. 
+
+# Aims
+
+The aims of this practical are to learn how to model 
+
+- trial and independent-observer configuration
+- full and point independence assumptions,
+- include covariates in the detection function(s) and 
+- select between competing models. 
+
+## Golf tee data
+
+These data come from a survey of golf tees which conducted by statistics students at the University of St Andrews. The data were collected along transect lines, 210 metres in total. A distance of 4 metres out from the centre line was searched and, for the purposes of this exercise, we assume that this comprised the total study area, which was divided into two strata. There were 250 clusters of tees in total and 760 individual tees in total. 
+
+The population was independently surveyed by two observer teams. The following data were recorded for each detected group: perpendicular distance, cluster size, observer (team 1 or 2), 'sex' (males are yellow and females are green and golf tees occur in single-sex clusters) and 'exposure'. Exposure was a subjective judgment of whether the cluster was substantially obscured by grass (exposure=0) or not (exposure=1). The lengths of grass varied along the transect line and the grass was slightly more yellow along one part of the line compared to the rest. 
+
+The golf tee dataset is provided as part of the `mrds` package.
+
+Open R and load the `mrds` package and golf tee dataset (called `book.tee.data`). The elements required for an MRDS analysis are contained within the object dataset. These data are in a hierarchical structure (rather than in a 'flat file' format) so that there are separate elements for observations, samples and regions. In the code below, each of these tables is extracted to avoid typing long names.   
+
+```{r preliminaries, message=FALSE}
+library(knitr)
+library(mrds)
+# Access the golf tee data
+data(book.tee.data)
+# Investigate the structure of the dataset
+str(book.tee.data)
+# Extract the list elements from the dataset into easy-to-access objects
+detections <- book.tee.data$book.tee.dataframe # detection information
+region <- book.tee.data$book.tee.region # region info
+samples <- book.tee.data$book.tee.samples # transect info
+obs <- book.tee.data$book.tee.obs # links detections to transects and regions
+```
+
+Examine the columns in the `detections` data because it has a particular structure.
+
+```{r headdet}
+# Check detections
+head(detections)
+```
+The structure of the detection is as follows:
+
+- each detected object (in this case the object was a group or cluster of golf tees) is given a unique number in the `object` column, 
+- each `object` occurs twice - once for observer 1 and once for observer 2, 
+- the `detected` column indicates whether the object was seen (`detected=1`) or not seen (`detected=0`) by the observer,
+- perpendicular distance is in the `distance` column and cluster size is in the `size` column (the same default names as for the `ds` function). 
+
+To ensure that the variables `sex` and `exposure` are treated correctly, define them as factor variables.
+
+```{r}
+# Define sex and exposure as factor variables 
+detections$sex <- as.factor(detections$sex)
+detections$exposure <- as.factor(detections$exposure)
+```
+
+## Golf tee survey analyses
+
+### Estimation of $p(0)$: distance only
+
+We will start by analysing these data assuming that Observer 2 was generating trials for Observer 1 but not vice versa, i.e. trial configuration where Observer 1 is the primary and Observer 2 is the tracker. (The data could also be analysed in independent observer configuration - you are welcome to try this for yourself). We begin by assuming full independence (i.e. detections between observers are independent at all distances): this requires only a mark-recapture (MR) model and, to start with, perpendicular distance will be included as the only covariate. 
+
+```{r, fitnocovar, message=FALSE, fig.cap="Goodness of fit (FI-trial) to golftee data.", fig.dim=c(7,5)}
+# Fit trial configuration with full independence model
+fi.mr.dist <- ddf(method='trial.fi', mrmodel=~glm(link='logit',formula=~distance),
+                  data=detections, meta.data=list(width=4))
+```
+
+#### Examining `mrds` output
+
+Having fitted the model, we can create tables summarizing the detection data. In the commands below, the tables are created using the `det.tables` function and saved to `detection.tables`. 
+
+```{r}
+# Create a set of tables summarizing the double observer data 
+detection.tables <- det.tables(fi.mr.dist)
+# Print these detection tables
+print(detection.tables)
+```
+
+The information in detection summary tables can be plotted, but, in the interest of space, only one (out of six possible plots) is shown (Figure \@ref(fig:dettabplot)). 
+
+```{r dettabplot, fig.cap="Detection distances for observer 1", fig.dim=c(7,5)}
+# Plot detection information, change number to see other plots
+plot(detection.tables, which=1)
+```
+
+The plot numbers are:
+
+1. Histograms of distances for detections by either, or both, observers. The shaded regions show the number for observer 1. 
+1. Histograms of distances for detections by either, or both, observers. The shaded regions show the number for observer 2. 
+1.	Histograms of distances for duplicates (detected by both observers).
+1. Histogram of distances for detections by either, or both, observers. Not shown for trial configuration. 
+1. Histograms of distances for observer 2. The shaded regions indicate the number of duplicates - for example, the shaded region is the number of clusters in each distance bin that were detected by Observer 1 given that they were also detected by Observer 2 (the "|" symbol in the plot legend means "given that"). 
+1. Histograms of distances for observer 1. The shaded regions indicate the number of duplicates as for plot 5. Not shown for trial configuration. 
+
+Note that if an independent observer configuration had been chosen, all plots would be available. 
+
+A summary of the detection function model is available using the `summary` function. The Q-Q plot has the same interpretation as a Q-Q plot in a conventional, single platform analysis (Figure \@ref(fig:fisummary)). 
+
+```{r fisummary, fig.cap="Fitted detection function for full independence, trial mode.", fig.dim=c(7,5)}
+# Produce a summary of the fitted detection function object
+summary(fi.mr.dist)
+# Produce goodness of fit statistics and a qq plot
+gof.result <- ddf.gof(fi.mr.dist, 
+                      main="Full independence, trial configuration\ngoodness of fit Golf tee data")
+# Extract chi-square statistics for reporting
+chi.distance <- gof.result$chisquare$chi1$chisq
+chi.markrecap <- gof.result$chisquare$chi2$chisq
+chi.total <- gof.result$chisquare$pooled.chi
+```
+
+Abbreviated $\chi^2$ goodness-of-fit assessment shows the $\chi^2$ contribution from the distance sampling model to be `r round(chi.distance,1)` and the $\chi^2$ contribution from the mark-recapture model to be `r round(chi.markrecap,1)`.  The combination of these elements produces a total $\chi^2$ of `r round(chi.total$chisq,1)` with `r chi.total$df` degrees of freedom, resulting in a $p$-value of `r round(chi.total$p,3)`
+
+The (two) detection functions can be plotted (Figure \@ref(fig:plotdf)).
+
+```{r plotdf, fig.cap="Observer 1 detection function (left) and conditional detection probabilty plot (right).", fig.dim=c(7,5)}
+par(mfrow=c(1,2))
+# Plot detection functions
+plot(fi.mr.dist)
+par(mfrow=c(1,1))
+```
+
+The plot labelled 
+
+- "Observer=1 detections" shows a histogram of Observer 1 detections with the estimated Observer 1 detection function overlaid on it and adjusted for *p(0)*. The dots show the estimated detection probability for all Observer 1 detections.
+- "Conditional detection probability" shows the proportion of Obs 2's detections that were detected by Obs 1 (also see the detection tables). The fitted line is the estimated detection probability function for Obs 1 (given detection by Obs 2) - this is the MR model. Dots are estimated detection probabilities for each Obs 1 detection.
+
+There is some evidence of unmodelled heterogeneity in that the fitted line in the left-hand plot declines more slowly than the histogram as the distance increases. 
+
+#### Estimating abundance
+
+Abundance is estimated using the `dht` function. In this function, we need to supply information about the transects and survey regions.  
+
+```{r, abund-from-dist}
+# Calculate density estimates using the dht function
+tee.abund <- dht(model=fi.mr.dist, region.table=region, sample.table=samples, obs.table=obs)
+# Print out results in a nice format
+knitr::kable(tee.abund$individuals$summary, digits=2, 
+      caption="Survey summary statistics for golftees")
+knitr::kable(tee.abund$individuals$N, digits=2, 
+      caption="Abundance estimates for golftee population with two strata")
+```
+
+The estimated abundance is `r round(tee.abund$individuals$N[3,2])` (recall that the true abundance is 760) and so this estimate is negatively biased. The 95\% confidence interval does not include the true value. 
+
+### Estimation of *p(0)*: distance and other explanatory variables
+
+How about including the other covariates, `size`, `sex` and `exposure`, in the MR model? Which MR model would you use? In the command below, `distance` and `sex` are included in the detection function - remember `sex` was defined as a factor earlier on.
+
+In the code below, all possible models (excluding interaction terms) are fitted. 
+
+```{r}
+# Full independence model
+# Set up list with possible models
+mr.formula <- c("~distance","~distance+size","~distance+sex","~distance+exposure",
+                "~distance+size+sex","~distance+size+exposure","~distance+sex+exposure",
+                "~distance+size+sex+exposure")
+num.mr.models <- length(mr.formula)
+# Create dataframe to store results
+fi.results <- data.frame(MRmodel=mr.formula, AIC=rep(NA,num.mr.models))
+# Loop through all MR models
+for (i in 1:num.mr.models) {
+  fi.model  <- ddf(method='trial.fi', 
+                   mrmodel=~glm(link='logit',formula=as.formula(mr.formula[i])),
+                  data=detections, meta.data=list(width=4))
+  fi.results$AIC[i] <- summary(fi.model)$aic
+}
+# Calculate delta AIC
+fi.results$deltaAIC <- fi.results$AIC - min(fi.results$AIC)
+# Order by delta AIC
+fi.results <- fi.results[order(fi.results$deltaAIC), ]
+# Print results in pretty way
+knitr::kable(fi.results, digits=2)
+```
+
+```{r bestone}
+# Fit chosen model
+fi.mr.dist.sex.exp  <- ddf(method='trial.fi', mrmodel=~glm(link='logit',formula=~distance+sex+exposure),
+                           data=detections, meta.data=list(width=4))
+```
+
+We see that the preferred model contains `distance + sex + exposure` so check the goodness-of-fit statistics (Figure \@ref(fig:bestfi)) and detection function plots (Figure \@ref(fig:fidetfn)). 
+
+```{r, bestfi, fig.cap="Preferred model goodness of fit.", fig.dim=c(7,5)}
+# Check goodness-of-fit 
+ddf.gof(fi.mr.dist.sex.exp, main="FI trial mode\nMR=dist+sex+exp")
+```
+
+```{r, fidetfn, fig.cap="Detection functions for full independence model with distance, sex and exposure in MR component.", fig.dim=c(7,5)}
+par(mfrow=c(1,2))
+plot(fi.mr.dist.sex.exp)
+```
+
+And produce abundance estimates.
+
+```{r}
+# Get abundance estimates 
+tee.abund.fi <- dht(model=fi.mr.dist.sex.exp, region.table=region,
+                    sample.table=samples, obs.table=obs)
+# Print results
+print(tee.abund.fi)
+```
+
+This model incorporates the effect of more variables causing the heterogeneity. The estimated abundance is `r round(tee.abund.fi$individuals$N[3,2])` which is less biased than the previous estimate and the 95\% confidence interval (`r round(tee.abund.fi$individuals$N[3,5])`, `r round(tee.abund.fi$individuals$N[3,6])`) contains the true value. 
+
+The model is a reasonable fit to the data (i.e. non-significant $\chi^2$ and Cramer von Mises tests). This model has a lower AIC (`r round(fi.mr.dist.sex.exp$criterion,1)`) than the model with only distance (`r round(fi.mr.dist$criterion,2)`) and so is to be preferred. 
+
+### Point independence
+
+A less restrictive assumption than full independence is point independence, which assumes that detections are only independent on the transect centre line i.e. at perpendicular distance zero [@Buckland2010]. 
+
+Determine if a simple point independence model is better than a simple full independence one. This requires that a distance sampling (DS) model is specified as well a MR model. Here we try a half-normal key function for the DS model (Figure \@ref(fig:pit-nocovar)). 
+
+```{r pit-nocovar, fig.cap="Point independence model in trial configuration goodness of fit.", fig.dim=c(7,5)}
+# Fit trial configuration with point independence model
+pi.mr.dist <- ddf(method='trial', 
+                  mrmodel=~glm(link='logit', formula=~distance),
+                  dsmodel=~cds(key='hn'), 
+                  data=detections, meta.data=list(width=4))
+# Summary pf the model 
+summary(pi.mr.dist)
+# Produce goodness of fit statistics and a qq plot
+gof.results <- ddf.gof(pi.mr.dist, 
+                       main="Point independence, trial configuration\n goodness of fit Golftee data")
+```
+
+The AIC for this point independence model is `r round(pi.mr.dist$criterion,2)` which is marginally smaller than the first full independence model that was fitted and hence is to be preferred. 
+
+```{r,}
+# Get abundance estimates 
+tee.abund.pi <- dht(model=pi.mr.dist, region.table=region,
+                    sample.table=samples, obs.table=obs)
+# Print results
+print(tee.abund.pi)
+```
+
+This results in an estimated abundance of `r round(tee.abund.pi$individuals$N[3,2])`. Can we do better if more covariates are included in the DS model? 
+
+#### Covariates in the DS model
+
+To include covariates in the DS detection function, we need to specify an MCDS model as follows:
+
+```{r pit-mod1, fig.dim=c(7,5)}
+# Fit the PI-trial model - DS sex and MR distance 
+pi.mr.dist.ds.sex <- ddf(method='trial', 
+                         mrmodel=~glm(link='logit',formula=~distance),
+                         dsmodel=~mcds(key='hn',formula=~sex), 
+                         data=detections, meta.data=list(width=4))
+```
+
+Use the `summary` function to check the AIC and decide if you are going to include any additional covariates in the detection function. 
+
+Now try a point independence model that has the preferred MR model from your full independence analyses. 
+
+
+```{r}
+# Point independence model, Include covariates in DS model
+# Use selected MR model, iterate across DS models
+ds.formula <- c("~size","~sex","~exposure","~size+sex","~size+exposure","~sex+exposure",
+                "~size+sex+exposure")
+num.ds.models <- length(ds.formula)
+# Create dataframe to store results
+pi.results <- data.frame(DSmodel=ds.formula, AIC=rep(NA,num.ds.models))
+# Loop through ds models - use selected MR model from earlier
+for (i in 1:num.ds.models) {
+  pi.model <- ddf(method='trial', mrmodel=~glm(link='logit',formula=~distance+sex+exposure),
+                  dsmodel=~mcds(key='hn',formula=as.formula(ds.formula[i])), 
+                  data=detections, meta.data=list(width=4))
+  pi.results$AIC[i] <- summary(pi.model)$AIC
+}
+# Calculate delta AIC
+pi.results$deltaAIC <- pi.results$AIC - min(pi.results$AIC)
+# Order by delta AIC
+pi.results <- pi.results[order(pi.results$deltaAIC), ]
+knitr::kable(pi.results, digits = 2)
+```
+
+This indicates that `sex` should be included in the DS model. We do this and check the goodness of fit and obtain abundance (Figure \@ref(fig:pidssex)).  
+
+```{r pidssex, fig.cap="Goodness of fit of point independence model with sex covariate in the distance sampling component and distance, sex and exposure in the mr component.", fig.dim=c(7,5)}
+# Fit chosen model
+pi.ds.sex <- ddf(method='trial', mrmodel=~glm(link='logit',formula=~distance+sex+exposure),
+                dsmodel=~mcds(key='hn',formula=~sex), data=detections,  
+                meta.data=list(width=4))
+summary(pi.ds.sex)
+# Check goodness-of-fit 
+ddf.gof(pi.ds.sex, main="PI trial configutation\nGolfTee DS model sex")
+# Get abundance estimates 
+tee.abund.pi.ds.sex <- dht(model=pi.ds.sex, region.table=region,
+                    sample.table=samples, obs.table=obs)
+print(tee.abund.pi.ds.sex)
+```
+
+This model estimated an abundance of `r round(tee.abund.pi.ds.sex$individuals$N[3,2])`, which is closest to the true value of all the models - it is still less than the true value indicating, perhaps, some unmodelled heterogeneity on the trackline (or perhaps just bad luck - remember this was only one survey). 
+
+Was this complex modelling worthwhile? In this case, the estimated $p(0)$ for the best model was `r round(summary(pi.ds.sex)$mr.summary$average.p0.1,3)` (which is very close to 1). If we ran a conventional distance sampling analysis, pooling the data from the two observers, we should get a very robust estimate of true abundance. 
+
+## References

@@ -3,9 +3,27 @@ Maintainer: Laura Marshall <lhm@st-andrews.ac.uk>
 License: GPL (>=2)
 Title: Mark-Recapture Distance Sampling
 LazyLoad: yes
-Author: Jeff Laake <jeff.laake@noaa.gov>, David Borchers
-    <dlb@st-and.ac.uk>, Len Thomas <len.thomas@st-and.ac.uk>, David
-    Miller <dave@ninepointeightone.net>, Jon Bishop and Jonah McArthur
+Authors@R:
+  c(person(given="Jeff",
+           family="Laake",
+           role="aut"),
+    person(given="David",
+           family="Borchers",
+           role="aut",
+           email="dlb@st-and.ac.uk"),
+    person(given="Len",
+           family="Thomas",
+           role="aut",
+           email="len.thomas@st-and.ac.uk"),
+    person(given="David",
+           family="Miller",
+           role="aut"),
+    person(given="Jon",
+           family="Bishop",
+           role="aut"),
+    person(given="Jonah",
+           family="McArthur",
+           role="aut"))
 Description: Animal abundance estimation via conventional, multiple covariate
     and mark-recapture distance sampling (CDS/MCDS/MRDS). Detection function
     fitting is performed via maximum likelihood. Also included are diagnostics
