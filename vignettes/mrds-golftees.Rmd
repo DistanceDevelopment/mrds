@@ -19,7 +19,7 @@ pkgdown:
 bibliography: golftees.bib
 csl: apa.csl
 vignette: >
-  %\VignetteIndexEntry{Incorporating covariates in the detection function}
+  %\VignetteIndexEntry{Double platform analysis}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
