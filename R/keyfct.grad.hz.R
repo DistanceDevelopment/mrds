@@ -12,14 +12,25 @@
 #' @param distance perpendicular distance vector
 #' @param key.scale vector of scale values
 #' @param key.shape vector of shape values
+#' @param shape is the gradient parameter the shape parameter? Defaults to FALSE
 #' 
 #' @return matrix of derivatives of the hazard rate key function w.r.t. the
 #' scale parameter and the shape parameter.
-keyfct.grad.hz <- function(distance, key.scale, key.shape){
-  out.scale <- (key.shape * exp(-(1/ (distance / key.scale) ^ key.shape)) / 
-                  ((distance / key.scale) ^ key.shape ) * key.scale)
-  out.shape <- -1 * ((log(distance / key.scale) * 
-                        exp(-(1/ (distance / key.scale) ^ key.shape))) /
-                       (distance / key.scale) ^ key.shape)
-  return(matrix(c(out.scale, out.shape), ncol = 2, byrow = FALSE))
+keyfct.grad.hz <- function(distance, key.scale, key.shape, shape = FALSE){
+if (scale) {
+  return(key.shape * exp(-(1/ (distance / key.scale) ^ key.shape)) / 
+           ((distance / key.scale) ^ key.shape ) * key.scale)
+} else {
+  return(-1 * ((log(distance / key.scale) * 
+                  exp(-(1/ (distance / key.scale) ^ key.shape))) /
+                 (distance / key.scale) ^ key.shape))
 }
+}
+# keyfct.grad.hz <- function(distance, key.scale, key.shape){
+#   out.scale <- (key.shape * exp(-(1/ (distance / key.scale) ^ key.shape)) / 
+#                   ((distance / key.scale) ^ key.shape ) * key.scale)
+#   out.shape <- -1 * ((log(distance / key.scale) * 
+#                         exp(-(1/ (distance / key.scale) ^ key.shape))) /
+#                        (distance / key.scale) ^ key.shape)
+#   return(matrix(c(out.scale, out.shape), ncol = 2, byrow = FALSE))
+# }
