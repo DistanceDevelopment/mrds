@@ -5,7 +5,7 @@
 # scaling     - scale parameter
 # adj.order - vector of orders of polynomials to fit
 # adj.parm  - vector of parameters (a_j)
-grad.series.adj.herm <- function(distance, scaling = 1, adj.order, adj.parm=NULL,
+grad.adj.series.herm <- function(distance, scaling = 1, adj.order, adj.parm=NULL,
                         adj.exp=FALSE){
   
   # Check the adjustment parameters
