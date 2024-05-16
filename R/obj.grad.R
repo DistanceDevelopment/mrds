@@ -1,4 +1,6 @@
-#' Gradient of the objective function
+#' Gradient of the objective function. 
+#' 
+#' The current implementation is for unbinned line transect data. 
 #'
 #' @param j the index of the parameter of interest
 #' @param distance vector of distances
@@ -30,27 +32,33 @@ obj.grad <- function(fpar, ddfobj, misc.options, fitting="all") {
     z <- matrix(1, nrow=nrow(x), ncol=1)
   }
   
+  distance <- x$distance
   width <- misc.options$width
   point <- misc.options$point
-  standardize = TRUE
+  standardize <- FALSE
 
   ### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< END HERE
   
   gradients <- list()
   
-  for (par.index in seq.along(fpar)) {
-    # Part A: d g(x)/ d(theta_j) * (1 / g(x))
-    A1 <- detfct(x$distance, ddfobj, left = left, standardize = standardize)
-    A2 <- detfct.grad(par.index = par.index, distance = x$distance, ddfobj = ddfobj,
-                width = width, left = left)
-    A <- sum(A1 / A2)
+  for (par.index in seq(along = fpar)) {
+    # Part 1: d g(x)/ d(theta_j) * (1 / g(x))
+    part1a <- detfct(distance, ddfobj, left = left, standardize = standardize)
+    part1b <- detfct.grad(par.index = par.index, distance = distance, ddfobj = ddfobj,
+                          width = width, left = left, standardize = standardize)
+    part1 <- sum(part1a / part1b)
     
-    B1 <- nrow(x) / beta(int.range = int.range, ddfobj = ddfobj, width = width, 
-                         standardize = standardize, point = point, left = left)
-    B2 <- grad.beta()
+    part2a <- nrow(x) / integrate.detfct(int.range = int.range, ddfobj = ddfobj, 
+                                         width = width, standardize = standardize, 
+                                         point = point, left = left)
+    part2b <- integrate.detfct.grad(distance = distance, par.index = par.index, 
+                                    ddfobj = ddfobj, int.range = int.range, 
+                                    width = width,bstandardize = standardize, 
+                                    point = point, left = left)
+    part2 <- part2a * part2b
     
-    B <- B1 * B2
-    
-    gradients[par.index] <- A - B
+    gradients[par.index] <- part1 - part2
   }
+  
+  return(unlist(gradients))
 }
