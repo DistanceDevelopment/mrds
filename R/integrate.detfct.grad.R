@@ -1,6 +1,8 @@
 #' Gradient of the integral of the detection function, i.e., d beta/d theta in 
 #' the documentation. This gradient of the integral is the same as the integral
-#' of the gradient, thanks to Leibniz integral rule. 
+#' of the gradient, thanks to Leibniz integral rule.
+#' 
+#' REPLACED BY int.nonnormpdf.grad.R!!!! 
 #' 
 #' @param par.index the index of the parameter of interest
 #' @param distance vector of distances
