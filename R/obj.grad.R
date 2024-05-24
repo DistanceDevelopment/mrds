@@ -42,23 +42,45 @@ obj.grad <- function(fpar, ddfobj, misc.options, fitting="all") {
   gradients <- list()
   
   for (par.index in seq(along = fpar)) {
-    # Part 1: d g(x)/ d(theta_j) * (1 / g(x))
+    ## Part 1
     part1a <- detfct(distance, ddfobj, left = left, standardize = standardize)
     part1b <- detfct.grad(par.index = par.index, distance = distance, ddfobj = ddfobj,
                           width = width, left = left, standardize = standardize)
-    part1 <- sum(part1a / part1b)
+    part1 <- sum(part1b / part1a)
     
-    part2a <- nrow(x) / integrate.detfct(int.range = int.range, ddfobj = ddfobj, 
-                                         width = width, standardize = standardize, 
-                                         point = point, left = left)
-    part2b <- integrate.detfct.grad(distance = distance, par.index = par.index, 
+    ## Alternative for Part 1
+    # part1a <- distpdf(distance, ddfobj, left = left, standardize = standardize,
+    #                   point = point, width = width)
+    # if (point) part1a <- part1a * width ^ 2 / 2 else part1a <- part1a * width
+    # part1b <- nonnormpdf.grad(par.index = par.index, distance = distance, ddfobj = ddfobj,
+    #                       width = width, left = left, standardize = standardize)
+    # part1 <- sum(part1b / part1a)
+    
+    ## Initial checking gave the same results for both derivations of part 1.
+    ## The first version was chosen as it is slightly quicker
+    ## However, does this mean that the problem is in Part 2?
+    
+    ## Part 2
+    # part2a <- nrow(x) / int.nonnormpdf(int.range = int.range, ddfobj = ddfobj, 
+    #                                      width = width, standardize = standardize, 
+    #                                      point = point, left = left)
+    part2a <- nrow(x) / (integratepdf(ddfobj, select = c(TRUE), width = width, 
+                                     int.range = int.range, 
+                                     standardize = standardize) / 2 * width ^ 2)
+    part2b <- int.nonnormpdf.grad(par.index = par.index, 
                                     ddfobj = ddfobj, int.range = int.range, 
-                                    width = width,bstandardize = standardize, 
+                                    width = width, standardize = standardize, 
                                     point = point, left = left)
+    
     part2 <- part2a * part2b
     
-    gradients[par.index] <- part1 - part2
-  }
+    if (point) gradients[par.index] <- sum(log(distance)) + part1 - part2
+    else gradients[par.index] <- part1 - part2
+  }; gradients
   
   return(unlist(gradients))
+}
+
+neg.obj.grad <- function(fpar, ddfobj, misc.options, fitting="all") {
+  return(-obj.grad(fpar, ddfobj, misc.options, fitting))
 }
