@@ -1,4 +1,10 @@
 #' Gradient of the detection function
+#' 
+#' 
+#' REPLACED BY nonnormpdf.grad.R!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#' 
+#' 
+#' 
 #'
 #' Various functions used to specify key and adjustment functions for
 #' gradients of detection functions.
@@ -60,7 +66,7 @@ detfct.grad <- function(distance, par.index, ddfobj, standardize,
   ## 2. Derive the gradients for parameter if index > k, i.e., it is an 
   ##    adjustment parameter.
   ## ==================================================================
-  zeros <- rep(0, length(distance))
+  zeros <- rep(0, length(distance)) 
   
   ## Extact the information about the adjustment term
   adj.series <- ddfobj$adjustment$series
