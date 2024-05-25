@@ -37,14 +37,14 @@ nonnormpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
   ## ======================================================================
   # Key function
   key <- ddfobj$type
-  
+  width <- misc.options$width
   pars <- getpar(ddfobj)
   par.indices <- getpar(ddfobj, index = TRUE)
   k <- sum(par.indices[-3])
   m <- par.indices[3] - k
   
   if(par.indices[2] != 0) {
-    key.scale <- pars[par.indices[2]]
+    key.scale <- exp(pars[par.indices[2]]) # correct for log-link
   } else {
     key.scale <- NULL
   }
@@ -53,6 +53,7 @@ nonnormpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
   } else {
     key.shape <- NULL
   }
+  
   # key.scale <- ifelse(par.indices[2] != 0, pars[par.indices[2]], NULL)
   # key.shape <- ifelse(par.indices[1] != 0, pars[par.indices[1]], NULL)
   
@@ -76,7 +77,6 @@ nonnormpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
   }else{
     scaling <- key.scale
   }
-  
 
   ## Evaluate the gradient of the standardised detection function if 
   ## standardize == FALSE. Things are a lot easier then.
@@ -129,6 +129,7 @@ nonnormpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
                             th1   = keyfct.th1(distance, key.scale, key.shape),
                             th2   = keyfct.th2(distance, key.scale, key.shape),
                             tpn   = keyfct.tpn(distance, ddfobj))
+          
           adj.val <- switch(adj.series,
                             poly = adjfct.poly(distance, scaling, adj.order,
                                                adj.parm, adj.exp),
