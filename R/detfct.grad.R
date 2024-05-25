@@ -50,7 +50,7 @@ detfct.grad <- function(distance, par.index, ddfobj, standardize,
   m <- par.indices[3] - k
   
   if(par.indices[2] != 0) {
-    key.scale <- pars[par.indices[2]]
+    key.scale <- exp(pars[par.indices[2]])
   } else {
     key.scale <- NULL
   }
@@ -254,11 +254,11 @@ detfct.grad <- function(distance, par.index, ddfobj, standardize,
       ## Evaluate the specified adjustment term 
       adj.term <- switch(adj.series,
                          poly = adj.poly(distance, scaling, 
-                                         adj.order[adj.par.index] - 1),
+                                         adj.order[adj.par.index]),
                          herm = adj.herm(distance, scaling, 
-                                         adj.order[adj.par.index] - 1),
+                                         adj.order[adj.par.index]),
                          cos  = adj.cos(distance, scaling, 
-                                        adj.order[adj.par.index] - 1))
+                                        adj.order[adj.par.index]))
       
       ## Derive the gradient of the non-standardised detection function
       grad <- key.val * adj.term 
