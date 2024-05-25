@@ -1,0 +1,189 @@
+#' Gradient of the non-normalised pdf of distances
+#' 
+#' NOTES
+#' - This function should be updated to match distpdf closely, eventually, so
+#' that it has the same flexibility
+#' 
+#' 
+#' 
+#'
+#' Various functions used to specify key and adjustment functions for
+#' gradients of detection functions.
+#' 
+#' So far, only developed for the half-normal, hazard-rate and uniform key
+#' functions in combination with cosine, simple polynomial and Hermite 
+#' polynomial adjustments. It is only called by the gradient-based solver
+#' and not accessible to the general user
+#'
+#' \code{distpdf.grad} will call either a half-normal, hazard-rate or uniform
+#' function with adjustment terms to fit the data better, returning the 
+#' gradient of detection at that distance w.r.t. the parameters. The adjustments 
+#' are either cosine, Hermite or simple polynomial.
+#' 
+#' @param par.index the index of the parameter of interest
+#' @param distance vector of distances
+#' @param ddfobj the ddf object
+#' @param width the truncation width
+#' @param left the left truncation (defaults to zero)
+#' @param standardize whether the function should return the gradient of the  
+#' standardized detection function g(x)/g(0) (TRUE), or simply of g(0) (FALSE). 
+#' Defaults to TRUE.
+#' 
+#'@section Dependencies: 
+#'  \describe {
+#'    \item{keyfct.XX}
+#'    \item{keyfct.grad.XX}
+#'    \item{adj.YY}
+#'    \item{adjfct.YY}
+#'    \item{adj.grd.YY}
+#'  }
+#' 
+#' @author Felix Petersma
+#'
+distpdf.grad <- function(distance, par.index, ddfobj, standardize, 
+                        width = NULL, left = 0) {
+  
+  ## 1. Extract information from ddfobj and prepare for gradient evaluation
+  ## ======================================================================
+  # Key function
+  key <- ddfobj$type
+  
+  pars <- getpar(ddfobj)
+  par.indices <- getpar(ddfobj, index = TRUE)
+  k <- sum(par.indices[-3])
+  m <- par.indices[3] - k
+  
+  width <- misc.options$width
+  
+  if(par.indices[2] != 0) {
+    key.scale <- exp(pars[par.indices[2]])
+  } else {
+    key.scale <- NULL
+  }
+  if(par.indices[1] != 0) {
+    key.shape <- pars[par.indices[1]]
+  } else {
+    key.shape <- NULL
+  }
+  
+  zeros <- 0 # rep(0, length(distance)) 
+  
+  ## Extact the information about the adjustment term
+  adj.series <- ddfobj$adjustment$series
+  adj.scale <- ddfobj$adjustment$scale
+  adj.order <- ddfobj$adjustment$order
+  adj.parm <- ddfobj$adjustment$parameters
+  adj.exp <- ddfobj$adjustment$exp
+  
+  ## Find out if we are scaling by width or by key scale
+  if(adj.scale == "width"){
+    scaling <- width
+  }else{
+    scaling <- key.scale
+  }
+  
+  ## Evaluate the gradient of the standardised detection function if 
+  ## standardize == FALSE
+  # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< standardize == FALSE
+  ## If the parameter is an adjustment parameter
+  if (par.index > k) {
+    ## Derive the adjustment parameter index (j' in the documentation)
+    adj.par.index <- par.index - k
+    
+    ## Evaluate the specified key function
+    ## Currently implemented for: half-normal, hazard-rate, uniform
+    key.val <- switch(key,
+                      hn    = keyfct.hn(distance, key.scale),
+                      hr    = keyfct.hz(distance, key.scale, key.shape),
+                      unif  = 1, #rep(1, length(distance)), 
+                      gamma = keyfct.gamma(distance, key.scale, key.shape),
+                      th1   = keyfct.th1(distance, key.scale, key.shape),
+                      th2   = keyfct.th2(distance, key.scale, key.shape),
+                      tpn   = keyfct.tpn(distance, ddfobj))
+    
+    
+    ## Evaluate the specified adjustment term 
+    adj.term <- switch(adj.series,
+                       poly = adj.poly(distance, scaling, 
+                                       adj.order[adj.par.index]),
+                       herm = adj.herm(distance, scaling, 
+                                       adj.order[adj.par.index]),
+                       cos  = adj.cos(distance, scaling, 
+                                      adj.order[adj.par.index]))
+    
+    ## Derive the gradient of the non-standardised detection function
+    grad <- key.val * adj.term / (width - left)
+    
+  } else { 
+    ## If the parameter is a key function parameter (i.e., scale or shape)
+    ## Evaluate the key function and adjustment series for distance = 0
+    
+    if (par.index == 1) { ## If the parameter is the scale parameter
+      ## Derive the gradient of the scaled distance w.r.t. the parameter
+      scaled.dist.grad <- -distance / (key.scale ^ 2)
+            
+      ## Evaluate the key function and adjustment series
+      key.val <- switch(key,
+                        hn    = keyfct.hn(distance, key.scale),
+                        hr    = keyfct.hz(distance, key.scale, key.shape),
+                        unif  = 1, #rep(1, length(distance)), 
+                        gamma = keyfct.gamma(distance, key.scale, key.shape),
+                        th1   = keyfct.th1(distance, key.scale, key.shape),
+                        th2   = keyfct.th2(distance, key.scale, key.shape),
+                        tpn   = keyfct.tpn(distance, ddfobj))
+      adj.val <- switch(adj.series,
+                        poly = adjfct.poly(distance, scaling, adj.order,
+                                           adj.parm, adj.exp),
+                        herm = adjfct.herm(distance, scaling, adj.order,
+                                           adj.parm, adj.exp),
+                        cos  = adjfct.cos(distance, scaling, adj.order,
+                                          adj.parm, adj.exp))
+      
+      ## Evaluate gradient of the adjustment series w.r.t. the scaled distance
+      grad.adj.series.val <- switch(
+        adj.series,
+        poly = grad.adj.series.poly(distance, key.scale, adj.order, adj.parm, 
+                                    adj.exp),
+        herm = grad.adj.series.herm(distance, key.scale, adj.order, adj.parm, 
+                                    adj.exp),
+        cos = grad.adj.series.cos(distance, key.scale, adj.order, adj.parm, 
+                                  adj.exp)
+      )
+      
+      ## Evaluate the gradient of the key function w.r.t. the parameter
+      key.grad.val <- switch(key,
+                             hn = keyfct.grad.hn(distance, key.scale),
+                             hz = keyfct.grad.hz(distance, key.scale, 
+                                                 key.shape),
+                             unif = 0)#rep(0, distance))
+      
+      ## Derive the gradient of the non-standardised detection function 
+      grad <- (key.val * grad.adj.series.val * scaled.dist.grad + 
+       key.grad.val * (1 + adj.val)) / (width - left)
+      
+    }
+    else { ## If par.index = 2, the parameter is shape and key is hazard-rate.
+      ## Since the derivative of the scaled distance wrt the shape 
+      ## parameter is 0, the majority of the equation becomes zero.
+      
+      ## Evaluate the derivative of the key function w.r.t. the shape parameter
+      key.grad.val <- keyfct.grad.hz(distance, key.scale, key.shape, 
+                                     shape = TRUE)
+      
+      ## Evaluate the adjustment series
+      adj.val <- switch(adj.series,
+                        poly = adjfct.poly(distance, scaling, adj.order,
+                                           adj.parm, adj.exp),
+                        herm = adjfct.herm(distance, scaling, adj.order,
+                                           adj.parm, adj.exp),
+                        cos  = adjfct.cos(distance, scaling, adj.order,
+                                          adj.parm, adj.exp))
+      
+      ## Derive the gradient of the non-standardised detection function 
+      grad <- ((1 + adj.val) * key.grad.val) / (width - left)
+    }
+  }
+  
+  ## Return the gradient
+  return(grad)
+}
