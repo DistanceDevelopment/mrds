@@ -24,13 +24,13 @@ int.nonnormpdf <- function(int.range, ddfobj, width, standardize, point = FALSE,
                    index = index, standardize = FALSE, stdint = stdint, 
                    point = point, left = left)$value
   
-  ## Correct the integrals
-  # if (point) {
-  #   out <- out / 2 * (width - left) ^ 2
-  # }
-  # else {
-  #   out <- out * (width - left)
-  # }
+  # Correct the integrals
+  if (point) {
+    out <- out / 2 * (width - left) ^ 2
+  }
+  else {
+    out <- out * (width - left)
+  }
   
   ## Set values that are negative (or really small) to zero
   # if (out < 1e-6) out <- 0
