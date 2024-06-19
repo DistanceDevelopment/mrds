@@ -9,11 +9,11 @@
 #' @param left the left truncation (defaults to zero)
 #'
 #' @author Felix Petersma
-obj.grad <- function(fpar, ddfobj, misc.options, fitting="all") {
+obj.grad <- function(pars, ddfobj, misc.options, fitting="all") {
   
   ## THE NEXT PART COMES FROM flpt.lnl.R >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   # Assign parameter values into ddfobj
-  ddfobj <- assign.par(ddfobj, fpar)
+  ddfobj <- assign.par(ddfobj, pars)
   
   # Setup integration ranges
   int.range <- misc.options$int.range
@@ -47,13 +47,14 @@ obj.grad <- function(fpar, ddfobj, misc.options, fitting="all") {
                                     width = width, left = 0,
                                     int.range = int.range,
                                     standardize = standardize))
-  for (par.index in seq(along = fpar)) {
+  for (par.index in seq(along = pars)) {
     ## Part 1
     # New version as proposed on 24/05, which means we build around distpdf
     # and the defintiona g(x)/2 (line) and g(x)*2/w^2 (point). also, took part1a
     # and part2a outside the loop
-    part1b <- distpdf.grad(par.index = par.index, distance = distance, ddfobj = ddfobj,
-                          width = width, left = left, standardize = standardize)
+    part1b <- distpdf.grad(distance = distance, par.index = par.index, 
+                           ddfobj = ddfobj, width = width, left = left, 
+                           standardize = standardize)
     part1 <- sum(part1b / part1a)
     
     ## older version
@@ -83,9 +84,9 @@ obj.grad <- function(fpar, ddfobj, misc.options, fitting="all") {
     ## Also here, there is a new version to keep things in line with the current
     ## implementation of code [24/05/24]
     part2b <- integratepdf.grad(par.index = par.index, 
-                                  ddfobj = ddfobj, int.range = int.range, 
-                                  width = width, standardize = standardize, 
-                                  point = point, left = left)    
+                                ddfobj = ddfobj, int.range = int.range, 
+                                width = width, standardize = standardize, 
+                                point = point, left = left)    
     part2 <- part2a * part2b
     # if (!point) {
     #   part2a <- nrow(x) / int.nonnormpdf(int.range = int.range, ddfobj = ddfobj,
@@ -119,6 +120,6 @@ obj.grad <- function(fpar, ddfobj, misc.options, fitting="all") {
   return(unlist(gradients))
 }
 
-neg.obj.grad <- function(fpar, ddfobj, misc.options, fitting="all") {
-  return(-obj.grad(fpar, ddfobj, misc.options, fitting))
+neg.obj.grad <- function(pars, ddfobj, misc.options, fitting="all") {
+  return(-obj.grad(pars, ddfobj, misc.options, fitting))
 }
