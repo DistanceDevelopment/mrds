@@ -6,8 +6,12 @@
 #' parameters much like the approach in the CDS and MCDS Distance FORTRAN code.
 #' This function is called by the driver function \code{detfct.fit}, then
 #' calls \code{\link{optimx}} function.
+#' 
+#' NOTES:
+#'  - The current implementations of nloptr are only ready for line transect 
+#'    and unbinned data. They are still in a trial stage.
 #'
-#' @import optimx Rsolnp
+#' @import optimx Rsolnp nloptr
 #' @aliases detfct.fit.opt
 #' @param ddfobj detection function object
 #' @param optim.options control options for optim
@@ -40,7 +44,7 @@
 #'   bounded: TRUE if estimated parameters are at the bounds \item model:
 #'   list of formulas for detection function model (probably can remove this)
 #'   }}
-#' @author Dave Miller; Jeff Laake; Lorenzo Milazzo
+#' @author Dave Miller; Jeff Laake; Lorenzo Milazzo; Felix Petersma
 #' @importFrom stats runif optim
 detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            fitting="all"){
@@ -149,7 +153,31 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       # small initialvalues lead to errors in solnp, so work around that
       initialvalues[initialvalues<1e-2] <- sign(initialvalues[initialvalues<1e-2]) * 1e-2
       if (showit == 0) {
-        if (opt.method == "auglag") {
+        ## The derivative-based SLSQP solver
+        if (opt.method == "slsqp") {
+          lt <- suppressWarnings(
+            try(nloptr(x0 = initialvalues, 
+                       eval_f = flnl,
+                       eval_g_ineq = flnl.constr.neg,
+                       eval_grad_f = obj.grad,
+                       eval_jac_g_ineq = grad.constr.neg,
+                       lb = lowerbounds, ub = upperbounds,
+                       opts = list(xtol_rel = misc.options$mono.tol,
+                                   ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                                   print_level = as.integer(showit),
+                                   algorithm = "NLOPT_LD_SLSQP"),
+                       ddfobj = ddfobj,
+                       misc.options = misc.options,
+                       fitting = "all"), 
+                silent = TRUE))
+          if (!inherits(lt, "try-error")) {
+            if (lt$status %in% c(3, 4)) {
+              lt$convergence <- 0 # convergence = 3 if success, but look into this!
+            } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
+          }
+        }
+        ## The augmented Lagrangian solver with a local derivative-free solver
+        else if (opt.method == "auglag") {
           lt <- suppressWarnings(
             try(nloptr(x0 = initialvalues, 
                        eval_f = flnl,
@@ -171,6 +199,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
             } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
           }
         } 
+        ## The derivative-free augmented Lagrangian solver by Yinyu Ye.
         else if (opt.method == "solnp") {
           lt <- suppressWarnings(
             try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
@@ -184,9 +213,31 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                    outer.iter=misc.options$mono.outer.iter)
             ),
             silent=TRUE))
-        } else {stop("Constrainted solver is not 'auglag' or 'solnp'")}
+        } else {stop("Constrained solver is not 'auglag', 'solnp', or 'slsqp'!")}
       } else {
-        if (opt.method == "auglag") {
+        ## The derivative-based SLSQP solver
+        if (opt.method == "slsqp") {
+          lt <- try(nloptr(x0 = initialvalues, 
+                       eval_f = flnl,
+                       eval_g_ineq = flnl.constr.neg,
+                       eval_grad_f = obj.grad,
+                       eval_jac_g_ineq = grad.constr.neg,
+                       lb = lowerbounds, ub = upperbounds,
+                       opts = list(xtol_rel = misc.options$mono.tol,
+                                   ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                                   print_level = as.integer(showit),
+                                   algorithm = "NLOPT_LD_SLSQP"),
+                       ddfobj = ddfobj,
+                       misc.options = misc.options,
+                       fitting = "all"))
+          if (!inherits(lt, "try-error")) {
+            if (lt$status %in% c(3, 4)) {
+              lt$convergence <- 0 # convergence = 3 if success, but look into this!
+            } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
+          }
+        }
+        ## The augmented Lagrangian solver with a local derivative-free solver
+        else if (opt.method == "auglag") {
           lt <- try(nloptr(x0 = initialvalues, 
                            eval_f = flnl,
                            eval_g_ineq = flnl.constr.neg,
@@ -205,7 +256,9 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
               lt$convergence <- 0 # convergence = 3 if success, but look into this!
             } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
           }
-        } else if (opt.method == "solnp") {
+        } 
+        ## The derivative-free augmented Lagrangian solver by Yinyu Ye
+        else if (opt.method == "solnp") {
           lt <- try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
                           ineqfun=flnl.constr,
                           ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
@@ -334,7 +387,31 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           #                                outer.iter=misc.options$mono.outer.iter)))
           # } # end showit status
           if (showit == 0) {
-            if (opt.method == "auglag") {
+            ## The derivative-based SLSQP solver
+            if (opt.method == "slsqp") {
+              lt <- suppressWarnings(
+                try(nloptr(x0 = par_grid[igrid, ], 
+                           eval_f = flnl,
+                           eval_g_ineq = flnl.constr.neg,
+                           eval_grad_f = obj.grad,
+                           eval_jac_g_ineq = grad.constr.neg,
+                           lb = lowerbounds, ub = upperbounds,
+                           opts = list(xtol_rel = misc.options$mono.tol,
+                                       ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                                       print_level = as.integer(showit),
+                                       algorithm = "NLOPT_LD_SLSQP"),
+                           ddfobj = ddfobj,
+                           misc.options = misc.options,
+                           fitting = "all"), 
+                    silent = TRUE))
+              if (!inherits(lt, "try-error")) {
+                if (lt$status %in% c(3, 4)) {
+                  lt$convergence <- 0 # convergence = 3 if success, but look into this!
+                } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
+              }
+            }
+            ## The augmented Lagrangian solver with a local derivative-free solver
+            else if (opt.method == "auglag") {
               lt <- suppressWarnings(
                 try(nloptr(x0 = par_grid[igrid, ], 
                            eval_f = flnl,
@@ -370,7 +447,29 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                 silent=TRUE))
             } else {stop("Constrainted solver is not 'auglag' or 'solnp'")}
           } else {
-            if (opt.method == "auglag") {
+            ## The derivative-based SLSQP solver
+            if (opt.method == "slsqp") {
+              lt <- try(nloptr(x0 = par_grid[igrid, ], 
+                           eval_f = flnl,
+                           eval_g_ineq = flnl.constr.neg,
+                           eval_grad_f = obj.grad,
+                           eval_jac_g_ineq = grad.constr.neg,
+                           lb = lowerbounds, ub = upperbounds,
+                           opts = list(xtol_rel = misc.options$mono.tol,
+                                       ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                                       print_level = as.integer(showit),
+                                       algorithm = "NLOPT_LD_SLSQP"),
+                           ddfobj = ddfobj,
+                           misc.options = misc.options,
+                           fitting = "all"))
+              if (!inherits(lt, "try-error")) {
+                if (lt$status %in% c(3, 4)) {
+                  lt$convergence <- 0 # convergence = 3 if success, but look into this!
+                } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
+              }
+            }
+            ## The augmented Lagrangian solver with a local derivative-free solver
+            else if (opt.method == "auglag") {
               lt <- try(nloptr(x0 = par_grid[igrid, ], 
                                eval_f = flnl,
                                eval_g_ineq = flnl.constr.neg,
@@ -424,7 +523,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         if (opt.method == "solnp") {
           lt$par <- lt$pars
           lt$value <- lt$values[length(lt$values)]
-        } else if (opt.method == "auglag") {
+        } else if (opt.method %in% c("slsqp", "auglag")) {
           lt$par <- lt$solution
           lt$value <- lt$objective
         } else stop("Invalid constrained solver")
