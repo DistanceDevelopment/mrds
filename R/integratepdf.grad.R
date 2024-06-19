@@ -17,7 +17,7 @@ integratepdf.grad <- function(par.index, ddfobj, int.range, width,
                               standardize = FALSE, 
                               point = FALSE, left = 0, stdint = FALSE, 
                               select = NULL, index = NULL) {
-  standardize <- FALSE
+  
   ## If the non-standardised detection function is required, simply 
   ## integrate the gradient of the detection function directly.
   if (!standardize) {
