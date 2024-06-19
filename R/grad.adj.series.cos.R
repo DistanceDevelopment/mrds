@@ -4,8 +4,8 @@
 # scaling     - scale parameter
 # adj.order - vector of orders of Cosine terms to fit
 # adj.parm  - vector of parameters (a_j)
-grad.adj.series.cos <- function(distance,scaling=1,adj.order,adj.parm=NULL,
-                                adj.exp=FALSE){
+grad.adj.series.cos <- function(distance, scaling = 1, adj.order, adj.parm=NULL,
+                                adj.exp = FALSE){
   
   # Check the adjustment parameters
   if(is.null(adj.parm)){
