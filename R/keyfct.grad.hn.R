@@ -11,12 +11,6 @@
 #' @return vector of derivatives of the half-normal key function w.r.t. the
 #' scale parameter
 keyfct.grad.hn <- function(distance, key.scale){
-  return(exp(-distance ^ 2 / (2 *  key.scale ^ 2)) *
+  return(exp(- distance ^ 2 / (2 *  key.scale ^ 2)) *
              (distance ^ 2 / key.scale ^ 3))
-  
-  # # alternative when including the denominator \sqrt{\pi * \sigma ^2 / 2}
-  # DOES NOT WORK
-  # return( 
-  #   -(sqrt(2) * (key.scale^2 - distance ^2) * exp(-distance ^ 2 / (2 *  key.scale ^ 2))
-  #     / sqrt(pi) * key.scale^3 * abs(key.scale)))
 }
