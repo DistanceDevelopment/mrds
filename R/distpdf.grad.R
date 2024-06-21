@@ -41,13 +41,13 @@
 #' @author Felix Petersma
 #'
 distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE, 
-                        width, left = 0) {
+                        width, point, left = 0) {
   
   ## 1. Extract information from ddfobj and prepare for gradient evaluation
   ## ======================================================================
-  # Key function
+  ## Key function
   key <- ddfobj$type
-  
+
   pars <- getpar(ddfobj)
   par.indices <- getpar(ddfobj, index = TRUE)
   k <- sum(par.indices[-3] > 0)
@@ -119,7 +119,11 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
                                       adj.order[adj.par.index]))
     
     ## Derive the gradient of the non-standardised detection function
-    grad <- key.val * adj.term / (width - left)
+    if (point) {
+      grad <- key.val * adj.term * 2 * distance / (width ^ 2)
+    } else {
+      grad <- key.val * adj.term / (width - left)
+    }
     
   } else { 
     ## If the parameter is a key function parameter (i.e., scale or shape)
@@ -162,12 +166,17 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
                              hn = keyfct.grad.hn(distance, key.scale),
                              hr = keyfct.grad.hz(distance, key.scale, 
                                                  key.shape),
-                             unif = 0) #rep(0, distance))
+                             unif = 0) # rep(0, distance))
       
       ## Derive the gradient of the non-standardised detection function
-      grad <- (key.val * grad.adj.series.val * scaled.dist.grad + 
-       key.grad.val * (1 + adj.val)) / (width - left) * key.scale 
-      
+      if (point) {
+        grad <- (key.val * grad.adj.series.val * scaled.dist.grad + 
+                   key.grad.val * (1 + adj.val)) * 2 * distance / (width ^ 2) * 
+          key.scale 
+      } else {
+        grad <- (key.val * grad.adj.series.val * scaled.dist.grad + 
+                   key.grad.val * (1 + adj.val)) / (width - left) * key.scale 
+      }
     }
     else { ## If par.type == "shape", the parameter is shape and key is hazard-rate.
       ## Since the derivative of the scaled distance wrt the shape 
@@ -187,7 +196,12 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
                                           adj.parm, adj.exp))
       
       ## Derive the gradient of the non-standardised detection function 
-      grad <- (key.grad.val * (1 + adj.val)) / (width - left) * key.shape
+      if (point) {
+        grad <- (key.grad.val * (1 + adj.val)) * 2 * distance / (width ^ 2) * 
+          key.shape
+      } else {
+        grad <- (key.grad.val * (1 + adj.val)) / (width - left) * key.shape
+      }
     }
   }
   
