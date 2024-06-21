@@ -140,7 +140,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
       # fail if int.range is a matrix
       if(is.matrix(misc.options$int.range) && nrow(misc.options$int.range)>1){
-        stop("Montonicity constraints not available with multiple integration ranges")
+        stop("Monotonicity constraints not available with multiple integration ranges")
       }
 
       # lower and upper bounds of the inequality constraints
@@ -148,7 +148,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       upperbounds.ic <- rep(10^10, 2*misc.options$mono.points)
       
       ## Uncomment below to start debugging/browsing here
-      # browser()
+      browser()
 
       # small initialvalues lead to errors in solnp, so work around that
       initialvalues[initialvalues<1e-2] <- sign(initialvalues[initialvalues<1e-2]) * 1e-2
@@ -182,7 +182,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
             try(nloptr(x0 = initialvalues, 
                        eval_f = flnl,
                        eval_g_ineq = flnl.constr.neg,
-                       lb = lowerbounds, ub = upperbounds,
+                       lb = lowerbounds, ub = upperbounds, 
                        opts = list(xtol_rel = misc.options$mono.tol, 
                                    ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
                                    print_level = as.integer(showit),
