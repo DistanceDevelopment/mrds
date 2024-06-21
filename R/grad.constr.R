@@ -64,7 +64,7 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting="all") {
     # }
     
     g.refvals <- distpdf(distance = ref.points, ddfobj = ddfobj,
-                         width = width, left = left, 
+                         width = width, left = left, point = point,
                          select = c(rep(TRUE, no.points), 
                                     rep(FALSE, no.data - no.points)))
     
@@ -79,6 +79,11 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting="all") {
     g.0 <- distpdf(distance = ref.point0, ddfobj = ddfobj, width = width,
                    left = left, point = point, 
                    select = c(TRUE, rep(FALSE, no.data - 1)))
+    ## Add a very small number if g.0 = 0 to avoid dividing by zero, however,
+    ## I am not sure if this is correct since dividing by a very small number is 
+    ## kinda sketchy. 
+    if (g.0 == 0) g.0 <- 1e-10
+    
     
     ## Create matrix to start the constraint values, which are
     ## no.points values for the monotonicity constraint and no.points values
@@ -88,7 +93,7 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting="all") {
       ## Note that we must standardize so 0<=g(x)<=1. this is done at line 124
       dg.0 <- distpdf.grad(distance = ref.point0, par.index = par.index, 
                            ddfobj = ddfobj, standardize = FALSE, 
-                           left = left, width = width) #, 
+                           point = point, left = left, width = width) #, 
                            # select = c(TRUE, rep(FALSE, no.data - 1)))
       
       ## Standardised gradient at distance 0 is always 0
@@ -97,7 +102,7 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting="all") {
 
       dg.refvals <- distpdf.grad(distance = ref.points, par.index = par.index, 
                                  ddfobj = ddfobj, standardize = FALSE, 
-                                 left = left, width = width) #,
+                                 point = point, left = left, width = width) #,
                                  # select = c(rep(TRUE, no.points), 
                                             # rep(FALSE, no.data - no.points)))
       
