@@ -23,7 +23,7 @@ integratepdf.grad <- function(par.index, ddfobj, int.range, width,
   if (!standardize) {
     out <- integrate(distpdf.grad, lower = int.range[1], upper = int.range[2],
                      par.index = par.index, ddfobj = ddfobj, width = width,
-                     standardize = FALSE)$value
+                     standardize = FALSE, point = point)$value
   } 
   
   return(out)
