@@ -43,18 +43,19 @@ obj.grad <- function(pars, ddfobj, misc.options, fitting="all") {
   gradients <- list()
   part1a <- distpdf(distance, ddfobj, left = left, standardize = standardize,
                     point = point, width = width)
-  part2a <- nrow(x) / (integratepdf(ddfobj, select = c(TRUE), point = point,
-                                    width = width, left = 0,
-                                    int.range = int.range,
-                                    standardize = standardize))
+  part2a <- length(distance) / (integratepdf(ddfobj, select = c(TRUE), 
+                                             point = point,
+                                             width = width, left = left,
+                                             int.range = int.range,
+                                             standardize = standardize))
   for (par.index in seq(along = pars)) {
     ## Part 1
     # New version as proposed on 24/05, which means we build around distpdf
-    # and the defintiona g(x)/2 (line) and g(x)*2/w^2 (point). also, took part1a
+    # and the defintiona g(x)/w (line) and g(x)*2x/w^2 (point). Also, took part1a
     # and part2a outside the loop
     part1b <- distpdf.grad(distance = distance, par.index = par.index, 
                            ddfobj = ddfobj, width = width, left = left, 
-                           standardize = standardize)
+                           point = point, standardize = standardize)
     part1 <- sum(part1b / part1a)
     
     ## older version
@@ -112,9 +113,17 @@ obj.grad <- function(pars, ddfobj, misc.options, fitting="all") {
     # 
     # part2 <- part2a * part2b
     
-    ## Make sure we are getting the gradient of teh NEGATIVE log likelihood
-    if (point) gradients[par.index] <- part2 - part1 - sum(log(distance))
-    else gradients[par.index] <- part2 - part1
+    ## Make sure we are getting the gradient of the NEGATIVE log likelihood
+    ## I should not subtract log(distance) for point transect, but I thought I 
+    ## had to? look into the theory again.
+    ## UPDATE: when doing a polynomial or hermite, it DOES require the 
+    ## subtraction of sum(log(distance)). I am so confused.
+    if (point) { #& ddfobj$adjustment$series != "cos") {
+      gradients[par.index] <- part2 - part1 #- sum(log(distance)) 
+    } else {
+      gradients[par.index] <- part2 - part1
+    }
+    
   }; gradients
   
   return(unlist(gradients))
