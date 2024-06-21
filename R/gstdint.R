@@ -177,7 +177,9 @@ gstdint <- function(x, ddfobj, index=NULL, select=NULL, width,
       v <- distpdf(x, width=width, ddfobj=ddfobj, select=select, index=index,
                    standardize=standardize, stdint=stdint, point=point,
                    left=left)
-      v[v<1e-6] <- 0
+      v[v<1e-16] <- 0 ## FTP: 1e-6 was too large and resulted in non-negligible
+                      ## bias in the gradients. I changed it to 1e-16, which 
+                      ## resolved it. 
       v
     }
 
