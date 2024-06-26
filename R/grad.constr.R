@@ -63,8 +63,18 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting="all") {
     #   ddfobj$shape$dm <- rep(1, no.points)
     # }
     
-    g.refvals <- distpdf(distance = ref.points, ddfobj = ddfobj,
-                         width = width, left = left, point = point,
+    # g.refvals <- distpdf(distance = ref.points, ddfobj = ddfobj,
+    #                      width = width, left = left, point = point,
+    #                      select = c(rep(TRUE, no.points), 
+    #                                 rep(FALSE, no.data - no.points)))
+    # if (!point) {
+    #   g.refvals <- g.refvals * (width - left)
+    # } else {
+    #   g.refvals <- g.refvals / (2 * ref.points / (width ^ 2))
+    # }
+    
+    g.refvals <- detfct(distance = ref.points, ddfobj = ddfobj,
+                         width = width, left = left,
                          select = c(rep(TRUE, no.points), 
                                     rep(FALSE, no.data - no.points)))
     
@@ -76,13 +86,19 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting="all") {
     # if(!is.null(ddfobj$shape)){
     #   ddfobj$shape$dm <- 1
     # }
-    g.0 <- distpdf(distance = ref.point0, ddfobj = ddfobj, width = width,
-                   left = left, point = point, 
-                   select = c(TRUE, rep(FALSE, no.data - 1)))
+    
+    g.0 <- detfct(distance = ref.point0, ddfobj = ddfobj, width = width,
+                   left = left, select = c(TRUE, rep(FALSE, no.data - 1)))
+    
+    # g.0 <- distpdf(distance = ref.point0, ddfobj = ddfobj, width = width,
+    #                left = left, point = point, 
+    #                select = c(TRUE, rep(FALSE, no.data - 1)))
+    
     ## Add a very small number if g.0 = 0 to avoid dividing by zero, however,
     ## I am not sure if this is correct since dividing by a very small number is 
     ## kinda sketchy. 
-    if (g.0 == 0) g.0 <- 1e-10
+    # if (g.0 == 0) g.0 <- 1e-10
+    # g.0 <- 1
     
     
     ## Create matrix to start the constraint values, which are
@@ -91,24 +107,36 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting="all") {
     grad.constraints <- sapply(1:no.pars, function(par.index) {
       ## Evaluate the gradient of the detection function at the reference points
       ## Note that we must standardize so 0<=g(x)<=1. this is done at line 124
-      dg.0 <- distpdf.grad(distance = ref.point0, par.index = par.index, 
-                           ddfobj = ddfobj, standardize = FALSE, 
-                           point = point, left = left, width = width) #, 
+      dg.0 <- distpdf.grad(distance = ref.point0, par.index = par.index,
+                           ddfobj = ddfobj, standardize = FALSE,
+                           point = point, left = left, width = width,
+                           pdf.based = FALSE) #,
                            # select = c(TRUE, rep(FALSE, no.data - 1)))
+      # if (!point) {
+      #   dg.0 <- dg.0 * (width - left)
+      # } else {
+      #   dg.0 <- dg.0 / (2 * ref.point0 / (width ^ 2))
+      # }
       
-      ## Standardised gradient at distance 0 is always 0
+      # dg.0 <- 0
+      ## Standardised gradient at distance 0 is always 0 for line (but not point?)
       # std.dg.0 <- (dg.0 - g.0 * dg.0 / g.0) / g.0 ## Always 0
       std.dg.0 <- 0
 
       dg.refvals <- distpdf.grad(distance = ref.points, par.index = par.index, 
                                  ddfobj = ddfobj, standardize = FALSE, 
-                                 point = point, left = left, width = width) #,
+                                 point = point, left = left, width = width,
+                                 pdf.based = FALSE) #,
                                  # select = c(rep(TRUE, no.points), 
                                             # rep(FALSE, no.data - no.points)))
-      
+      # if (!point) {
+      #   dg.refvals <- dg.refvals * (width - left)
+      # } else {
+      #   dg.refvals <- dg.refvals / (2 * ref.points / (width ^ 2))
+      # }
       ## Derive the gradients of the standardised detection function [see notes 17-06-2024]
       std.dg.refvals <- (dg.refvals - g.refvals * dg.0 / g.0) / g.0 # * dlink ## Can probably remove dlink
-      
+      # std.dg.refvals <- dg.refvals
       # inequality constraints ensuring the
       # (weak or strict) monotonicity
       grads.mono.par <- NULL
