@@ -41,7 +41,7 @@
 #' @author Felix Petersma
 #'
 distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE, 
-                        width, point, left = 0) {
+                        width, point, left = 0, pdf.based = TRUE) {
   
   ## 1. Extract information from ddfobj and prepare for gradient evaluation
   ## ======================================================================
@@ -120,9 +120,11 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
     
     ## Derive the gradient of the non-standardised detection function
     if (point) {
-      grad <- key.val * adj.term * 2 * distance / (width ^ 2)
+      grad <- key.val * adj.term
+      if (pdf.based) grad <- grad * 2 * distance / (width ^ 2)
     } else {
-      grad <- key.val * adj.term / (width - left)
+      grad <- key.val * adj.term
+      if (pdf.based) grad <- grad  / (width - left)
     }
     
   } else { 
@@ -171,11 +173,12 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
       ## Derive the gradient of the non-standardised detection function
       if (point) {
         grad <- (key.val * grad.adj.series.val * scaled.dist.grad + 
-                   key.grad.val * (1 + adj.val)) * 2 * distance / (width ^ 2) * 
-          key.scale 
+                   key.grad.val * (1 + adj.val)) * key.scale
+        if (pdf.based) grad <- grad * 2 * distance / (width ^ 2)
       } else {
         grad <- (key.val * grad.adj.series.val * scaled.dist.grad + 
-                   key.grad.val * (1 + adj.val)) / (width - left) * key.scale 
+                   key.grad.val * (1 + adj.val)) * key.scale
+        if (pdf.based) grad <- grad / (width - left)
       }
     }
     else { ## If par.type == "shape", the parameter is shape and key is hazard-rate.
@@ -197,10 +200,12 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
       
       ## Derive the gradient of the non-standardised detection function 
       if (point) {
-        grad <- (key.grad.val * (1 + adj.val)) * 2 * distance / (width ^ 2) * 
-          key.shape
+        grad <- (key.grad.val * (1 + adj.val)) * key.shape
+        if (pdf.based) grad <- grad * 2 * distance / (width ^ 2)
+        
       } else {
-        grad <- (key.grad.val * (1 + adj.val)) / (width - left) * key.shape
+        grad <- (key.grad.val * (1 + adj.val)) * key.shape
+        if (pdf.based) grad <- grad / (width - left)
       }
     }
   }
