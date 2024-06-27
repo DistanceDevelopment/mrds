@@ -9,9 +9,8 @@
 #' @param left the left truncation (defaults to zero)
 #'
 #' @author Felix Petersma
-obj.grad <- function(pars, ddfobj, misc.options, fitting="all") {
+flnl.grad <- function(pars, ddfobj, misc.options, fitting="all") {
   
-  ## THE NEXT PART COMES FROM flpt.lnl.R >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   # Assign parameter values into ddfobj
   ddfobj <- assign.par(ddfobj, pars)
   
@@ -39,8 +38,6 @@ obj.grad <- function(pars, ddfobj, misc.options, fitting="all") {
   binned <- misc.options$binned
   standardize <- FALSE
 
-  ### <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< END HERE
-  
   gradients <- list()
   
   ## If the distances are binned
@@ -296,6 +293,8 @@ obj.grad <- function(pars, ddfobj, misc.options, fitting="all") {
   return(unlist(gradients))
 }
 
-neg.obj.grad <- function(pars, ddfobj, misc.options, fitting="all") {
-  return(-obj.grad(pars, ddfobj, misc.options, fitting))
+## Negative of the gradients. Not in use now, but could be useful for future
+## implementations. 
+neg.flnl.grad <- function(pars, ddfobj, misc.options, fitting="all") {
+  return(-flnl.grad(pars, ddfobj, misc.options, fitting))
 }
