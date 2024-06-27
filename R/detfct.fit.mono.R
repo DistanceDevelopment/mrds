@@ -24,26 +24,6 @@ getRefPoints<- function(no_d, int.range){
   return(ref_points)
 }
 
-## FTP: When trying to run nloptr::auglag(), I get the following error:
-# Error in .hin(x) : argument "ddfobj" is missing, with no default
-# I think this is because of the following lines in nloptr::auglag()
-#           hin <- function(x) (-1) * .hin(x)
-# What happens here is that only x is passed on, but not ... . Therefore, the 
-# additional information that flnl.contr requires, such as ddfobj and 
-# misc.options, are not passed to the hin() function, 
-# and thus it cannot calculate the constraint.
-# Cal and I came up with the following solution:
-# Write a wrapper function for the optimiser which takes ddfobj ect as 
-# arguments, and within that wrapper define the constraint function 
-# flnl.contr(pars) the same as below but only give it one argument. Because
-# it also needs ddfobj and misc.options, but cannot find it, it will look up
-# one higher scope, which is the wrapper function, in which it will be able
-# to find these variables. Now the optimiser is happy as it only needs to pass
-# the current parameters as an argument to the constraint function, and the 
-# constraint function is happy as it can find the other necessary arguments
-# by looking in a higher scope. 
-
-#
 # set of equations associated with the Inequality Constraints
 #
 # input:
