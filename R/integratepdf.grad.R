@@ -13,7 +13,7 @@
 #' @param left the left truncation. Defaults to zero.
 #' @param pdf.based evaluate the non-normalised pdf or the detection function? 
 #'                  Defaults to TRUE. 
-#' @param standardize not being used, can probably be removed.
+#' @param standardize not being used really, so can probably be removed.
 #' 
 #' @author Felix Petersma
 
