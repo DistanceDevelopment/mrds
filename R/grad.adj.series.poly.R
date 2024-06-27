@@ -1,10 +1,11 @@
-# Series of the gradient of the simply polynomial adjustment series wrt the 
+# Series of the gradient of the simple polynomial adjustment series wrt the 
 # scaled distance
 #
 # distance  - perpendicular distance vector
 # scaling     - scale parameter
 # adj.order - vector of orders of polynomials to fit
 # adj.parm  - vector of parameters (a_j)
+# adj.exp - boolean, defaults to FALSE
 grad.adj.series.poly <- function(distance, scaling = 1, adj.order, 
                                  adj.parm = NULL, adj.exp = FALSE){
   
@@ -26,10 +27,6 @@ grad.adj.series.poly <- function(distance, scaling = 1, adj.order,
         (adj.parm[i] * adj.order[i] * (distance/scaling) ^ (adj.order[i] - 1))
     }
   }
-  
-  # for(i in seq_along(adj.order)){
-  #   polysum <- polysum + (adj.parm[i]*(distance/scaling) ^ adj.order[i])
-  # }
   
   # if adj.exp return exp(polysum) to keep f(x)>0 
   if(adj.exp){
