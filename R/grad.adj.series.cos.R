@@ -1,15 +1,25 @@
-# Series of the gradient of the cosine adjustment series wrt the scaled distance
-#
-# distance  - perpendicular distance vector
-# scaling     - scale parameter
-# adj.order - vector of orders of Cosine terms to fit
-# adj.parm  - vector of parameters (a_j)
-grad.adj.series.cos <- function(distance, scaling = 1, adj.order, adj.parm=NULL,
-                                adj.exp = FALSE){
+#' Series of the gradient of the cosine adjustment series w.r.t. the scaled 
+#' distance.
+#' 
+#' For internal use only -- not to be called by 'mrds' or 'Distance' users 
+#' directly.
+#'
+#' @param distance perpendicular distance vector/scalar
+#' @param scaling scale parameter
+#' @param adj.order the adjustment order
+#' @param adj.parm vector of parameters (a_j)
+#' @param adj.exp boolean, defaults to FALSE
+#' 
+#' @return scalar or vector containing the gradient of the cosine adjustment 
+#' series for every value in \param{distance}
+#'
+#' @author Felix Petersma
+grad.adj.series.cos <- function(distance, scaling = 1, adj.order, 
+                                adj.parm = NULL, adj.exp = FALSE){
   
   # Check the adjustment parameters
   if(is.null(adj.parm)){
-    adj.parm <- as.vector(rep(1,length(adj.order)))
+    adj.parm <- as.vector(rep(1, length(adj.order)))
   }
   
   adj.order <- as.vector(adj.order)

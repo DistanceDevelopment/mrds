@@ -1,9 +1,12 @@
-#' Numerically integrate non-normalised pdf of observed distances over 
-#' specified ranges
+#' Numerically integrates the non-normalised pdf or the detection function of 
+#' observed distances over specified ranges. 
 #' 
 #' Gradient of the integral of the detection function, i.e., d beta/d theta in 
 #' the documentation. This gradient of the integral is the same as the integral
 #' of the gradient, thanks to Leibniz integral rule. 
+#' 
+#' For internal use only -- not to be called by \code{mrds} or \code{Distance}
+#' users directly.
 #' 
 #' @param par.index the index of the parameter of interest
 #' @param distance vector of distances

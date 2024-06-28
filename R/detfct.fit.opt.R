@@ -148,7 +148,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       upperbounds.ic <- rep(10^10, 2*misc.options$mono.points)
       
       ## Uncomment below to start debugging/browsing here
-      browser()
+      # browser()
 
       # small initialvalues lead to errors in solnp, so work around that
       initialvalues[initialvalues<1e-2] <- sign(initialvalues[initialvalues<1e-2]) * 1e-2

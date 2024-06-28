@@ -1,15 +1,28 @@
-#' Gradient of the objective function, which is the negative log likelihood
+#' This function derives the gradients of the negative log likelihood function, 
+#' with respect to all parameters. It is based on the theory presented in 
+#' Introduction to Distance Sampling (2001) and Distance Sampling: Methods and
+#' Applications (2015). It is not meant to be called by users of the \code{mrds}
+#' and \code{Distance} packages directly but rather by the gradient-based 
+#' solver. This solver is use when our distance sampling model is for 
+#' single-observer data coming from either line or point transect and only when  
+#' the detection function contains an adjustment series but no covariates. It is 
+#' implement for the following key + adjustment series combinations for the 
+#' detections function: the key function can be half-normal, hazard-rate or 
+#' uniform, and the adjustment series can be cosine, simple polynomial or 
+#' Hermite polynomial. Data can be either binned or exact, but a combination
+#' of the two has not been implemented yet. 
 #' 
-#' The current implementation is for unbinned line transect data. 
-#'
-#' @param j the index of the parameter of interest
-#' @param distance vector of distances
-#' @param ddfobj the ddf object
-#' @param width the truncation width
-#' @param left the left truncation (defaults to zero)
+#' @param pars vector of parameter values for the detection function at which 
+#' the gradients of the negative log-likelihood should be evaluated
+#' @param ddfobj distance sampling object 
+#' @param misc.options a list object containing all additional information such 
+#' as the type of optimiser or the truncation width, and is created by 
+#' \code{\link{ddf.ds}}
+#' 
+#' @return The gradients of the negative log-likelihood w.r.t. the parameters
 #'
 #' @author Felix Petersma
-flnl.grad <- function(pars, ddfobj, misc.options, fitting="all") {
+flnl.grad <- function(pars, ddfobj, misc.options, fitting = "all") {
   
   # Assign parameter values into ddfobj
   ddfobj <- assign.par(ddfobj, pars)
@@ -295,6 +308,6 @@ flnl.grad <- function(pars, ddfobj, misc.options, fitting="all") {
 
 ## Negative of the gradients. Not in use now, but could be useful for future
 ## implementations. 
-neg.flnl.grad <- function(pars, ddfobj, misc.options, fitting="all") {
-  return(-flnl.grad(pars, ddfobj, misc.options, fitting))
+neg.flnl.grad <- function(pars, ddfobj, misc.options, fitting = "all") {
+  return(-flnl.grad(pars, ddfobj, misc.options))
 }

@@ -1,10 +1,19 @@
-# Series of the gradient of the Hermite polynomial adjustment series wrt the 
-# scaled distance
-#
-# distance  - perpendicular distance vector
-# scaling     - scale parameter
-# adj.order - vector of orders of polynomials to fit
-# adj.parm  - vector of parameters (a_j)
+#' Series of the gradient of the Hermite polynomial adjustment series w.r.t. the 
+#' scaled distance.
+#' 
+#' For internal use only -- not to be called by 'mrds' or 'Distance' users 
+#' directly.
+#'
+#' @param distance perpendicular distance vector/scalar
+#' @param scaling scale parameter
+#' @param adj.order the adjustment order
+#' @param adj.parm vector of parameters (a_j)
+#' @param adj.exp boolean, defaults to FALSE
+#' 
+#' @return scalar or vector containing the gradient of the Hermite adjustment 
+#' series for every value in \param{distance}
+#'
+#' @author Felix Petersma
 grad.adj.series.herm <- function(distance, scaling = 1, adj.order, 
                                  adj.parm = NULL, adj.exp = FALSE){
   

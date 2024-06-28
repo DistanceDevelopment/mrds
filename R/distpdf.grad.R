@@ -1,19 +1,17 @@
-#' Gradient of the non-normalised pdf of distances
+#' Gradient of the non-normalised pdf of distances or the detection function
+#' for the distances.
 #' 
-#' NOTES
-#' - This function should be updated to match distpdf closely, eventually, so
-#' that it has the same flexibility
+#' This function has been updated to match distpdf closely, so
+#' that it has the same flexibility. Effectively, it gives the gradient of 
+#' distpdf or detfct, whichever one is specified. 
 #' 
-#' 
-#' 
-#'
 #' Various functions used to specify key and adjustment functions for
 #' gradients of detection functions.
 #' 
 #' So far, only developed for the half-normal, hazard-rate and uniform key
 #' functions in combination with cosine, simple polynomial and Hermite 
 #' polynomial adjustments. It is only called by the gradient-based solver
-#' and not accessible to the general user
+#' and should not be called by the general user.
 #'
 #' \code{distpdf.grad} will call either a half-normal, hazard-rate or uniform
 #' function with adjustment terms to fit the data better, returning the 
@@ -27,7 +25,10 @@
 #' @param left the left truncation (defaults to zero)
 #' @param standardize whether the function should return the gradient of the  
 #' standardized detection function g(x)/g(0) (TRUE), or simply of g(0) (FALSE). 
-#' Defaults to TRUE.
+#' Currently only implemented for standardize = FALSE. 
+#' 
+#' @return the gradient of the non-normalised pdf or detection w.r.t. to 
+#' the parameter with parameter index \code{par.index}. 
 #' 
 #'@section Dependencies: 
 #'  \describe {
@@ -39,7 +40,6 @@
 #'  }
 #' 
 #' @author Felix Petersma
-#'
 distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE, 
                         width, point, left = 0, pdf.based = TRUE) {
   
@@ -89,9 +89,6 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
     scaling <- key.scale
   }
   
-  ## Evaluate the gradient of the standardised detection function if 
-  ## standardize == FALSE
-  # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< standardize == FALSE
   ## If the parameter is an adjustment parameter
   if (par.type == "adjustment") {
     ## Derive the adjustment parameter index (j' in the documentation)
@@ -133,7 +130,12 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
     
     if (par.type == "scale") { ## If the parameter is the scale parameter
       ## Derive the gradient of the scaled distance w.r.t. the parameter
-      scaled.dist.grad <- (-distance) / (key.scale ^ 2)
+      ## This is zero when scaling is done using width instead of the scale par
+      if (adj.scale == "scale") {
+        scaled.dist.grad <- -1 * distance / (key.scale ^ 2)
+      } else{
+        scaled.dist.grad <- 0
+      }
             
       ## Evaluate the key function and adjustment series
       key.val <- switch(key,
