@@ -1,6 +1,6 @@
-#' Gradient of constrained function
+#' Gradients of constraint function
 #'
-#' The function consists of the gradients of the constrained function for 
+#' The function derives the gradients of the constraint function for 
 #' all model parameters, in the following order:
 #' 1. Scale parameter (if part of key function)
 #' 2. Shape parameter (if part of key function)
@@ -8,21 +8,27 @@
 #' 4. Adjustment parameter 2
 #' 5. Etc. 
 #' 
-#' The constrained function itself is formed of between 10 and 20 non-linear
-#' constraints. The function there return a gradient value for each parameter
-#' and each constraint.
+#' The constraint function itself is formed of a specified number of non-linear
+#' constraints, which defaults to 20 and is specified through 
+#' \code{misc.options$mono.points}. The constraint function checks whether the 
+#' standardised detection function is 1) weakly/strictly monotonic at the 
+#' points and 2) non-negative at all the points. \code{grad.constr} returns 
+#' the gradients of those constraints w.r.t. all parameters of the detection
+#' function, i.e., 2 times \code{mono.points} gradients for every parameter. 
 #'
-#' This function mostly follows the same structure as \code{flnl.constr()} in 
+#' This function mostly follows the same structure as \code{\link{flnl.constr}} in 
 #' \code{detfct.fit.mono.R}. 
 #' 
-#' @param pars
-#' @param ddfobj
-#' @param misc.options
-#' @param fitting
+#' @param pars vector of parameter values for the detection function at which 
+#' the gradients of the negative log-likelihood should be evaluated
+#' @param ddfobj distance sampling object 
+#' @param misc.options a list object containing all additional information such 
+#' as the type of optimiser or the truncation width, and is created by 
+#' \code{\link{ddf.ds}}
 #' 
-#' @value a matrix of gradients for all constraints (rows) w.r.t to all
+#' @value a matrix of gradients for all constraints (rows) w.r.t to every
 #' parameters (columns)
-grad.constr <- function(pars, ddfobj, misc.options, fitting="all") {
+grad.constr <- function(pars, ddfobj, misc.options, fitting = "all") {
   
   if (is.null(ddfobj$adjustment)) {
     # This never gets called from ddf()
@@ -253,6 +259,5 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting="all") {
 grad.constr.neg <- function(pars, ddfobj, misc.options, fitting = "all") {
   return(-grad.constr(pars = pars, 
                       ddfobj = ddfobj, 
-                      misc.options = misc.options,
-                      fitting = fitting))
+                      misc.options = misc.options))
 }
