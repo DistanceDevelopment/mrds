@@ -28,7 +28,7 @@
 #' 
 #' @value a matrix of gradients for all constraints (rows) w.r.t to every
 #' parameters (columns)
-grad.constr <- function(pars, ddfobj, misc.options, fitting = "all") {
+grad.constr.neg <- function(pars, ddfobj, misc.options, fitting = "all") {
   
   if (is.null(ddfobj$adjustment)) {
     # This never gets called from ddf()
@@ -80,9 +80,9 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting = "all") {
     # }
     
     g.refvals <- detfct(distance = ref.points, ddfobj = ddfobj,
-                         width = width, left = left,
-                         select = c(rep(TRUE, no.points), 
-                                    rep(FALSE, no.data - no.points)))
+                        width = width, left = left,
+                        select = c(rep(TRUE, no.points), 
+                                   rep(FALSE, no.data - no.points)))
     
     # ## Again, to get detfct to play nice need to mudge ddfobj a bit...
     ## MADE REDUNDANT BY USING select
@@ -94,7 +94,7 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting = "all") {
     # }
     
     g.0 <- detfct(distance = ref.point0, ddfobj = ddfobj, width = width,
-                   left = left, select = c(TRUE, rep(FALSE, no.data - 1)))
+                  left = left, select = c(TRUE, rep(FALSE, no.data - 1)))
     
     # g.0 <- distpdf(distance = ref.point0, ddfobj = ddfobj, width = width,
     #                left = left, point = point, 
@@ -117,7 +117,7 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting = "all") {
                            ddfobj = ddfobj, standardize = FALSE,
                            point = point, left = left, width = width,
                            pdf.based = FALSE) #,
-                           # select = c(TRUE, rep(FALSE, no.data - 1)))
+      # select = c(TRUE, rep(FALSE, no.data - 1)))
       # if (!point) {
       #   dg.0 <- dg.0 * (width - left)
       # } else {
@@ -128,13 +128,13 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting = "all") {
       ## Standardised gradient at distance 0 is always 0 for line (but not point?)
       # std.dg.0 <- (dg.0 - g.0 * dg.0 / g.0) / g.0 ## Always 0
       std.dg.0 <- 0
-
+      
       dg.refvals <- distpdf.grad(distance = ref.points, par.index = par.index, 
                                  ddfobj = ddfobj, standardize = FALSE, 
                                  point = point, left = left, width = width,
                                  pdf.based = FALSE) #,
-                                 # select = c(rep(TRUE, no.points), 
-                                            # rep(FALSE, no.data - no.points)))
+      # select = c(rep(TRUE, no.points), 
+      # rep(FALSE, no.data - no.points)))
       # if (!point) {
       #   dg.refvals <- dg.refvals * (width - left)
       # } else {
@@ -170,7 +170,7 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting = "all") {
       return(c(grads.mono.par, grads.pos.par))
     })
     # })
-  
+    
     # ## Below is version that uses loops and is way slower. 
     # grad.constraints <- matrix(NA, nrow = no.points * 2, ncol = no.pars)
     # 
@@ -252,12 +252,12 @@ grad.constr <- function(pars, ddfobj, misc.options, fitting = "all") {
     #   grad.constraints[, par.index] <- c(grads.mono.par, grads.pos.par)
     # }
   }
-  return(grad.constraints)
+  return(-1 * grad.constraints)
 }
 
 ## Negative of the constraint gradient
-grad.constr.neg <- function(pars, ddfobj, misc.options, fitting = "all") {
-  return(-grad.constr(pars = pars, 
-                      ddfobj = ddfobj, 
-                      misc.options = misc.options))
+grad.constr <- function(pars, ddfobj, misc.options, fitting = "all") {
+  return(-1 * grad.constr.neg(pars = pars, 
+                              ddfobj = ddfobj, 
+                              misc.options = misc.options))
 }
