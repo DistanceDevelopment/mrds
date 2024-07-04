@@ -101,7 +101,7 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
                                     int.range=NA, mono=FALSE, mono.strict=FALSE,
-                                    constr.solver = "auglag", # FTP: add slot for constraint solver (default="auglag")
+                                    constr.solver = "slsqp", # FTP: add slot for constraint solver (default="auglag")
                                     constr.solver.loc = "bobyqa", # FTP: add slot for constraint local solver (default="bobyqa")
                                     constr.startvals = TRUE, # FTP: add slot for finding best starting values for contr. solver (default=TRUE)
                                     point=FALSE)
@@ -111,7 +111,7 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
                                    estimate=TRUE, refit=TRUE, nrefits=25,
                                    initial=NA, lowerbounds=NA, upperbounds=NA,
                                    limit=TRUE, parscale=TRUE, maxiter=12,
-                                   standardize=TRUE, mono.points=20,
+                                   standardize=TRUE, mono.points=10, ## FTP: 10 instead of 20!
                                    mono.tol=1e-6, mono.delta=1e-7,
                                    mono.outer.iter=200, debug=FALSE,
                                    nofit=FALSE, optimx.method="nlminb",
