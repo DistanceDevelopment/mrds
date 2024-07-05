@@ -148,10 +148,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       upperbounds.ic <- rep(10^10, 2*misc.options$mono.points)
       
       ## Uncomment below to start debugging/browsing here
-      # browser()
+      browser()
 
-      # small initialvalues lead to errors in solnp, so work around that
-      initialvalues[initialvalues<1e-2] <- sign(initialvalues[initialvalues<1e-2]) * 1e-2
+      # # small initialvalues lead to errors in solnp, so work around that
+      # initialvalues[initialvalues<1e-2] <- sign(initialvalues[initialvalues<1e-2]) * 1e-2
       if (showit == 0) {
         ## The derivative-based SLSQP solver
         if (opt.method == "slsqp") {
@@ -164,15 +164,15 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                        lb = lowerbounds, ub = upperbounds,
                        opts = list(xtol_rel = misc.options$mono.tol,
                                    ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
-                                   print_level = as.integer(showit),
+                                   print_level = as.integer(showit), 
                                    algorithm = "NLOPT_LD_SLSQP"),
                        ddfobj = ddfobj,
                        misc.options = misc.options,
                        fitting = "all"), 
                 silent = TRUE))
           if (!inherits(lt, "try-error")) {
-            if (lt$status %in% c(3, 4)) {
-              lt$convergence <- 0 # convergence = 3 if success, but look into this!
+            if (lt$status != -1) { # FTP: I think -1 indicates failed convergence
+              lt$convergence <- 0 
             } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
           }
         }
@@ -231,8 +231,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                        misc.options = misc.options,
                        fitting = "all"))
           if (!inherits(lt, "try-error")) {
-            if (lt$status %in% c(3, 4)) {
-              lt$convergence <- 0 # convergence = 3 if success, but look into this!
+            if (lt$status != -1) { # FTP: I think -1 indicates failed convergence
+              lt$convergence <- 0 
             } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
           }
         }
@@ -405,8 +405,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            fitting = "all"), 
                     silent = TRUE))
               if (!inherits(lt, "try-error")) {
-                if (lt$status %in% c(3, 4)) {
-                  lt$convergence <- 0 # convergence = 3 if success, but look into this!
+                if (lt$status != -1) { # FTP: I think -1 indicates failed convergence
+                  lt$convergence <- 0 
                 } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
               }
             }
@@ -463,8 +463,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            misc.options = misc.options,
                            fitting = "all"))
               if (!inherits(lt, "try-error")) {
-                if (lt$status %in% c(3, 4)) {
-                  lt$convergence <- 0 # convergence = 3 if success, but look into this!
+                if (lt$status != -1) { # FTP: I think -1 indicates failed convergence
+                  lt$convergence <- 0 
                 } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
               }
             }
