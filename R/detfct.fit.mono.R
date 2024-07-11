@@ -105,7 +105,7 @@ flnl.constr.neg <- function(pars, ddfobj, misc.options, fitting){
   return(-1 * ineq_constr)
 }
 
-## Negative of the constraint
+## Negative of the negative constraint
 flnl.constr <- function(pars, ddfobj, misc.options, fitting) {
   return(-1 * flnl.constr.neg(pars = pars, 
                               ddfobj = ddfobj, 
