@@ -55,8 +55,13 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
   right.trunc <- df$meta.data$width
   left.trunc <- df$meta.data$left
 
-  # generate distances between truncation points
-  x <- seq(left.trunc, right.trunc, len=n.pts)
+  # generate distances between truncation points 
+  # x <- seq(left.trunc, right.trunc, len=n.pts) # commented out by Felix
+  
+  ## Len and I discussed that this check.mono should use the same points at 
+  ## MCDS and the fitting, which are determined through getRefPoints() in 
+  ## detfct.fit.mono.R
+  x <- getRefPoints(no_d = n.pts, int.range = c(left.trunc, right.trunc))
 
   # grab the unique covariate combinations from the data
   if(ddfobj$type=="unif"){
