@@ -255,7 +255,8 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
   }
     
   # which was the better lnl?
-  if(abs(lt_mcds$lnl) < abs(lt$value)){
+  # if(abs(lt_mcds$lnl) < abs(lt$value)){ # FTP: old, commented out as it should not do this comparison when optimzer == 'R'
+  if(abs(lt_mcds$lnl) < abs(lt$value) & control$optimizer != "R"){
     if(control$showit>=1){
       cat("DEBUG: MCDS lnl =", round(lt_mcds$value, 7),
           "       mrds lnl =", round(lt$value, 7),"\n")
@@ -264,7 +265,12 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
     lt$hessian <- lt_mcds$hessian
     lt$optimise <- "MCDS.exe"
   }else{
-    lt$optimise <- paste0("mrds (", control$optimx.method, ")")
+    ## FTP: Check if the mono optimiser was used or not
+    if (misc.options$mono) {
+      lt$optimise <- paste0("mrds (", misc.options$constr.solver, ")")
+    } else {
+      lt$optimise <- paste0("mrds (", control$optimx.method, ")")
+    }
   }
 
   # check that hazard models have a reasonable scale parameter
@@ -357,7 +363,8 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
     result$ds$message <- ""
   }
 
-  if(lt$message == "FALSE CONVERGENCE"){
+  if(lt$message == "FALSE CONVERGENCE" |
+     lt$message == "FALSE CONVERGENCE & UNABLE TO FIND ALTERNATIVE STARTING VALUES"){
     warning("Model fitting did not converge. Try different initial values or different model\n", immediate.=TRUE)
   }else{
     result$fitted <- predict(result, esw=FALSE)$fitted
@@ -365,6 +372,7 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
       result$Nhat <- NCovered(result, group=TRUE)
     }
   }
+  
   # Store optimiser
   result$optimise <- lt$optimise
 
