@@ -29,7 +29,7 @@
 #'    is the right truncation distance, and scaling. 
 #' @param pts the number of distances between min
 #' 
-plotDetfct <- function(specs, pts = 10000) {
+plotDetfct <- function(specs, pts = 10000, print_request = TRUE) {
   
   # specs <- data.frame(
   #   key = "hn",
@@ -49,7 +49,9 @@ plotDetfct <- function(specs, pts = 10000) {
   
   for (i in 1:nrow(specs)) {
     
-    readline(prompt = paste0("Press [enter] to print plot ", i, ":"))
+    if (print_request) {
+      readline(prompt = paste0("Press [enter] to print plot ", i, ":"))
+    }
     
     key <- specs[i, 1]
     adj <- specs[i, 2]
@@ -70,7 +72,7 @@ plotDetfct <- function(specs, pts = 10000) {
       orders <- c(4, 6, 8, 10, 12)[!is.na(specs[i, c(5:9)])]
     } 
     
-    parameters <- specs[i, c(3:9)][!is.na(specs[i, c(3:9)])]
+    parameters <- unlist(specs[i, c(3:9)][!is.na(specs[i, c(3:9)])])
 
     ## Extract the parameters
     if (key == "unif") {
@@ -124,9 +126,10 @@ plotDetfct <- function(specs, pts = 10000) {
     g <- detfct(distance = distance, ddfobj = ddfobj,
                         left = left, width = width, standardize = TRUE)
     
-    col <- rep("black", pts)
-    col[g < 0] <- "red"
-    plot(y = g, x = distance, col = col)
+    # col <- rep("black", pts)
+    # col[g < 0] <- "red"
+    plot(y = g, x = distance, col = "black", type = "l")
+    abline(h = 0, col = "red", lty = 2)
     
     if (any(g < 0)) {
       cat("The pdf is negative for some distances between left and width.\n")
