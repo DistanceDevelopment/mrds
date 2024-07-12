@@ -35,10 +35,10 @@
 simDists <- function(n, key, adj, orders, parameters, 
                      width, scaling = "width", left = 0, 
                      mono = TRUE, mono_strict = TRUE, point = TRUE, 
-                     pts = 10000) {
-  n <- 100; key <- "hn"; adj <- "cos"; orders <- c(2, 3, 4); width <- 100
-  scaling <- "width"; left <- 0; mono <- TRUE; mono_strict <- TRUE
-  point <- TRUE; pts <- 10000; parameters <- c(1.5, 0.5, 1, 0.4)
+                     pts = 10000, plot_g = TRUE) {
+  # n <- 100; key <- "hn"; adj <- "cos"; orders <- c(2, 3, 4); width <- 100
+  # scaling <- "width"; left <- 0; mono <- TRUE; mono_strict <- TRUE
+  # point <- TRUE; pts <- 10000; parameters <- c(1.5, 0.5, 1, 0.4)
   
   ## Unit testing
   if (n <= 0 | is.infinite(n)) {
@@ -89,24 +89,7 @@ simDists <- function(n, key, adj, orders, parameters,
   
   ## Create a fake ddfobj to pass onto distpdf()
   distance <- seq(from = left, to = width, length = pts)
-  # ddfobj <- ddf(dsmodel = ~mcds(key = key,
-  #                               formula = ~1,
-  #                               adj.series = adj,
-  #                               adj.order = orders,
-  #                               adj.scale = scaling),
-  #               data = data.frame(distance = distance,
-  #                                 object = 1:pts,
-  #                                 observer = 1,
-  #                                 detected = 1),
-  #               method = "ds",
-  #               meta.data = list(point = point, 
-  #                                left = left,
-  #                                width = width, 
-  #                                mono = mono, 
-  #                                mono.strict = mono_strict),
-  #               control = list(nofit = TRUE, 
-  #                              optimizer = "R",
-  #                              initial = pars))
+
   ddfobj <- list()
   ddfobj$type <- key
   if (key %in% c("hn", "hr")) {
@@ -134,4 +117,42 @@ simDists <- function(n, key, adj, orders, parameters,
   }
   
   sampled_dists <- sample(distance, size = n, replace = TRUE, prob = dist_pdf)
+  
+  if (plot_g) {
+    adj_pars <- rep(NA, 5)
+    
+    if (key == "unif" & adj == "cos") {
+      indices <- c(1:5) %in% orders
+    }
+    if (key != "unif" & adj == "cos") {
+      indices <- c(2:6) %in% orders
+    }
+    if (key == "unif" & adj %in% c("poly", "herm")) {
+      indices <- c(2, 4, 6, 8, 10) %in% orders
+    }
+    if (key != "unif" & adj %in% c("poly", "herm")) {
+      indices <- c(4, 6, 8, 10, 12) %in% orders
+    }
+    
+    adj_pars[indices] <- pars$adjustment
+    
+    df <- data.frame(
+        key = key,
+        adj = adj,
+        scale = ifelse(is.null(pars$scale), NA, pars$scale),
+        shape = ifelse(is.null(pars$shape), NA, pars$shape),
+        adj1 = adj_pars[1],
+        adj2 = adj_pars[2],
+        adj3 = adj_pars[3],
+        adj4 = adj_pars[4],
+        adj5 = adj_pars[5],
+        left = left,
+        width = width,
+        scaling = scaling
+    )
+    
+    plotDetfct(df, print_request = FALSE)
+  }
+  
+  return(sampled_dists)
 }
