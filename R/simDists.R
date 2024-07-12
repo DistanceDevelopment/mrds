@@ -27,7 +27,9 @@
 #' @param width the width or right truncation distance
 #' @param left the left truncation distance (default is 0)
 #' @param point boolean for point or line transect data (default is TRUE)
-#' @param pts the number of distances between min
+#' @param pts the number of distances between min and max. Defaults to 10,000.
+#' @param plot_g whether or not the detection function should be plotted when
+#' returning the simulated distances. Default to TRUE. 
 #' 
 #' 
 #' 

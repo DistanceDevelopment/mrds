@@ -28,6 +28,8 @@
 #'   the key+adjustment combination, 'left' is the left truncation and 'width'
 #'    is the right truncation distance, and scaling. 
 #' @param pts the number of distances between min
+#' @param print_request whether it should request pressing 'enter' between the 
+#' plotting. Defaults to TRUE and should generally not be touched. 
 #' 
 plotDetfct <- function(specs, pts = 10000, print_request = TRUE) {
 
@@ -85,23 +87,7 @@ plotDetfct <- function(specs, pts = 10000, print_request = TRUE) {
     
     ## Create a fake ddfobj to pass onto distpdf()
     distance <- seq(from = left, to = width, length = pts)
-    # ddfobj <- ddf(dsmodel = ~mcds(key = key,
-    #                               formula = ~1,
-    #                               adj.series = adj,
-    #                               adj.order = orders,
-    #                               adj.scale = scaling),
-    #               data = data.frame(distance = distance,
-    #                                 object = 1:pts,
-    #                                 observer = 1,
-    #                                 detected = 1),
-    #               method = "ds",
-    #               meta.data = list(
-    #                                left = left,
-    #                                width = width, 
-    #                                mono = TRUE),
-    #               control = list(nofit = TRUE, 
-    #                              optimizer = "R",
-    #                              initial = pars))
+    
     ddfobj <- list()
     ddfobj$type <- key
     if (key %in% c("hn", "hr")) {
@@ -130,9 +116,6 @@ plotDetfct <- function(specs, pts = 10000, print_request = TRUE) {
     
     if (any(g < 0)) {
       cat("The pdf is negative for some distances between left and width.\n")
-      cat("This is indicated in red.\n")
     }
-    
-    
   }
 }
