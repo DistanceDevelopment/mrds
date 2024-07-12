@@ -75,6 +75,11 @@ simDists <- function(n, key, adj, orders, parameters,
     stop("The hn+poly, hn+herm, hr+poly and hr+herm combinations only allow orders 4, 6, 8, 10 and 12.")
   }
   
+  ## Check the scaling
+  if (key == "unif" | scaling == "scale") {
+    stop("Not possible to scale distances by the scale parameter with uniform key function.")
+  }
+  
   ## Extract the parameters
   if (key == "unif") {
     pars <- list(adjustment = parameters)
