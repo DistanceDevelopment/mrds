@@ -30,11 +30,11 @@
 #' @param pts the number of distances between min
 #' 
 plotDetfct <- function(specs, pts = 10000, print_request = TRUE) {
-  
+
   # specs <- data.frame(
-  #   key = "hn",
-  #   adj = "cos",
-  #   scale = 1.5,
+  #   key = "unif",
+  #   adj = "herm",
+  #   scale = NA,
   #   shape = NA,
   #   adj1 = 0.5,
   #   adj2 = 1,
@@ -44,7 +44,7 @@ plotDetfct <- function(specs, pts = 10000, print_request = TRUE) {
   #   left = 0,
   #   width = 100,
   #   scaling = 'width'
-  # )
+  # ); i <- 1; pts <- 10000; print_request <- TRUE
 
   
   for (i in 1:nrow(specs)) {
@@ -61,14 +61,11 @@ plotDetfct <- function(specs, pts = 10000, print_request = TRUE) {
     ## Check validity of detection function 
     if (key == "unif" & adj == "cos") {
       orders <- c(1, 2, 3, 4, 5)[!is.na(specs[i, c(5:9)])]
-    }
-    if (key != "unif" & adj == "cos") {
+    } else if (key != "unif" & adj == "cos") {
       orders <- c(2, 3, 4, 5, 6)[!is.na(specs[i, c(5:9)])]
-    }
-    if (key == "unif" & adj %in% c("poly", "herm")) {
+    }else if (key == "unif" & adj %in% c("poly", "herm")) {
       orders <- c(2, 4, 6, 8, 10)[!is.na(specs[i, c(5:9)])]
-    } 
-    if (key != "unif" & adj %in% c("poly", "herm")) {
+    } else if (key != "unif" & adj %in% c("poly", "herm")) {
       orders <- c(4, 6, 8, 10, 12)[!is.na(specs[i, c(5:9)])]
     } 
     
