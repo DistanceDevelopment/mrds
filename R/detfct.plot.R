@@ -60,7 +60,8 @@ detfct.plot <- function(specs, pts = 10000, print_request = TRUE) {
     left <- specs[i, "left"]
     width <- specs[i, "width"]
     scaling <- specs[i, "scaling"]
-    ## Check validity of detection function 
+    
+    ## Extract the correct orders
     if (key == "unif" & adj == "cos") {
       orders <- c(1, 2, 3, 4, 5)[!is.na(specs[i, paste0("adj", 1:5)])]
     } else if (key != "unif" & adj == "cos") {
@@ -113,7 +114,11 @@ detfct.plot <- function(specs, pts = 10000, print_request = TRUE) {
     
     # col <- rep("black", pts)
     # col[g < 0] <- "red"
-    plot(y = g, x = distance, col = "black", type = "l")
+    plot(y = g, x = distance, col = "black", type = "l", 
+         main = paste0("Df with key: ", key, 
+                       "; parameters: ", paste(parameters, collapse = ", "), 
+                       ";\nadjustment orders: ", paste(orders, collapse = ", "), 
+                       ". Distances are scaled by ", scaling, "."))
     abline(h = 0, col = "red", lty = 2)
     
     if (any(g < 0)) {
