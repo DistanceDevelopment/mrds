@@ -84,7 +84,7 @@ sim.dists <- function(n, key, adj, orders, parameters,
   }
   
   ## Check the scaling
-  if (key == "unif" | scaling == "scale") {
+  if (key == "unif" & scaling == "scale") {
     stop("Not possible to scale distances by the scale parameter with uniform key function.")
   }
   
