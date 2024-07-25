@@ -24,6 +24,11 @@
 #' @param key character indicating the key function
 #' @param adj character indicating the adjustment series
 #' @param orders vector of orders. Minimum length is 1, max length is 5
+#' @param parameters a named vector of parameters. The possible names are: 
+#' "shape" for the shape parameters; "scale" for the scale parameter; and 
+#' "adj1", "adj2", ... , "adj5" for the adjustment parameters (at most 5). The
+#' number and ordering of the adjustment parameters should match the orders 
+#' provided through the \code{order} argument.
 #' @param width the width or right truncation distance
 #' @param left the left truncation distance (default is 0)
 #' @param point boolean for point or line transect data (default is TRUE)
@@ -34,13 +39,14 @@
 #' 
 #' 
 #' 
-simDists <- function(n, key, adj, orders, parameters, 
+sim.dists <- function(n, key, adj, orders, parameters, 
                      width, scaling = "width", left = 0, 
                      mono = TRUE, mono_strict = TRUE, point = TRUE, 
                      pts = 10000, plot_g = TRUE) {
   # n <- 100; key <- "hn"; adj <- "cos"; orders <- c(2, 3, 4); width <- 100
   # scaling <- "width"; left <- 0; mono <- TRUE; mono_strict <- TRUE
-  # point <- TRUE; pts <- 10000; parameters <- c(1.5, 0.5, 1, 0.4)
+  # point <- TRUE; pts <- 10000; parameters <- c(scale = 1.5, adj1 = 0.5,
+  # adj2 = 1, adj3 = 0.4)
   
   ## Unit testing
   if (n <= 0 | is.infinite(n)) {
@@ -86,12 +92,13 @@ simDists <- function(n, key, adj, orders, parameters,
   if (key == "unif") {
     pars <- list(adjustment = parameters)
   } else if (key == "hn") {
-    pars <- list(scale = parameters[1], 
-                adjustment = parameters[-1])
+    pars <- list(scale = parameters["scale"], 
+                 adjustment = parameters[names(parameters) != "scale"])
   } else {
-    pars <- list(shape = parameters[1],
-                 scale = parameters[2], 
-                 adjustment = parameters[-c(1,2)])
+    pars <- list(shape = parameters["shape"],
+                 scale = parameters["scale"], 
+                 adjustment = parameters[!names(parameters) %in% c("shape", 
+                                                                   "scale")])
   }
   
   ## Create a fake ddfobj to pass onto distpdf()
@@ -158,7 +165,7 @@ simDists <- function(n, key, adj, orders, parameters,
         scaling = scaling
     )
     
-    plotDetfct(df, print_request = FALSE)
+    detfct.plot(df, print_request = FALSE)
   }
   
   return(sampled_dists)

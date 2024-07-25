@@ -31,7 +31,7 @@
 #' @param print_request whether it should request pressing 'enter' between the 
 #' plotting. Defaults to TRUE and should generally not be touched. 
 #' 
-plotDetfct <- function(specs, pts = 10000, print_request = TRUE) {
+detfct.plot <- function(specs, pts = 10000, print_request = TRUE) {
 
   # specs <- data.frame(
   #   key = "unif",
@@ -55,34 +55,36 @@ plotDetfct <- function(specs, pts = 10000, print_request = TRUE) {
       readline(prompt = paste0("Press [enter] to print plot ", i, ":"))
     }
     
-    key <- specs[i, 1]
-    adj <- specs[i, 2]
+    key <- specs[i, "key"]
+    adj <- specs[i, "adj"]
     left <- specs[i, "left"]
     width <- specs[i, "width"]
     scaling <- specs[i, "scaling"]
     ## Check validity of detection function 
     if (key == "unif" & adj == "cos") {
-      orders <- c(1, 2, 3, 4, 5)[!is.na(specs[i, c(5:9)])]
+      orders <- c(1, 2, 3, 4, 5)[!is.na(specs[i, paste0("adj", 1:5)])]
     } else if (key != "unif" & adj == "cos") {
-      orders <- c(2, 3, 4, 5, 6)[!is.na(specs[i, c(5:9)])]
+      orders <- c(2, 3, 4, 5, 6)[!is.na(specs[i, paste0("adj", 1:5)])]
     }else if (key == "unif" & adj %in% c("poly", "herm")) {
-      orders <- c(2, 4, 6, 8, 10)[!is.na(specs[i, c(5:9)])]
+      orders <- c(2, 4, 6, 8, 10)[!is.na(specs[i, paste0("adj", 1:5)])]
     } else if (key != "unif" & adj %in% c("poly", "herm")) {
-      orders <- c(4, 6, 8, 10, 12)[!is.na(specs[i, c(5:9)])]
+      orders <- c(4, 6, 8, 10, 12)[!is.na(specs[i, paste0("adj", 1:5)])]
     } 
     
-    parameters <- unlist(specs[i, c(3:9)][!is.na(specs[i, c(3:9)])])
-
+    parameters <- unlist(specs[i, c("shape", "scale", paste0("adj", 1:5))])
+    parameters <- parameters[!is.na(specs[i, c("shape", "scale", paste0("adj", 1:5))])]
+    
     ## Extract the parameters
     if (key == "unif") {
       pars <- list(adjustment = parameters)
     } else if (key == "hn") {
-      pars <- list(scale = parameters[1], 
-                   adjustment = parameters[-1])
+      pars <- list(scale = parameters["scale"], 
+                   adjustment = parameters[names(parameters) != "scale"])
     } else {
-      pars <- list(shape = parameters[1],
-                   scale = parameters[2], 
-                   adjustment = parameters[-c(1,2)])
+      pars <- list(shape = parameters["shape"],
+                   scale = parameters["scale"], 
+                   adjustment = parameters[!names(parameters) %in% c("shape", 
+                                                                     "scale")])
     }
     
     ## Create a fake ddfobj to pass onto distpdf()
