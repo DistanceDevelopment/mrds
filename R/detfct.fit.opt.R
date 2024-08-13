@@ -71,7 +71,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
   }else{
     # opt.method <- "solnp" 
     opt.method <- misc.options$constr.solver ## New bit of info that must be
-                                             ## supplied through meta.data
+                                             ## supplied through control
     if (misc.options$constr.solver.loc == "bobyqa") {
       opt.method.local <- "NLOPT_LN_BOBYQA"
       opt.method.main <- "NLOPT_LN_AUGLAG"

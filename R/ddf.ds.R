@@ -101,9 +101,6 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
   # Set up meta data values
   meta.data <- assign.default.values(meta.data, left=0, width=NA, binned=FALSE,
                                     int.range=NA, mono=FALSE, mono.strict=FALSE,
-                                    constr.solver = "slsqp", # FTP: add slot for constraint solver (default="auglag")
-                                    constr.solver.loc = "bobyqa", # FTP: add slot for constraint local solver (default="bobyqa")
-                                    constr.startvals = TRUE, # FTP: add slot for finding best starting values for contr. solver (default=TRUE)
                                     point=FALSE)
 
   # Set up control values
@@ -118,6 +115,9 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
                                    optimx.maxit=300, silent=FALSE,
                                    mono.random.start=FALSE,
                                    optimizer = "both", 
+                                   constr.solver = "slsqp", # FTP: add slot for constraint solver (default="auglag")
+                                   constr.solver.loc = "bobyqa", # FTP: add slot for constraint local solver (default="bobyqa")
+                                   constr.startvals = FALSE, # FTP: add slot for finding best starting values for contr. solver (default=TRUE, temporarilty set to FALSE)
                                    winebin = NULL)
 
   #  Save current user options and then set design contrasts to treatment style
@@ -202,9 +202,9 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
                      mono.delta=control$mono.delta, debug=control$debug,
                      nofit=control$nofit, left=meta.data$left,
                      silent=control$silent,
-                     constr.solver = meta.data$constr.solver, # FTP: added this to specify constr. solver
-                     constr.solver.loc = meta.data$constr.solver.loc, # added this to specify to local constr. solver for auglag
-                     constr.startvals = meta.data$constr.startvals,  # FTP: find best start values or just fit with "bad" ones?
+                     constr.solver = control$constr.solver, # FTP: added this to specify constr. solver
+                     constr.solver.loc = control$constr.solver.loc, # added this to specify to local constr. solver for auglag
+                     constr.startvals = control$constr.startvals,  # FTP: find best start values or just fit with "bad" ones?
                      mono.random.start=control$mono.random.start,
                      mono.outer.iter=control$mono.outer.iter
                     )
