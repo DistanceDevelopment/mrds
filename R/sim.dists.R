@@ -107,12 +107,12 @@ sim.dists <- function(n, key, adj, orders, parameters,
   ddfobj <- list()
   ddfobj$type <- key
   if (key %in% c("hn", "hr")) {
-    ddfobj$scale$dm <- rep(1, pts)
-    ddfobj$scale$parameters <- pars$scale
-    }
+    ddfobj$scale$dm <- matrix(rep(1, pts), ncol = 1)
+    ddfobj$scale$parameters <- pars$scale # should this be logged?
+  }
   if (key == "hr") {
-    ddfobj$shape$dm <- rep(1, pts)
-    ddfobj$shape$parameters <- pars$shape
+    ddfobj$shape$dm <- matrix(rep(1, pts), ncol = 1)
+    ddfobj$shape$parameters <- pars$shape # should this be logged?
   }
   
   ddfobj$adjustment$series <- adj
