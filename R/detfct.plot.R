@@ -31,7 +31,8 @@
 #' @param print_request whether it should request pressing 'enter' between the 
 #' plotting. Defaults to TRUE and should generally not be touched. 
 #' 
-detfct.plot <- function(specs, pts = 10000, print_request = TRUE) {
+detfct.plot <- function(specs, pts = 10000, print_request = TRUE, 
+                        print_title = TRUE) {
 
   # specs <- data.frame(
   #   key = "unif",
@@ -94,11 +95,11 @@ detfct.plot <- function(specs, pts = 10000, print_request = TRUE) {
     ddfobj <- list()
     ddfobj$type <- key
     if (key %in% c("hn", "hr")) {
-      ddfobj$scale$dm <- rep(1, pts)
+      ddfobj$scale$dm <- matrix(rep(1, pts), ncol = 1)
       ddfobj$scale$parameters <- pars$scale
     }
     if (key == "hr") {
-      ddfobj$shape$dm <- rep(1, pts)
+      ddfobj$shape$dm <- matrix(rep(1, pts), ncol = 1)
       ddfobj$shape$parameters <- pars$shape
     }
     
@@ -109,16 +110,40 @@ detfct.plot <- function(specs, pts = 10000, print_request = TRUE) {
     ddfobj$adjustment$exp <- FALSE
     
     ## Derive non-normalised pdfs for the distances
-    g <- detfct(distance = distance, ddfobj = ddfobj,
-                        left = left, width = width, standardize = TRUE)
+    g <- detfct(distance = distance, ddfobj = ddfobj, 
+                left = left, width = width, standardize = TRUE)
+
+    # average_p <- integrate(detfct, left, width, ddfobj = ddfobj, left =  left,
+    #                        index = 1, width = width,
+    #                        standardize = T)$value / (width - left)
+    
+    line_p <- integratepdf(ddfobj, select = c(T, rep(F, pts-1)), width = width,
+                           left = left, standardize = T, point = F, 
+                           int.range = c(left, width))
+    point_p <- integratepdf(ddfobj, select = c(T, rep(F, pts-1)), width = width,
+                            left = left, standardize = T, point = T, 
+                            int.range = c(left, width))
     
     # col <- rep("black", pts)
     # col[g < 0] <- "red"
-    plot(y = g, x = distance, col = "black", type = "l", 
-         main = paste0("Df with key: ", key, 
-                       "; parameters: ", paste(parameters, collapse = ", "), 
-                       ";\nadjustment orders: ", paste(orders, collapse = ", "), 
-                       ". Distances are scaled by ", scaling, "."))
+    if (print_title) {
+      plot(y = g, x = distance, col = "black", type = "l", 
+           main = paste0("Df with key: ", key, 
+                         "; parameters: ", paste(parameters, collapse = ", "), 
+                         ";\nadjustment orders: ", paste(orders, collapse = ", "), 
+                         ". Distances are scaled by ", scaling, "."))
+      text(y = 1 * (max(g) - min(g)) + min(g), x = 0.8 * width, 
+                    paste0("Line p: ", round(line_p, 3)))
+      text(y = 0.9 * (max(g) - min(g)) + min(g), x = 0.8 * width, 
+           paste0("Point p: ", round(point_p, 3)))
+    } else {
+      plot(y = g, x = distance, col = "black", type = "l")
+      text(y = 1 * (max(g) - min(g)) + min(g), x = 0.8 * width, 
+                    paste0("Line p: ", round(line_p, 3)))
+      text(y = 0.9 * (max(g) - min(g)) + min(g), x = 0.8 * width, 
+                      paste0("Point p: ", round(point_p, 3)))
+    }
+
     abline(h = 0, col = "red", lty = 2)
     
     if (any(g < 0)) {
