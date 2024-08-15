@@ -118,10 +118,12 @@ detfct.plot <- function(specs, pts = 10000, print_request = TRUE,
     #                        standardize = T)$value / (width - left)
     
     line_p <- integratepdf(ddfobj, select = c(T, rep(F, pts-1)), width = width,
-                           left = left, standardize = T, point = F, 
+                           left = left, 
+                           standardize = T, point = F, 
                            int.range = c(left, width))
     point_p <- integratepdf(ddfobj, select = c(T, rep(F, pts-1)), width = width,
-                            left = left, standardize = T, point = T, 
+                            left = left,
+                            standardize = T, point = T, 
                             int.range = c(left, width))
     
     # col <- rep("black", pts)
