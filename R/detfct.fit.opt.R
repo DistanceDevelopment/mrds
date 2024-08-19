@@ -57,7 +57,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
   showit <- misc.options$showit
   refit <- misc.options$refit
   nrefits <- misc.options$nrefits
-
+  
   # jll 18-sept-2006; added this code to get the logicals that indicate whether
   # lower/upper bound settings were specified by the user
   setlower <- bounds$setlower
@@ -72,17 +72,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     # opt.method <- "solnp" 
     opt.method <- misc.options$constr.solver ## New bit of info that must be
                                              ## supplied through control
-    if (misc.options$constr.solver.loc == "bobyqa") {
-      opt.method.local <- "NLOPT_LN_BOBYQA"
-      opt.method.main <- "NLOPT_LN_AUGLAG"
-    } else if (misc.options$constr.solver.loc == "cobyla") {
-      opt.method.local <- "NLOPT_LN_COBYLA"
-      opt.method.main <- "NLOPT_LN_AUGLAG"
-    } else if (misc.options$constr.solver.loc == "slsqp") {
-      opt.method.local <- "NLOPT_LD_SLSQP"
-      opt.method.main <- "NLOPT_LD_AUGLAG"
-    } else {
-      stop("Invalid local constrained solver supplied! Should be 'bobyqa', 'cobyla' or 'slsqp'")
+    if (!(opt.method %in% c("solnp", "slsqp"))) {
+      stop("The optimiser method for contraint optimisation in R should be 'slsqp' or 'solnp'.")
     }
   }
   
@@ -166,8 +157,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                        eval_grad_f = flnl.grad,
                        eval_jac_g_ineq = grad.constr.neg,
                        lb = lowerbounds, ub = upperbounds,
-                       opts = list(xtol_rel = misc.options$mono.tol,
-                                   ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                       opts = list(ftol_rel = misc.options$mono.tol, 
+                                   ftol_abs = 0, 
+                                   xtol_rel = 0,
+                                   maxeval = 1000,
                                    print_level = as.integer(showit),
                                    algorithm = "NLOPT_LD_SLSQP"),
                        ddfobj = ddfobj,
@@ -180,13 +173,12 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
             } else {
               lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
               opt.method <- "auglag"
-              opt.method.local <- "NLOPT_LD_SLSQP"
-              opt.method.main <- "NLOPT_LD_AUGLAG"
-              warning("The SLSQP solver did not converge, trying an augmented Lagrangian with interior SLSQP solver instead.")
+              cat("The SLSQP solver did not converge from starting values:", initialvalues, 
+                  "!\nTrying an augmented Lagrangian with interior SLSQP solver instead.\n")
             } 
           }
         }
-        ## The augmented Lagrangian solver with a local derivative-free solver
+        ## The augmented Lagrangian solver with a internal SLSQP solver
         if (opt.method == "auglag") {
           lt <- suppressWarnings(
             try(nloptr(x0 = initialvalues,
@@ -195,10 +187,12 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                        eval_grad_f = flnl.grad,
                        eval_jac_g_ineq = grad.constr.neg,
                        lb = lowerbounds, ub = upperbounds,
-                       opts = list(xtol_rel = misc.options$mono.tol,
-                                   ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                       opts = list(ftol_rel = misc.options$mono.tol, 
+                                   ftol_abs = 0, 
+                                   xtol_rel = 0,
+                                   maxeval = 1000,
                                    print_level = as.integer(showit),
-                                   local_opts = list(algorithm = opt.method.local,
+                                   local_opts = list(algorithm = "NLOPT_LD_SLSQP",
                                                      xtol_rel = 1e-3),
                                    algorithm = "NLOPT_LD_AUGLAG"),
                        ddfobj = ddfobj,
@@ -238,8 +232,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                        eval_grad_f = flnl.grad,
                        eval_jac_g_ineq = grad.constr.neg,
                        lb = lowerbounds, ub = upperbounds,
-                       opts = list(xtol_rel = misc.options$mono.tol,
-                                   ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                       opts = list(ftol_rel = misc.options$mono.tol, 
+                                   ftol_abs = 0, 
+                                   xtol_rel = 0,
+                                   maxeval = 1000,
                                    print_level = as.integer(showit),
                                    algorithm = "NLOPT_LD_SLSQP"),
                        ddfobj = ddfobj,
@@ -251,14 +247,12 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
             } else {
               lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
               opt.method <- "auglag"
-              opt.method.local <- "NLOPT_LD_SLSQP"
-              opt.method.main <- "NLOPT_LD_AUGLAG"
-              cat("The SLSQP solver did not converge from starting values:", initialvalues, 
+              warning("The SLSQP solver did not converge from starting values:", initialvalues, 
                   "!\nTrying an augmented Lagrangian with interior SLSQP solver instead.\n")
             }
           }
         }
-        ## The augmented Lagrangian solver with a local derivative-free solver
+        ## The augmented Lagrangian solver with a internal SLSQP solver
         if (opt.method == "auglag") {
           lt <- try(nloptr(x0 = initialvalues,
                            eval_f = flnl,
@@ -266,19 +260,24 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            eval_grad_f = flnl.grad,
                            eval_jac_g_ineq = grad.constr.neg,
                            lb = lowerbounds, ub = upperbounds,
-                           opts = list(xtol_rel = misc.options$mono.tol, 
-                                       ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                           opts = list(ftol_rel = misc.options$mono.tol, 
+                                       ftol_abs = 0, 
+                                       xtol_rel = 0,
+                                       maxeval = 1000,
                                        print_level = as.integer(showit),
-                                       local_opts = list(algorithm = opt.method.local,
+                                       local_opts = list(algorithm = "NLOPT_LD_SLSQP",
                                                          xtol_rel = 1e-3),
-                                       algorithm = opt.method.main),
+                                       algorithm = "NLOPT_LD_AUGLAG"),
                            ddfobj = ddfobj, 
                            misc.options = misc.options, 
                            fitting = "all"))
           if (!inherits(lt, "try-error")) {
             if (lt$status >= 0) { # https://jhelvy.github.io/logitr/reference/statusCodes.html
               lt$convergence <- 0 
-            } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
+            } else {
+              lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
+              opt.method <- "slsqp" # set the solver back to slsqp
+            }
           }
         } 
         ## The derivative-free augmented Lagrangian solver by Yinyu Ye
@@ -428,8 +427,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            eval_grad_f = flnl.grad,
                            eval_jac_g_ineq = grad.constr.neg,
                            lb = lowerbounds, ub = upperbounds,
-                           opts = list(xtol_rel = misc.options$mono.tol,
-                                       ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                           opts = list(ftol_rel = misc.options$mono.tol, 
+                                       ftol_abs = 0, 
+                                       xtol_rel = 0,
+                                       maxeval = 1000,
                                        print_level = as.integer(showit),
                                        algorithm = "NLOPT_LD_SLSQP"),
                            ddfobj = ddfobj,
@@ -439,11 +440,13 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
               if (!inherits(lt, "try-error")) {
                 if (lt$status >= 0) { # https://jhelvy.github.io/logitr/reference/statusCodes.html
                   lt$convergence <- 0 
-                } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
+                } else {
+                  lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
+                }
               }
             }
-            ## The augmented Lagrangian solver with a local solver
-            else if (opt.method == "auglag") {
+            ## The augmented Lagrangian solver with a internal SLSQP solver
+            if (opt.method == "auglag") {
               lt <- suppressWarnings(
                 try(nloptr(x0 = par_grid[igrid, ], 
                            eval_f = flnl,
@@ -451,7 +454,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            eval_grad_f = flnl.grad,
                            eval_jac_g_ineq = grad.constr.neg,
                            lb = lowerbounds, ub = upperbounds,
-                           opts = list(xtol_rel = misc.options$mono.tol, 
+                           opts = list(ftol_rel = misc.options$mono.tol, 
+                                       ftol_abs = 0, 
+                                       xtol_rel = 0,
+                                       maxeval = 1000,
                                        print_level = as.integer(showit),
                                        local_opts = list(algorithm = opt.method.local,
                                                          xtol_rel = 1e-3),
@@ -463,7 +469,9 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
               if (!inherits(lt, "try-error")) {
                 if (lt$status >= 0) { # https://jhelvy.github.io/logitr/reference/statusCodes.html
                   lt$convergence <- 0 
-                } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
+                } else {
+                  lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
+                }
               } 
             } 
             else if (opt.method == "solnp") {
@@ -489,8 +497,10 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            eval_grad_f = flnl.grad,
                            eval_jac_g_ineq = grad.constr.neg,
                            lb = lowerbounds, ub = upperbounds,
-                           opts = list(xtol_rel = misc.options$mono.tol,
-                                       ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                           opts = list(ftol_rel = misc.options$mono.tol, 
+                                       ftol_abs = 0, 
+                                       xtol_rel = 0,
+                                       maxeval = 1000,
                                        print_level = as.integer(showit),
                                        algorithm = "NLOPT_LD_SLSQP"),
                            ddfobj = ddfobj,
@@ -499,19 +509,23 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
               if (!inherits(lt, "try-error")) {
                 if (lt$status >= 0) { # https://jhelvy.github.io/logitr/reference/statusCodes.html
                   lt$convergence <- 0 
-                } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
+                } else {
+                  lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
+                }
               }
             }
-            ## The augmented Lagrangian solver with a local derivative-free solver
-            else if (opt.method == "auglag") {
+            ## The augmented Lagrangian solver with a internal SLSQP solver
+            if (opt.method == "auglag") {
               lt <- try(nloptr(x0 = par_grid[igrid, ], 
                                eval_f = flnl,
                                eval_g_ineq = flnl.constr.neg,
                                eval_grad_f = flnl.grad,
                                eval_jac_g_ineq = grad.constr.neg,
                                lb = lowerbounds, ub = upperbounds,
-                               opts = list(xtol_rel = misc.options$mono.tol, 
-                                           ftol_rel = 0, ftol_abs = 0, maxeval = 1000,
+                               opts = list(ftol_rel = misc.options$mono.tol, 
+                                           ftol_abs = 0, 
+                                           xtol_rel = 0,
+                                           maxeval = 1000,
                                            print_level = as.integer(showit),
                                            local_opts = list(algorithm = opt.method.local,
                                                              xtol_rel = 1e-3),
@@ -522,7 +536,9 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
               if (!inherits(lt, "try-error")) {
                 if (lt$status >= 0) { # https://jhelvy.github.io/logitr/reference/statusCodes.html
                   lt$convergence <- 0 
-                } else (lt$convergence <- 1) # Have 1 now as code for failed convergence, not sure if correct
+                } else {
+                  lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
+                }
               }
             } else if (opt.method == "solnp") {
               lt <- try(solnp(pars=par_grid[igrid, ], fun=flnl, eqfun=NULL, eqB=NULL,
@@ -743,7 +759,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         # (if they were at the upper/lower bounds then we should make the
         # bounds wider rather than mess with the initial values, see below)
         if(!bounded & fitting=="all"){
-          initialvalues <- lt$par*runif(length(initialvalues),
+          initialvalues <- lt$par*runif(length(initialvalues), 
                                         sign(lowerbounds-1),
                                         sign(upperbounds+1))
           #initialvalues <- runif(length(initialvalues),
