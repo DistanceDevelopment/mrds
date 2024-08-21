@@ -115,9 +115,8 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
                                    optimx.maxit=300, silent=FALSE,
                                    mono.random.start=FALSE,
                                    optimizer = "both", 
-                                   constr.solver = "slsqp", # FTP: add slot for constraint solver (default="auglag")
-                                   constr.solver.loc = "bobyqa", # FTP: add slot for constraint local solver (default="bobyqa")
-                                   constr.startvals = FALSE, # FTP: add slot for finding best starting values for contr. solver (default=TRUE, temporarilty set to FALSE)
+                                   mono.method = "slsqp", # FTP: add slot for constraint solver (slsqp or solnp)
+                                   mono.startvals = FALSE, # FTP: add slot for finding best starting values for constraint solver (default=TRUE, temporarilty set to FALSE)
                                    winebin = NULL)
 
   #  Save current user options and then set design contrasts to treatment style
@@ -202,9 +201,8 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
                      mono.delta=control$mono.delta, debug=control$debug,
                      nofit=control$nofit, left=meta.data$left,
                      silent=control$silent,
-                     constr.solver = control$constr.solver, # FTP: added this to specify constr. solver
-                     constr.solver.loc = control$constr.solver.loc, # added this to specify to local constr. solver for auglag
-                     constr.startvals = control$constr.startvals,  # FTP: find best start values or just fit with "bad" ones?
+                     mono.method = control$mono.method, # FTP: added this to specify constraint solver
+                     mono.startvals = control$mono.startvals,  # FTP: find best start values or just fit with "bad" ones?
                      mono.random.start=control$mono.random.start,
                      mono.outer.iter=control$mono.outer.iter
                     )
@@ -267,7 +265,7 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
   }else{
     ## FTP: Check if the mono optimiser was used or not
     if (misc.options$mono) {
-      lt$optimise <- paste0("mrds (", misc.options$constr.solver, ")")
+      lt$optimise <- paste0("mrds (", misc.options$mono.method, ")")
     } else {
       lt$optimise <- paste0("mrds (", control$optimx.method, ")")
     }

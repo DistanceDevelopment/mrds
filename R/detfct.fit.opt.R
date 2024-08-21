@@ -70,7 +70,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     optim.options$follow.on <- TRUE
   }else{
     # opt.method <- "solnp" 
-    opt.method <- misc.options$constr.solver ## New bit of info that must be
+    opt.method <- misc.options$mono.method ## New bit of info that must be
                                              ## supplied through control
     if (!(opt.method %in% c("solnp", "slsqp"))) {
       stop("The optimiser method for contraint optimisation in R should be 'slsqp' or 'solnp'.")
@@ -192,8 +192,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                    xtol_rel = 0,
                                    maxeval = 1000,
                                    print_level = as.integer(showit),
-                                   local_opts = list(algorithm = "NLOPT_LD_SLSQP",
-                                                     xtol_rel = 1e-3),
+                                   local_opts = list(algorithm = "NLOPT_LD_SLSQP"),
+                                                     # xtol_rel = 1e-3),
                                    algorithm = "NLOPT_LD_AUGLAG"),
                        ddfobj = ddfobj,
                        misc.options = misc.options,
@@ -265,8 +265,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                        xtol_rel = 0,
                                        maxeval = 1000,
                                        print_level = as.integer(showit),
-                                       local_opts = list(algorithm = "NLOPT_LD_SLSQP",
-                                                         xtol_rel = 1e-3),
+                                       local_opts = list(algorithm = "NLOPT_LD_SLSQP"),
+                                                         # xtol_rel = 1e-3),
                                        algorithm = "NLOPT_LD_AUGLAG"),
                            ddfobj = ddfobj, 
                            misc.options = misc.options, 
@@ -459,8 +459,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                        xtol_rel = 0,
                                        maxeval = 1000,
                                        print_level = as.integer(showit),
-                                       local_opts = list(algorithm = opt.method.local,
-                                                         xtol_rel = 1e-3),
+                                       local_opts = list(algorithm = "NLOPT_LD_SLSQP"),
+                                                         # xtol_rel = 1e-3),
                                        algorithm = opt.method.main),
                            ddfobj = ddfobj, 
                            misc.options = misc.options, 
@@ -474,7 +474,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                 }
               } 
             } 
-            else if (opt.method == "solnp") {
+            if (opt.method == "solnp") {
               lt <- suppressWarnings(
                 try(solnp(pars = par_grid[igrid, ], fun=flnl, eqfun=NULL, eqB=NULL,
                           ineqfun=flnl.constr,
@@ -487,7 +487,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                        outer.iter=misc.options$mono.outer.iter)
                 ),
                 silent=TRUE))
-            } else {stop("Constrainted solver is not 'auglag' or 'solnp'")}
+            } 
           } else {
             ## The derivative-based SLSQP solver
             if (opt.method == "slsqp") {
@@ -527,8 +527,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                            xtol_rel = 0,
                                            maxeval = 1000,
                                            print_level = as.integer(showit),
-                                           local_opts = list(algorithm = opt.method.local,
-                                                             xtol_rel = 1e-3),
+                                           local_opts = list(algorithm = "NLOPT_LD_SLSQP"),
+                                                             # xtol_rel = 1e-3),
                                            algorithm = opt.method.main),
                                ddfobj = ddfobj, 
                                misc.options = misc.options, 
@@ -540,7 +540,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                   lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
                 }
               }
-            } else if (opt.method == "solnp") {
+            }
+            if (opt.method == "solnp") {
               lt <- try(solnp(pars=par_grid[igrid, ], fun=flnl, eqfun=NULL, eqB=NULL,
                               ineqfun=flnl.constr,
                               ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
@@ -551,9 +552,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                            delta=misc.options$mono.delta,
                                            outer.iter=misc.options$mono.outer.iter)
               ))
-            } else { # Maybe this check should happen elsewhere and not here.. 
-              stop("Constrainted solver is not 'auglag' or 'solnp'")
-            }
+            } 
           }
         } # end random vs. non-random par space exploration
       } # end if constraint solver didn't converge the first time
