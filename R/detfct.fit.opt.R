@@ -69,9 +69,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     optim.options$optimx.method <- NULL
     optim.options$follow.on <- TRUE
   }else{
-    # opt.method <- "solnp" 
-    opt.method <- misc.options$mono.method ## New bit of info that must be
-                                             ## supplied through control
+    opt.method <- misc.options$mono.method # FTP: New bit of info that must be
+                                           # supplied through control
     if (!(opt.method %in% c("solnp", "slsqp"))) {
       stop("The optimiser method for contraint optimisation in R should be 'slsqp' or 'solnp'.")
     }
