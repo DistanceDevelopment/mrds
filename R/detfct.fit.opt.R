@@ -138,9 +138,6 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       # lower and upper bounds of the inequality constraints
       lowerbounds.ic <- rep(0, 2*misc.options$mono.points)
       upperbounds.ic <- rep(10^10, 2*misc.options$mono.points)
-      
-      ## Uncomment below to start debugging/browsing here
-      # browser()
 
       # small initialvalues lead to errors in solnp, so work around that
       if (opt.method == "solnp") {
