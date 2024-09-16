@@ -26,7 +26,7 @@
 #' as the type of optimiser or the truncation width, and is created by 
 #' \code{\link{ddf.ds}}
 #' 
-#' @value a matrix of gradients for all constraints (rows) w.r.t to every
+#' @returns a matrix of gradients for all constraints (rows) w.r.t to every
 #' parameters (columns)
 grad.constr.neg <- function(pars, ddfobj, misc.options, fitting = "all") {
   

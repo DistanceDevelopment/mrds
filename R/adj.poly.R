@@ -7,8 +7,8 @@
 #' @param scaling scale parameter
 #' @param adj.order the adjustment order
 #' 
-#' @value scalar or vector containing the polynomial adjustment term for every
 #' value in \param{distance}
+#' @returns scalar or vector containing the polynomial adjustment term for every
 #'
 #' @author Felix Petersma
 adj.poly <- function(distance, scaling, adj.order) {
