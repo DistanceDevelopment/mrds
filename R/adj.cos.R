@@ -7,8 +7,8 @@
 #' @param scaling scale parameter
 #' @param adj.order the adjustment order
 #' 
-#' value in \param{distance}
 #' @returns scalar or vector containing the cosine adjustment term for every
+#' value in \code{distance} argument
 #' 
 #' @author Felix Petersma
 adj.cos <- function(distance, scaling, adj.order) {

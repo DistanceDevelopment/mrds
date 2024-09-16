@@ -11,7 +11,7 @@
 #' @param adj.exp boolean, defaults to FALSE
 #' 
 #' @return scalar or vector containing the gradient of the Hermite adjustment 
-#' series for every value in \param{distance}
+#' series for every value in \code{distance} argument
 #'
 #' @author Felix Petersma
 grad.adj.series.herm <- function(distance, scaling = 1, adj.order, 
