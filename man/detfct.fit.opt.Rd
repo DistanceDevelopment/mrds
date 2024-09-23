@@ -54,5 +54,5 @@ This function is called by the driver function \code{detfct.fit}, then
 calls \code{\link{optimx}} function.
 }
 \author{
-Dave Miller; Jeff Laake; Lorenzo Milazzo
+Dave Miller; Jeff Laake; Lorenzo Milazzo; Felix Petersma
 }

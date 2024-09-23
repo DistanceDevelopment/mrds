@@ -27,6 +27,14 @@ Examples of distance sampling analyses are available at
 For help with distance sampling and this package, there is a Google Group
 \url{https://groups.google.com/forum/#!forum/distance-sampling}.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/DistanceDevelopment/mrds/}
+  \item Report bugs at \url{https://github.com/DistanceDevelopment/mrds/issues}
+}
+
+}
 \author{
 Jeff Laake <jeff.laake@noaa.gov>,
         David Borchers <dlb@mcs.st-and.ac.uk>,
