@@ -7,7 +7,7 @@
 #' This function is called by the driver function \code{detfct.fit}, then
 #' calls \code{\link{optimx}} function.
 #'
-#' @import optimx Rsolnp nloptr
+#' @import nloptr optimx Rsolnp
 #' @aliases detfct.fit.opt
 #' @param ddfobj detection function object
 #' @param optim.options control options for optim
@@ -151,7 +151,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                        eval_f = flnl,
                        eval_g_ineq = flnl.constr.neg,
                        eval_grad_f = flnl.grad,
-                       eval_jac_g_ineq = grad.constr.neg,
+                       eval_jac_g_ineq = flnl.constr.grad.neg,
                        lb = lowerbounds, ub = upperbounds,
                        opts = list(ftol_rel = misc.options$mono.tol, 
                                    ftol_abs = 0.0, 
@@ -199,7 +199,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                        eval_f = flnl,
                        eval_g_ineq = flnl.constr.neg,
                        eval_grad_f = flnl.grad,
-                       eval_jac_g_ineq = grad.constr.neg,
+                       eval_jac_g_ineq = flnl.constr.grad.neg,
                        lb = lowerbounds, ub = upperbounds,
                        opts = list(ftol_rel = misc.options$mono.tol, 
                                    ftol_abs = 0.0, 
@@ -366,7 +366,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            eval_f = flnl,
                            eval_g_ineq = flnl.constr.neg,
                            eval_grad_f = flnl.grad,
-                           eval_jac_g_ineq = grad.constr.neg,
+                           eval_jac_g_ineq = flnl.constr.grad.neg,
                            lb = lowerbounds, ub = upperbounds,
                            opts = list(ftol_rel = misc.options$mono.tol, 
                                        ftol_abs = 0.0, 
@@ -407,7 +407,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            eval_f = flnl,
                            eval_g_ineq = flnl.constr.neg,
                            eval_grad_f = flnl.grad,
-                           eval_jac_g_ineq = grad.constr.neg,
+                           eval_jac_g_ineq = flnl.constr.grad.neg,
                            lb = lowerbounds, ub = upperbounds,
                            opts = list(ftol_rel = misc.options$mono.tol, 
                                        ftol_abs = 0.0, 

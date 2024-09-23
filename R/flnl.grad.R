@@ -18,7 +18,10 @@
 #' @param misc.options a list object containing all additional information such 
 #' as the type of optimiser or the truncation width, and is created by 
 #' \code{\link{ddf.ds}}
-#' 
+#' @param fitting character string with values "all", "key", "adjust" to
+#'   determine which parameters are allowed to vary in the fitting. Not actually
+#'   used. Defaults to "all". 
+#'   
 #' @return The gradients of the negative log-likelihood w.r.t. the parameters
 #'
 #' @author Felix Petersma
@@ -95,14 +98,8 @@ flnl.grad <- function(pars, ddfobj, misc.options, fitting = "all") {
                             width = width, left = left,
                             int.range = bin.ir,
                             standardize = standardize))
-        # return(integrate(distpdf, lower = bin.ir[1], upper = bin.ir[2],
-        #                  ddfobj = ddfobj, left = left, point = point,
-        #                  standardize = standardize, width = width,
-        #                  select = c(TRUE, rep(FALSE, nrow(x) - 1)))$value)
       })      
-      
-      ## Set values in part1a.i that are zero to something really small
-      # part1a.i[part1a.i < 1e-16] <- 1e-16
+
       
       ## Sum all part1a.i to get part2a
       part2a <- sum(part1a.i)
@@ -272,16 +269,16 @@ flnl.grad <- function(pars, ddfobj, misc.options, fitting = "all") {
     ## Set 0 values to something really small
     part1a[part1a < 1e-16] <- 1e-16
     
-    part2a <- length(distance) / (integratepdf(ddfobj, select = c(TRUE), 
-                                               point = point,
-                                               width = width, left = left,
-                                               int.range = int.range,
-                                               standardize = standardize))
+    part2a <- length(distance) / integratepdf(ddfobj, select = c(TRUE), 
+                                              point = point,
+                                              width = width, left = left,
+                                              int.range = int.range,
+                                              standardize = standardize)
     
     for (par.index in seq(along = pars)) {
       ## Part 1
       # New version as proposed on 24/05, which means we build around distpdf
-      # and the defintiona g(x)/w (line) and g(x)*2x/w^2 (point). Also, took part1a
+      # and the definitions g(x)/w (line) and g(x)*2x/w^2 (point). Also, took part1a
       # and part2a outside the loop
       part1b <- distpdf.grad(distance = distance, par.index = par.index,
                              ddfobj = ddfobj, width = width, left = left,
@@ -308,6 +305,6 @@ flnl.grad <- function(pars, ddfobj, misc.options, fitting = "all") {
 
 ## Negative of the gradients. Not in use now, but could be useful for future
 ## implementations. 
-neg.flnl.grad <- function(pars, ddfobj, misc.options, fitting = "all") {
+flnl.grad.neg <- function(pars, ddfobj, misc.options, fitting = "all") {
   return(-flnl.grad(pars, ddfobj, misc.options))
 }

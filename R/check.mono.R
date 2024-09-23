@@ -23,7 +23,7 @@
 #' range (left to right truncation points).
 #' @param n.pts number of equally-spaced points between left and right
 #' truncation at which to evaluate the detection function (default 100)
-#' @param tolerance numerical tolerance for monotonicity checks (default 1e-6)
+#' @param tolerance numerical tolerance for monotonicity checks (default 1e-8)
 #' @param plot plot a diagnostic highlighting the non-monotonic areas (default
 #' \code{FALSE})
 #' @param max.plots when \code{plot=TRUE}, what is the maximum number of plots

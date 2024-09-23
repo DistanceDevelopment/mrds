@@ -22,22 +22,17 @@
 #' @param distance vector of distances
 #' @param ddfobj the ddf object
 #' @param width the truncation width
-#' @param left the left truncation (defaults to zero)
+#' @param left the left truncation (default 0)
 #' @param standardize whether the function should return the gradient of the  
 #' standardized detection function g(x)/g(0) (TRUE), or simply of g(0) (FALSE). 
 #' Currently only implemented for standardize = FALSE. 
+#' @param point are the data from point transects (TRUE) or line transects 
+#' (FALSE).
+#' @param pdf.based is it the gradient of the non-normalised pdf (TRUE) or 
+#' the detection function (FALSE)? Default is TRUE. 
 #' 
 #' @return the gradient of the non-normalised pdf or detection w.r.t. to 
 #' the parameter with parameter index \code{par.index}. 
-#' 
-#'@section Dependencies: 
-#'  \describe {
-#'    \item{keyfct.XX}
-#'    \item{keyfct.grad.XX}
-#'    \item{adj.YY}
-#'    \item{adjfct.YY}
-#'    \item{adj.grd.YY}
-#'  }
 #' 
 #' @author Felix Petersma
 distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE, 
@@ -73,7 +68,8 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
     par.type <- "scale"
   }
 
-  zeros <- 0 # rep(0, length(distance)) 
+  # Create zero variable
+  zeros <- 0 
   
   ## Extract the information about the adjustment term
   adj.series <- ddfobj$adjustment$series
@@ -99,7 +95,7 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
     key.val <- switch(key,
                       hn    = keyfct.hn(distance, key.scale),
                       hr    = keyfct.hz(distance, key.scale, key.shape),
-                      unif  = 1, # rep(1, length(distance)), 
+                      unif  = 1, 
                       gamma = keyfct.gamma(distance, key.scale, key.shape),
                       th1   = keyfct.th1(distance, key.scale, key.shape),
                       th2   = keyfct.th2(distance, key.scale, key.shape),
@@ -141,7 +137,7 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
       key.val <- switch(key,
                         hn    = keyfct.hn(distance, key.scale),
                         hr    = keyfct.hz(distance, key.scale, key.shape),
-                        unif  = 1, #rep(1, length(distance)), 
+                        unif  = 1, 
                         gamma = keyfct.gamma(distance, key.scale, key.shape),
                         th1   = keyfct.th1(distance, key.scale, key.shape),
                         th2   = keyfct.th2(distance, key.scale, key.shape),
@@ -155,13 +151,13 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
                                           adj.parm, adj.exp))
       
       ## Evaluate gradient of the adjustment series w.r.t. the scaled distance
-      grad.adj.series.val <- switch(
+      adj.series.grad.val <- switch(
         adj.series,
-        poly = grad.adj.series.poly(distance, key.scale, adj.order, adj.parm, 
+        poly = adj.series.grad.poly(distance, key.scale, adj.order, adj.parm, 
                                     adj.exp),
-        herm = grad.adj.series.herm(distance, key.scale, adj.order, adj.parm, 
+        herm = adj.series.grad.herm(distance, key.scale, adj.order, adj.parm, 
                                     adj.exp),
-        cos = grad.adj.series.cos(distance, key.scale, adj.order, adj.parm, 
+        cos = adj.series.grad.cos(distance, key.scale, adj.order, adj.parm, 
                                   adj.exp)
       )
       
@@ -170,15 +166,15 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
                              hn = keyfct.grad.hn(distance, key.scale),
                              hr = keyfct.grad.hz(distance, key.scale, 
                                                  key.shape),
-                             unif = 0) # rep(0, distance))
+                             unif = 0)
       
       ## Derive the gradient of the non-standardised detection function
       if (point) {
-        grad <- (key.val * grad.adj.series.val * scaled.dist.grad + 
+        grad <- (key.val * adj.series.grad.val * scaled.dist.grad + 
                    key.grad.val * (1 + adj.val)) * key.scale
         if (pdf.based) grad <- grad * 2 * distance / (width ^ 2)
       } else {
-        grad <- (key.val * grad.adj.series.val * scaled.dist.grad + 
+        grad <- (key.val * adj.series.grad.val * scaled.dist.grad + 
                    key.grad.val * (1 + adj.val)) * key.scale
         if (pdf.based) grad <- grad / (width - left)
       }
@@ -215,13 +211,3 @@ distpdf.grad <- function(distance, par.index, ddfobj, standardize = FALSE,
   ## Return the gradient
   return(grad)
 }
-
-# ## A wrapper in case it is important that the gradient is positive
-# pdistpdf.grad <- function(distance, par.index, ddfobj, standardize, 
-#                           width, left = 0) {
-#   res <- distpdf.grad(distance = distance, par.index = par.index, ddfobj=ddfobj, 
-#                       standardize=standardize, width = width, #point=point, # point not yet implemented
-#                       left = left)
-#   res[res < 1e-16] <- 0
-#   return(res)
-# }

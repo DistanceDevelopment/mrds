@@ -9,14 +9,17 @@
 #' users directly.
 #' 
 #' @param par.index the index of the parameter of interest
-#' @param distance vector of distances
 #' @param ddfobj the ddf object
 #' @param width the truncation width
 #' @param int.range vector with the lower and upper bound of the integration
 #' @param left the left truncation. Defaults to zero.
 #' @param pdf.based evaluate the non-normalised pdf or the detection function? 
-#'                  Defaults to TRUE. 
-#' @param standardize not being used really, so can probably be removed.
+#' Default is TRUE. 
+#' @param point are the data from point transects (TRUE) or line transects 
+#' (FALSE).
+#' @param standardize TRUE if the non-standardised detection function should
+#' be integrated. Only implemented for standardize = FALSE, so users should not
+#' touch this argument and it can probably be removed. 
 #' 
 #' @author Felix Petersma
 
