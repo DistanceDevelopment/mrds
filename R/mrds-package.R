@@ -22,13 +22,13 @@
 #'
 #' @name mrds-package
 #' @aliases mrds-package mrds
-#' @docType package
 #' @author Jeff Laake <jeff.laake@@noaa.gov>,
 #'         David Borchers <dlb@@mcs.st-and.ac.uk>,
 #'         Len Thomas <len@@mcs.st-and.ac.uk>,
 #'         David L. Miller <dave@@ninepointeightone.net>,
 #'         Jon Bishop <jonb@@mcs.st-and.ac.uk>
 #' @keywords package
+#' "_PACKAGE"
 #'
 NULL
 
