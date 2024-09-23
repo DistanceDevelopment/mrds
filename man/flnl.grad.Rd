@@ -16,7 +16,7 @@ uniform, and the adjustment series can be cosine, simple polynomial or
 Hermite polynomial. Data can be either binned or exact, but a combination
 of the two has not been implemented yet.}
 \usage{
-flnl.grad(pars, ddfobj, misc.options)
+flnl.grad(pars, ddfobj, misc.options, fitting = "all")
 }
 \arguments{
 \item{pars}{vector of parameter values for the detection function at which 
@@ -27,6 +27,10 @@ the gradients of the negative log-likelihood should be evaluated}
 \item{misc.options}{a list object containing all additional information such 
 as the type of optimiser or the truncation width, and is created by 
 \code{\link{ddf.ds}}}
+
+\item{fitting}{character string with values "all", "key", "adjust" to
+determine which parameters are allowed to vary in the fitting. Not actually
+used. Defaults to "all".}
 }
 \value{
 The gradients of the negative log-likelihood w.r.t. the parameters

@@ -4,7 +4,7 @@
 \alias{flnl.constr.grad.neg}
 \title{(Negative) gradients of constraint function}
 \usage{
-flnl.constr.grad.neg(pars, ddfobj, misc.options)
+flnl.constr.grad.neg(pars, ddfobj, misc.options, fitting = "all")
 }
 \arguments{
 \item{pars}{vector of parameter values for the detection function at which 
@@ -15,6 +15,10 @@ the gradients of the negative log-likelihood should be evaluated}
 \item{misc.options}{a list object containing all additional information such 
 as the type of optimiser or the truncation width, and is created within
 \code{ddf.ds}}
+
+\item{fitting}{character string with values "all", "key", "adjust" to
+determine which parameters are allowed to vary in the fitting. Not actually
+used. Defaults to "all".}
 }
 \value{
 a matrix of gradients for all constraints (rows) w.r.t to every
