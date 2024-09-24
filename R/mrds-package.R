@@ -16,7 +16,6 @@
 #' Examples of distance sampling analyses are available at
 #' \url{http://examples.distancesampling.org/}.
 #'
-#'
 #' For help with distance sampling and this package, there is a Google Group
 #' \url{https://groups.google.com/forum/#!forum/distance-sampling}.
 #'
@@ -26,7 +25,8 @@
 #'         David Borchers <dlb@@mcs.st-and.ac.uk>,
 #'         Len Thomas <len@@mcs.st-and.ac.uk>,
 #'         David L. Miller <dave@@ninepointeightone.net>,
-#'         Jon Bishop <jonb@@mcs.st-and.ac.uk>
+#'         Jon Bishop <jonb@@mcs.st-and.ac.uk>,
+#'         Felix Petersma <ftp@@st-andrews.ac.uk>
 #' @keywords package
 #' "_PACKAGE"
 #'
