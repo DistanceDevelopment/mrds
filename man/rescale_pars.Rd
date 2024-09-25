@@ -14,7 +14,7 @@ rescale_pars(initialvalues, ddfobj)
 \description{
 This will calculate the rescaling needed when covariates to be included in
 the scale of the detection function are "too big". Based on code from
-\code{\link{optimx}}.
+\code{\link[optimx]{optimx}}.
 }
 \details{
 Derivative-free methods like nlminb are sensitive to the parameters being

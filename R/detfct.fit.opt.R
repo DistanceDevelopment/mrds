@@ -5,7 +5,7 @@
 #' between fitting parameters of key and adjustment functions and then all
 #' parameters much like the approach in the CDS and MCDS Distance FORTRAN code.
 #' This function is called by the driver function \code{detfct.fit}, then
-#' calls \code{\link{optimx}} function.
+#' calls \code{\link[optimx]{optimx}} function.
 #'
 #' @import nloptr optimx Rsolnp
 #' @aliases detfct.fit.opt

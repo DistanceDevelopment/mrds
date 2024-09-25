@@ -175,7 +175,7 @@
 #'   \item{\code{optimx.method}}{one (or a vector of) string(s) giving the
 #'   optimisation method to use. If more than one is supplied, the results from
 #'   one are used as the starting values for the next. See
-#'   \code{\link{optimx}}}
+#'   \code{\link[optimx]{optimx}}}
 #'   \item{\code{optimx.maxit}}{maximum number of iterations to use in the
 #'   optimisation.}
 #'   \item{\code{mono.random.start}}{By default when monotonicity constraints
