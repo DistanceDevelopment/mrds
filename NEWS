@@ -16,7 +16,7 @@ mrds 2.3.0
 
 New Features
 
-* The 'P2' estimator is now the default for estimating the encouter rate variance for point transect surveys. (Issue #65)
+* The 'P2' estimator is now the default for estimating the encounter rate variance for point transect surveys. (Issue #65)
 
 Bug Fixes
 
