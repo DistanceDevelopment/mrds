@@ -3,8 +3,8 @@
 #' Rather than use the R-based detection function fitting algorithms provided in 
 #' `mrds`, one can also use the algorithm used by Distance for Windows, implemented
 #' in the binary file `MCDS.exe`.  Note that with changes in R-based optimizer introduced 
-#' in `mrds` version 3.0.0 this is unlikely to results in better estimates.  However,
-#' the option remains available.
+#' in `mrds` version 3.0.0 this is unlikely to result in better estimates.  
+#' The option remains available, although it may be deprecated in a future release.
 
 #' To make use of this facility, one must first download the `MCDS.exe` binary, as
 #' laid out below under `Obtaining MCDS.exe`.  Once the binary is installed, calls
