@@ -34,10 +34,13 @@ setbounds <- function(lowerbounds, upperbounds, initialvalues, ddfobj, width,
                                 byrow=FALSE, ncol=2), 1, min)
     # fix jll 17-Aug-05 constrain power parameter in hazard rate to be >=1
     if(ddfobj$type == "hr"){
-      lowerbounds[1] <- 0
-    }else if(ddfobj$type == "gamma"){
+      lowerbounds[1] <- 0                       
+      lowerbounds[2] <- log(0.01 * width)          # FTPadd
+    } else if (ddfobj$type == "hn"){
+      lowerbounds[1] <- log(0.01 * width)          # FTPadd
+    } else if(ddfobj$type == "gamma"){
       lowerbounds[1] <- -300
-    }else if(ddfobj$type == "tpn"){
+    } else if(ddfobj$type == "tpn"){
       #lowerbounds <- c(log(left), rep(-Inf, length(initialvalues)-1))
       #upperbounds <- c(log(width), rep(Inf, length(initialvalues)-1))
       lowerbounds[1] <- log(left)
@@ -53,6 +56,11 @@ setbounds <- function(lowerbounds, upperbounds, initialvalues, ddfobj, width,
                                   byrow=FALSE, ncol=2), 1, max)
     if(ddfobj$type == "tpn"){
       upperbounds[1] <- log(width)
+    } else if(ddfobj$type == "hr"){
+      upperbounds[1] <- log(20)                  # FTPadd    
+      upperbounds[2] <- log(20 * width)          # FTPadd
+    } else if (ddfobj$type == "hn"){
+      upperbounds[1] <- log(20 * width)          # FTPadd
     }
   }else{
     if(length(upperbounds) != length(initialvalues)){
