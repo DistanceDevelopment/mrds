@@ -121,8 +121,8 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
   # Continue fitting until convergence occurs while parameters are within
   # their bounds
-
   itconverged <- FALSE
+  
   while(!itconverged){
     # Call optimization routine to find constrained mles; upon
     # completion add the user specified models and return the list.
