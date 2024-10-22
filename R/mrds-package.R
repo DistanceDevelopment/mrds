@@ -1200,7 +1200,7 @@ NULL
 #' values" section above, concatenated in that order. If one does not occur
 #' (e.g. no shape parameter) then it is simple omitted from the vector.
 #'
-#' @section Conventional distance sampling optimizer choice
+#' @section Conventional distance sampling optimizer choice:
 #' The key function plus adjustment approach of Conventional Distance Sampling (CDS)
 #' can sometimes run into issues because it is sensible to constrain the fitted 
 #' detection function to be monotonic non-increasing (i.e., flat or going down)
