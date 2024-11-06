@@ -1,7 +1,7 @@
 #' Wrapper around \code{nlminb}
 #'
 #' This is a wrapper around nlminb to use scaling, as this is not available in
-#' \code{\link{optimx}}.
+#' \code{\link[optimx]{optimx}}.
 #'
 #' @import optimx
 #'

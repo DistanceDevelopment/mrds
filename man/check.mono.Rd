@@ -8,7 +8,7 @@ check.mono(
   df,
   strict = TRUE,
   n.pts = 100,
-  tolerance = 1e-06,
+  tolerance = 1e-08,
   plot = FALSE,
   max.plots = 6
 )
@@ -23,7 +23,7 @@ range (left to right truncation points).}
 \item{n.pts}{number of equally-spaced points between left and right
 truncation at which to evaluate the detection function (default 100)}
 
-\item{tolerance}{numerical tolerance for monotonicity checks (default 1e-6)}
+\item{tolerance}{numerical tolerance for monotonicity checks (default 1e-8)}
 
 \item{plot}{plot a diagnostic highlighting the non-monotonic areas (default
 \code{FALSE})}
@@ -58,6 +58,6 @@ For models with covariates in the scale parameter of the detection function is e
 Currently covariates in the shape parameter are not supported.
 }
 \author{
-David L. Miller
+David L. Miller, Felix Petersma
 }
 \keyword{utility}
