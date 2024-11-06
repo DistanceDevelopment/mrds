@@ -9,42 +9,40 @@
 # function to evaluate a set of `reference points' (distances) 
 # used to define the inequality constraints
 getRefPoints<- function(no_d, int.range){
-
+  
   # previous versions just used width and assumed that left truncation
   # was at zero, now using int.range to tell us the interval
   # going back to just using width to be consistent with Distance for Windows
   # see https://github.com/DistanceDevelopment/Distance/issues/135
-
+  
   xlat <- (int.range[2])/(no_d^1.5)
   ref_points <- double(no_d)
   for(i in 1:no_d){
     ref_points[i] <- (i^1.5) * xlat
   }
-
+  
   return(ref_points)
 }
 
-
-#
 # set of equations associated with the Inequality Constraints
 #
 # input:
 #  pars           - parameters
 #  ddfobj         - ddf object with almost everything we need in it
 #  misc.options   - everything else...
-flnl.constr<- function(pars, ddfobj, misc.options,...){
-
+flnl.constr.neg <- function(pars, ddfobj, misc.options, fitting){
+  
   if(is.null(ddfobj$adjustment)){
     # this never gets called from ddf()
     ineq_constr <- rep(10,2*misc.options$mono.points)
   }else{
     ddfobj <- assign.par(ddfobj,pars)
-
+    
     # apply the constraints?
     constr <- misc.options$mono
     # apply strict monotonicity?
     strict <- misc.options$mono.strict
-
+    
     ### Constraint stuff here:
     # number of points (distances)
     # at which the DF is evaluated
@@ -58,12 +56,12 @@ flnl.constr<- function(pars, ddfobj, misc.options,...){
     if(!is.null(ddfobj$shape)){
       ddfobj$shape$dm <- rep(1,no_d)
     }
-
+    
     # evaluate the detection function at the reference points
     # note that we must standardize so 0<=g(x)<=1
     df_v_rp <- as.vector(detfct(ref_p,ddfobj,width=misc.options$width,
-                               standardize=TRUE))
-
+                                standardize=TRUE))
+    
     # reference point associated with distance=0
     ref_p0 <- 0
     # again, to get detfct to play nice need to mudge ddfobj a bit...
@@ -73,11 +71,11 @@ flnl.constr<- function(pars, ddfobj, misc.options,...){
     if(!is.null(ddfobj$shape)){
       ddfobj$shape$dm <- 1
     }
-
+    
     # evaluate the detection function at 0
-    df_v_rp0 <- as.vector(detfct(ref_p0,ddfobj,width=misc.options$width,
-                                standardize=TRUE))
-
+    df_v_rp0 <- as.vector(detfct(ref_p0, ddfobj ,width = misc.options$width,
+                                 standardize = TRUE))
+    
     # inequality constraints ensuring the
     # (weak or strict) monotonicity
     ic_m <- NULL
@@ -95,14 +93,21 @@ flnl.constr<- function(pars, ddfobj, misc.options,...){
         }
       }
     }
+    
     # inequality constraints ensuring that
     # the detection function is always >=0
-    ic_p <- double(no_d)
+    ic_p <- double(no_d) # FTP: why create ic_p and then overwrite it?
     ic_p <- df_v_rp
-
+    
     #  set of inequality constraints
     ineq_constr <- c(ic_m, ic_p)
   }
-  return(ineq_constr)
+  return(-1 * ineq_constr)
 }
 
+## Negative of the negative constraint
+flnl.constr <- function(pars, ddfobj, misc.options, fitting) {
+  return(-1 * flnl.constr.neg(pars = pars, 
+                              ddfobj = ddfobj, 
+                              misc.options = misc.options))
+}

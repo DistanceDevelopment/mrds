@@ -175,7 +175,7 @@
 #'   \item{\code{optimx.method}}{one (or a vector of) string(s) giving the
 #'   optimisation method to use. If more than one is supplied, the results from
 #'   one are used as the starting values for the next. See
-#'   \code{\link{optimx}}}
+#'   \code{\link[optimx]{optimx}}}
 #'   \item{\code{optimx.maxit}}{maximum number of iterations to use in the
 #'   optimisation.}
 #'   \item{\code{mono.random.start}}{By default when monotonicity constraints
@@ -183,8 +183,17 @@
 #'   starting values can be used (uniformly distributed between the upper and
 #'   lower bounds). Set \code{TRUE} for random start, \code{FALSE} (default)
 #'   uses the grid method}
+#'   \item{\code{mono.method}}{The optimiser method to be used when (strict) 
+#'   monotonicity is enforced. Can be either \code{slsqp} or \code{solnp}. 
+#'   Default \code{slsqp}.}
+#'   \item{\code{mono.startvals}}{Controls if the mono.optimiser should find 
+#'   better starting values by first fitting a key function without adjustments, 
+#'   and then use those start values for the key function parameters when 
+#'   fitting the key + adjustment series detection function. Defaults to 
+#'   \code{FALSE}}
 #'   \item{\code{mono.outer.iter}}{Number of outer iterations to be used by
-#'   \code{solnp} when fitting a monotonic model. Default 200.}
+#'   \code{solnp} when fitting a monotonic model and \code{solnp} is selected. 
+#'   Default 200.}
 #'   \item{\code{silent}}{silences warnings within ds fitting method (helpful
 #'   for running many times without generating many warning/error messages).}
 #'   \item{\code{optimizer}}{By default this is set to 'both' for single 
@@ -200,7 +209,7 @@
 #' }
 #'
 #' Examples of distance sampling analyses are available at
-#' \url{http://examples.distancesampling.org/}.
+#' \url{https://examples.distancesampling.org/}.
 #'
 #' Hints and tips on fitting (particularly optimisation issues) are on the
 #' \code{\link{mrds_opt}} manual page.

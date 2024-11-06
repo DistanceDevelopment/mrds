@@ -6,17 +6,26 @@
 \alias{mcds_dot_exe}
 \title{Run MCDS.exe as a backend for mrds}
 \description{
-Rather than use the R code provided in `mrds`, one can also use the binary
-of `MCDS.exe`, to reproduce the results given by Distance for Windows. There
-is no guarantee that one approach is "better" than the other, but `mrds`
-will select the model with the better likelihood and provide answers to
-this. By default (once `MCDS.exe` is available) both `MCDS.exe` and R will
-be used to obtain detection function parameter estimates. To select only
-to use the `MCDS.exe` optimizer set \code{control=list(optimizer='MCDS')} 
-or only use the R optimizer set \code{control=list(optimizer='R')}.
+Rather than use the R-based detection function fitting algorithms provided in 
+`mrds`, one can also use the algorithm used by Distance for Windows, implemented
+in the binary file `MCDS.exe`.  Note that with changes in R-based optimizer introduced 
+in `mrds` version 3.0.0 this is unlikely to result in better estimates.  
+The option remains available, although it may be deprecated in a future release.
+To make use of this facility, one must first download the `MCDS.exe` binary, as
+laid out below under `Obtaining MCDS.exe`.  Once the binary is installed, calls
+to `ddf` will, by default, result in using the model being fit using both `MCDS.exe`
+and the R-based algorithm, and the one with lower negative log-likelihood being selected.
+In almost all cases, both algorithms produce the same results, but we have found edge
+where one or other fails to find the likelihood maximum and hence trying both is useful.
 }
 \details{
-Please see our examples pages for further information: https://examples.distancesampling.org/
+There may also be cases where the `MCDS.exe` algorithm is faster than the R-based one.
+Under this circumstance, you can choose to run only the `MCDS.exe` algorithm via by setting
+the `ddf` argument \code{control=list(optimizer='MCDS')}.  For completeness, one can also
+choose to use only the R-based algorithm by setting \code{control=list(optimizer='R')}.
+
+For more information and examples comparing the R-based and `MCDS.exe` algorithms,
+see our examples pages at https://examples.distancesampling.org/
 
 If you are running a non-Windows operating system, you can follow the
 instructions below to have `MCDS.exe` run using `wine`.
@@ -60,9 +69,11 @@ on Mac M1 systems.
 
 \section{Stopping using MCDS.exe}{
 
-Once this feature is enabled (see below) using `ddf` will always run both
-its built-in R optimizer and `MCDS.exe`. To disable this behaviour remove
-the `MCDS.exe` binary file. You can find it by running the following in R:
+Once this feature is enabled, using `ddf` will by default run both
+its built-in R optimizer and `MCDS.exe`. To disable this behaviour, specify which 
+you wish to use with via the \code{optimizer=} option described above.  Alternatively,
+if you wish to permanently stop using MCDS.exe, remove
+the `MCDS.exe` binary file. You can find which folder it is in by running the following in R:
 \code{system.file("MCDS.exe", package="mrds")}.
 }
 

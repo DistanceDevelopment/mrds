@@ -50,9 +50,10 @@ Fit detection function to observed distances using the key-adjustment
 function approach. If adjustment functions are included it will alternate
 between fitting parameters of key and adjustment functions and then all
 parameters much like the approach in the CDS and MCDS Distance FORTRAN code.
-This function is called by the driver function \code{detfct.fit}, then
-calls \code{\link{optimx}} function.
+This function is called by the driver function \code{detfct.fit}, it then
+calls the relevant optimisation routine, \code{\link[nloptr]{slsqp}},
+\code{\link[Rsolnp]{solnp}} or \code{\link[optimx]{optimx}}.
 }
 \author{
-Dave Miller; Jeff Laake; Lorenzo Milazzo
+Dave Miller; Jeff Laake; Lorenzo Milazzo; Felix Petersma
 }

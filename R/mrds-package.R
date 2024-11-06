@@ -16,19 +16,19 @@
 #' Examples of distance sampling analyses are available at
 #' \url{http://examples.distancesampling.org/}.
 #'
-#'
 #' For help with distance sampling and this package, there is a Google Group
 #' \url{https://groups.google.com/forum/#!forum/distance-sampling}.
 #'
 #' @name mrds-package
 #' @aliases mrds-package mrds
-#' @docType package
 #' @author Jeff Laake <jeff.laake@@noaa.gov>,
 #'         David Borchers <dlb@@mcs.st-and.ac.uk>,
 #'         Len Thomas <len@@mcs.st-and.ac.uk>,
 #'         David L. Miller <dave@@ninepointeightone.net>,
-#'         Jon Bishop <jonb@@mcs.st-and.ac.uk>
+#'         Jon Bishop <jonb@@mcs.st-and.ac.uk>,
+#'         Felix Petersma <ftp@@st-andrews.ac.uk>
 #' @keywords package
+#' "_PACKAGE"
 #'
 NULL
 
@@ -1200,6 +1200,33 @@ NULL
 #' values" section above, concatenated in that order. If one does not occur
 #' (e.g. no shape parameter) then it is simple omitted from the vector.
 #'
+#' @section Conventional distance sampling optimizer choice:
+#' The key function plus adjustment approach of Conventional Distance Sampling (CDS)
+#' can sometimes run into issues because it is sensible to constrain the fitted 
+#' detection function to be monotonic non-increasing (i.e., flat or going down)
+#' with increasing distance - finding the maximum of the constrained likelihood
+#' is more difficult than the same task without constraints.  
+#' 
+#' There are several options within the `ddf` \code{control} argument that may help
+#' if difficulties are encountered.  These are documented in the \code{\link{ddf}} 
+#' manual page, and a few are mentioned below.
+#' 
+#' One potential strategy (as mentioned above) is to use better starting values for the 
+#' optimization.  If \code{mono.startvals} is set to \code{TRUE}
+#' then the detection function is first fit without adjustments and the resulting
+#' scale (and shape) estimates used as starting values in the model with adjustments.  
+#' For even finer control, the \code{initial} option can be used as documented above.
+#' 
+#' Another potential thing to change is the constraint solver used.  From `mrds` v 3.0.0
+#' a new constraint solver, `slsqp`, has been included as the default.  This was found
+#' to work better than the solver previously used (`solnp`) but if needed this solver
+#' can be specified using the \code{mono.method} option of the \code{control} argument of 
+#' `ddf`.
+#' 
+#' It is also possible to use the optimizer implemented in Distance for Windows by downloading
+#' a separate binary - see the manual page on \code{\link{mcds_dot_exe}}.  If specified, this 
+#' will also be used for Multiple Covariate Distance Sampling (MCDS) analyses.
+#' 
 #' @name mrds_opt
 #' @docType methods
 #' @author David L. Miller <dave@@ninepointeightone.net>

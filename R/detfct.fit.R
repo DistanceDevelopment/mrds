@@ -64,7 +64,8 @@ detfct.fit <- function(ddfobj, optim.options, bounds, misc.options){
   if(is.null(ddfobj$adjustment) | ddfobj$type=="unif" |
      misc.options$mono | misc.options$nofit){
 
-    if(misc.options$mono & ddfobj$type!="unif"){
+    if(misc.options$mono & ddfobj$type!="unif"
+       & misc.options$mono.startvals){ # FTP: find better starting values or not?
       ## get best key pars first, not enforcing monotonicity
       save.mono <- misc.options$mono
       save.mono.strict <- misc.options$mono.strict

@@ -23,7 +23,7 @@
 #' range (left to right truncation points).
 #' @param n.pts number of equally-spaced points between left and right
 #' truncation at which to evaluate the detection function (default 100)
-#' @param tolerance numerical tolerance for monotonicity checks (default 1e-6)
+#' @param tolerance numerical tolerance for monotonicity checks (default 1e-8)
 #' @param plot plot a diagnostic highlighting the non-monotonic areas (default
 #' \code{FALSE})
 #' @param max.plots when \code{plot=TRUE}, what is the maximum number of plots
@@ -36,12 +36,12 @@
 #' non-monotonic.
 #'
 #' @keywords utility
-#' @author David L. Miller
+#' @author David L. Miller, Felix Petersma
 #' @importFrom stats as.formula model.matrix
 #' @importFrom graphics polygon rug
 #' @importFrom grDevices rgb
 #' @export
-check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
+check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-8, plot=FALSE,
                        max.plots=6){
 
   # extract the ddf object from the fitted model
@@ -55,8 +55,13 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
   right.trunc <- df$meta.data$width
   left.trunc <- df$meta.data$left
 
-  # generate distances between truncation points
-  x <- seq(left.trunc, right.trunc, len=n.pts)
+  # generate distances between truncation points 
+  # x <- seq(left.trunc, right.trunc, len=n.pts) # commented out by Felix
+  
+  ## FTP: Len and I discussed that this check.mono should use the same points at 
+  ## MCDS and the fitting, which are determined through getRefPoints() in 
+  ## detfct.fit.mono.R
+  x <- getRefPoints(no_d = n.pts, int.range = c(left.trunc, right.trunc))
 
   # grab the unique covariate combinations from the data
   if(ddfobj$type=="unif"){
@@ -85,7 +90,7 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
     # make predictions over the data
     ps <- as.vector(detfct(x, ddfobj, width=right.trunc, standardize=TRUE))
 
-    # catrch nasty errors
+    # catch nasty errors
     if(any(is.na(ps) | is.nan(ps) | is.infinite(ps))){
       return(rep(NA, 4))
     }
@@ -156,18 +161,28 @@ check.mono <- function(df, strict=TRUE, n.pts=100, tolerance=1e-6, plot=FALSE,
       }
 
       # plot detection function >1
-      if(any(ps>1)){
+      ## FTP: this was missing the tolerance. Now added [07/08/2024]
+      # if(any(ps>1)){ # FTP: old, so commented out
+      if(any(ps > (1 + tolerance))){
         plot.monopoly(rep(FALSE, length(ps)), gmax+1, 1, rgb(0.5, 0, 0, 0.5))
       }
       # plot detection function <0
-      if(any(ps<0)){
+      ## FTP: this was missing the tolerance. Now added [07/08/2024]
+      # if(any(ps<0)){ # FTP: old, so commented out
+      if(any(ps < (0 - tolerance))){
         plot.monopoly(rep(FALSE, length(ps)), 0, gmin-1, rgb(0.5, 0, 0, 0.5))
       }
     }
 
-    # return logical -- TRUE == montonic
-    return(c(all(ps.weak.chk), all(ps.strict.chk),
-             all(ps<=1), all(ps>=0)))
+    # return logical -- TRUE == monotonic
+    ## FTP: again, tolerance is not used for 0<g<1 check, but I think it should.
+    ## I added it now and commented out the old code. 
+    return(c(all(ps.weak.chk),            # weak mono check
+             all(ps.strict.chk),          # strict mono check
+             all(ps <= (1 + tolerance)),  # g <= 1 check
+             all(ps >= (0 - tolerance))))  # g >= 0 check
+    # return(c(all(ps.weak.chk), all(ps.strict.chk),
+    #          all(ps<=1), all(ps>=0)))
   } # end chpply
 
   # apply the check function to all the unique covariate combinations

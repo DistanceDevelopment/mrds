@@ -4,10 +4,11 @@
 #' function approach. If adjustment functions are included it will alternate
 #' between fitting parameters of key and adjustment functions and then all
 #' parameters much like the approach in the CDS and MCDS Distance FORTRAN code.
-#' This function is called by the driver function \code{detfct.fit}, then
-#' calls \code{\link{optimx}} function.
+#' This function is called by the driver function \code{detfct.fit}, it then
+#' calls the relevant optimisation routine, \code{\link[nloptr]{slsqp}},
+#' \code{\link[Rsolnp]{solnp}} or \code{\link[optimx]{optimx}}.
 #'
-#' @import optimx Rsolnp
+#' @import nloptr optimx Rsolnp
 #' @aliases detfct.fit.opt
 #' @param ddfobj detection function object
 #' @param optim.options control options for optim
@@ -40,11 +41,11 @@
 #'   bounded: TRUE if estimated parameters are at the bounds \item model:
 #'   list of formulas for detection function model (probably can remove this)
 #'   }}
-#' @author Dave Miller; Jeff Laake; Lorenzo Milazzo
+#' @author Dave Miller; Jeff Laake; Lorenzo Milazzo; Felix Petersma
 #' @importFrom stats runif optim
 detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                            fitting="all"){
-
+  
   # grab the initial values
   initialvalues <- getpar(ddfobj)
   initialvalues.set <- initialvalues # store for later
@@ -57,7 +58,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
   showit <- misc.options$showit
   refit <- misc.options$refit
   nrefits <- misc.options$nrefits
-
+  
   # jll 18-sept-2006; added this code to get the logicals that indicate whether
   # lower/upper bound settings were specified by the user
   setlower <- bounds$setlower
@@ -69,9 +70,13 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     optim.options$optimx.method <- NULL
     optim.options$follow.on <- TRUE
   }else{
-    opt.method <- "solnp"
+    opt.method <- misc.options$mono.method # FTP: New bit of info that must be
+                                           # supplied through control
+    if (!(opt.method %in% c("solnp", "slsqp"))) {
+      stop("The optimiser method for contraint optimisation in R should be 'slsqp' or 'solnp'.")
+    }
   }
-
+  
   # if monotonicity has been requested but we are using key only then just
   # use optimx
   if(misc.options$mono & is.null(ddfobj$adjustment)){
@@ -117,6 +122,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
   # Continue fitting until convergence occurs while parameters are within
   # their bounds
+
   itconverged <- FALSE
   while(!itconverged){
     # Call optimization routine to find constrained mles; upon
@@ -127,7 +133,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
 
       # fail if int.range is a matrix
       if(is.matrix(misc.options$int.range) && nrow(misc.options$int.range)>1){
-        stop("Montonicity constraints not available with multiple integration ranges")
+        stop("Monotonicity constraints not available with multiple integration ranges")
       }
 
       # lower and upper bounds of the inequality constraints
@@ -135,10 +141,90 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       upperbounds.ic <- rep(10^10, 2*misc.options$mono.points)
 
       # small initialvalues lead to errors in solnp, so work around that
-      initialvalues[initialvalues<1e-2] <- sign(initialvalues[initialvalues<1e-2]) * 1e-2
-      if(showit==0){
-        lt <- suppressWarnings(
-                try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+      if (opt.method == "solnp") {
+        initialvalues[initialvalues<1e-2] <- sign(initialvalues[initialvalues<1e-2]) * 1e-2
+      }
+      if (showit == 0) {
+        ## The derivative-based SLSQP solver
+        if (opt.method == "slsqp") {
+          lt <- suppressWarnings(
+            try(nloptr(x0 = initialvalues,
+                       eval_f = flnl,
+                       eval_g_ineq = flnl.constr.neg,
+                       eval_grad_f = flnl.grad,
+                       eval_jac_g_ineq = flnl.constr.grad.neg,
+                       lb = lowerbounds, ub = upperbounds,
+                       opts = list(ftol_rel = misc.options$mono.tol, 
+                                   ftol_abs = 0.0, 
+                                   xtol_rel = 0.0,
+                                   maxeval = 1000,
+                                   print_level = as.integer(showit),
+                                   algorithm = "NLOPT_LD_SLSQP"),
+                       ddfobj = ddfobj,
+                       misc.options = misc.options,
+                       fitting = "all"),
+                silent = TRUE))
+          if (!inherits(lt, "try-error")) {
+            if (lt$status >= 0) { # https://jhelvy.github.io/logitr/reference/statusCodes.html
+              lt$convergence <- 0 
+            } else {
+              lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
+              # opt.method <- "auglag"
+              # cat("The SLSQP solver did not converge from starting values:", initialvalues, 
+              #     "!\nTrying an augmented Lagrangian with interior SLSQP solver instead.\n")
+            } 
+          }
+        }
+        ## The derivative-free augmented Lagrangian solver by Yinyu Ye.
+        if (opt.method == "solnp") {
+          lt <- suppressWarnings(
+            try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
+                      ineqfun=flnl.constr,
+                      ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                      LB=lowerbounds, UB=upperbounds,
+                      ddfobj=ddfobj, misc.options=misc.options,
+                      control=list(trace=as.integer(showit),
+                                   tol=misc.options$mono.tol,
+                                   delta=misc.options$mono.delta,
+                                   outer.iter=misc.options$mono.outer.iter)
+            ),
+            silent=TRUE))
+        } 
+        if (!(opt.method %in% c("solnp", "auglag", "slsqp"))) {
+          stop("Constraint solver is not 'auglag', 'solnp', or 'slsqp'!")
+        }
+      } else {
+        ## The derivative-based SLSQP solver
+        if (opt.method == "slsqp") {
+          lt <- try(nloptr(x0 = initialvalues, 
+                       eval_f = flnl,
+                       eval_g_ineq = flnl.constr.neg,
+                       eval_grad_f = flnl.grad,
+                       eval_jac_g_ineq = flnl.constr.grad.neg,
+                       lb = lowerbounds, ub = upperbounds,
+                       opts = list(ftol_rel = misc.options$mono.tol, 
+                                   ftol_abs = 0.0, 
+                                   xtol_rel = 0.0,
+                                   maxeval = 1000,
+                                   print_level = as.integer(showit),
+                                   algorithm = "NLOPT_LD_SLSQP"),
+                       ddfobj = ddfobj,
+                       misc.options = misc.options,
+                       fitting = "all"))
+          if (!inherits(lt, "try-error")) {
+            if (lt$status >= 0) { # https://jhelvy.github.io/logitr/reference/statusCodes.html
+              lt$convergence <- 0 
+            } else {
+              lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
+              # opt.method <- "auglag"
+              # warning("The SLSQP solver did not converge from starting values:", initialvalues, 
+              #     "!\nTrying an augmented Lagrangian with interior SLSQP solver instead.\n")
+            }
+          }
+        }
+        ## The derivative-free augmented Lagrangian solver by Yinyu Ye
+        if (opt.method == "solnp") {
+          lt <- try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
                           ineqfun=flnl.constr,
                           ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
                           LB=lowerbounds, UB=upperbounds,
@@ -147,25 +233,18 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                        tol=misc.options$mono.tol,
                                        delta=misc.options$mono.delta,
                                        outer.iter=misc.options$mono.outer.iter)
-                         ),
-                    silent=TRUE))
-      }else{
-        lt <- try(solnp(pars=initialvalues, fun=flnl, eqfun=NULL, eqB=NULL,
-                        ineqfun=flnl.constr,
-                        ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
-                        LB=lowerbounds, UB=upperbounds,
-                        ddfobj=ddfobj, misc.options=misc.options,
-                        control=list(trace=as.integer(showit),
-                                     tol=misc.options$mono.tol,
-                                     delta=misc.options$mono.delta,
-                                     outer.iter=misc.options$mono.outer.iter)))
+          ))
+        } 
+        if (!(opt.method %in% c("solnp", "auglag", "slsqp"))) {
+          stop("Constraint solver is not 'auglag', 'solnp', or 'slsqp'!")
+        }
       }
 
       # only do something more complicated if we didn't converge above!
-      if(inherits(lt, "try-error") || lt$convergence!=0){
+      if(inherits(lt, "try-error") || lt$convergence!=0 ){
         # we can use the gosolnp() function to explore the parameter space
-        # randomly...
-        if(misc.options$mono.random.start){
+        # randomly... Only use this if solnp was specified as constr solver
+        if(misc.options$mono.random.start & opt.method == "solnp"){
           if(length(initialvalues)>1){
             # gosolnp doesn't work when there is only 1 parameter
             # since there is a bug that leaves the optimisation with a vector
@@ -204,7 +283,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                                  rseed=as.integer(runif(1)*1e9)))
             }
 
-            # was this better than the first time
+            # was this better than the first time?
             if(!inherits(lt2, "try-error")){
               if(inherits(lt, "try-error") ||
                  (!is.na(lt2$values[length(lt2$values)]) &&
@@ -214,7 +293,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
               }
             } # end "was it better" check
           } # end par length check
-        }else{
+        } else {
           # otherwise we do non-random par space exploration using a grid
 
           # n.sim=200 for gosolnp, so we want a comparable systematic grid
@@ -234,7 +313,9 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
           par_grid <- rbind(par_grid, initialvalues)
 
           # small initialvalues lead to errors in solnp, so work around that
-          par_grid[abs(par_grid)<1e-2] <- sign(par_grid[abs(par_grid)<1e-2])*1e-2
+          if (opt.method == "solnp") {
+            par_grid[abs(par_grid)<1e-2] <- sign(par_grid[abs(par_grid)<1e-2])*1e-2
+          }
 
           flnl_wrap <- function(...){
             e <- try(flnl(...), silent=TRUE)
@@ -243,15 +324,111 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
             }
             e
           }
+          
           grid_lnls <- apply(par_grid, 1, flnl_wrap,
                              ddfobj=ddfobj, misc.options=misc.options)
+          
+          ## Check which grid points meet the constraint. 
+          ## Problem is that sometimes none of the grid points meet the constraint. What then?
+          ## Commented out below for now, but it might be needed?
+          constr.met <- function(...) {
+            return(all(flnl.constr(...) > 0))
+          }
+          grid_constr_met <- apply(par_grid, 1, constr.met,
+                                    ddfobj=ddfobj, misc.options=misc.options)
+          
+          ## If none of the grid points meet the constraint, save the most 
+          ## recent values and break out of the fitting process. 
+          if (sum(grid_constr_met) == 0) {
+            # if we ran out of refits we need to get out of here
+            # lt <- list()
+            lt$conv <- 1
+            lt$value <- lnl.last
+            lt$par <- initialvalues
+            optim.history <- rbind(optim.history, c(lt$conv, -lt$value, lt$par)) 
+            lt$message <- "FALSE CONVERGENCE & UNABLE TO FIND ALTERNATIVE STARTING VALUES"
+            
+            if(showit >= 2){
+              cat("DEBUG: Optimisation failed, breaking and returning the object for analysis.\n")
+            }
+            break
+          }
+          grid_lnls <- grid_lnls[grid_constr_met]
+          
+          ## Find the grid point with the lowest negative lnl
           igrid <- which.min(grid_lnls)
-
-          # now run at best value
-          if(showit==0){
-            lt <- suppressWarnings(
-                    try(solnp(pars=par_grid[igrid, ], fun=flnl,
-                              eqfun=NULL, eqB=NULL,
+          
+          ## Now run it at best values using the right solver.
+          if (showit == 0) {
+            ## The derivative-based SLSQP solver
+            if (opt.method == "slsqp") {
+              lt <- suppressWarnings(
+                try(nloptr(x0 = par_grid[igrid, ], 
+                           eval_f = flnl,
+                           eval_g_ineq = flnl.constr.neg,
+                           eval_grad_f = flnl.grad,
+                           eval_jac_g_ineq = flnl.constr.grad.neg,
+                           lb = lowerbounds, ub = upperbounds,
+                           opts = list(ftol_rel = misc.options$mono.tol, 
+                                       ftol_abs = 0.0, 
+                                       xtol_rel = 0.0,
+                                       maxeval = 1000,
+                                       print_level = as.integer(showit),
+                                       algorithm = "NLOPT_LD_SLSQP"),
+                           ddfobj = ddfobj,
+                           misc.options = misc.options,
+                           fitting = "all"), 
+                    silent = TRUE))
+              if (!inherits(lt, "try-error")) {
+                if (lt$status >= 0) { # https://jhelvy.github.io/logitr/reference/statusCodes.html
+                  lt$convergence <- 0 
+                } else {
+                  lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
+                }
+              }
+            }
+            if (opt.method == "solnp") {
+              lt <- suppressWarnings(
+                try(solnp(pars = par_grid[igrid, ], fun=flnl, eqfun=NULL, eqB=NULL,
+                          ineqfun=flnl.constr,
+                          ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
+                          LB=lowerbounds, UB=upperbounds,
+                          ddfobj=ddfobj, misc.options=misc.options,
+                          control=list(trace=as.integer(showit),
+                                       tol=misc.options$mono.tol,
+                                       delta=misc.options$mono.delta,
+                                       outer.iter=misc.options$mono.outer.iter)
+                ),
+                silent=TRUE))
+            } 
+          } else {
+            ## The derivative-based SLSQP solver
+            if (opt.method == "slsqp") {
+              lt <- try(nloptr(x0 = par_grid[igrid, ], 
+                           eval_f = flnl,
+                           eval_g_ineq = flnl.constr.neg,
+                           eval_grad_f = flnl.grad,
+                           eval_jac_g_ineq = flnl.constr.grad.neg,
+                           lb = lowerbounds, ub = upperbounds,
+                           opts = list(ftol_rel = misc.options$mono.tol, 
+                                       ftol_abs = 0.0, 
+                                       xtol_rel = 0.0,
+                                       maxeval = 1000,
+                                       print_level = as.integer(showit),
+                                       algorithm = "NLOPT_LD_SLSQP"),
+                           ddfobj = ddfobj,
+                           misc.options = misc.options,
+                           fitting = "all"))
+              if (!inherits(lt, "try-error")) {
+                if (lt$status >= 0) { # https://jhelvy.github.io/logitr/reference/statusCodes.html
+                  lt$convergence <- 0 
+                } else {
+                  lt$convergence <- 1 # Have 1 now as code for failed convergence, not sure if correct
+                }
+              }
+            }
+            if (opt.method == "solnp") {
+              lt <- try(solnp(pars=par_grid[igrid, ], fun=flnl, eqfun=NULL, eqB=NULL,
                               ineqfun=flnl.constr,
                               ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
                               LB=lowerbounds, UB=upperbounds,
@@ -259,24 +436,14 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
                               control=list(trace=as.integer(showit),
                                            tol=misc.options$mono.tol,
                                            delta=misc.options$mono.delta,
-                                           outer.iter=misc.options$mono.outer.iter)),
-                        silent=TRUE))
-          }else{
-            lt <- try(solnp(pars=par_grid[igrid, ], fun=flnl,
-                            eqfun=NULL, eqB=NULL,
-                            ineqfun=flnl.constr,
-                            ineqLB=lowerbounds.ic, ineqUB=upperbounds.ic,
-                            LB=lowerbounds, UB=upperbounds,
-                            ddfobj=ddfobj, misc.options=misc.options,
-                            control=list(trace=as.integer(showit),
-                                         tol=misc.options$mono.tol,
-                                         delta=misc.options$mono.delta,
-                                         outer.iter=misc.options$mono.outer.iter)))
-          } # end showit status
+                                           outer.iter=misc.options$mono.outer.iter)
+              ))
+            } 
+          }
         } # end random vs. non-random par space exploration
-      } # end if solnp didn't converge the first time
+      } # end if constraint solver didn't converge the first time
 
-      # if that failed then make a dummy object
+      # If that failed then make a dummy object
       if(inherits(lt, "try-error")){
         lt <- list()
         lt$conv <- 9
@@ -288,12 +455,19 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         }
       }else{
         lt$conv <- lt$convergence
-        lt$par <- lt$pars
-        lt$value <- lt$values[length(lt$values)]
         lt$message <- ""
+        
+        if (opt.method == "solnp") {
+          lt$par <- lt$pars
+          lt$value <- lt$values[length(lt$values)]
+        } else if (opt.method %in% c("slsqp", "auglag")) {
+          lt$par <- lt$solution
+          lt$value <- lt$objective
+        } else stop("Invalid constrained solver")
+        
       }
     ## end monotonically constrained estimation
-    }else{
+    } else {
     ## unconstrained optimisation
 
       # get the list of optimisation methods
@@ -425,7 +599,6 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
     } # end unconstrained optimisation
 
     # now we're done with optimization, what happened?
-
     # Print debug information
     if(showit>=2){
       cat("DEBUG: Converge   =", lt$conv, "(", fitting, ")\n",
@@ -437,7 +610,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
       lt$value <- NA
       lt$conv <- 2
     }
-    optim.history <- rbind(optim.history, c(lt$conv, -lt$value, lt$par))
+    optim.history <- rbind(optim.history, c(lt$conv, -lt$value, lt$par)) 
 
     # check whether parameters hit their bounds
     bounded <- check.bounds(lt, lowerbounds, upperbounds, ddfobj,
@@ -471,7 +644,7 @@ detfct.fit.opt <- function(ddfobj, optim.options, bounds, misc.options,
         # (if they were at the upper/lower bounds then we should make the
         # bounds wider rather than mess with the initial values, see below)
         if(!bounded & fitting=="all"){
-          initialvalues <- lt$par*runif(length(initialvalues),
+          initialvalues <- lt$par*runif(length(initialvalues), 
                                         sign(lowerbounds-1),
                                         sign(upperbounds+1))
           #initialvalues <- runif(length(initialvalues),

@@ -108,13 +108,15 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
                                    estimate=TRUE, refit=TRUE, nrefits=25,
                                    initial=NA, lowerbounds=NA, upperbounds=NA,
                                    limit=TRUE, parscale=TRUE, maxiter=12,
-                                   standardize=TRUE, mono.points=20,
+                                   standardize=TRUE, mono.points=10, ## FTP: 10 instead of 20!
                                    mono.tol=1e-6, mono.delta=1e-7,
                                    mono.outer.iter=200, debug=FALSE,
                                    nofit=FALSE, optimx.method="nlminb",
                                    optimx.maxit=300, silent=FALSE,
                                    mono.random.start=FALSE,
                                    optimizer = "both", 
+                                   mono.method = "slsqp", # FTP: add slot for constraint solver (slsqp or solnp)
+                                   mono.startvals = FALSE, # FTP: add slot for finding best starting values for constraint solver (default=TRUE, temporarilty set to FALSE)
                                    winebin = NULL)
 
   #  Save current user options and then set design contrasts to treatment style
@@ -199,10 +201,12 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
                      mono.delta=control$mono.delta, debug=control$debug,
                      nofit=control$nofit, left=meta.data$left,
                      silent=control$silent,
+                     mono.method = control$mono.method, # FTP: added this to specify constraint solver
+                     mono.startvals = control$mono.startvals,  # FTP: find best start values or just fit with "bad" ones?
                      mono.random.start=control$mono.random.start,
                      mono.outer.iter=control$mono.outer.iter
                     )
-
+  
   # debug - print the initial values
   if(misc.options$showit>=1 && !is.null(initialvalues)){
     cat("DEBUG: initial values =", round(initialvalues, 7), "\n")
@@ -249,7 +253,8 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
   }
     
   # which was the better lnl?
-  if(abs(lt_mcds$lnl) < abs(lt$value)){
+  # if(abs(lt_mcds$lnl) < abs(lt$value)){ # FTP: old, commented out as it should not do this comparison when optimzer == 'R'
+  if(abs(lt_mcds$lnl) < abs(lt$value) & control$optimizer != "R"){
     if(control$showit>=1){
       cat("DEBUG: MCDS lnl =", round(lt_mcds$value, 7),
           "       mrds lnl =", round(lt$value, 7),"\n")
@@ -258,7 +263,12 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
     lt$hessian <- lt_mcds$hessian
     lt$optimise <- "MCDS.exe"
   }else{
-    lt$optimise <- paste0("mrds (", control$optimx.method, ")")
+    ## FTP: Check if the mono optimiser was used or not
+    if (misc.options$mono) {
+      lt$optimise <- paste0("mrds (", misc.options$mono.method, ")")
+    } else {
+      lt$optimise <- paste0("mrds (", control$optimx.method, ")")
+    }
   }
 
   # check that hazard models have a reasonable scale parameter
@@ -351,7 +361,8 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
     result$ds$message <- ""
   }
 
-  if(lt$message == "FALSE CONVERGENCE"){
+  if(lt$message == "FALSE CONVERGENCE" |
+     lt$message == "FALSE CONVERGENCE & UNABLE TO FIND ALTERNATIVE STARTING VALUES"){
     warning("Model fitting did not converge. Try different initial values or different model\n", immediate.=TRUE)
   }else{
     result$fitted <- predict(result, esw=FALSE)$fitted
@@ -359,6 +370,7 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
       result$Nhat <- NCovered(result, group=TRUE)
     }
   }
+  
   # Store optimiser
   result$optimise <- lt$optimise
 

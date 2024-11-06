@@ -1,9 +1,22 @@
+mrds 3.0.0
+----------
+
+New features
+
+* The default R optimiser when (strict) monotonicity of the detection function is enforced has been improved. Monotonicity is enforced only when the detection function has adjustment terms but does not include covariates. The new optimiser is a Sequential Least Squares Programming (SLSQP) algorithm included in the 'nloptr'-package. This optimiser uses analytical gradients rather than approximate gradients and is therefore more robust and has improved runtime. Users can still make ddf() use the previous default R optimiser by specifying mono.method = 'solnp' in the 'control' argument. The default for mono.method is 'slsqp'. Because of this and other small improvements and bug fixes in the monotonic optimiser, results from ddf() might change even when using the old solnp optimiser. In most cases, however, we do not expect significant changes in the estimates. 
+
+Bug Fixes
+
+* The summary of the fitting object now correctly prints the optimiser used when monotonicity is enforced ('slsqp' or 'solnp'). 
+* check.mono() now uses the same point locations as the optimiser. It also uses the same tolerance as the optimiser (1e-8) and applies this tolerance when checking (strict) monotonicity, and when checking 0 <= g(x) <= 1.
+
+
 mrds 2.3.0
 ----------
 
 New Features
 
-* The 'P2' estimator is now the default for estimating the encouter rate variance for point transect surveys. (Issue #65)
+* The 'P2' estimator is now the default for estimating the encounter rate variance for point transect surveys. (Issue #65)
 
 Bug Fixes
 
