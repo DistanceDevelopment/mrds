@@ -88,7 +88,7 @@ detections$exposure <- as.factor(detections$exposure)
 
 ## Golf tee survey analyses
 
-### Estimation of $p(0)$: distance only
+### Estimation of *p(0)*: distance only
 
 We will start by analysing these data assuming that Observer 2 was generating trials for Observer 1 but not vice versa, i.e. trial configuration where Observer 1 is the primary and Observer 2 is the tracker. (The data could also be analysed in independent observer configuration - you are welcome to try this for yourself). We begin by assuming full independence (i.e. detections between observers are independent at all distances): this requires only a mark-recapture (MR) model and, to start with, perpendicular distance will be included as the only covariate. 
 
