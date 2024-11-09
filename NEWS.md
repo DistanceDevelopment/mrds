@@ -9,7 +9,7 @@ Bug Fixes
 * The summary of the fitting object now correctly prints the optimiser used when monotonicity is enforced ('slsqp' or 'solnp'). 
 * check.mono() now uses the same point locations as the optimiser. It also uses the same tolerance as the optimiser (1e-8) and applies this tolerance when checking (strict) monotonicity, and when checking 0 <= g(x) <= 1.
 
-#mrds 2.3.0
+# mrds 2.3.0
 
 New Features
 
