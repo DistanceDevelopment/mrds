@@ -1,9 +1,11 @@
+#' Gradient of the negative log likelihood function
+#' 
 #' This function derives the gradients of the negative log likelihood function, 
 #' with respect to all parameters. It is based on the theory presented in 
 #' Introduction to Distance Sampling (2001) and Distance Sampling: Methods and
 #' Applications (2015). It is not meant to be called by users of the \code{mrds}
 #' and \code{Distance} packages directly but rather by the gradient-based 
-#' solver. This solver is use when our distance sampling model is for 
+#' solver. This solver is used when our distance sampling model is for 
 #' single-observer data coming from either line or point transect and only when  
 #' the detection function contains an adjustment series but no covariates. It is 
 #' implement for the following key + adjustment series combinations for the 
