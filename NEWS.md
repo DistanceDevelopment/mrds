@@ -1,3 +1,9 @@
+# mrds 3.0.1
+
+Bug Fixes
+
+* Fixed formatting issue in flnl.grad help
+
 # mrds 3.0.0
 
 New features
