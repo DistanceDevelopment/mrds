@@ -1,4 +1,4 @@
-#' Gradient of the negative log likelihood function
+#' @title Gradient of the negative log likelihood function
 #' 
 #' This function derives the gradients of the negative log likelihood function, 
 #' with respect to all parameters. It is based on the theory presented in 
