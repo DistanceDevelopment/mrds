@@ -2,19 +2,7 @@
 % Please edit documentation in R/flnl.grad.R
 \name{flnl.grad}
 \alias{flnl.grad}
-\title{This function derives the gradients of the negative log likelihood function, 
-with respect to all parameters. It is based on the theory presented in 
-Introduction to Distance Sampling (2001) and Distance Sampling: Methods and
-Applications (2015). It is not meant to be called by users of the \code{mrds}
-and \code{Distance} packages directly but rather by the gradient-based 
-solver. This solver is use when our distance sampling model is for 
-single-observer data coming from either line or point transect and only when  
-the detection function contains an adjustment series but no covariates. It is 
-implement for the following key + adjustment series combinations for the 
-detections function: the key function can be half-normal, hazard-rate or 
-uniform, and the adjustment series can be cosine, simple polynomial or 
-Hermite polynomial. Data can be either binned or exact, but a combination
-of the two has not been implemented yet.}
+\title{Gradient of the negative log likelihood function}
 \usage{
 flnl.grad(pars, ddfobj, misc.options, fitting = "all")
 }
@@ -41,7 +29,7 @@ with respect to all parameters. It is based on the theory presented in
 Introduction to Distance Sampling (2001) and Distance Sampling: Methods and
 Applications (2015). It is not meant to be called by users of the \code{mrds}
 and \code{Distance} packages directly but rather by the gradient-based 
-solver. This solver is use when our distance sampling model is for 
+solver. This solver is used when our distance sampling model is for 
 single-observer data coming from either line or point transect and only when  
 the detection function contains an adjustment series but no covariates. It is 
 implement for the following key + adjustment series combinations for the 
