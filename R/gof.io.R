@@ -84,7 +84,17 @@ gof.io <- function(model, breaks=NULL, nc=NULL){
   }else{
     p.2 <- 1-pchisq(chisq.2,df.2)
   }
-
+  
+  # Calculate the pooled chi-square
+  df.pool <- 3*nc-length(model$par)-1
+  
+  if(df.pool <= 0){
+    df.pool <- NA
+    p.pool <- NA
+  }else{
+    p.pool <- 1-pchisq(chisq.1+chisq.2, df.pool)
+  }
+  
   return(list(chi1=list(observed=observed.count.1,
                         expected=expected.1,
                         chisq=chisq.1,
@@ -96,7 +106,6 @@ gof.io <- function(model, breaks=NULL, nc=NULL){
                         p=p.2,
                         df=df.2),
               pooled.chi=list(chisq=chisq.1+chisq.2,
-                              df=3*nc-length(model$par)-1,
-                              p=1-pchisq(chisq.1+chisq.2,
-                                         3*nc-length(model$par)-1))))
+                              df=df.pool,
+                              p=p.pool)))
 }

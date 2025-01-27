@@ -3,6 +3,7 @@
 Bug Fixes
 
 * Fixed formatting issue in flnl.grad help
+* Fixed output for gof test when degrees of freedom for MR io models is <= 0
 
 # mrds 3.0.0
 
