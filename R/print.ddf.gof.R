@@ -30,6 +30,7 @@ print.ddf.gof <- function(x, digits=3, ...){
   if(!is.null(gof$chisquare)){
     cat("\nChi-square tests\n")
 
+    # This is NULL when it is a single observer model
     if(!is.null(gof$chisquare$chi2)){
       cat("\nDistance sampling component:\n")
     }
