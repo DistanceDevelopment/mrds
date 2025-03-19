@@ -649,7 +649,7 @@ validate.MCDS.options <- function(model){
   mod.vals <- try(eval(parse(text=mod_paste[2:length(mod_paste)])))
   
   # Check if there are covariates
-  if(!is.null(mod.vals$formula)){
+  if(mod.vals$formula != ~1){
     # if so only HN and HR permitted
     if(!mod.vals$key %in% c("hn", "hr")){
       return("MCDS can only fit covariates with the half-normal and hazard rate key functions.")
