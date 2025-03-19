@@ -253,7 +253,7 @@ create.command.file <- function(dsmodel=call(), data,
     cat("HAZARD", file=command.file.name, append=TRUE)
   }else if(mod.vals$key == "unif"){
     cat("UNIFORM", file=command.file.name, append=TRUE)
-  }else{
+  }else if(mod.vals$key == "gamma"){
     cat("NEXPON", file=command.file.name, append=TRUE)
   }
   
@@ -639,3 +639,24 @@ create.data.file <- function(data, dsmodel, data.file){
                  cluster = cluster)
   return(output)
 }
+
+
+validate.MCDS.options <- function(model){
+  # Validates the options are suitable for MCDS
+  
+  # Extract values from the formula
+  mod_paste <- paste(model)
+  mod.vals <- try(eval(parse(text=mod_paste[2:length(mod_paste)])))
+  
+  # Check if there are covariates
+  if(!is.null(mod.vals$formula)){
+    # if so only HN and HR permitted
+    if(!mod.vals$key %in% c("hn", "hr")){
+      return("MCDS can only fit covariates with the half-normal and hazard rate key functions.")
+    }
+  }
+  
+  # If no issue return NULL
+  return(NULL)
+}
+
