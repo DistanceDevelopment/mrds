@@ -224,6 +224,21 @@ ddf.ds <-function(dsmodel, mrmodel = NULL,
   if(control$optimizer == "MCDS" && system.file("MCDS.exe", package="mrds") == ""){
     stop("You have chosen to use the MCDS.exe optimizer but it cannot be found!", call. = FALSE)
   }
+  
+  # Validate options are suitable for MCDS
+  if(control$optimizer %in% c("MCDS","both") && system.file("MCDS.exe", package="mrds") != ""){
+    MCDS.options.valid <- validate.MCDS.options(model)
+    # If NULL there are no issues
+    if(!is.null(MCDS.options.valid)){
+      R.opt.message <- ifelse(control$optimizer == "MCDS",
+                              "The R optimizer will be used instead.",
+                              "Only the R optimizer will be used.")
+      # Otherwise there are issues so use the R optimizer
+      warning(paste(MCDS.options.valid, R.opt.message, sep = " "),
+              immediate. = TRUE, call. = FALSE)
+      control$optimizer <- "R"
+    }
+  }
 
   # run MCDS.exe if it's there
   if(control$optimizer %in% c("MCDS","both") && system.file("MCDS.exe", package="mrds")!=""){
