@@ -4,6 +4,7 @@ Bug Fixes
 
 * Fixed formatting issue in flnl.grad help
 * Now displays a warning if the user tries to fit a detection function with covariates using MCDS.exe which is not either a half-normal or a hazard rate model. (Issue #113)
+* Fixed so that the MCDS.exe does not try to fit a negative exponential in place of a gamme key function. (Issue #113)
 
 # mrds 3.0.0
 
