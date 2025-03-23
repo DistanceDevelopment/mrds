@@ -253,8 +253,8 @@ create.command.file <- function(dsmodel=call(), data,
     cat("HAZARD", file=command.file.name, append=TRUE)
   }else if(mod.vals$key == "unif"){
     cat("UNIFORM", file=command.file.name, append=TRUE)
-  }else if(mod.vals$key == "gamma"){
-    cat("NEXPON", file=command.file.name, append=TRUE)
+  }else{
+    stop("Unrecognised key function for the detection function in MCDS.exe", call. = FALSE)
   }
   
   adj.pres <- FALSE
@@ -648,11 +648,16 @@ validate.MCDS.options <- function(model){
   mod_paste <- paste(model)
   mod.vals <- try(eval(parse(text=mod_paste[2:length(mod_paste)])))
   
+  # Check if the user is trying to fit a gamma model
+  if(mod.vals$key == "gamma"){
+    return("MCDS.exe cannot fit a gamma detection function model.")
+  }
+  
   # Check if there are covariates
   if(mod.vals$formula != ~1){
     # if so only HN and HR permitted
     if(!mod.vals$key %in% c("hn", "hr")){
-      return("MCDS can only fit covariates with the half-normal and hazard rate key functions.")
+      return("MCDS.exe can only fit covariates with the half-normal and hazard rate key functions.")
     }
   }
   
