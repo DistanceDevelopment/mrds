@@ -22,7 +22,7 @@
 #' estimator used. To begin with there three possible values for \code{varflag}
 #' to calculate encounter rate:
 #' \itemize{
-#'  \item \code{0} uses a binomial variance for the number of 
+#'  \item \code{0} uses a negative binomial variance for the number of 
 #'  observations (equation 13 of \insertCite{borchers1998;nobrackets}{mrds}). This estimator is only 
 #'  useful if the sampled region is the survey region and the objects are not 
 #'  clustered; this situation will not occur very often;
@@ -52,9 +52,12 @@
 #'  for further details on these estimators.
 #'
 #' Exceptions to the above occur if there is only one sample in a stratum. In
-#' that case it uses Poisson assumption (\eqn{Var(x)=x}) and it assumes a known
-#' variance so \eqn{z=1.96} is used for critical value. In all other cases the
-#' degrees of freedom for the \eqn{t}-distribution assumed for the
+#' this situation, \code{varflag=0} continues to use a negative binomial
+#' variance while the other options assume a Poisson variance (\eqn{Var(x)=x}), 
+#' where when \code{varflag=1} x is number of detections in the covered region and 
+#' when \code{varflag=2} x is the abundance in the covered region. It also assumes 
+#' a known variance so \eqn{z=1.96} is used for critical value. In all other cases 
+#' the degrees of freedom for the \eqn{t}-distribution assumed for the
 #' log(abundance) or log(density) is based on the Satterthwaite approximation
 #' (\insertCite{buckland2001;nobrackets}{mrds} pg 90) for the degrees of freedom (df). The df are
 #' weighted by the squared cv in combining the two sources of variation because
