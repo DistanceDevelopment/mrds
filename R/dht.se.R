@@ -12,7 +12,7 @@
 #'   \item variation in abundance due to random sample selection;
 #' }
 #' The first component (model parameter uncertainty) is computed using a delta
-#' method estimate of variance (Huggins 1989, 1991, Borchers et al. 1998) in
+#' method estimate of variance (\insertCite{huggins1989;nobrackets}{mrds}; \insertCite{huggins1991;nobrackets}{mrds}; \insertCite{borchers1998;nobrackets}{mrds}) in
 #' which the first derivatives of the abundance estimator with respect to the
 #' parameters in the detection function are computed numerically (see
 #' \code{\link{DeltaMethod}}).
@@ -22,18 +22,18 @@
 #' estimator used. To begin with there three possible values for \code{varflag}
 #' to calculate encounter rate:
 #' \itemize{
-#'  \item \code{0} uses a binomial variance for the number of observations
-#'  (equation 13 of Borchers et al. 1998). This estimator is only useful if the
-#'  sampled region is the survey region and the objects are not clustered; this
-#'  situation will not occur very often;
+#'  \item \code{0} uses a binomial variance for the number of 
+#'  observations (equation 13 of \insertCite{borchers1998;nobrackets}{mrds}). This estimator is only 
+#'  useful if the sampled region is the survey region and the objects are not 
+#'  clustered; this situation will not occur very often;
 #'  \item \code{1} uses the encounter rate \eqn{n/L} (objects observed per unit
-#'  transect) from Buckland et al. (2001) pg 78-79 (equation 3.78) for line
-#'  transects (see also Fewster et al, 2009 estimator R2). This variance
+#'  transect) from \insertCite{buckland2001;textual}{mrds} pg 78-79 (equation 3.78) for line
+#'  transects (see also \insertCite{fewster2009;nobrackets}{mrds} estimator R2). This variance
 #'  estimator is not appropriate if \code{size} or a derivative of \code{size}
 #'  is used in the detection function;
 #'  \item \code{2} is the default and uses the encounter rate estimator
-#'  \eqn{\hat{N}/L} (estimated abundance per unit transect) suggested by Innes
-#'  et al (2002) and Marques & Buckland (2004).
+#'  \eqn{\hat{N}/L} (estimated abundance per unit transect) suggested by
+#'  \insertCite{innes2002;textual}{mrds} and \insertCite{marques2004;textual}{mrds}
 #' }
 #'
 #' In general if any covariates are used in the models, the default
@@ -42,21 +42,21 @@
 #' the mean group size and standard error is also reported.
 #'
 #' For options \code{1} and \code{2}, it is then possible to choose one of the
-#' estimator forms given in Fewster et al (2009). For line transects:
+#' estimator forms given in \insertCite{fewster2009;textual}{mrds}. For line transects:
 #' \code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"},
 #' \code{"O1"}, \code{"O2"} or \code{"O3"} can be used by specifying the
 #' \code{ervar=} option (default \code{"R2"}). For points, either the 
 #' \code{"P2"} or \code{"P3"} estimator can be selected (>=mrds 2.3.0 
 #' default \code{"P2"}, <= mrds 2.2.9 default \code{"P3"}). See 
-#' \code{\link{varn}} and Fewster et al (2009) for further details 
-#' on these estimators.
+#' \code{\link{varn}} and \insertCite{fewster2009;textual}{mrds}
+#'  for further details on these estimators.
 #'
 #' Exceptions to the above occur if there is only one sample in a stratum. In
 #' that case it uses Poisson assumption (\eqn{Var(x)=x}) and it assumes a known
 #' variance so \eqn{z=1.96} is used for critical value. In all other cases the
 #' degrees of freedom for the \eqn{t}-distribution assumed for the
 #' log(abundance) or log(density) is based on the Satterthwaite approximation
-#' (Buckland et al. 2001 pg 90) for the degrees of freedom (df). The df are
+#' (\insertCite{buckland2001;nobrackets}{mrds} pg 90) for the degrees of freedom (df). The df are
 #' weighted by the squared cv in combining the two sources of variation because
 #' of the assumed log-normal distribution because the components are
 #' multiplicative. For combining df for the sampling variance across regions
@@ -84,9 +84,11 @@
 #' their own code.
 #' @author Jeff Laake
 #' @seealso \code{\link{dht}}, \code{\link{print.dht}}
-#' @references see \code{\link{dht}}
+#' @references 
+#' \insertAllCited{}
 #' @keywords utility
 #' @importFrom stats qnorm qt var
+#' @importFrom Rdpack reprompt
 dht.se <- function(model, region.table, samples, obs, options, numRegions,
                    estimate.table, Nhat.by.sample){
   #  Functions Used:  DeltaMethod, dht.deriv (in DeltaMethod), varn
