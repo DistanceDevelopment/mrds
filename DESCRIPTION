@@ -29,7 +29,8 @@ Imports:
     methods,
     numDeriv,
     nloptr,
-    Rsolnp
+    Rsolnp,
+    Rdpack
 Suggests:
     Distance,
     testthat,
@@ -38,4 +39,5 @@ Suggests:
     rmarkdown,
     bookdown
 RoxygenNote: 7.3.2
+RdMacros: Rdpack
 Encoding: UTF-8
