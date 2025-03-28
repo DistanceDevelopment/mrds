@@ -626,6 +626,28 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
     }
     result <- list(individuals=individuals)
   }
+  
+  # Check to see if need to issue user with a warning if there were any strata with only one sample.
+  if(any(result$individuals$summary$k == 1)){
+    # if there is only one strata
+    if(nrow(result$individuals$summary) == 1){
+      if(options$varflag == 1){
+        warning("Only one sample, assuming variance of n is Poisson. See help on dht.se for recommendations.", immediate. = TRUE, call. = FALSE)
+      }else if(options$varflag == 2){
+        warning("Only one sample, assuming abundance in the covered region is Poisson. See help on dht.se for recommendations.", immediate. = TRUE, call. = FALSE)
+      }
+    }else{
+      # if there are multiple strata
+      # find which strata have only one sample
+      strat.names <- result$individuals$summary$Region[result$individuals$summary$k == 1]
+      strat.txt <- ifelse(length(strat.names) > 1, ". For these strata, ", ". For this stratum, ")
+      if(options$varflag == 1){
+        warning(paste("Only one sample in the following strata: ", paste(strat.names, collapse = ", "), strat.txt, "it is assumed variance of n is Poisson. See help on dht.se.", sep = ""), immediate. = TRUE, call. = FALSE)
+      }else if(options$varflag == 2){
+        warning("Only one sample in the following strata: ", paste(strat.names, collapse = ", "), strat.txt, "it is assumed abundance in the covered region is Poisson. See help on dht.se.", immediate. = TRUE, call. = FALSE)
+      }
+    } 
+  }
 
   # add some meta data
   # save enounter rate variance information
