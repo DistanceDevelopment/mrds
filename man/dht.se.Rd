@@ -61,7 +61,8 @@ estimator used. To begin with there three possible values for \code{varflag}
 to calculate encounter rate:
 \itemize{
  \item \code{0} uses a negative binomial variance for the number of 
- observations (equation 13 of \insertCite{borchers1998;nobrackets}{mrds}). This estimator is only 
+ observations (equation 13 of \insertCite{borchers1998;nobrackets}{mrds}). 
+ This estimator is only 
  useful if the sampled region is the survey region and the objects are not 
  clustered; this situation will not occur very often;
  \item \code{1} uses the encounter rate \eqn{n/L} (objects observed per unit

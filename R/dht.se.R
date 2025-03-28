@@ -23,7 +23,8 @@
 #' to calculate encounter rate:
 #' \itemize{
 #'  \item \code{0} uses a negative binomial variance for the number of 
-#'  observations (equation 13 of \insertCite{borchers1998;nobrackets}{mrds}). This estimator is only 
+#'  observations (equation 13 of \insertCite{borchers1998;nobrackets}{mrds}). 
+#'  This estimator is only 
 #'  useful if the sampled region is the survey region and the objects are not 
 #'  clustered; this situation will not occur very often;
 #'  \item \code{1} uses the encounter rate \eqn{n/L} (objects observed per unit
@@ -132,8 +133,9 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
   # Next compute the component due to sampling of both lines and of the
   # detection process itself
   # There are 3 different options here:
-  #  1) varflag=0; Binomial variance of detection process - only applicable if
-  #   survey region=covered region although it will scale up but it would be
+  #  1) varflag=0; Negative binomial variance of detection process - only
+  # applicable if survey region=covered region although it will scale up 
+  # but it would be
   #   a poor estimator
   #  2) varflag=1; delta method, with varn based on Fewster et al (2009)
   #   estimator R2 (var(n/L))
@@ -233,10 +235,14 @@ dht.se <- function(model, region.table, samples, obs, options, numRegions,
 
       if (options$group) vars <- 0
 
+      # if there is only one sample assume Poisson variance
       if(length(stratum.data$Effort.y) == 1){
         if (options$varflag == 1){
+          # Assuming variance of n is Poisson: var(x) = x
           vc2[i] <- Ni^2 * 1/stratum.data$n
         }else{
+          # varflag = 2
+          # Assuming abundance in covered region is Poisson: var(x) = x
           vc2[i] <- Ni^2 * 1/Ni
         }
       }else if (options$varflag == 1){
