@@ -188,7 +188,7 @@
 #'}
 #'
 #' @author Jeff Laake, David L Miller
-#' @seealso print.dht dht.se
+#' @seealso \code{\link{print.dht}} \code{\link{dht.se}}
 #' @references
 #'
 #' Borchers, D.L., S.T. Buckland, P.W. Goedhart, E.D. Clarke, and S.L. Hedley.
