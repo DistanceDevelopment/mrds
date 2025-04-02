@@ -83,8 +83,9 @@ the mean group size and standard error is also reported.
 For options \code{1} and \code{2}, it is then possible to choose one of the
 estimator forms given in \insertCite{fewster2009;textual}{mrds}. For line transects:
 \code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"},
-\code{"O1"}, \code{"O2"} or \code{"O3"} can be used by specifying the
-\code{ervar=} option (default \code{"R2"}). For points, either the 
+\code{"O1"}, \code{"O2"} or \code{"O3"} can be used by specifying \code{ervar} 
+in the list of options provided by the \code{options} argument 
+(default \code{"R2"}). For points, either the 
 \code{"P2"} or \code{"P3"} estimator can be selected (>=mrds 2.3.0 
 default \code{"P2"}, <= mrds 2.2.9 default \code{"P3"}). See 
 \code{\link{varn}} and \insertCite{fewster2009;textual}{mrds}
