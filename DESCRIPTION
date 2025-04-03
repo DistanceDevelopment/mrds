@@ -18,7 +18,7 @@ Description: Animal abundance estimation via conventional, multiple covariate
     fitting is performed via maximum likelihood. Also included are diagnostics
     and plotting for fitted detection functions. Abundance estimation is via a
     Horvitz-Thompson-like estimator.
-Version: 3.0.0.9004
+Version: 3.0.0.9005
 URL: https://github.com/DistanceDevelopment/mrds/
 BugReports: https://github.com/DistanceDevelopment/mrds/issues
 Depends:
@@ -29,7 +29,8 @@ Imports:
     methods,
     numDeriv,
     nloptr,
-    Rsolnp
+    Rsolnp,
+    Rdpack
 Suggests:
     Distance,
     testthat,
@@ -38,4 +39,5 @@ Suggests:
     rmarkdown,
     bookdown
 RoxygenNote: 7.3.2
+RdMacros: Rdpack
 Encoding: UTF-8

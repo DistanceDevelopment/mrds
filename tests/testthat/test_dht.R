@@ -83,3 +83,78 @@ test_that("dht with various opts after unif fixes", {
   expect_true(inherits(dht.result.io.fi, "dht"))
   
 })
+
+
+test_that("warning when only one sample", {
+  library(Distance)
+  data(capercaillie)
+  capercaillie$size <- NULL
+  conversion.factor <- convert_units("meter", "kilometer", "hectare")
+  
+  caper.ddf <- ddf(dsmodel = ~cds(key = "hn", formula = ~1),
+                   data = capercaillie,
+                   meta.data = list(width = 60))
+  
+  dht.tables <- Distance::unflatten(capercaillie)
+  
+  caper.dht <- expect_warning(dht(caper.ddf, 
+                                  region.table = dht.tables$region.table,
+                                  sample.table = dht.tables$sample.table,
+                                  obs.table = dht.tables$obs.table,
+                                  options = list(convert.units = conversion.factor)), "Only one sample, assuming abundance in the covered region is Poisson. See help on dht.se for recommendations.")
+  
+  caper.dht <- expect_warning(dht(caper.ddf, 
+                                  region.table = dht.tables$region.table,
+                                  sample.table = dht.tables$sample.table,
+                                  obs.table = dht.tables$obs.table,
+                                  options = list(convert.units = conversion.factor, varflag = 1)), "Only one sample, assuming variance of n is Poisson. See help on dht.se for recommendations.")
+  
+  caper.dht <- expect_no_warning(dht(caper.ddf, 
+                                     region.table = dht.tables$region.table,
+                                     sample.table = dht.tables$sample.table,
+                                     obs.table = dht.tables$obs.table,
+                                     options = list(convert.units = conversion.factor, varflag = 0)))
+  
+  # Make up a dataset so that there are multiple strata and some have only one transect
+  # New dataset
+  caper <- capercaillie
+  caper$Region.Label <- "Strata A"
+  caper2.a <- data.frame(Sample.Label = 2, Effort = 120, distance = abs(rnorm(45,0,30)),
+                         object = NA, detected = 1, observer = 1, Region.Label = "Strata B",
+                         Area = 1472)
+  caper2.b <- data.frame(Sample.Label = 3, Effort = 120, distance = abs(rnorm(45,0,30)),
+                         object = NA, detected = 1, observer = 1, Region.Label = "Strata B",
+                         Area = 1472)
+  caper2.c <- data.frame(Sample.Label = 4, Effort = 120, distance = abs(rnorm(90,0,30)),
+                         object = NA, detected = 1, observer = 1, Region.Label = "Strata C",
+                         Area = 1472)
+  caper <- rbind(caper, caper2.a, caper2.b, caper2.c)
+  caper$object <- 1:nrow(caper)
+  
+  # Model multi-strata data
+  caper2.ddf <- ddf(dsmodel = ~cds(key = "hn", formula = ~1),
+                    data = caper,
+                    meta.data = list(width = 60))
+  dht.tables2 <- Distance::unflatten(caper)
+  
+  caper2.dht <- expect_warning(dht(caper.ddf, 
+                                   region.table = dht.tables2$region.table,
+                                   sample.table = dht.tables2$sample.table,
+                                   obs.table = dht.tables2$obs.table,
+                                   options = list(convert.units = conversion.factor)),
+                               "Only one sample in the following strata: Strata A, Strata C. For these strata, it is assumed abundance in the covered region is Poisson. See help on dht.se.")
+  
+  caper2.dht <- expect_warning(dht(caper.ddf, 
+                                   region.table = dht.tables2$region.table,
+                                   sample.table = dht.tables2$sample.table,
+                                   obs.table = dht.tables2$obs.table,
+                                   options = list(convert.units = conversion.factor, varflag = 1)),
+                               "Only one sample in the following strata: Strata A, Strata C. For these strata, it is assumed variance of n is Poisson. See help on dht.se.")
+  
+  caper2.dht <- expect_no_warning(dht(caper.ddf, 
+                                      region.table = dht.tables2$region.table,
+                                      sample.table = dht.tables2$sample.table,
+                                      obs.table = dht.tables2$obs.table,
+                                      options = list(convert.units = conversion.factor, varflag = 0)))
+  
+})
