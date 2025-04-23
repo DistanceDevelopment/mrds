@@ -209,7 +209,7 @@
 #' }
 #'
 #' Examples of distance sampling analyses are available at
-#' \url{https://examples.distancesampling.org/}.
+#' \url{https://distancesampling.org/resources/vignettes.html}.
 #'
 #' Hints and tips on fitting (particularly optimisation issues) are on the
 #' \code{\link{mrds_opt}} manual page.
