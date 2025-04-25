@@ -21,6 +21,7 @@
 #'         David L. Miller <dave@@ninepointeightone.net>,
 #'         Jon Bishop <jonb@@mcs.st-and.ac.uk>,
 #'         Felix Petersma <ftp@@st-andrews.ac.uk>
+#' @importFrom Rdpack reprompt
 #' @references
 #' \insertAllCited{}
 #' @keywords package

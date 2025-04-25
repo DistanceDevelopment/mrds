@@ -191,6 +191,7 @@
 #' \insertAllCited{}
 #' @keywords utility
 #' @importFrom stats aggregate
+#' @importFrom Rdpack reprompt
 #' @export
 dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                 se=TRUE, options=list()){
