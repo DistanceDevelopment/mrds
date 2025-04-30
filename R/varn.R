@@ -4,7 +4,7 @@
 #' encounter rate for a set of sample measurements (e.g., line lengths) and
 #' number of observations per sample.
 #'
-#' The choice of type follows the notation of Fewster et al. (2009) in that there are 8 choices of encounter rate variance that can be computed for lines and one for points:
+#' The choice of type follows the notation of \insertCite{fewster2009;textual}{mrds} in that there are 8 choices of encounter rate variance that can be computed for lines and one for points:
 #'
 #' \describe{
 #' \item{\code{R2}}{random line placement with unequal line lengths
@@ -30,9 +30,9 @@
 #' visits per point, model-based estimator}
 #' }
 #'
-#' Default value is \code{"R2"}, shown in Fewster et al. (2009) to have good
+#' Default value is \code{"R2"}, shown in \insertCite{fewster2009;textual}{mrds} to have good
 #' performance for completely random designs for lines. For systematic parallel
-#' line transect designs, Fewster et al. recommend \code{"O2"}. For point
+#' line transect designs, \insertCite{fewster2009;textual}{mrds} recommend \code{"O2"}. For point
 #' transects the default is \code{"P2"} (but \code{"P3"} is also available).
 #'
 #' For the systematic estimators, pairs are assigned in the order they are
@@ -49,13 +49,12 @@
 #' @param type choice of variance estimator to use for encounter rate
 #' @return Variance of encounter rate as defined by arguments
 #' @note This function is also used with different calling arguments to compute
-#' Innes et al variance of the estimated abundances/length rather than
+#' \insertCite{innes2002;textual}{mrds} variance of the estimated abundances/length rather than
 #' observation encounter rate. The function covn is probably only valid for R3
 #' and R2.  Currently, the R2 form is used for all types other than R3.
 #' @author Jeff Laake, David L Miller
-#' @references Fewster, R.M., S.T. Buckland, K.P. Burnham, D.L. Borchers, P.E.
-#'   Jupp, J.L. Laake and L. Thomas. 2009. Estimating the encounter rate
-#'   variance in distance sampling. Biometrics 65: 225-236.
+#' @references 
+#' \insertAllCited{}
 #' @keywords utility
 #' @export
 varn <- function(lvec, nvec, type){

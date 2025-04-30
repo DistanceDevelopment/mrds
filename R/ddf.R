@@ -71,7 +71,7 @@
 #' for the log of the scale parameter of the key function (e.g., the equivalent
 #' of the standard deviation in the half-normal).  The variable \code{distance}
 #' should not be included in the formula because the scale is for distance.
-#' See Marques, F.F.C. and S.T. Buckland (2004) for more details on the
+#' See \insertCite{marques2004;textual}{mrds} for more details on the
 #' representation of the scale formula. For the hazard rate and gamma
 #' functions, an additional \code{shape.formula} can be specified for the model
 #' of the shape parameter.  The default will be ~1.
@@ -91,7 +91,7 @@
 #' functions are \code{formula} and \code{link}.  At present, only \code{glm}
 #' is allowed and it is restricted to \code{link=logit}.  Thus, currently the
 #' only form for the conditional detection functions is logistic as expressed
-#' in eq 6.32 of Laake and Borchers (2004).  In contrast to \code{dsmodel}, the
+#' in eq 6.32 of \insertCite{laake2004;textual}{mrds}.  In contrast to \code{dsmodel}, the
 #' argument \code{formula} will typically include \code{distance} and all other
 #' covariates that affect detection probability.  For example,
 #' \code{mrmodel=~glm(formula=~distance+size+sex)} constructs a conditional
@@ -209,7 +209,7 @@
 #' }
 #'
 #' Examples of distance sampling analyses are available at
-#' \url{https://examples.distancesampling.org/}.
+#' \url{https://distancesampling.org/resources/vignettes.html}.
 #'
 #' Hints and tips on fitting (particularly optimisation issues) are on the
 #' \code{\link{mrds_opt}} manual page.
@@ -228,15 +228,8 @@
 #' \code{\link{ddf.io.fi}}, \code{\link{ddf.trial}},
 #' \code{\link{ddf.trial.fi}}, \code{\link{ddf.rem}}, \code{\link{ddf.rem.fi}},
 #' \code{\link{mrds_opt}}
-#' @references Laake, J.L. and D.L. Borchers. 2004. Methods for incomplete
-#'   detection at distance zero. In: Advanced Distance Sampling, eds. S.T.
-#'   Buckland, D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L.
-#'   Thomas. Oxford University Press.
-#'
-#' Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
-#'   function. In: Advanced Distance Sampling, eds. S.T. Buckland,
-#'   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
-#'   Oxford University Press.
+#' @references 
+#' \insertAllCited{}
 #' @keywords ~Statistical Models
 #' @examples
 #' # load data

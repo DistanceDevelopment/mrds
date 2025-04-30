@@ -1,6 +1,6 @@
-pandoc: '3.5'
-pkgdown: 2.1.1
-pkgdown_sha: ~
+pandoc: '3.2'
+pkgdown: 2.1.1.9000
+pkgdown_sha: 62d5c5a0fc12899aae97f6ce14018d2784bf308b
 articles:
   mrds-golftees: mrds-golftees.html
-last_built: 2024-11-18T16:41Z
+last_built: 2025-04-29T11:19Z

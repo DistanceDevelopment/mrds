@@ -1,6 +1,7 @@
 url: ~
 template:
   bootstrap: 5
+  math-rendering: mathjax
   bslib:
     bg: "#fcfaf2"
     fg: "#14059e"
@@ -15,12 +16,7 @@ reference:
 navbar:
   bg: primary
   structure:
-    right: [twitter, github]
-  components:
-    twitter:
-      icon: fa-twitter
-      href: https://twitter.com/distancesamp
-      aria-label: Twitter
+    right: [github]
   left:
     - text: Function reference
       href: reference/index.html

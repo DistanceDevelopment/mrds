@@ -10,8 +10,7 @@
 #' samples within any regional stratification. For clustered populations,
 #' \eqn{E(s)} and its standard error are also output.
 #'
-#' Abundance is estimated with a Horvitz-Thompson-like estimator (Huggins 1989,
-#' 1991; Borchers et al 1998; Borchers and Burnham 2004). The abundance in the
+#' Abundance is estimated with a Horvitz-Thompson-like estimator (\insertCite{huggins1989;nobrackets}{mrds}; \insertCite{huggins1991;nobrackets}{mrds}; \insertCite{borchers1998;nobrackets}{mrds}; \insertCite{borchers2004;nobrackets}{mrds}). The abundance in the
 #' sampled region is simply \eqn{1/p_1 + 1/p_2 + ... + 1/p_n} where \eqn{p_i}
 #' is the estimated detection probability for the \eqn{i}th detection of
 #' \eqn{n} total observations. It is not strictly a Horvitz-Thompson estimator
@@ -78,7 +77,7 @@
 #' If the argument \code{se=TRUE}, standard errors for density and abundance is
 #' computed. Coefficient of variation and log-normal confidence intervals are
 #' constructed using a Satterthwaite approximation for degrees of freedom
-#' (Buckland et al. 2001 p. 90). The function \code{\link{dht.se}} computes the
+#' (\insertCite{buckland2001;nobrackets}{mrds} p 90). The function \code{\link{dht.se}} computes the
 #' variance and interval estimates.
 #'
 #' The variance has two components:
@@ -88,7 +87,7 @@
 #'   \item variation in abundance due to random sample selection;
 #' }
 #' The first component (model parameter uncertainty) is computed using a delta
-#' method estimate of variance (Huggins 1989, 1991, Borchers et al. 1998) in
+#' method estimate of variance (\insertCite{huggins1989;nobrackets}{mrds}; \insertCite{huggins1991;nobrackets}{mrds}; \insertCite{borchers1998;nobrackets}{mrds}) in
 #' which the first derivatives of the abundance estimator with respect to the
 #' parameters in the detection function are computed numerically (see
 #' \code{\link{DeltaMethod}}).
@@ -99,17 +98,16 @@
 #' to calculate encounter rate:
 #' \itemize{
 #'  \item \code{0} uses a binomial variance for the number of observations
-#'  (equation 13 of Borchers et al. 1998). This estimator is only useful if the
+#'  (equation 13 of \insertCite{borchers1998;nobrackets}{mrds}. This estimator is only useful if the
 #'  sampled region is the survey region and the objects are not clustered; this
 #'  situation will not occur very often;
 #'  \item \code{1} uses the encounter rate \eqn{n/L} (objects observed per unit
-#'  transect) from Buckland et al. (2001) pg 78-79 (equation 3.78) for line
-#'  transects (see also Fewster et al, 2009 estimator R2). This variance
+#'  transect) from \insertCite{buckland2001;textual}{mrds} pg 78-79 (equation 3.78) for line
+#'  transects (see also \insertCite{fewster2009;nobrackets}{mrds} estimator R2). This variance
 #'  estimator is not appropriate if \code{size} or a derivative of \code{size}
 #'  is used in the detection function;
 #'  \item \code{2} is the default and uses the encounter rate estimator
-#'  \eqn{\hat{N}/L} (estimated abundance per unit transect) suggested by Innes
-#'  et al (2002) and Marques & Buckland (2004).
+#'  \eqn{\hat{N}/L} (estimated abundance per unit transect) suggested by \insertCite{innes2002;textual}{mrds} and \insertCite{marques2004;textual}{mrds} 
 #' }
 #'
 #' In general if any covariates are used in the models, the default
@@ -118,13 +116,14 @@
 #' the mean group size and standard error is also reported.
 #'
 #' For options \code{1} and \code{2}, it is then possible to choose one of the
-#' estimator forms given in Fewster et al (2009) for line transects:
+#' estimator forms given in \insertCite{fewster2009;textual}{mrds} 
+#' for line transects:
 #' \code{"R2"}, \code{"R3"}, \code{"R4"}, \code{"S1"}, \code{"S2"},
-#' \code{"O1"}, \code{"O2"} or \code{"O3"} by specifying the \code{ervar=}
-#' option (default \code{"R2"}). For points, either the \code{"P2"} or 
+#' \code{"O1"}, \code{"O2"} or \code{"O3"} can be used by specifying \code{ervar} 
+#' in the list of options provided by the \code{options} argument 
+#' (default \code{"R2"}). For points, either the \code{"P2"} or 
 #' \code{"P3"} estimator can be selected (>=mrds 2.3.0 default \code{"P2"},
-#' <= mrds 2.2.9 default \code{"P3"}). See \code{\link{varn}} and Fewster 
-#' et al (2009) for further details on these estimators.
+#' <= mrds 2.2.9 default \code{"P3"}). See \code{\link{varn}} and \insertCite{fewster2009;textual}{mrds} for further details on these estimators.
 #'
 #' @param model ddf model object
 #' @param region.table \code{data.frame} of region records. Two columns:
@@ -187,42 +186,12 @@
 #'}
 #'
 #' @author Jeff Laake, David L Miller
-#' @seealso print.dht dht.se
+#' @seealso \code{\link{print.dht}} \code{\link{dht.se}}
 #' @references
-#'
-#' Borchers, D.L., S.T. Buckland, P.W. Goedhart, E.D. Clarke, and S.L. Hedley.
-#'   1998. Horvitz-Thompson estimators for double-platform line transect
-#'   surveys. Biometrics 54: 1221-1237.
-#'
-#' Borchers, D.L. and K.P. Burnham. General formulation for distance sampling
-#'   pp 10-11 In: Advanced Distance Sampling, eds. S.T. Buckland, D.R.Anderson,
-#'   K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas. Oxford University
-#'   Press.
-#'
-#' Buckland, S.T., D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and
-#'   L. Thomas. 2001. Introduction to Distance Sampling: Estimating Abundance
-#'   of Biological Populations. Oxford University Press.
-#'
-#' Fewster, R.M., S.T. Buckland, K.P. Burnham, D.L. Borchers, P.E. Jupp, J.L.
-#'   Laake and L. Thomas. 2009. Estimating the encounter rate variance in
-#'   distance sampling. Biometrics 65: 225-236.
-#'
-#' Huggins, R.M. 1989. On the statistical analysis of capture experiments.
-#'   Biometrika 76:133-140.
-#'
-#' Huggins, R.M. 1991. Some practical aspects of a conditional likelihood
-#'   approach to capture experiments. Biometrics 47: 725-732.
-#'
-#' Innes, S., M.P. Heide-Jorgensen, J.L. Laake, K.L. Laidre, H.J. Cleator, P.
-#'   Richard, and R.E.A. Stewart. 2002. Surveys of belugas and narwhals in the
-#'   Canadian High Arctic in 1996. NAMMCO Scientific Publications 4: 169-190.
-#'
-#' Marques, F.F.C. and S.T. Buckland. 2004. Covariate models for the detection
-#'   function. In: Advanced Distance Sampling, eds. S.T. Buckland,
-#'   D.R.Anderson, K.P. Burnham, J.L. Laake, D.L. Borchers, and L. Thomas.
-#'   Oxford University Press.
+#' \insertAllCited{}
 #' @keywords utility
 #' @importFrom stats aggregate
+#' @importFrom Rdpack reprompt
 #' @export
 dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                 se=TRUE, options=list()){
@@ -625,6 +594,28 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
       individuals$N <- NULL
     }
     result <- list(individuals=individuals)
+  }
+  
+  # Check to see if need to issue user with a warning if there were any strata with only one sample.
+  if(any(result$individuals$summary$k == 1)){
+    # if there is only one strata
+    if(nrow(result$individuals$summary) == 1){
+      if(options$varflag == 1){
+        warning("Only one sample, assuming variance of n is Poisson. See help on dht.se for recommendations.", immediate. = TRUE, call. = FALSE)
+      }else if(options$varflag == 2){
+        warning("Only one sample, assuming abundance in the covered region is Poisson. See help on dht.se for recommendations.", immediate. = TRUE, call. = FALSE)
+      }
+    }else{
+      # if there are multiple strata
+      # find which strata have only one sample
+      strat.names <- result$individuals$summary$Region[result$individuals$summary$k == 1]
+      strat.txt <- ifelse(length(strat.names) > 1, ". For these strata, ", ". For this stratum, ")
+      if(options$varflag == 1){
+        warning(paste("Only one sample in the following strata: ", paste(strat.names, collapse = ", "), strat.txt, "it is assumed variance of n is Poisson. See help on dht.se.", sep = ""), immediate. = TRUE, call. = FALSE)
+      }else if(options$varflag == 2){
+        warning("Only one sample in the following strata: ", paste(strat.names, collapse = ", "), strat.txt, "it is assumed abundance in the covered region is Poisson. See help on dht.se.", immediate. = TRUE, call. = FALSE)
+      }
+    } 
   }
 
   # add some meta data

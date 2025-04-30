@@ -25,7 +25,7 @@ the `ddf` argument \code{control=list(optimizer='MCDS')}.  For completeness, one
 choose to use only the R-based algorithm by setting \code{control=list(optimizer='R')}.
 
 For more information and examples comparing the R-based and `MCDS.exe` algorithms,
-see our examples pages at https://examples.distancesampling.org/
+see our examples pages at https://distancesampling.org/resources/vignettes.html
 
 If you are running a non-Windows operating system, you can follow the
 instructions below to have `MCDS.exe` run using `wine`.

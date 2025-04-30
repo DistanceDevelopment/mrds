@@ -19,7 +19,7 @@
 #' choose to use only the R-based algorithm by setting \code{control=list(optimizer='R')}.
 #' 
 #' For more information and examples comparing the R-based and `MCDS.exe` algorithms,
-#' see our examples pages at https://examples.distancesampling.org/
+#' see our examples pages at https://distancesampling.org/resources/vignettes.html
 #'
 #' If you are running a non-Windows operating system, you can follow the
 #' instructions below to have `MCDS.exe` run using `wine`.
@@ -254,7 +254,7 @@ create.command.file <- function(dsmodel=call(), data,
   }else if(mod.vals$key == "unif"){
     cat("UNIFORM", file=command.file.name, append=TRUE)
   }else{
-    cat("NEXPON", file=command.file.name, append=TRUE)
+    stop("Unrecognised key function for the detection function in MCDS.exe", call. = FALSE)
   }
   
   adj.pres <- FALSE
@@ -639,3 +639,29 @@ create.data.file <- function(data, dsmodel, data.file){
                  cluster = cluster)
   return(output)
 }
+
+
+validate.MCDS.options <- function(model){
+  # Validates the options are suitable for MCDS
+  
+  # Extract values from the formula
+  mod_paste <- paste(model)
+  mod.vals <- try(eval(parse(text=mod_paste[2:length(mod_paste)])))
+  
+  # Check if the user is trying to fit a gamma model
+  if(mod.vals$key == "gamma"){
+    return("MCDS.exe cannot fit a gamma detection function model.")
+  }
+  
+  # Check if there are covariates
+  if(mod.vals$formula != ~1){
+    # if so only HN and HR permitted
+    if(!mod.vals$key %in% c("hn", "hr")){
+      return("MCDS.exe can only fit covariates with the half-normal and hazard rate key functions.")
+    }
+  }
+  
+  # If no issue return NULL
+  return(NULL)
+}
+

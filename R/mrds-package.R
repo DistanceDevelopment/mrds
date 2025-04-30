@@ -1,20 +1,14 @@
 #' Mark-Recapture Distance Sampling (mrds)
 #'
-#' This package implements mark-recapture distance sampling
-#'     methods as described in D.L. Borchers, W. Zucchini and Fewster,
-#'     R.M. (1988), "Mark-recapture models for line transect surveys",
-#'     Biometrics 54: 1207-1220. and Laake, J.L. (1999) "Distance sampling
-#'    with independent observers: Reducing bias from heterogeneity by
-#'     weakening the conditional independence assumption." in Amstrup,
-#'     G.W., Garner, S.C., Laake, J.L., Manly, B.F.J., McDonald, L.L. and
-#'     Robertson, D.G. (eds) "Marine mammal survey and assessment
-#'     methods", Balkema, Rotterdam: 137-148 and Borchers, D.L., Laake,
-#'     J.L., Southwell, C. and Paxton, C.L.G. "Accommodating unmodelled
-#'     heterogeneity in double-observer distance sampling surveys". 2006.
-#'     Biometrics 62:372-378.)
+#' This package implements both conventional distance sampling 
+#' analysis and mark-recapture distance sampling methods for when
+#' detection on the transect is not certain. Mark-recapture distance sampling methods are described in 
+#' \insertCite{borchers1988;textual}{mrds}, \insertCite{laake1999;textual}{mrds} 
+#' and \insertCite{borchers2006;textual}{mrds}
+#'     
 #'
 #' Examples of distance sampling analyses are available at
-#' \url{http://examples.distancesampling.org/}.
+#' \url{https://distancesampling.org/resources/vignettes.html}.
 #'
 #' For help with distance sampling and this package, there is a Google Group
 #' \url{https://groups.google.com/forum/#!forum/distance-sampling}.
@@ -27,6 +21,9 @@
 #'         David L. Miller <dave@@ninepointeightone.net>,
 #'         Jon Bishop <jonb@@mcs.st-and.ac.uk>,
 #'         Felix Petersma <ftp@@st-andrews.ac.uk>
+#' @importFrom Rdpack reprompt
+#' @references
+#' \insertAllCited{}
 #' @keywords package
 #' "_PACKAGE"
 #'

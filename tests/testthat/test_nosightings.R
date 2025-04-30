@@ -17,8 +17,8 @@ test_that("a dht object with only 0's for estimates is returned", {
   #run analyses
   ddf.clusters <- ddf(method='ds', dsmodel = ~mcds(key = 'hn', formula = ~scaledtotsize), data = clusters, meta.data = list(width = 5.5))
   ddf.no.clusters <- ddf(method='ds', dsmodel = ~mcds(key = 'hn', formula = ~scaledtotsize), data = no.clusters, meta.data = list(width = 5.5))
-  cluster.result <- dht(ddf.clusters, region.table, sample.table, obs.table.subset)
-  no.cluster.result <- dht(ddf.no.clusters, region.table, sample.table, obs.table.subset)
+  cluster.result <- dht(ddf.clusters, region.table, sample.table, obs.table.subset, options = list(varflag = 0))
+  no.cluster.result <- dht(ddf.no.clusters, region.table, sample.table, obs.table.subset, options = list(varflag = 0))
 
   #run tests
   #checks there are NO results for clusters
