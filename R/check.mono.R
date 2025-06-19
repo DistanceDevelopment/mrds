@@ -21,7 +21,7 @@
 #' @param strict if \code{TRUE} (default) the detection function must be
 #' "strictly" monotone, that is that (\code{g(x[i])<=g(x[i-1])}) over the whole
 #' range (left to right truncation points).
-#' @param n.pts number of equally-spaced points between left and right
+#' @param n.pts number of points between left and right
 #' truncation at which to evaluate the detection function (default 100)
 #' @param tolerance numerical tolerance for monotonicity checks (default 1e-8)
 #' @param plot plot a diagnostic highlighting the non-monotonic areas (default
