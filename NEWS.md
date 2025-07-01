@@ -7,6 +7,7 @@ Bug Fixes
 * Now displays a warning if the user tries to fit a detection function with covariates using MCDS.exe which is not either a half-normal or a hazard rate model. (Issue #113)
 * Fixed so that the MCDS.exe does not try to fit a negative exponential in place of a gamme key function. (Issue #113)
 * Now issues warnings when there is only a single transect and varflag option is 1 or 2. (Issue #115)
+* No longer plots data points on detection functions for binned analyses, only shows the interval bins.
 
 # mrds 3.0.0
 

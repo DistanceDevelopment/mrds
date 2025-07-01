@@ -382,7 +382,8 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
     ldots$y <- linevalues
     do.call(lines, ldots)
 
-    if(showpoints){
+    # Don't show point if the data are binned
+    if(showpoints && !binned){
       jitter.p <- rnorm(length(point_vals), 1, jitter.v[1])
       pdots <- dots
       pdots$x <- xmat$distance
