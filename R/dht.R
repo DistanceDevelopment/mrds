@@ -152,8 +152,12 @@
 #'
 #' The list structure of clusters and individuals are the same:
 #' \item{bysample}{\code{data.frame} giving results for each sample;
-#' \code{Nchat} is the estimated abundance within the sample and \code{Nhat} is
-#' scaled by surveyed area/covered area within that region}
+#' \code{Sample.Area} is the covered area associated with the sampler,
+#' \code{n} is the number of detections on the sampler,
+#' \code{Nhat} is the estimated abundance within the sample, and 
+#' \code{Dhat} is \eqn{\frac{Nhat}{\sum{Sample.Area}}} so that summing 
+#' these values gives the overall density estimates.}
+#' 
 #' \item{summary}{\code{data.frame} of summary statistics for each region and
 #' total}
 #' \item{N}{\code{data.frame} of estimates of abundance for each region and
@@ -223,15 +227,22 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
 
     bysample.table <- with(Nhat.by.sample,
                            data.frame(Region      = Region.Label,
+                                      Area        = Area,
                                       Sample      = Sample.Label,
                                       Effort      = Effort.x,
                                       Sample.Area = CoveredArea,
-                                      Area        = Area,
                                       n           = n,
-                                      Nhat        = Nhat,
-                                      Nchat       = Nhat*CoveredArea/Area))
+                                      Nhat       = Nhat*CoveredArea/Area))
 
-    bysample.table$Dhat <- bysample.table$Nchat/bysample.table$Sample.Area
+    # Calculate density contributions (these can be summed to give overall density)
+    bysample.table$Dhat <- bysample.table$Nhat/bysample.table$Sample.Area
+    # Now update CoveredArea so it's per sample
+    if(point){
+      bysample.table$Sample.Area <- pi*bysample.table$Effort*width^2 - pi*bysample.table$Effort*left^2
+    }else{
+      bysample.table$Sample.Area <- 2*bysample.table$Effort*(width-left)
+    }
+    
     Nhat.by.region <- as.numeric(by(Nhat.by.sample$Nhat,
                                     Nhat.by.sample$Region.Label, sum))
 
