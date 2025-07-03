@@ -175,13 +175,15 @@ plot.ds <- function(x, which=2, breaks=NULL, nc=NULL,
     zgrid <- matrix(rep(z[1,], length(xgrid)), byrow=TRUE, ncol=sum(zdim))
   }
 
+  # Check if it is a binned analysis
+  if(is.null(model$meta.data$binned)){
+    binned <- FALSE
+  }else{
+    binned <- model$meta.data$binned
+  }
+  
   # create intervals of distance (breaks) for the chosen number of classes (nc).
   if(is.null(breaks)){
-    if(is.null(model$meta.data$binned)){
-      binned <- FALSE
-    }else{
-      binned <- model$meta.data$binned
-    }
     if(binned){
       breaks <- model$ds$aux$breaks
       nc <- length(breaks)-1
