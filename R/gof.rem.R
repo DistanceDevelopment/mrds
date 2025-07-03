@@ -70,7 +70,7 @@ gof.rem <- function(model,breaks=NULL,nc=NULL){
     p.1 <- 1-pchisq(chisq.1,df.1)
   }
 
-  df.2 <- 2*nc-length(model$mr$par)
+  df.2 <- nc-length(model$mr$par)
   if(df.2<=0){
     df.2 <- NA
     p.2 <- NA
