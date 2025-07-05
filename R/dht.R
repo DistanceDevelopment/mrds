@@ -419,6 +419,15 @@ dht <- function(model, region.table, sample.table, obs.table=NULL, subset=NULL,
                                    ervar=ifelse(model$meta.data$point, "P2",
                                                 "R2"),
                                    areas.supplied=FALSE)
+  
+  # Input checking
+  # Check that the object field is numeric in the obs.table
+  if(!is.null(obs.table)){
+    if(!is.numeric(obs.table$object)){
+      warning("Please ensure the object field in the obs.table is numeric, cannot perform dht calculations.", call. = FALSE)
+      return(NULL)
+    }
+  }
 
   # jll 18-Nov-04; the following allows for a subset statement to be added to
   # create obs.table from model data rather than creating obs.table separately.
