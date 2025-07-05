@@ -57,7 +57,9 @@ The list structure of clusters and individuals are the same:
 these values gives the overall density estimates.}
 
 \item{summary}{\code{data.frame} of summary statistics for each region and
-total}
+total. Note that the summary statistics give a general summary of the data 
+and may use more basic calculations than those used in the abundance
+and density calculations.}
 \item{N}{\code{data.frame} of estimates of abundance for each region and
 total}
 \item{D}{\code{data.frame} of estimates of density for each region and total}
