@@ -19,7 +19,7 @@ estimates."><script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||f
 
     <a class="navbar-brand me-2" href="../index.html">mrds</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -118,7 +118,7 @@ cv and confidence limits</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The variance has two components:</p><ul><li><p>variation due to uncertainty from estimation of the detection
   function parameters;</p></li>
-<li><p>variation in abundance due to random sample selection;</p></li>
+<li><p>variation in abundance due to random sample selection.</p></li>
 </ul><p>The first component (model parameter uncertainty) is computed using a delta
 method estimate of variance (Huggins 1989
 ; Huggins 1991
@@ -146,7 +146,8 @@ to calculate encounter rate:</p><ul><li><p><code>0</code> uses a negative binomi
 <li><p><code>2</code> is the default and uses the encounter rate estimator
  \(\hat{N}/L\) (estimated abundance per unit transect) suggested by
  Innes et al. (2002)
- and Marques and Buckland (2004)</p></li>
+ and Marques and Buckland (2004)
+.</p></li>
 </ul><p>In general if any covariates are used in the models, the default
 <code>varflag=2</code> is preferable as the estimated abundance will take into
 account variability due to covariate effects. If the population is clustered
@@ -177,6 +178,14 @@ weighted by the squared cv in combining the two sources of variation because
 of the assumed log-normal distribution because the components are
 multiplicative. For combining df for the sampling variance across regions
 they are weighted by the variance because it is a sum across regions.</p>
+<p>The coefficient of variation (CV) associated with the abundance estimates is calculated based on the following formula for the <code>varflag</code> options 1 and 2:</p>
+<p><code>varflag=1</code></p>
+<p>$$CV(\hat{N}) = \sqrt{\left(\frac{\sqrt{n}}{n}\right)^2+CV(\hat{p})^2}$$</p>
+<p><code>varflag=2</code></p>
+<p>$$CV(\hat{N}) = \sqrt{\left(\frac{\sqrt{\hat{N}}}{\hat{N}}\right)^2+CV(\hat{p})^2}$$
+where n is the number of observations, \(\hat{N}\) is the estimated
+abundance and \(\hat{p}\) is the average probability of detection for
+an animal in the covered area.</p>
 <p>A non-zero correlation between regional estimates can occur from using a
 common detection function across regions. This is reflected in the
 correlation matrix of the regional and total estimates which is given in the

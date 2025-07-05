@@ -30,6 +30,7 @@ print.ddf.gof <- function(x, digits=3, ...){
   if(!is.null(gof$chisquare)){
     cat("\nChi-square tests\n")
 
+    # This is NULL when it is a single observer model
     if(!is.null(gof$chisquare$chi2)){
       cat("\nDistance sampling component:\n")
     }
@@ -83,12 +84,17 @@ print.ddf.gof <- function(x, digits=3, ...){
                   " with ", gof$chisquare$chi2$df,
                   " degrees of freedom\n", sep=""))
       }
-
-      cat(paste("\n\nTotal chi-square = ",
-                format(gof$chisquare$pooled.chi$chisq, digits=5),
-                "  P = ", format(gof$chisquare$pooled.chi$p, digits=5),
-                " with ", gof$chisquare$pooled.chi$df, " degrees of freedom\n",
-                sep=""))
+      
+      if(!is.na(gof$chisquare$pooled.chi$p)){
+        cat(paste("\n\nTotal chi-square = ",
+                  format(gof$chisquare$pooled.chi$chisq, digits=5),
+                  "  P = ", format(gof$chisquare$pooled.chi$p, digits=5),
+                  " with ", gof$chisquare$pooled.chi$df, " degrees of freedom\n",
+                  sep=""))
+      }else{
+        cat("\nTotal chi-square: No degrees of freedom for test\n")
+      }
+      
     }
   }
 

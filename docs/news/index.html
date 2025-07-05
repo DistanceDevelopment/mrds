@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mrds</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,9 +44,16 @@
 <h2 class="pkg-version" data-toc-text="3.0.1" id="mrds-301">mrds 3.0.1<a class="anchor" aria-label="anchor" href="#mrds-301"></a></h2>
 <p>Bug Fixes</p>
 <ul><li>Fixed formatting issue in flnl.grad help</li>
+<li>Fixed output for gof test when degrees of freedom for MR models is &lt;= 0 (Issue <a href="https://github.com/DistanceDevelopment/mrds/issues/96" class="external-link">#96</a>)</li>
 <li>Now displays a warning if the user tries to fit a detection function with covariates using MCDS.exe which is not either a half-normal or a hazard rate model. (Issue <a href="https://github.com/DistanceDevelopment/mrds/issues/113" class="external-link">#113</a>)</li>
 <li>Fixed so that the MCDS.exe does not try to fit a negative exponential in place of a gamme key function. (Issue <a href="https://github.com/DistanceDevelopment/mrds/issues/113" class="external-link">#113</a>)</li>
 <li>Now issues warnings when there is only a single transect and varflag option is 1 or 2. (Issue <a href="https://github.com/DistanceDevelopment/mrds/issues/115" class="external-link">#115</a>)</li>
+<li>No longer plots data points on detection functions for binned analyses, only shows the interval bins.</li>
+<li>Add a check and a warning when the object field of the obs.table is not numeric. (Distance Issue <a href="https://github.com/DistanceDevelopment/mrds/issues/165" class="external-link">#165</a>)</li>
+</ul><p>Enhancements</p>
+<ul><li>Documentation of dht.se to show variance calculations for varflag options (Issue <a href="https://github.com/DistanceDevelopment/mrds/issues/117" class="external-link">#117</a>)</li>
+<li>Modified the bysample table returned from dht (Issues <a href="https://github.com/DistanceDevelopment/mrds/issues/60" class="external-link">#60</a> and <a href="https://github.com/DistanceDevelopment/mrds/issues/100" class="external-link">#100</a>)</li>
+<li>Clarified documentation regarding summary table output from dht.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.0.0" id="mrds-300">mrds 3.0.0<a class="anchor" aria-label="anchor" href="#mrds-300"></a></h2><p class="text-muted">CRAN release: 2024-10-23</p>
@@ -188,7 +195,7 @@
 <h2 class="pkg-version" data-toc-text="2.1.15" id="mrds-2115">mrds 2.1.15<a class="anchor" aria-label="anchor" href="#mrds-2115"></a></h2>
 <ul><li>rescaling parameters were not correct, now fixed. Thanks to Laura Marshall for spotting this.</li>
 <li>coefficients are called coefficients (not a mixture of coefficients and parameters) in summary() results</li>
-<li>speed-up in io.fi models (thanks to Winston Chang’s profvis, showing many unecessary calls to model.matrix)</li>
+<li>speed-up in io.fi models (thanks to Winston Chang’s profvis, showing many unnecessary calls to model.matrix)</li>
 <li>plot.ds now has a pdf= option to plot the probability density function (for point transect models only)</li>
 <li>assign.par, create.ddfobj and detfct are now exported, so it can be used by dsm (though shouldn’t be used by anything else!)</li>
 <li>fixed bug in left truncation where probability of detection was not calculated correctly. Thanks to Jason Roberts for pointing this out!</li>
@@ -237,7 +244,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.1.7" id="mrds-217">mrds 2.1.7<a class="anchor" aria-label="anchor" href="#mrds-217"></a></h2>
 <p>BUG FIXES</p>
-<ul><li>Standardisation was being applied to detection functions (such that g(0)=1) when there were no adjustments (which is uneccesary) but also caused issues when using gamma detection functions as this should be calculated at g(apex) instead. Standardisation code has been removed for when there are no adjustments and the correct scaling used for the gamma when there are. Thanks to Thomas Doniol-Valcroze for alerting us to this bug.</li>
+<ul><li>Standardisation was being applied to detection functions (such that g(0)=1) when there were no adjustments (which is unnecessary) but also caused issues when using gamma detection functions as this should be calculated at g(apex) instead. Standardisation code has been removed for when there are no adjustments and the correct scaling used for the gamma when there are. Thanks to Thomas Doniol-Valcroze for alerting us to this bug.</li>
 <li>Partial name-matching in dht was fixed. Produced warning but not error.</li>
 </ul><p>NEW FEATURES</p>
 <ul><li>Tests for gamma detection functions</li>
@@ -264,7 +271,7 @@
 </ul><p>BUG FIXES</p>
 <ul><li>uniform+cosine detection functions were ignored when using monotonicity constraints, now they can be used together</li>
 <li>mono.strict=TRUE didn’t automatically turn on mono=TRUE, extra logic to correct this</li>
-<li>montonicity constraints did not use standardised (g(x)/g(0) detection functions, so if g(x)&gt;1 monotonicity constraints were voilated. Now standardised detection functions are used. Thanks to Len Thomas for noticing this bug.</li>
+<li>montonicity constraints did not use standardised (g(x)/g(0) detection functions, so if g(x)&gt;1 monotonicity constraints were violated. Now standardised detection functions are used. Thanks to Len Thomas for noticing this bug.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.1.4-3" id="mrds-214-3">mrds 2.1.4-3<a class="anchor" aria-label="anchor" href="#mrds-214-3"></a></h2>
@@ -272,7 +279,7 @@
 <ul><li>predict.io.fi did not work for new data (thanks to Len Thomas and Phil Hammond for pointing this out)</li>
 </ul><p>CHANGES</p>
 <ul><li>general documentation updates</li>
-<li>simplication and re-structuring of internals</li>
+<li>simplification and re-structuring of internals</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.1.4-3" id="mrds-214-3-1">mrds 2.1.4-3<a class="anchor" aria-label="anchor" href="#mrds-214-3-1"></a></h2>

@@ -3,9 +3,19 @@
 Bug Fixes
 
 * Fixed formatting issue in flnl.grad help
+* Fixed output for gof test when degrees of freedom for MR models is <= 0 (Issue #96)
 * Now displays a warning if the user tries to fit a detection function with covariates using MCDS.exe which is not either a half-normal or a hazard rate model. (Issue #113)
 * Fixed so that the MCDS.exe does not try to fit a negative exponential in place of a gamme key function. (Issue #113)
 * Now issues warnings when there is only a single transect and varflag option is 1 or 2. (Issue #115)
+* No longer plots data points on detection functions for binned analyses, only shows the interval bins.
+* Add a check and a warning when the object field of the obs.table is not numeric. (Distance Issue #165)
+
+
+Enhancements
+
+* Documentation of dht.se to show variance calculations for varflag options (Issue #117)
+* Modified the bysample table returned from dht (Issues #60 and #100)
+* Clarified documentation regarding summary table output from dht.
 
 # mrds 3.0.0
 
@@ -156,7 +166,7 @@ Bug Fixes
 
 * rescaling parameters were not correct, now fixed. Thanks to Laura Marshall for spotting this.
 * coefficients are called coefficients (not a mixture of coefficients and parameters) in summary() results
-* speed-up in io.fi models (thanks to Winston Chang's profvis, showing many unecessary calls to model.matrix)
+* speed-up in io.fi models (thanks to Winston Chang's profvis, showing many unnecessary calls to model.matrix)
 * plot.ds now has a pdf= option to plot the probability density function (for point transect models only)
 * assign.par, create.ddfobj and detfct are now exported, so it can be used by dsm (though shouldn't be used by anything else!)
 * fixed bug in left truncation where probability of detection was not calculated correctly. Thanks to Jason Roberts for pointing this out!
@@ -217,7 +227,7 @@ BUG FIXES
 
 BUG FIXES
 
-* Standardisation was being applied to detection functions (such that g(0)=1) when there were no adjustments (which is uneccesary) but also caused issues when using gamma detection functions as this should be calculated at g(apex) instead. Standardisation code has been removed for when there are no adjustments and the correct scaling used for the gamma when there are. Thanks to Thomas Doniol-Valcroze for alerting us to this bug.
+* Standardisation was being applied to detection functions (such that g(0)=1) when there were no adjustments (which is unnecessary) but also caused issues when using gamma detection functions as this should be calculated at g(apex) instead. Standardisation code has been removed for when there are no adjustments and the correct scaling used for the gamma when there are. Thanks to Thomas Doniol-Valcroze for alerting us to this bug.
 * Partial name-matching in dht was fixed. Produced warning but not error.
 
 NEW FEATURES
@@ -254,7 +264,7 @@ BUG FIXES
 
 * uniform+cosine detection functions were ignored when using monotonicity constraints, now they can be used together
 * mono.strict=TRUE didn't automatically turn on mono=TRUE, extra logic to correct this
-* montonicity constraints did not use standardised (g(x)/g(0) detection functions, so if g(x)>1 monotonicity constraints were voilated. Now standardised detection functions are used. Thanks to Len Thomas for noticing this bug.
+* montonicity constraints did not use standardised (g(x)/g(0) detection functions, so if g(x)>1 monotonicity constraints were violated. Now standardised detection functions are used. Thanks to Len Thomas for noticing this bug.
 
 # mrds 2.1.4-3
 
@@ -265,7 +275,7 @@ BUG FIX
 CHANGES
 
 * general documentation updates
-* simplication and re-structuring of internals
+* simplification and re-structuring of internals
 
 # mrds 2.1.4-3
 

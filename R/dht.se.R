@@ -9,7 +9,7 @@
 #' \itemize{
 #'   \item variation due to uncertainty from estimation of the detection
 #'   function parameters;
-#'   \item variation in abundance due to random sample selection;
+#'   \item variation in abundance due to random sample selection.
 #' }
 #' The first component (model parameter uncertainty) is computed using a delta
 #' method estimate of variance (\insertCite{huggins1989;nobrackets}{mrds}; \insertCite{huggins1991;nobrackets}{mrds}; \insertCite{borchers1998;nobrackets}{mrds}) in
@@ -34,7 +34,7 @@
 #'  is used in the detection function;
 #'  \item \code{2} is the default and uses the encounter rate estimator
 #'  \eqn{\hat{N}/L} (estimated abundance per unit transect) suggested by
-#'  \insertCite{innes2002;textual}{mrds} and \insertCite{marques2004;textual}{mrds}
+#'  \insertCite{innes2002;textual}{mrds} and \insertCite{marques2004;textual}{mrds}.
 #' }
 #'
 #' In general if any covariates are used in the models, the default
@@ -66,6 +66,19 @@
 #' of the assumed log-normal distribution because the components are
 #' multiplicative. For combining df for the sampling variance across regions
 #' they are weighted by the variance because it is a sum across regions.
+#' 
+#' The coefficient of variation (CV) associated with the abundance estimates is calculated based on the following formula for the \code{varflag} options 1 and 2:
+#' 
+#' \code{varflag=1}
+#' 
+#' \deqn{CV(\hat{N}) = \sqrt{\left(\frac{\sqrt{n}}{n}\right)^2+CV(\hat{p})^2}}
+#' 
+#' \code{varflag=2}
+#' 
+#' \deqn{CV(\hat{N}) = \sqrt{\left(\frac{\sqrt{\hat{N}}}{\hat{N}}\right)^2+CV(\hat{p})^2}}
+#' where n is the number of observations, \eqn{\hat{N}} is the estimated
+#' abundance and \eqn{\hat{p}} is the average probability of detection for
+#' an animal in the covered area. 
 #'
 #' A non-zero correlation between regional estimates can occur from using a
 #' common detection function across regions. This is reflected in the

@@ -50,10 +50,16 @@ list object of class \code{dht} with elements:
 
 The list structure of clusters and individuals are the same:
 \item{bysample}{\code{data.frame} giving results for each sample;
-\code{Nchat} is the estimated abundance within the sample and \code{Nhat} is
-scaled by surveyed area/covered area within that region}
+\code{Sample.Area} is the covered area associated with the sampler,
+\code{n} is the number of detections on the sampler,
+\code{Nhat} is the estimated abundance within the sample, and 
+\code{Dhat} is \eqn{\frac{Nhat}{\sum{Sample.Area}}} so that summing 
+these values gives the overall density estimates.}
+
 \item{summary}{\code{data.frame} of summary statistics for each region and
-total}
+total. Note that the summary statistics give a general summary of the data 
+and may use more basic calculations than those used in the abundance
+and density calculations.}
 \item{N}{\code{data.frame} of estimates of abundance for each region and
 total}
 \item{D}{\code{data.frame} of estimates of density for each region and total}

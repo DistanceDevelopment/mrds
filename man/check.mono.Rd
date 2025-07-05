@@ -20,7 +20,7 @@ check.mono(
 "strictly" monotone, that is that (\code{g(x[i])<=g(x[i-1])}) over the whole
 range (left to right truncation points).}
 
-\item{n.pts}{number of equally-spaced points between left and right
+\item{n.pts}{number of points between left and right
 truncation at which to evaluate the detection function (default 100)}
 
 \item{tolerance}{numerical tolerance for monotonicity checks (default 1e-8)}

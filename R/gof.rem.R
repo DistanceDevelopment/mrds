@@ -70,12 +70,22 @@ gof.rem <- function(model,breaks=NULL,nc=NULL){
     p.1 <- 1-pchisq(chisq.1,df.1)
   }
 
-  df.2 <- 2*nc-length(model$mr$par)
+  df.2 <- nc-length(model$mr$par)
   if(df.2<=0){
     df.2 <- NA
     p.2 <- NA
   }else{
     p.2 <- 1-pchisq(chisq.2,df.2)
+  }
+  
+  # Calculate the pooled chi-square
+  df.pool <- 2*nc-length(model$par)-1
+  
+  if(df.pool <= 0){
+    df.pool <- NA
+    p.pool <- NA
+  }else{
+    p.pool <- 1-pchisq(chisq.1+chisq.2, df.pool)
   }
 
   return(list(chi1=list(observed=observed.count.1,
@@ -89,7 +99,6 @@ gof.rem <- function(model,breaks=NULL,nc=NULL){
                    p=p.2,
                    df=df.2),
          pooled.chi=list(chisq=chisq.1+chisq.2,
-                         df=2*nc-length(model$par)-1,
-                         p=1-pchisq(chisq.1+chisq.2,
-                                    2*nc-length(model$par)-1))))
+                         df=df.pool,
+                         p=p.pool)))
 }
