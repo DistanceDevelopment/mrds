@@ -15,7 +15,7 @@ Horvitz-Thompson-like estimator."><script type="text/javascript">(function(c,l,a
 
     <a class="navbar-brand me-2" href="../index.html">mrds</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,12 +122,18 @@ below.</p></dd>
 </dl><p>The list structure of clusters and individuals are the same:</p>
 <dl><dt>bysample</dt>
 <dd><p><code>data.frame</code> giving results for each sample;
-<code>Nchat</code> is the estimated abundance within the sample and <code>Nhat</code> is
-scaled by surveyed area/covered area within that region</p></dd>
+<code>Sample.Area</code> is the covered area associated with the sampler,
+<code>n</code> is the number of detections on the sampler,
+<code>Nhat</code> is the estimated abundance within the sample, and
+<code>Dhat</code> is \(\frac{Nhat}{\sum{Sample.Area}}\) so that summing
+these values gives the overall density estimates.</p></dd>
+
 
 <dt>summary</dt>
 <dd><p><code>data.frame</code> of summary statistics for each region and
-total</p></dd>
+total. Note that the summary statistics give a general summary of the data
+and may use more basic calculations than those used in the abundance
+and density calculations.</p></dd>
 
 <dt>N</dt>
 <dd><p><code>data.frame</code> of estimates of abundance for each region and
