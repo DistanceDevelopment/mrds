@@ -3,11 +3,19 @@
 Bug Fixes
 
 * Fixed formatting issue in flnl.grad help
-* Fixed output for gof test when degrees of freedom for MR models is <= 0
+* Fixed output for gof test when degrees of freedom for MR models is <= 0 (Issue #96)
 * Now displays a warning if the user tries to fit a detection function with covariates using MCDS.exe which is not either a half-normal or a hazard rate model. (Issue #113)
 * Fixed so that the MCDS.exe does not try to fit a negative exponential in place of a gamme key function. (Issue #113)
 * Now issues warnings when there is only a single transect and varflag option is 1 or 2. (Issue #115)
 * No longer plots data points on detection functions for binned analyses, only shows the interval bins.
+* Add a check and a warning when the object field of the obs.table is not numeric. (Distance Issue #165)
+
+
+Enhancements
+
+* Documentation of dht.se to show variance calculations for varflag options (Issue #117)
+* Modified the bysample table returned from dht (Issues #60 and #100)
+* Clarified documentation regarding summary table output from dht.
 
 # mrds 3.0.0
 
