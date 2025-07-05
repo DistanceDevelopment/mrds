@@ -166,7 +166,7 @@ Bug Fixes
 
 * rescaling parameters were not correct, now fixed. Thanks to Laura Marshall for spotting this.
 * coefficients are called coefficients (not a mixture of coefficients and parameters) in summary() results
-* speed-up in io.fi models (thanks to Winston Chang's profvis, showing many unecessary calls to model.matrix)
+* speed-up in io.fi models (thanks to Winston Chang's profvis, showing many unnecessary calls to model.matrix)
 * plot.ds now has a pdf= option to plot the probability density function (for point transect models only)
 * assign.par, create.ddfobj and detfct are now exported, so it can be used by dsm (though shouldn't be used by anything else!)
 * fixed bug in left truncation where probability of detection was not calculated correctly. Thanks to Jason Roberts for pointing this out!
@@ -227,7 +227,7 @@ BUG FIXES
 
 BUG FIXES
 
-* Standardisation was being applied to detection functions (such that g(0)=1) when there were no adjustments (which is uneccesary) but also caused issues when using gamma detection functions as this should be calculated at g(apex) instead. Standardisation code has been removed for when there are no adjustments and the correct scaling used for the gamma when there are. Thanks to Thomas Doniol-Valcroze for alerting us to this bug.
+* Standardisation was being applied to detection functions (such that g(0)=1) when there were no adjustments (which is unnecessary) but also caused issues when using gamma detection functions as this should be calculated at g(apex) instead. Standardisation code has been removed for when there are no adjustments and the correct scaling used for the gamma when there are. Thanks to Thomas Doniol-Valcroze for alerting us to this bug.
 * Partial name-matching in dht was fixed. Produced warning but not error.
 
 NEW FEATURES
@@ -264,7 +264,7 @@ BUG FIXES
 
 * uniform+cosine detection functions were ignored when using monotonicity constraints, now they can be used together
 * mono.strict=TRUE didn't automatically turn on mono=TRUE, extra logic to correct this
-* montonicity constraints did not use standardised (g(x)/g(0) detection functions, so if g(x)>1 monotonicity constraints were voilated. Now standardised detection functions are used. Thanks to Len Thomas for noticing this bug.
+* montonicity constraints did not use standardised (g(x)/g(0) detection functions, so if g(x)>1 monotonicity constraints were violated. Now standardised detection functions are used. Thanks to Len Thomas for noticing this bug.
 
 # mrds 2.1.4-3
 
@@ -275,7 +275,7 @@ BUG FIX
 CHANGES
 
 * general documentation updates
-* simplication and re-structuring of internals
+* simplification and re-structuring of internals
 
 # mrds 2.1.4-3
 
